@@ -1,0 +1,308 @@
+html {
+  margin: 0;
+  box-sizing: border-box;
+  background: #0d0d0d;
+}
+
+* {
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  /*animation-play-state: paused !important;*/
+}
+
+*::-webkit-scrollbar {
+  display: none;
+}
+
+body {
+  margin: 0;
+  position: absolute;
+  min-height: 100%;
+  width: 100%;
+}
+
+#backgroundClouds {
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+
+#backgroundClouds:before {
+  content: "";
+  position: absolute;
+  top: -350%;
+  left: -350%;
+  width: 800%;
+  height: 800%;
+  background-image: url(../res/backStars.gif);
+  background-size: 35vw;
+  background-repeat: repeat;
+  /* animation-name: rotate;
+        animation-duration: 500s;
+        animation-iteration-count: infinite;
+        animation-timing-function:linear; */
+}
+
+.backgroundSide {
+  width: 15vw;
+  transition: filter 0.2s, opacity 0.2s;
+  height: 100%;
+  background-size: contain;
+  position: absolute;
+  background-repeat: repeat-y;
+  opacity: 1;
+}
+
+.backgroundSide:hover {
+  opacity: 0.8;
+}
+
+@keyframes moveFg {
+  0% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(2vh);
+  }
+
+  100% {
+    transform: translateY(0);
+  }
+}
+
+@keyframes moveBg {
+  0% {
+    transform: translateX(0);
+  }
+
+  50% {
+    transform: translateX(2vw);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg)
+  }
+}
+
+@keyframes pulseMoon {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.2);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes hopUp {
+  0% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(2vh);
+  }
+
+  100% {
+    transform: translateY(0);
+  }
+}
+
+@keyframes wiggle {
+  0% {
+    transform: rotate(-5deg);
+  }
+
+  100% {
+    transform: rotate(5deg);
+  }
+}
+
+@keyframes pulseIcons {
+  0% {
+    transform: rotate(calc(var(--axis) * 5deg));
+  }
+
+  50% {
+    transform: translateX(calc(var(--axis) * 2em)) rotate(calc(var(--axis) * 15deg));
+  }
+
+  100% {
+    transform: rotate(calc(var(--axis) * 5deg));
+  }
+}
+
+.cloudsBack {
+  left: -3vw;
+  z-index: 1;
+  background-image: url(../res/cloudsBg.gif);
+}
+
+.cloudsFore {
+  left: 0;
+  z-index: 2;
+  background-image: url(../res/cloudsFg.gif);
+}
+
+.backgroundRight {
+  position: absolute;
+  height: 100%;
+  transform: translateX(100vw) scaleX(-1);
+}
+
+.backgroundLeft {
+  position: absolute;
+  height: 100%;
+}
+
+.animateBack {
+  animation-name: moveBg;
+  animation-iteration-count: infinite;
+  animation-duration: 6s;
+  animation-timing-function: ease-in-out;
+}
+
+.animateFore {
+  animation-name: moveFg;
+  animation-iteration-count: infinite;
+  animation-duration: 6s;
+  animation-timing-function: ease-in-out;
+}
+
+#logoContainer {
+  z-index: 2;
+  height: 15vh;
+  position: fixed;
+  top: 0;
+  background: linear-gradient(black, transparent);
+}
+
+#logo {
+  user-select: none;
+  height: 70%;
+  cursor: pointer;
+  transition: filter 0.3s;
+  transform-origin: top;
+  animation-name: pulseMoon;
+  animation-iteration-count: infinite;
+  animation-duration: 5s;
+  animation-timing-function: ease-in-out;
+}
+
+#logo:hover {
+  filter: drop-shadow(0px 0px 1em rgba(255, 255, 255, 0.3));
+}
+
+#navPlan {
+  position: relative;
+  height: 100%;
+}
+
+#navClone {
+  text-shadow: -3px 3px 0px rgba(41, 55, 87, 1);
+}
+
+#navClone h1 {
+  transition: text-shadow 0.2s;
+  margin: 0;
+  opacity: 0;
+}
+
+#navClone h1:hover {
+  text-shadow: -4px 4px 0px rgba(64, 79, 106, 1);
+}
+
+#navPlanCap {
+  position: absolute;
+  height: 100%;
+  z-index: 2;
+  left: 0;
+  right: 0;
+}
+
+#navPlanCont {
+  position: relative;
+  top: -90%;
+  height: 200%;
+  transition: top 0.5s, opacity 0.2s;
+  cursor: pointer;
+  animation-name: wiggle;
+  animation-duration: 4s;
+  animation-direction: alternate-reverse;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+}
+
+#navPlanCont:hover {
+  top: -70%;
+}
+
+.iconsRow {
+  user-select: none;
+  margin: 2em 0;
+  height: 8rem;
+  --axis: 0;
+}
+
+.glowYellow {
+  animation-name: glowYellow;
+  animation-duration: 4s;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+}
+
+.iconsRow>div:last-child {
+  --axis: 1;
+}
+
+.iconsRow>div:first-child {
+  --axis: -1;
+}
+
+.icon {
+  width: 6rem;
+  animation-name: pulseIcons;
+  animation-duration: 4s;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+  transition: width 0.2s;
+  filter: drop-shadow(0px 0px 1em rgba(250, 248, 121, 0.2));
+}
+
+.icon:hover {
+  width: 5.5rem;
+}
+
+.icon:active {
+  width: 5rem;
+}
+
+#tutorial {
+  transition: opacity 0.2s;
+  opacity: 1;
+}
+
+#tutorial:hover {
+  opacity: 0.8;
+}

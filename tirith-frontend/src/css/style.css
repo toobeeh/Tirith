@@ -1,0 +1,121 @@
+* {
+  color: #aa8dd8;
+}
+
+.fullwidth {
+  width: 100%
+}
+
+a:link {
+  text-decoration: inherit;
+  color: inherit;
+}
+
+a:visited {
+  text-decoration: inherit;
+  color: inherit;
+}
+
+h1 {
+  width: 100%;
+  z-index: 3;
+  color: #7289da;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 3rem;
+  user-select: none;
+  text-align: center;
+  transition: letter-spacing 0.3s;
+}
+
+h1:hover {
+  letter-spacing: 0.03em;
+}
+
+h2 {
+  width: 100%;
+  color: #8768b7;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 2rem;
+  user-select: none;
+  text-align: center;
+}
+
+h3 {
+  width: 100%;
+  color: #aa8dd8;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 1.2rem;
+  user-select: none;
+  text-align: center;
+}
+
+
+input[type="text"],
+input[type="number"] {
+  outline: none;
+  border: none;
+  border-bottom: 2px solid #aa8dd8;
+  background: none;
+  color: inherit;
+  font-size: inherit;
+  letter-spacing: 0.15rem;
+}
+
+input[type="button"] {
+  transition: box-shadow .2s, transform .2s;
+  border: 2px solid #aa8dd8;
+  background: none;
+  font-size: inherit;
+  color: inherit;
+  margin-left: 1rem;
+  margin-right: 1rem;
+  padding: .5rem;
+  cursor: pointer;
+  border-radius: .25rem;
+  letter-spacing: .25rem;
+}
+
+input[type="button"]:focus {
+  outline: 0;
+}
+
+heart,
+discord,
+git {
+  height: 1em;
+  width: 1em;
+  background-size: contain;
+  background-repeat: no-repeat;
+  display: inline-block;
+}
+
+heart {
+  background-image: url(../res/heart.gif);
+}
+
+discord {
+  background-image: url(../res/discord.gif);
+}
+
+git {
+  background-image: url(../res/git.gif);
+}
+
+#footerSection {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+a {
+  cursor: pointer !important;
+}
+
+
+input[type=button]:hover {
+  box-shadow: 0 0 1px #fff0, 0 0 2px #aa8dd800, 0 0 3px #aa8dd8, 0 0 4px #aa8dd8;
+  transform: scaleX(1.08);
+  transform-origin: center;
+  /* letter-spacing: .3rem; */
+}
