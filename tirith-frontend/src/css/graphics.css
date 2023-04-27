@@ -53,7 +53,7 @@ body {
   width: 15vw;
   transition: filter 0.2s, opacity 0.2s;
   height: 100%;
-  background-size: contain;
+  background-size: min(15rem, 100%) auto;
   position: absolute;
   background-repeat: repeat-y;
   opacity: 1;
@@ -192,7 +192,7 @@ body {
 
 #logoContainer {
   z-index: 2;
-  height: 15vh;
+  height: 6rem;
   position: fixed;
   top: 0;
   background: linear-gradient(black, transparent);
@@ -239,6 +239,7 @@ body {
   z-index: 2;
   left: 0;
   right: 0;
+  top: 0;
 }
 
 #navPlanCont {

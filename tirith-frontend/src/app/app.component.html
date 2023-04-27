@@ -1,3 +1,52 @@
-<div class="content">
+<!-- cloud graphics and background -->
+<div id="backgroundClouds">
+  <div class="backgroundLeft">
+    <div class="cloudsBack backgroundSide animateBack"></div>
+    <a href="#documentation">
+      <div class="cloudsFore backgroundSide animateFore"></div>
+    </a>
+  </div>
+  <div class="backgroundRight">
+    <div class="cloudsBack backgroundSide animateBack"></div>
+    <a href="#documentation">
+      <div class="cloudsFore backgroundSide animateFore"></div>
+    </a>
+  </div>
+</div>
+
+<!-- invisible nav -->
+<div id="navBack" (click)="navPlanet.closeNav()"></div>
+<div id="navClone" class="flex flex-col justify-center gap-2">
+  <a *ngFor="let item of navPlanet.content" [routerLink]="item[1]" (click)="navPlanet.closeNav()">
+    <h1>{{item[0]}}</h1>
+  </a>
+</div>
+
+<!-- top bar -->
+<div class="flex justify-evenly w-full" id="logoContainer">
+  <a routerLink="/">
+    <img id="logo" src="res/moon.gif" />
+  </a>
+  <div #planet id="navPlanCont" (click)="navPlanet.openNav(planet)">
+    <img id="navPlan" src="res/navPlan.gif">
+    <img id="navPlanCap" src="res/navPlanOverlay.gif">
+  </div>
+</div>
+
+<!-- content -->
+<div class="pt-[6rem] mb-[6rem] px-[15vh] content">
   <router-outlet></router-outlet>
+</div>
+
+<!-- footer -->
+<div id="footerSection">
+  <h3>
+    Made with <div class="heart"></div> by tobeh |
+    <a href="https://discord.gg/7W6kV3Qd9Q" target="_blank">Discord <div class="discord"></div></a> |
+    <a href="https://github.com/toobeeh/" target="_blank">GitHub <div class="git"></div></a> |
+    <a href="https://www.patreon.com/skribbltypo" target="_blank">Patreon</a>
+  </h3>
+  <h3>
+    <a href="#privacy">Data Privacy Statement</a>
+  </h3>
 </div>

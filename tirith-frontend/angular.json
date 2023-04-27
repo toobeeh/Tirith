@@ -27,7 +27,9 @@
               "src/res"
             ],
             "styles": [
-              "src/styles.css"
+              "src/styles.css",
+              "src/css/style.css",
+              "src/css/graphics.css"
             ],
             "scripts": []
           },

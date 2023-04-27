@@ -25,6 +25,7 @@ h1 {
   user-select: none;
   text-align: center;
   transition: letter-spacing 0.3s;
+  font-weight: bold;
 }
 
 h1:hover {
@@ -38,6 +39,7 @@ h2 {
   font-size: 2rem;
   user-select: none;
   text-align: center;
+  font-weight: bold;
 }
 
 h3 {
@@ -47,6 +49,7 @@ h3 {
   font-size: 1.2rem;
   user-select: none;
   text-align: center;
+  font-weight: bold;
 }
 
 
@@ -79,9 +82,9 @@ input[type="button"]:focus {
   outline: 0;
 }
 
-heart,
-discord,
-git {
+.heart,
+.discord,
+.git {
   height: 1em;
   width: 1em;
   background-size: contain;
@@ -89,15 +92,15 @@ git {
   display: inline-block;
 }
 
-heart {
+.heart {
   background-image: url(../res/heart.gif);
 }
 
-discord {
+.discord {
   background-image: url(../res/discord.gif);
 }
 
-git {
+.git {
   background-image: url(../res/git.gif);
 }
 
