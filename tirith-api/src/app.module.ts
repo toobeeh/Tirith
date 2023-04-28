@@ -6,8 +6,8 @@ import { PalantirdbService } from './services/palantirdb.service';
 import { AdminModule } from './modules/admin/admin.module';
 import { ConfigModule } from '@nestjs/config';
 
-import config from './config/production.config.ts';
-import configDev from './config/production.config.ts';
+import config from './config/development.config.ts';
+import configDev from './config/development.config.ts';
 
 const ENV = process.env.NODE_ENV;
 
