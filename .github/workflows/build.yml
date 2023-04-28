@@ -30,4 +30,4 @@ jobs:
           context: .
           file: Dcokerfile
           push: true
-          tags: ghcr.io/${{ github.repository }}/${{ env.IMAGE_NAME }}:latest
+          tags: ghcr.io/tirith/${{ env.IMAGE_NAME }}:latest
