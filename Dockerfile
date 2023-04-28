@@ -10,7 +10,7 @@ ENV NODE_ENV "${NODE_ENV}"
 # Install npm modules for app
 COPY package.json ./
 COPY tirith-frontend/package.json ./client/
-COPY tirith-backend/package.json ./server/
+COPY tirith-api/package.json ./server/
 
 RUN echo "Installing npm modules..." && \
     NODE_ENV=development npm install || exit 1 && \
