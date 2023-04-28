@@ -28,6 +28,6 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: .
-          file: Dcokerfile
+          file: Dockerfile
           push: true
           tags: ghcr.io/tirith/${{ env.IMAGE_NAME }}:latest
