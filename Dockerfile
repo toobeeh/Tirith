@@ -1,6 +1,6 @@
-FROM node:16-slim
+FROM node:16-slim as node-builder
 
-WORKDIR /opt/app/
+WORKDIR /app/
 
 EXPOSE 3000
 
@@ -20,12 +20,20 @@ RUN echo "Installing npm modules..." && \
     npm cache clean --force
 
 # Copy files for app
-COPY . /opt/app/
+COPY . /app/
 
 # Build for production env
 RUN echo "Building app...\n" && \
     npm run build || exit 1 && \
     echo "build was completed."
 
-# Start app
-CMD ["npm", "start"]
+FROM nginx:1.21-alpine as hoster
+
+COPY --from=node-builder /app/tirith-frontend/dist/tirith /usr/share/nginx/html
+COPY --from=node-builder /app/tirith-api/dist /app/api
+
+RUN apk add --update nodejs npm
+
+EXPOSE 80 3000
+
+CMD ["sh", "-c", "node /app/api/main.js & nginx -g 'daemon off;'"]
