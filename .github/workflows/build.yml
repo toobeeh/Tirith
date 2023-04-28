@@ -30,4 +30,4 @@ jobs:
           context: .
           file: Dockerfile
           push: true
-          tags: ghcr.io/tirith/${{ env.IMAGE_NAME }}:latest
+          tags: ghcr.io/toobeeh/Tirith/${{ env.IMAGE_NAME }}:latest
