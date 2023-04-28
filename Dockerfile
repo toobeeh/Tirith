@@ -30,10 +30,10 @@ RUN echo "Building app...\n" && \
 FROM nginx:1.21-alpine as hoster
 
 COPY --from=node-builder /app/tirith-frontend/dist/tirith /usr/share/nginx/html
-COPY --from=node-builder /app/tirith-api/dist /app/api
+COPY --from=node-builder /app /app
 
 RUN apk add --update nodejs npm
 
 EXPOSE 80 3000
 
-CMD ["sh", "-c", "node /app/api/main.js & nginx -g 'daemon off;'"]
+CMD ["sh", "-c", "node /app/tirith-api/dist/main.js & nginx -g 'daemon off;'"]
