@@ -1,4 +1,4 @@
 export const environment = {
   production: false,
-  apiUrl: "localhost:3000"
+  apiUrl: "typodb.tobeh.host:3000"
 };

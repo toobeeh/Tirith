@@ -1,12 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AdminService {
 
-  readonly baseUrl = "http://108.61.190.186:3000/admin";
+  readonly baseUrl = environment.apiUrl + "/admin";
 
   constructor(private http: HttpClient) { }
 
