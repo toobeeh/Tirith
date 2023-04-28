@@ -4,9 +4,23 @@ import { UserMiddleware } from './middleware/user.middleware';
 import { AuthentificationService } from './services/authentification.service';
 import { PalantirdbService } from './services/palantirdb.service';
 import { AdminModule } from './modules/admin/admin.module';
+import { ConfigModule } from '@nestjs/config';
+
+import config from './config/production.config.ts';
+import configDev from './config/production.config.ts';
+
+const ENV = process.env.NODE_ENV;
 
 @Module({
-  imports: [AdminModule],
+  imports: [
+    ConfigModule.forRoot({
+      load: [
+        ENV == "production" ? config : configDev
+      ],
+      isGlobal: true
+    }),
+    AdminModule
+  ],
   controllers: [AppController],
   providers: [AuthentificationService, PalantirdbService],
 })
