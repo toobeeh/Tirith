@@ -29,8 +29,6 @@ RUN echo "Building app...\n" && \
 
 FROM nginx:latest as hoster
 
-COPY nginx.conf /etc/nginx/nginx.conf
-
 COPY --from=node-builder /app/tirith-frontend/dist/tirith /usr/share/nginx/html
 COPY --from=node-builder /app /app
 
