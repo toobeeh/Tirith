@@ -7,7 +7,7 @@
     "scripts": {
         "start": "cross-env NODE_ENV=production npm run start:prod --workspace=tirith-api",
         "start:dev": "npm run dev",
-        "dev": "cross-env NODE_ENV=development concurrently --names ng,nest --kill-others \"npm run start:dev --workspace=tirith-frontend\" \"npm run start:dev --workspace=tirith-api\"",
+        "dev": "npx cross-env NODE_ENV=development concurrently --names ng,nest --kill-others \"npm run start:dev --workspace=tirith-frontend\" \"npm run start:dev --workspace=tirith-api\"",
         "build": "npm run build --workspace=tirith-api && npm run build --workspace=tirith-frontend",
         "test": "npm run test --workspace=tirith-api && npm run test --workspace=client",
         "test:ci": "concurrently --max-processes=1 --raw --success=all \"npm run test:ci --workspace=tirith-api\" ",

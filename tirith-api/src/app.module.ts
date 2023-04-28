@@ -15,7 +15,7 @@ const ENV = process.env.NODE_ENV;
   imports: [
     ConfigModule.forRoot({
       load: [
-        ENV == "production" ? config : configDev
+        ENV == "development" ? configDev : config
       ],
       isGlobal: true
     }),
