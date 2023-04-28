@@ -9,8 +9,8 @@ ENV NODE_ENV "${NODE_ENV}"
 
 # Install npm modules for app
 COPY package.json ./
-COPY tirith-frontend/package.json ./client/
-COPY tirith-api/package.json ./server/
+COPY tirith-frontend/package.json ./tirith-frontend/
+COPY tirith-api/package.json ./tirith-api/
 
 RUN echo "Installing nest and ng cli..." && \
     npm install -g @nestjs/cli @angular/cli
