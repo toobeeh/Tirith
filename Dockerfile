@@ -12,6 +12,8 @@ COPY package.json ./
 COPY tirith-frontend/package.json ./client/
 COPY tirith-api/package.json ./server/
 
+RUN echo "Installing nest and ng cli..." && \
+    npm install -g @nestjs/cli @angular/cli
 RUN echo "Installing npm modules..." && \
     NODE_ENV=development npm install || exit 1 && \
     echo "npm modules installed." && \
