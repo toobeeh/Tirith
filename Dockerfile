@@ -15,7 +15,7 @@ COPY tirith-api/package.json ./tirith-api/
 RUN echo "Installing nest and ng cli..." && \
     npm install -g @nestjs/cli @angular/cli
 RUN echo "Installing npm modules..." && \
-    npm install || exit 1 && \
+    NODE_ENV=development npm install || exit 1 && \
     echo "npm modules installed." && \
     npm cache clean --force
 
