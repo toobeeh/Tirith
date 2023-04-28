@@ -5,15 +5,14 @@
         "node": ">=16"
     },
     "scripts": {
-        "start": "cross-env NODE_ENV=production npm run start:prod --workspace=server",
+        "start": "cross-env NODE_ENV=production npm run start:prod --workspace=tirith-api",
         "start:dev": "npm run dev",
-        "dev": "cross-env NODE_ENV=development concurrently --names ng,nest,apigen --kill-others \"npm run start:dev --workspace=client\" \"npm run start:dev --workspace=server\" \"nodemon --watch server/src/ --ext ts .utils/api-client-generator-launcher.js online\"",
-        "build": "npm run build --workspace=server && npm run build-api-client && npm run build --workspace=client",
-        "build-api-client": "node .utils/api-client-generator-launcher.js",
-        "test": "npm run test --workspace=server && npm run build-api-client && npm run test --workspace=client",
-        "test:ci": "concurrently --max-processes=1 --raw --success=all \"npm run test:ci --workspace=server\" \"npm run build-api-client && npm run test:ci --workspace=client\"",
-        "ng": "npx --workspace=client ng",
-        "nest": "npx --workspace=server nest"
+        "dev": "cross-env NODE_ENV=development concurrently --names ng,nest,apigen --kill-others \"npm run start:dev --workspace=tirith-frontend\" \"npm run start:dev --workspace=tirith-api\"",
+        "build": "npm run build --workspace=tirith-api && npm run build --workspace=tirith-frontend",
+        "test": "npm run test --workspace=tirith-api && npm run test --workspace=client",
+        "test:ci": "concurrently --max-processes=1 --raw --success=all \"npm run test:ci --workspace=tirith-api\" ",
+        "ng": "npx --workspace=tirith-frontend ng",
+        "nest": "npx --workspace=tirith-api nest"
     },
     "devDependencies": {
         "concurrently": "^7.1.0",
