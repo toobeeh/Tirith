@@ -27,7 +27,9 @@ RUN echo "Building app...\n" && \
     npm run build || exit 1 && \
     echo "build was completed."
 
-FROM nginx:1.21-alpine as hoster
+FROM nginx:latest as hoster
+
+COPY nginx.conf /etc/nginx/nginx.conf
 
 COPY --from=node-builder /app/tirith-frontend/dist/tirith /usr/share/nginx/html
 COPY --from=node-builder /app /app
