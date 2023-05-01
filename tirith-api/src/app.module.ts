@@ -5,6 +5,7 @@ import { AuthentificationService } from './services/authentification.service';
 import { PalantirdbService } from './services/palantirdb.service';
 import { AdminModule } from './modules/admin/admin.module';
 import { ConfigModule } from '@nestjs/config';
+import { ResponseTimeMiddleware } from '@nest-middlewares/response-time';
 
 import config from './config/production.config.ts';
 import configDev from './config/development.config.ts';
@@ -29,6 +30,9 @@ export class AppModule {
     consumer
       .apply(UserMiddleware)
       .forRoutes({ path: '*', method: RequestMethod.ALL });
+    consumer
+      .apply(ResponseTimeMiddleware)
+      .forRoutes("*")
   }
 
 
