@@ -24,8 +24,7 @@
               "src/favicon.ico",
               "src/assets",
               "src/css",
-              "src/res",
-              "src/nginx.conf"
+              "src/res"
             ],
             "styles": [
               "src/styles.css",

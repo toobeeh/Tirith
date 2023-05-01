@@ -30,6 +30,7 @@ RUN echo "Building app...\n" && \
 FROM nginx:1.21-alpine as hoster
 
 COPY --from=node-builder /app/tirith-frontend/dist/tirith /usr/share/nginx/html
+COPY --from=node-builder /app/tirith-frontend/nginx.conf /etc/nginx/nginx.conf 
 COPY --from=node-builder /app /app
 
 RUN apk add --update nodejs npm
