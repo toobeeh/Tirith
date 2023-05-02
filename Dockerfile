@@ -24,7 +24,8 @@ COPY palantir-db ./palantir-db
 RUN echo "installing tsc..." && \
     npm install -g typescript
 RUN echo "building lib..." && \
-    tsc ./palantir-db
+    cd ./palantir-db && \
+    tsc
 
 # Copy files for app
 COPY . /app/
