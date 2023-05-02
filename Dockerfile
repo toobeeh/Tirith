@@ -21,6 +21,8 @@ RUN echo "Installing npm modules..." && \
 
 # compile palantir lib
 COPY palantir-db ./palantir-db
+RUN echo "installing tsc..." && \
+    npm install -g typescript
 RUN echo "building lib..." && \
     tsc ./palantir-db
 
