@@ -7,10 +7,18 @@ EXPOSE 3000
 ARG NODE_ENV="production"
 ENV NODE_ENV "${NODE_ENV}"
 
-# Install npm modules for app
-COPY package.json ./
-COPY tirith-frontend/package.json ./tirith-frontend/
-COPY tirith-api/package.json ./tirith-api/
+# Copy files for app
+COPY . /app/
+
+# build and link plantir lib
+COPY palantir-db ./palantir-db
+RUN echo "installing tsc..." && \
+    npm install -g typescript
+RUN echo "building lib..." && \
+    cd ./palantir-db && \
+    tsc
+RUN echo "linking lib..." && \
+    npm link palantir-db -w tirith-frontend -w tirith-api
 
 RUN echo "Installing nest and ng cli..." && \
     npm install -g @nestjs/cli @angular/cli
@@ -18,17 +26,6 @@ RUN echo "Installing npm modules..." && \
     NODE_ENV=development npm install || exit 1 && \
     echo "npm modules installed." && \
     npm cache clean --force
-
-# compile palantir lib
-COPY palantir-db ./palantir-db
-RUN echo "installing tsc..." && \
-    npm install -g typescript
-RUN echo "building lib..." && \
-    cd ./palantir-db && \
-    tsc
-
-# Copy files for app
-COPY . /app/
 
 # Build for production env
 RUN echo "Building app...\n" && \

@@ -22,6 +22,7 @@
     },
     "workspaces": [
         "tirith-api",
-        "tirith-frontend"
+        "tirith-frontend",
+        "palantir-db"
     ]
 }
