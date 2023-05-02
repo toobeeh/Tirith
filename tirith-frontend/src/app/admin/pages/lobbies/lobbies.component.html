@@ -1,0 +1,39 @@
+<div class="grid grid-cols-2 gap-4">
+
+  <!-- headings -->
+  <h2>Current Lobbies</h2>
+  <h2>Lobby Inspector</h2>
+
+  <!-- lobby cards -->
+  <div class="flex flex-row flex-wrap gap-3 h-fit">
+
+    <div *ngFor="let lobby of lobbies"
+      class="p-3 bg-white bg-opacity-5 rounded-xl cursor-pointer transition-transform hover:translate-y-1 hover:scale-95"
+      (click)="inspectLobby(lobby)">
+
+      <div class="flex flex-col gap-1 pb-3">
+        <div *ngFor="let player of lobby.players">
+          <b class="mark">{{player.username}}</b> <span class="pl-2" title="{{player.login}}">({{player.name}})</span>
+        </div>
+      </div>
+
+      <div>
+        {{lobbyPlayers(lobby)}}
+      </div>
+
+    </div>
+  </div>
+
+  <!-- lobby inspector -->
+  <div *ngIf="lobbyInspect !== undefined" class="flex flex-col gap-3">
+    <h3>Lobby Data</h3>
+    <ngx-json-viewer [expanded]="false" [json]="lobbyInspect"></ngx-json-viewer>
+    <h3>Lobby Drop Log</h3>
+    <ngx-json-viewer *ngIf="lobbyDrops$ !== undefined" [expanded]="false" class="h-max-50 overflow-scroll"
+      [json]="lobbyDrops$ | async"></ngx-json-viewer>
+  </div>
+  <div *ngIf="lobbyInspect == undefined">
+    Click a lobby card to inspect its JSON.
+  </div>
+
+</div>

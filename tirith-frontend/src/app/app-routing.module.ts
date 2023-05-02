@@ -30,7 +30,8 @@ const routes: Routes = [
     data: {
       navigation: [
         ["Home", "/", "route"],
-        ["Reports", "reports", "route"]
+        ["Admin", "/admin", "route"],
+        ["Lobbies", "/admin/lobbies", "route"]
       ]
     }
   }

@@ -3,6 +3,7 @@ import * as schema from "./schema";
 import * as mysql2 from "mysql2/promise"
 import { OkPacket, RowDataPacket } from "mysql2/typings/mysql/lib/protocol/packets";
 import { Reports } from "./schema";
+import { reportLobby } from "./types";
 
 const leagueWeight = (s: number) => {
     s = s * 1000;
@@ -526,14 +527,55 @@ export class PalantirDatabase {
 
     /**
      * gets all current reports
-     * @returns Indicator if the passed id is the owner as well as the actual owner id
      */
     async getReports() {
-        let result = this.emptyResult<Array<schema.Reports>>();
+        let result = this.emptyResult<Array<types.reportLobby>>();
 
         try {
             let rows = await this.get<schema.Reports>(`SELECT * FROM Reports`, []);
             result.result = rows.map(r => JSON.parse(r.Report));
+            result.success = true;
+        }
+        catch (e) {
+            console.warn("Error in query: ", e);
+        }
+        return result;
+    }
+
+    async getAllActiveLobbies() {
+        let result = this.emptyResult<Array<types.palantirLobby>>();
+
+        try {
+            let rows = await this.get<any>(`SELECT DISTINCT Lobbies.LobbyID, Lobby FROM Lobbies LEFT JOIN Reports ON Lobbies.LobbyID = Reports.LobbyID WHERE Reports.LobbyID IS NOT NULL;`, []);
+            result.result = rows.map(r => JSON.parse(r.Lobby));
+            result.success = true;
+        }
+        catch (e) {
+            console.warn("Error in query: ", e);
+        }
+        return result;
+    }
+
+    async getAllStatus() {
+        let result = this.emptyResult<Array<types.playerStatus>>();
+
+        try {
+            let rows = await this.get<any>(`SELECT * FROM Status;`, []);
+            result.result = rows.map(r => JSON.parse(r.Status));
+            result.success = true;
+        }
+        catch (e) {
+            console.warn("Error in query: ", e);
+        }
+        return result;
+    }
+
+    async getDropsFromLobby(lobbyKey: string) {
+        let result = this.emptyResult<schema.PastDrops[]>();
+
+        try {
+            let rows = await this.get<schema.PastDrops>(`SELECT * FROM PastDrops WHERE CaughtLobbyKey = ?;`, [lobbyKey]);
+            result.result = rows;
             result.success = true;
         }
         catch (e) {

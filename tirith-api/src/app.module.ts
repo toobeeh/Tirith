@@ -11,6 +11,7 @@ import config from './config/production.config.ts';
 import configDev from './config/development.config.ts';
 
 const ENV = process.env.NODE_ENV;
+console.log(ENV);
 
 @Module({
   imports: [
