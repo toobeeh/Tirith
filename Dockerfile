@@ -10,8 +10,14 @@ ENV NODE_ENV "${NODE_ENV}"
 # Copy files for app
 COPY . /app/
 
-# build and link plantir lib
-COPY palantir-db ./palantir-db
+RUN echo "Installing nest and ng cli..." && \
+    npm install -g @nestjs/cli @angular/cli
+RUN echo "Installing npm modules..." && \
+    NODE_ENV=development npm install || exit 1 && \
+    echo "npm modules installed." && \
+    npm cache clean --force
+
+# build and link palantir lib
 RUN echo "installing tsc..." && \
     npm install -g typescript
 RUN echo "building lib..." && \
@@ -19,13 +25,6 @@ RUN echo "building lib..." && \
     tsc
 RUN echo "linking lib..." && \
     npm link palantir-db -w tirith-frontend -w tirith-api
-
-RUN echo "Installing nest and ng cli..." && \
-    npm install -g @nestjs/cli @angular/cli
-RUN echo "Installing npm modules..." && \
-    NODE_ENV=development npm install || exit 1 && \
-    echo "npm modules installed." && \
-    npm cache clean --force
 
 # Build for production env
 RUN echo "Building app...\n" && \
