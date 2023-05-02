@@ -26,6 +26,12 @@ RUN echo "building lib..." && \
 RUN echo "linking lib..." && \
     npm link palantir-db -w tirith-frontend -w tirith-api
 
+# install over idk
+RUN echo "Installing npm modules..." && \
+    NODE_ENV=development npm install || exit 1 && \
+    echo "npm modules installed." && \
+    npm cache clean --force
+
 # Build for production env
 RUN echo "Building app...\n" && \
     npm run build || exit 1 && \
