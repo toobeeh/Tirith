@@ -19,6 +19,11 @@ RUN echo "Installing npm modules..." && \
     echo "npm modules installed." && \
     npm cache clean --force
 
+# compile palantir lib
+COPY palantir-db ./palantir-db
+RUN echo "building lib..." && \
+    tsc ./palantir-db
+
 # Copy files for app
 COPY . /app/
 
