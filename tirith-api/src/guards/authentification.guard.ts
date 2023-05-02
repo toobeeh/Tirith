@@ -17,6 +17,6 @@ export class AuthentificationGuard implements CanActivate {
   ): boolean | Promise<boolean> | Observable<boolean> {
     const user: member = context.switchToHttp().getRequest().user;
     const flags = this.auth.parseFlags(user.flags);
-    return flags.admin;
+    return flags.admin || flags.moderator;
   }
 }
