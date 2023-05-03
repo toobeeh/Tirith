@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-type navArray = Array<[string, string, "external" | "route"]>;
+type navArray = Array<[string, string, "external" | "route", boolean?]>;
 
 @Injectable({
   providedIn: 'root'
@@ -46,6 +46,7 @@ export class NavPlanetService {
             top:0; left:0;
         }
         #navClone{
+            display:flex;
             position:fixed;
             height:${planRect.height}px;
             width:${planRect.width}px;

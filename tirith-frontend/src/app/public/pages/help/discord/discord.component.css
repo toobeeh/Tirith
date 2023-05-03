@@ -1,0 +1,7 @@
+.thumb {
+  @apply h-52 w-full flex py-3 place-content-center
+}
+
+.thumb img {
+  @apply w-auto
+}

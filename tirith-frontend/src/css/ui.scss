@@ -1,0 +1,26 @@
+.card {
+  position: relative;
+  border-left: 6px solid #7289da;
+  border-top-left-radius: .3rem;
+  border-bottom-left-radius: .3rem;
+  padding-left: 2rem;
+  padding-top: 1rem;
+}
+
+.card * {
+  color: #7289da;
+  text-shadow: -2px -2px 20px #000000, 2px 2px 20px #000000, -2px 2px 20px #000000, -2px -2px 20px #000000, 2px -2px 20px #000000
+}
+
+.card::after {
+  background-image: url(https://tobeh.host/scenes/scenePortal.gif);
+  background-size: cover;
+  background-repeat: no-repeat;
+  content: '';
+  inset: 0;
+  position: absolute;
+  border-top-right-radius: 1rem;
+  border-bottom-right-radius: 1rem;
+  z-index: -1;
+  opacity: .2;
+}

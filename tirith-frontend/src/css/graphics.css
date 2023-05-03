@@ -220,6 +220,8 @@ body {
 }
 
 #navClone {
+  display: none;
+  position: absolute;
   text-shadow: -3px 3px 0px rgba(41, 55, 87, 1);
 }
 

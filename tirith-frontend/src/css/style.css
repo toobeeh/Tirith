@@ -1,9 +1,17 @@
-* {
+b,
+.mark {
   color: #aa8dd8;
 }
 
-.mark {
+* {
   color: #7289da;
+}
+
+
+ul li:before {
+  content: '➜';
+  padding-right: 1em;
+  font-weight: bold;
 }
 
 .fullwidth {

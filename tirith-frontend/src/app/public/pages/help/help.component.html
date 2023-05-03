@@ -1,0 +1,24 @@
+<h1>Help & Tutorials</h1>
+<br>
+<h3>
+  Choose a topic to get to know more about it.
+</h3><br><br>
+
+<div class="grid grid-cols-2 gap-x-20 gap-y-20 p-16">
+
+  <!-- nav card -->
+  <div class="navcard" *ngFor="let card of cards" [routerLink]="[card.link]">
+
+    <!-- background container -->
+    <div class="background">
+      <div [style.backgroundImage]="card.image"></div>
+      <div [style.backgroundImage]="card.image"></div>
+    </div>
+
+    <!-- text -->
+    <div class="heading" [style.color]="card.color">
+      {{card.name}}
+    </div>
+  </div>
+
+</div>

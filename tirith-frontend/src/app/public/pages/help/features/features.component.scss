@@ -1,0 +1,6 @@
+@use "/src/css/ui.scss";
+
+ul {
+  @extend .card;
+  color: red;
+}
