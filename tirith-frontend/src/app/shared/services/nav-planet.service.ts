@@ -39,7 +39,7 @@ export class NavPlanetService {
         #navBack{
             opacity:0;
             position:fixed;
-            z-index:3;
+            z-index:99;
             background:black;
             width:100vw;
             height:100vh;
@@ -54,7 +54,7 @@ export class NavPlanetService {
             left:${planRect.left}px;
             background-image: url(res/navPlan.gif);
             background-size: cover;
-            z-index:4;
+            z-index:100;
             /*filter: drop-shadow(0px 0px 1em rgba(255, 255, 255, 0.3));*/
             transition: all 0.5s ease !important;
         }

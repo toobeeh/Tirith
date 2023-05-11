@@ -13,9 +13,9 @@ const navigationData = {
   navigation: [
     ["Get Typo", "https://tobeh.host/typo/", "external"],
     ["Help", "help", "route"],
+    ["Discord Bot", "help/discord", "route"],
+    ["Bot Setup", "help/palantir", "route"],
     ["Features", "help/features", "route"],
-    ["Discord & Palantir", "help/discord", "route"],
-    ["Palantir Setup", "help/palantir", "route"]
   ]
 };
 

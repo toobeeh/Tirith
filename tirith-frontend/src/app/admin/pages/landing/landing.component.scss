@@ -1,0 +1,39 @@
+.navcard {
+  @apply h-40 relative grid place-content-center cursor-pointer;
+}
+
+.navcard .heading {
+  @apply font-bold text-3xl z-20 transition-all;
+  font-family: 'Roboto Mono', monospace;
+}
+
+.navcard:hover .heading {
+  @apply tracking-wide;
+}
+
+.navcard .background {
+  @apply absolute -inset-3 z-0 rounded-xl;
+}
+
+.navcard .background>div:first-child {
+  @apply absolute -inset-0 z-0 blur-sm transition-all;
+  /* background-image: url(https://tobeh.host/scenes/scenePortal.gif); */
+  background-size: cover;
+  background-repeat: no-repeat;
+  content: "";
+}
+
+.navcard:hover .background>div:first-child {
+  @apply blur-md;
+}
+
+.navcard .background>div:nth-child(2) {
+  @apply absolute inset-3 z-10 rounded-xl transition-all;
+  /* background-image: url(https://tobeh.host/scenes/scenePortal.gif); */
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.navcard:hover .background>div:nth-child(2) {
+  @apply scale-95;
+}

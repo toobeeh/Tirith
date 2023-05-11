@@ -5,10 +5,22 @@ import { ReportsComponent } from './pages/reports/reports.component';
 import { LobbiesComponent } from './pages/lobbies/lobbies.component';
 
 const routes: Routes = [
-  { path: '', component: LandingComponent },
-  { path: 'landing', component: LandingComponent },
-  { path: 'reports', component: ReportsComponent },
-  { path: 'lobbies', component: LobbiesComponent }
+  {
+    path: '', component: LandingComponent,
+    pathMatch: "full",
+  },
+  {
+    path: 'landing', component: LandingComponent,
+    pathMatch: "full",
+  },
+  {
+    path: 'reports', component: ReportsComponent,
+    pathMatch: "full",
+  },
+  {
+    path: 'lobbies', component: LobbiesComponent,
+    pathMatch: "full",
+  }
 ];
 
 @NgModule({

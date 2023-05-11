@@ -10,7 +10,6 @@ const routes: Routes = [
   // Load the PublicRoutingModule for any path
   {
     path: '',
-    pathMatch: "full",
     canActivate: [NavContentGuard],
     canActivateChild: [NavContentGuard],
     loadChildren: () => PublicRoutingModule,
@@ -26,7 +25,6 @@ const routes: Routes = [
   // Load the AdminRoutingModule for any path containing "admin"
   {
     path: 'admin',
-    pathMatch: "full",
     loadChildren: () => AdminRoutingModule,
     canActivate: [AuthGuard, NavContentGuard],
     canActivateChild: [AuthGuard, NavContentGuard],
