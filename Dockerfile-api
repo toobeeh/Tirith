@@ -33,13 +33,13 @@ RUN echo "Installing npm modules..." && \
     echo "npm modules installed." && \
     npm cache clean --force
 
-# Modify the app config to use environment variables
-RUN sed -i "s/DB_DOMAIN_NAME/$DB_DOMAIN_NAME/g" /app/tirith-api/src/config/production.config.ts
-
 # Build for production env
 RUN echo "Building app...\n" && \
     npm run build || exit 1 && \
     echo "build was completed."
+
+# Modify the app config to use environment variables
+RUN sed -i "s/DB_DOMAIN_NAME/$DB_DOMAIN_NAME/g" /app/tirith-api/dist/config/production.config.js
 
 EXPOSE 3000
 
