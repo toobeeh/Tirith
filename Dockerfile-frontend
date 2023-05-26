@@ -2,13 +2,17 @@ FROM node:16-slim as node-builder
 
 WORKDIR /app/
 
-EXPOSE 3000
+ARG API_DOMAIN_NAME="api.domain.tld"
+ENV API_DOMAIN_NAME "${API_DOMAIN_NAME}"
 
 ARG NODE_ENV="production"
 ENV NODE_ENV "${NODE_ENV}"
 
 # Copy files for app
 COPY . /app/
+
+# Modify the app config to use environment variables
+RUN sed -i "s/API_DOMAIN_NAME/$API_DOMAIN_NAME/g" /app/tirith-frontend/src/environments/environment.ts
 
 RUN echo "Installing ng cli..." && \
     npm install -g @angular/cli

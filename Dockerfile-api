@@ -2,11 +2,17 @@ FROM node:16-slim as node-builder
 
 WORKDIR /app/
 
+ARG DB_DOMAIN_NAME="db.domain.tld"
+ENV DB_DOMAIN_NAME "${DB_DOMAIN_NAME}"
+
 ARG NODE_ENV="production"
 ENV NODE_ENV "${NODE_ENV}"
 
 # Copy files for app
 COPY . /app/
+
+# Modify the app config to use environment variables
+RUN sed -i "s/API_DOMAIN_NAME/$DB_DOMAIN_NAME/g" /app/tirith-frontend/src/environments/environment.ts
 
 RUN echo "Installing nest." && \
     npm install -g @nestjs/cli
