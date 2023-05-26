@@ -7,8 +7,8 @@ import { AdminModule } from './modules/admin/admin.module';
 import { ConfigModule } from '@nestjs/config';
 import { ResponseTimeMiddleware } from '@nest-middlewares/response-time';
 
-import config from './config/production.config.ts';
-import configDev from './config/development.config.ts';
+import config from './config/production.config';
+import configDev from './config/development.config';
 
 const ENV = process.env.NODE_ENV;
 console.log(ENV);
