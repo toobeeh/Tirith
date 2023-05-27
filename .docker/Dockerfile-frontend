@@ -37,7 +37,7 @@ RUN echo "Installing npm modules..." && \
 
 # Build for production env
 RUN echo "Building app...\n" && \
-    npm run build || exit 1 && \
+    npm run build -w tirith-frontend || exit 1 && \
     echo "build was completed."
 
 FROM nginx:1.21-alpine as hoster

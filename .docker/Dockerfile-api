@@ -36,7 +36,7 @@ RUN echo "Installing npm modules..." && \
 
 # Build for production env
 RUN echo "Building app...\n" && \
-    npm run build || exit 1 && \
+    npm run build -w tirith-api || exit 1 && \
     echo "build was completed."
 
 # Copy the entrypoint script
