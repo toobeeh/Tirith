@@ -39,6 +39,10 @@ RUN echo "Building app...\n" && \
     npm run build -w tirith-api || exit 1 && \
     echo "build was completed."
 
+FROM node:16-slim as hoster
+
+COPY --from=node-builder /app/tirith-api /app/tirith-api
+
 # Copy the entrypoint script
 COPY .docker/entrypoint-api.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
