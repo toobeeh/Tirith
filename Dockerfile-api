@@ -13,7 +13,6 @@ COPY . /app/
 
 # Modify the app config to use environment variables
 RUN sed -i "s/DB_DOMAIN_NAME/$DB_DOMAIN_NAME/g" /app/tirith-api/src/config/production.config.ts
-RUN cat /app/tirith-api/src/config/production.config.ts
 
 RUN echo "Installing nest." && \
     npm install -g @nestjs/cli

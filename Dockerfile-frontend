@@ -11,6 +11,9 @@ ENV NODE_ENV "${NODE_ENV}"
 # Copy files for app
 COPY . /app/
 
+# Modify the app config to use environment variables
+RUN sed -i "s/API_DOMAIN_NAME/$API_DOMAIN_NAME/g" /app/tirith-frontend/src/environments/environment.ts
+
 RUN echo "Installing ng cli..." && \
     npm install -g @angular/cli
 RUN echo "Installing npm modules..." && \
@@ -33,8 +36,6 @@ RUN echo "Installing npm modules..." && \
     echo "npm modules installed." && \
     npm cache clean --force
 
-# Modify the app config to use environment variables
-RUN sed -i "s/API_DOMAIN_NAME/$API_DOMAIN_NAME/g" /app/tirith-frontend/src/environments/environment.ts
 
 # Build for production env
 RUN echo "Building app...\n" && \
