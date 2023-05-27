@@ -41,7 +41,7 @@ RUN echo "Building app...\n" && \
 
 FROM node:16-slim as hoster
 
-COPY --from=node-builder /app/tirith-api /app/tirith-api
+COPY --from=node-builder /app /app
 
 # Copy the entrypoint script
 COPY .docker/entrypoint-api.sh /entrypoint.sh
