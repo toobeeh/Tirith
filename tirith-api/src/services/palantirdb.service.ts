@@ -20,7 +20,7 @@ export class PalantirdbService {
         const user = config.get("DB_USER");
         const pw = config.get("DB_PASSWORD");
 
-        console.log("Connecting as:", host, user, pw);
+        console.log(`Connecting as host:"${host}" user:"${user}" pw:"${pw}" `);
         this.db.open(user, pw, host);
     }
 
