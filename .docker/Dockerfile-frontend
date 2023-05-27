@@ -2,8 +2,9 @@ FROM node:16-slim as node-builder
 
 WORKDIR /app/
 
-ARG DB_DOMAIN_NAME="db.domain.tld"
-ENV DB_DOMAIN_NAME "${DB_DOMAIN_NAME}"
+# default env values for domain name
+ARG API_DOMAIN_NAME="api.domain.tld"
+ENV API_DOMAIN_NAME "${API_DOMAIN_NAME}"
 
 ARG NODE_ENV="production"
 ENV NODE_ENV "${NODE_ENV}"
@@ -11,11 +12,8 @@ ENV NODE_ENV "${NODE_ENV}"
 # Copy files for app
 COPY . /app/
 
-# Modify the app config to use environment variables
-RUN sed -i "s/DB_DOMAIN_NAME/$DB_DOMAIN_NAME/g" /app/tirith-api/src/config/production.config.ts
-
-RUN echo "Installing nest." && \
-    npm install -g @nestjs/cli
+RUN echo "Installing ng cli..." && \
+    npm install -g @angular/cli
 RUN echo "Installing npm modules..." && \
     NODE_ENV=development npm install || exit 1 && \
     echo "npm modules installed." && \
@@ -28,7 +26,7 @@ RUN echo "building lib..." && \
     cd ./palantir-db && \
     tsc
 RUN echo "linking lib..." && \
-    npm link palantir-db -w tirith-api
+    npm link palantir-db -w tirith-frontend
 
 # install over idk
 RUN echo "Installing npm modules..." && \
@@ -36,12 +34,21 @@ RUN echo "Installing npm modules..." && \
     echo "npm modules installed." && \
     npm cache clean --force
 
+
 # Build for production env
 RUN echo "Building app...\n" && \
     npm run build || exit 1 && \
     echo "build was completed."
 
+FROM nginx:1.21-alpine as hoster
 
-EXPOSE 3000
+COPY --from=node-builder /app/tirith-frontend/dist/tirith /usr/share/nginx/html
+COPY --from=node-builder /app/tirith-frontend/nginx.conf /etc/nginx/nginx.conf 
 
-CMD ["sh", "-c", "node /app/tirith-api/dist/main.js"]
+# Copy the entrypoint script
+COPY .docker/entrypoint-frontend.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+EXPOSE 80
+
+ENTRYPOINT ["/entrypoint.sh"]
