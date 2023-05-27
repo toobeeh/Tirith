@@ -11,6 +11,10 @@ ENV NODE_ENV "${NODE_ENV}"
 # Copy files for app
 COPY . /app/
 
+# Modify the app config to use environment variables
+RUN sed -i "s/DB_DOMAIN_NAME/$DB_DOMAIN_NAME/g" /app/tirith-api/src/config/production.config.ts
+RUN cat /app/tirith-api/src/config/production.config.ts
+
 RUN echo "Installing nest." && \
     npm install -g @nestjs/cli
 RUN echo "Installing npm modules..." && \
@@ -38,8 +42,6 @@ RUN echo "Building app...\n" && \
     npm run build || exit 1 && \
     echo "build was completed."
 
-# Modify the app config to use environment variables
-RUN sed -i "s/DB_DOMAIN_NAME/$DB_DOMAIN_NAME/g" /app/tirith-api/dist/config/production.config.js
 
 EXPOSE 3000
 
