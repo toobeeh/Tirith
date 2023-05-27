@@ -3,15 +3,20 @@ https://docs.nestjs.com/providers#services
 */
 
 import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import PalantirDatabase from 'palantir-db';
 
 @Injectable()
 export class AuthentificationService {
+
     private db: PalantirDatabase;
 
-    constructor() {
+    constructor(private config: ConfigService) {
         this.db = new PalantirDatabase();
-        this.db.open("ithil", "", "108.61.190.186");
+        const host = config.get("DB_HOST");
+        const user = config.get("DB_USER");
+        const pw = config.get("DB_PASSWORD");
+        this.db.open(user, pw, host);
     }
 
     async authenticate(token: string) {
