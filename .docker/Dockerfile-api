@@ -15,7 +15,7 @@ COPY . /app/
 RUN echo "Installing nest." && \
     npm install -g @nestjs/cli
 RUN echo "Installing npm modules..." && \
-    NODE_ENV=development npm install || exit 1 && \
+    npm install || exit 1 && \
     echo "npm modules installed." && \
     npm cache clean --force
 
@@ -30,7 +30,7 @@ RUN echo "linking lib..." && \
 
 # install over idk
 RUN echo "Installing npm modules..." && \
-    NODE_ENV=development npm install || exit 1 && \
+    npm install || exit 1 && \
     echo "npm modules installed." && \
     npm cache clean --force
 
