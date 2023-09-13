@@ -19,7 +19,7 @@ export class UserMiddleware implements NestMiddleware {
       enumerable: true,
       writable: false,
       value: user.result,
-    })
+    });
     next();
   }
 }
