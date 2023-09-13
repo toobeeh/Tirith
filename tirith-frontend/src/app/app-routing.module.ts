@@ -4,6 +4,7 @@ import { PublicRoutingModule } from './public/public-routing.module';
 import { AdminRoutingModule } from './admin/admin-routing.module';
 import { AuthGuard } from './shared/guards/auth.guard';
 import { NavContentGuard } from './shared/guards/nav-content.guard';
+import { AuthRoutingModule } from './auth/auth-routing.module';
 
 const routes: Routes = [
 
@@ -35,6 +36,12 @@ const routes: Routes = [
         ["Lobbies", "/admin/lobbies", "route"]
       ]
     }
+  },
+
+  // Load the AuthRoutingModule for any path containing "auth"
+  {
+    path: 'auth',
+    loadChildren: () => AuthRoutingModule
   }
 ];
 

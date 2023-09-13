@@ -1,0 +1,6 @@
+<div class="w-full h-full grid place-content-center">
+  <h2 *ngIf="state === 'idle'">Redirecting to Discord...</h2>
+  <h2 *ngIf="state === 'register'">Create</h2>
+  <h2 *ngIf="state === 'loading'">Loading User</h2>
+  <h2 *ngIf="state === 'success'">Successfully logged in</h2>
+</div>
