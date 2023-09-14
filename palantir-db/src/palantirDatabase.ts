@@ -167,6 +167,109 @@ export class PalantirDatabase {
     }
 
     /**
+     * Get a access token for a discord user ID, or create one if none exist
+     * @param userId the user's discord user id
+     * @returns The user's access token
+     */
+    async getAccessToken(userId: string) {
+        let result = this.emptyResult<{ accessToken: string }>();
+
+        try {
+            let token = "";
+            let row = await this.first<schema.AccessTokens>(
+                `SELECT * FROM AccessTokens WHERE AccessTokens.Login IN (SELECT Login FROM Members WHERE JSON_EXTRACT(Members.Member, '$.UserID') = ?);`
+                , [userId]);
+            if (!row) {
+                let member = await this.first<schema.Members>(
+                    `SELECT * FROM \`Members\` WHERE JSON_EXTRACT(Members.Member, '$.UserID') = ?`, [userId]);
+                if (!member) token = "";
+                else {
+                    token = this.randomString();
+                    await this.get("DELETE FROM AccessTokens WHERE Login = ?", [member.Login]);
+                    await this.get("INSERT INTO AccessTokens (Login, AccessToken) VALUES (?, ?)", [member.Login, token]);
+                }
+            }
+            else {
+                token = row.AccessToken;
+            }
+            result.result = {
+                accessToken: token
+            };
+            result.success = true;
+        }
+        catch (e) {
+            console.warn("Error in query: ", e);
+        }
+
+        if (result.result.accessToken === "") throw new Error("no user for this discord ID");
+        return result;
+    }
+
+    /**
+     * Creates a new palantir member
+     * @param userId the user's discord user id
+     * @param username the user's discord user name
+     * @param typoConnect whether the user wants to connect to the typo server
+     * @returns The new member
+     */
+    async createMember(userId: string, username: string, typoConnect: boolean) {
+        let result = this.emptyResult<schema.Members>();
+
+        try {
+
+            let login = 0;
+
+            /* get an unique login */
+            do {
+                login = Math.floor(Math.random() * 100000000);
+                const existing = await this.getUserByLogin(login);
+                if (existing.success === true) login = 0;
+            }
+            while (login === 0);
+
+            const typoGuild = await this.first<schema.Palantiri>("SELECT * FROM Palantiri WHERE JSON_EXTRACT(Palantir, '$.GuildID') = '779435254225698827'", []);
+            const parsedGuild = typoGuild ? JSON.parse(typoGuild.Palantir) : undefined;
+            console.log(parsedGuild, (typoConnect === true && parsedGuild !== undefined));
+
+            const member: types.memberDiscordDetails = {
+                UserLogin: login.toString(),
+                UserID: userId,
+                UserName: username,
+                Guilds: (typoConnect === true && parsedGuild !== undefined) ? [parsedGuild] : []
+            };
+            const stringifiedMember = JSON.stringify(member);
+
+            await this.get("INSERT INTO Members VALUES(?, ?, 0, '', 0, 0, NULL, NULL, NULL, '', '', NULL)", [login, stringifiedMember]);
+            const newMember = await this.first<schema.Members>("SELECT * FROM Members WHERE Login = ?", [login]);
+            if (!newMember) throw new Error("new member with login " + login + " not found");
+
+            result.result = newMember;
+            result.success = true;
+        }
+        catch (e) {
+            console.warn("Error in query: ", e);
+        }
+
+        return result;
+    }
+
+    private randomString(length: number = 64, keyspace: string = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'): string {
+        if (length < 1) {
+            throw new RangeError("Length must be a positive integer");
+        }
+
+        const pieces: string[] = [];
+        const max: number = keyspace.length - 1;
+
+        for (let i = 0; i < length; i++) {
+            const randomIndex: number = Math.floor(Math.random() * (max + 1));
+            pieces.push(keyspace.charAt(randomIndex));
+        }
+
+        return pieces.join('');
+    }
+
+    /**
      * Set the scenes of a palantir user
      * @param accessToken The user's access token
      * @returns An indicator for the query's success

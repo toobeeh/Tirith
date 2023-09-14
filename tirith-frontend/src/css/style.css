@@ -87,7 +87,8 @@ input[type="button"] {
   padding: .5rem;
   cursor: pointer;
   border-radius: .25rem;
-  letter-spacing: .25rem;
+  font-weight: 600;
+  /* letter-spacing: .25rem; */
 }
 
 input[type="button"]:focus {

@@ -1,6 +1,35 @@
 <div class="w-full h-full grid place-content-center">
   <h2 *ngIf="state === 'idle'">Redirecting to Discord...</h2>
-  <h2 *ngIf="state === 'register'">Create</h2>
-  <h2 *ngIf="state === 'loading'">Loading User</h2>
+  <h2 *ngIf="state === 'loading'">Getting things ready...</h2>
   <h2 *ngIf="state === 'success'">Successfully logged in</h2>
+  <div *ngIf="state === 'register'" class="flex flex-col gap-12">
+    <h2>Hello there!</h2>
+
+    <div>
+      <h3>You're about to connect your Discord account to Palantir.</h3>
+      <div>With Palantir you can use Sprites, compete with Drops and connect with your Friends.
+      </div>
+      When you connect and use Palantir, you agree how Typo & Palantir use data - <a class="font-bold" target="_blank"
+        href="https://typo.rip/privacy">click here to find out more.</a>
+    </div>
+
+    <div>
+      <label class="flex flex-row cursor-pointer">
+        <h3 clas="w-fit"><input type="checkbox" checked #connect> Connect to the Typo Server</h3>
+      </label>
+      <p>
+        This makes it easier for you to start; join <a class="font-bold" href="https://discord.link/typo"
+          target="_blank">the Discord
+          server</a> to see tutorials & news!
+      </p>
+      <p>
+        You can always join other servers and connect with your friends there - this lets you join their lobbies
+        easily.<br>
+        Just ask your server mods where you can find the join link.
+      </p>
+    </div>
+
+    <input type="button" value="Connect & Log In" class="w-fit self-center" (click)="createAccount(connect.checked)">
+
+  </div>
 </div>

@@ -3,4 +3,7 @@ export default () => ({
     DB_HOST: "DB_DOMAIN_NAME_SED_PLACEHOLDER",
     DB_USER: "tirith",
     DB_PASSWORD: '',
+    DISCORD_OAUTH_CLIENT_ID: '',
+    DISCORD_OAUTH_CLIENT_SECRET: '',
+    DISCORD_OAUTH_REDIRECT: '',
 });

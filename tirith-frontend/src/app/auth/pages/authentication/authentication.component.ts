@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-authentication',
@@ -25,7 +26,7 @@ export class AuthenticationComponent implements OnInit {
     else return 'success';
   }
 
-  constructor(private activeRoute: ActivatedRoute) { }
+  constructor(private activeRoute: ActivatedRoute, private authService: AuthService) { }
 
   ngOnInit(): void {
     const accessCodePresent = this.activeRoute.snapshot.queryParamMap.has("code");
@@ -37,13 +38,38 @@ export class AuthenticationComponent implements OnInit {
       this.authCode = this.activeRoute.snapshot.queryParamMap.get("code") ?? undefined;
 
       /* get user from API */
-      console.log(this.authCode);
+      this.authService.getAccessToken(this.authCode!).subscribe({
+        next: (data) => {
+          this.accessToken = data.accessToken;
+
+          /* close window and emit data */
+          window.opener?.postMessage({ accessToken: this.accessToken, username: data.user.username }, "*");
+          setTimeout(() => window.close(), 2000);
+        },
+        error: () => {
+          this.accessToken = null;
+        }
+      })
     }
 
     /* user needs to authenticate; redirect */
     else {
       window.location.href = this.oauthURL;
     }
+  }
+
+  createAccount(connectTypo: boolean) {
+    if (!this.authCode) throw new Error("auth code missing");
+
+    this.authService.createNewMember(this.authCode, connectTypo).subscribe({
+      next: (data) => {
+        this.accessToken = data.accessToken;
+
+        /* close window and emit data */
+        window.opener?.postMessage({ accessToken: this.accessToken, username: data.user.username }, "*");
+        setTimeout(() => window.close(), 2000);
+      }
+    });
   }
 
 

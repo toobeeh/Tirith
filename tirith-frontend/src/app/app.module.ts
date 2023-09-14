@@ -9,6 +9,7 @@ import { SharedModule } from './shared/shared.module';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AuthInterceptor } from './shared/interceptors/auth.interceptor';
 import { NgxJsonViewerModule } from 'ngx-json-viewer';
+import { AuthModule } from './auth/auth.module';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { NgxJsonViewerModule } from 'ngx-json-viewer';
     AdminModule,
     PublicModule,
     SharedModule,
+    AuthModule,
     HttpClientModule
   ],
   providers: [

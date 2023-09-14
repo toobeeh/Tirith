@@ -24,5 +24,8 @@
         "tirith-api",
         "tirith-frontend",
         "palantir-db"
-    ]
+    ],
+    "dependencies": {
+        "palantir-db": "^1.0.7"
+    }
 }
