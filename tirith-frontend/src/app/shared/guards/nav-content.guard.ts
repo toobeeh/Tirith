@@ -17,6 +17,9 @@ export class NavContentGuard implements CanActivate, CanActivateChild {
     const nav = route.data["navigation"];
     if (nav) this.navPlanet.content = nav;
 
+    const hideAll = route.data["hideAll"];
+    this.navPlanet.hideAll = hideAll === true;
+
     return true;
   }
 

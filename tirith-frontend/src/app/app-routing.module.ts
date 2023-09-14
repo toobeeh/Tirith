@@ -41,6 +41,11 @@ const routes: Routes = [
   // Load the AuthRoutingModule for any path containing "auth"
   {
     path: 'auth',
+    canActivate: [NavContentGuard],
+    canActivateChild: [NavContentGuard],
+    data: {
+      hideAll: true
+    },
     loadChildren: () => AuthRoutingModule
   }
 ];

@@ -9,6 +9,7 @@ export class NavPlanetService {
 
   private navLinks: navArray = [];
   private openStyle?: HTMLStyleElement;
+  private hideAllStyle?: HTMLStyleElement;
 
   public set content(value: navArray) {
     this.navLinks = value;
@@ -16,6 +17,29 @@ export class NavPlanetService {
 
   public get content() {
     return this.navLinks;
+  }
+
+  public get hideAll() {
+    return this.hideAllStyle !== undefined;
+  }
+
+  public set hideAll(value: boolean) {
+    if (this.hideAll === value) return;
+
+    if (this.hideAllStyle) {
+      this.hideAllStyle.remove();
+    }
+    else {
+      const style = this.openStyle = document.createElement("style");
+      document.head.appendChild(this.openStyle);
+      style.id = "hideAllStyle";
+      style.type = "text/css";
+      this.hideAllStyle = style;
+
+      style.innerHTML = `
+        .backgroundLeft, .backgroundRight, #logoContainer, #footerSection { display:none !important};
+      `;
+    }
   }
 
   constructor() { }

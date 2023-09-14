@@ -2,9 +2,18 @@ FROM node:16-slim as node-builder
 
 WORKDIR /app/
 
-# default env values for domain name
+# default env values for domain name and oauth details
 ARG DB_DOMAIN_NAME="db.domain.tld"
 ENV DB_DOMAIN_NAME "${DB_DOMAIN_NAME}"
+
+ARG DISCORD_OAUTH_CLIENT_ID="123"
+ENV DB_DDISCORD_OAUTH_CLIENT_IDOMAIN_NAME "${DB_DOMAIN_NAME}"
+
+ARG DISCORD_OAUTH_CLIENT_SECRET="123abc"
+ENV DISCORD_OAUTH_CLIENT_SECRET "${DB_DOMAIN_NAME}"
+
+ARG DISCORD_OAUTH_REDIRECT="abc.com/auth"
+ENV DISCORD_OAUTH_REDIRECT "${DB_DOMAIN_NAME}"
 
 ARG NODE_ENV="production"
 ENV NODE_ENV "${NODE_ENV}"
