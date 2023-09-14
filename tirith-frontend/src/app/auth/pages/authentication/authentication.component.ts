@@ -11,7 +11,7 @@ export class AuthenticationComponent implements OnInit {
 
   private authCode?: string;
   private accessToken?: string | null;
-  private readonly oauthURL = 'https://discord.com/api/oauth2/authorize?client_id=715874397025468417&redirect_uri=http%3A%2F%2Flocalhost%3A4200%2Fauth&response_type=code&scope=identify'//;'https://discord.com/api/oauth2/authorize?client_id=715874397025468417&redirect_uri=https%3A%2F%2Fwww.typo.rip%2Fauth&response_type=code&scope=identify';
+  private readonly oauthURL = 'https://discord.com/api/oauth2/authorize?client_id=715874397025468417&redirect_uri=https%3A%2F%2Fwww.typo.rip%2Fauth&response_type=code&scope=identify';
 
   public get state() {
     if (this.authCode === undefined) {
