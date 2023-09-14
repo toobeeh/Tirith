@@ -18,6 +18,8 @@ export class DiscordOauthService {
         const clientSecret = config.get("DISCORD_OAUTH_CLIENT_SECRET");
         const redirectUri = config.get("DISCORD_OAUTH_REDIRECT");
 
+        console.log(redirectUri);
+
         this.oauth = new DiscordOauth({
             clientId,
             clientSecret,
