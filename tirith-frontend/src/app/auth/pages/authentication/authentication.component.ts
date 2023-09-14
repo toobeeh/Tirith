@@ -44,7 +44,7 @@ export class AuthenticationComponent implements OnInit {
 
           /* close window and emit data */
           window.opener?.postMessage({ accessToken: this.accessToken, username: data.user.username }, "*");
-          setTimeout(() => window.close(), 2000);
+          setTimeout(() => window.close(), 1000);
         },
         error: () => {
           this.accessToken = null;

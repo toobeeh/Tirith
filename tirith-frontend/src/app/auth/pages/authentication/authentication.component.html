@@ -1,7 +1,7 @@
 <div class="w-full h-full grid place-content-center">
   <h2 *ngIf="state === 'idle'">Redirecting to Discord...</h2>
   <h2 *ngIf="state === 'loading'">Getting things ready...</h2>
-  <h2 *ngIf="state === 'success'">Successfully logged in</h2>
+  <h2 *ngIf="state === 'success'">Login complete.<br>Welcome back!</h2>
   <div *ngIf="state === 'register'" class="flex flex-col gap-12">
     <h2>Hello there!</h2>
 
