@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { MembersService } from 'src/api';
+import { MemberSearchDto, MembersService } from 'src/api';
 
 @Component({
   selector: 'app-members',
@@ -10,7 +10,7 @@ import { MembersService } from 'src/api';
 })
 export class MembersComponent {
 
-  membersSearch$?: Observable<any>;
+  membersSearch$?: Observable<MemberSearchDto[]>;
 
   constructor(private memberService: MembersService, private router: Router, private route: ActivatedRoute) { }
 
@@ -32,9 +32,4 @@ export class MembersComponent {
   searchMembers(content: string) {
     this.membersSearch$ = this.memberService.findMembersWildcardSearch(content);
   }
-
-  nameOfMember(member: string) {
-    return JSON.parse(member).UserName;
-  }
-
 }

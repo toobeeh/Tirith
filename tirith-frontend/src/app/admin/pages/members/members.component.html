@@ -21,14 +21,14 @@
 
     <div *ngIf="membersSearch$ && membersSearch$ | async as members">
       <div *ngFor="let member of members">
-        <h3>{{nameOfMember(member.member.Member)}}</h3>
+        <h3>{{member.userName}}</h3>
         <div class="grid grid-cols-2">
           <div>
             <ngx-json-viewer [expanded]="false" [json]="member"></ngx-json-viewer>
           </div>
 
-          <input type="button" value="Load {{nameOfMember(member.member.Member)}}"
-            class="self-center justify-self-center" (click)="loadByLogin(member.member.Login)">
+          <input type="button" value="Load {{member.userName}}" class="self-center justify-self-center"
+            (click)="loadByLogin(member.userLogin)">
         </div>
 
       </div>

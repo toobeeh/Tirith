@@ -1,4 +1,3 @@
-import { MembersService } from './../../../tirith-api/src/services/members.service';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
