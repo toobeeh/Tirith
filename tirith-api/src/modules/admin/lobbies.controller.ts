@@ -3,12 +3,15 @@ https://docs.nestjs.com/controllers#controllers
 */
 
 import { Controller, Get, Param, UseGuards } from '@nestjs/common';
+import { AuthRoles, RequiredRole } from 'src/decorators/roles.decorator';
 import { AuthentificationGuard } from 'src/guards/authentification.guard';
+import { MemberGuard } from 'src/guards/member.guard';
 import { PalantirdbService } from 'src/services/palantirdb.service';
 
-@Controller("admin")
-@UseGuards(AuthentificationGuard)
-export class AdminController {
+@Controller("lobbies")
+@RequiredRole(AuthRoles.Admin)
+@UseGuards(MemberGuard, AuthentificationGuard)
+export class LobbiesController {
 
     constructor(private service: PalantirdbService) { }
 
@@ -22,13 +25,12 @@ export class AdminController {
         return this.service.database.getReports();
     }
 
-    @Get("lobbies")
+    @Get()
     lobbies() {
         return this.service.getLobbies();
     }
 
-
-    @Get("lobbies/:key/drops")
+    @Get(":key/drops")
     lobbyDrops(@Param('key') key: string) {
         return this.service.getLobbyDrops(key);
     }

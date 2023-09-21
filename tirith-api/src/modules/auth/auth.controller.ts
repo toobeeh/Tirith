@@ -5,6 +5,8 @@ https://docs.nestjs.com/controllers#controllers
 import { Body, Controller, Get, HttpException, HttpStatus, Post, Query } from '@nestjs/common';
 import { PalantirdbService } from 'src/services/palantirdb.service';
 import { DiscordOauthService } from 'src/services/discord-oauth.service';
+import { Registration, RegistrationResult } from './dto/registration.dto';
+import { ApiResponse } from '@nestjs/swagger';
 
 @Controller("auth")
 export class AuthController {
@@ -33,7 +35,8 @@ export class AuthController {
     }
 
     @Post("register")
-    async register(@Body() { code, connectTypo }: { code: string, connectTypo: boolean }) {
+    @ApiResponse({ status: 200, type: RegistrationResult })
+    async register(@Body() { code, connectTypo }: Registration): Promise<RegistrationResult> {
 
         /* check if code present */
         if (code === null || code === undefined || code.length === 0) throw new HttpException("No auth code present", HttpStatus.BAD_REQUEST);

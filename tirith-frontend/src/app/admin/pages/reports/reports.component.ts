@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AdminService } from '../../services/admin.service';
+import { AdminService } from '../../services/lobbies.service';
 
 @Component({
   templateUrl: './reports.component.html',

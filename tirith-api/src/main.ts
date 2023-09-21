@@ -10,9 +10,11 @@ async function bootstrap() {
     .setTitle('Skribbl Typo API')
     .setDescription('Skribbl typo admin and auth api')
     .setVersion('1.0')
+    .addBearerAuth()
+    .addSecurityRequirements('bearer')
     .build();
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, document);
+  SwaggerModule.setup('docs', app, document);
 
   await app.listen(3000);
 }

@@ -12,12 +12,12 @@ export class LandingComponent {
       image: "url(https://tobeh.host/scenes/scenePortal.gif)",
       link: "lobbies"
     },
-    /* {
-      name: "Discord & Palantir",
+    {
+      name: "Member Management",
       color: "rgb(219 234 254)",
       image: "url(https://tobeh.host/scenes/sceneSpace.gif)",
-      link: "discord"
-    },
+      link: "members"
+    }/* ,
     {
       name: "Palantir Setup",
       color: "rgb(220 252 231)",

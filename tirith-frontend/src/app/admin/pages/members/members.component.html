@@ -1,0 +1,38 @@
+<h2>Load a member for inspection</h2>
+<br>
+
+<div class="flex flex-col gap-8 justify-center">
+  <div class="grid grid-cols-3 gap-8 w-fit items-center">
+    <h3>By Discord ID: </h3>
+    <input #id type="number" placeholder="1234567890123456">
+    <input type="button" value="Load Member" (click)="loadByID(id.value)">
+
+    <h3>By Palantir Login: </h3>
+    <input #login type="number" placeholder="12345678">
+    <input type="button" value="Load Member" (click)="loadByLogin(+login.value)">
+
+    <h3>Wildcard Search: </h3>
+    <input #text type="text" placeholder="Search Text">
+    <input type="button" value="Search Members" (click)="searchMembers(text.value)">
+  </div>
+
+
+  <div class="flex flex-col gap-4 w-fit items-center">
+
+    <div *ngIf="membersSearch$ && membersSearch$ | async as members">
+      <div *ngFor="let member of members">
+        <h3>{{nameOfMember(member.member.Member)}}</h3>
+        <div class="grid grid-cols-2">
+          <div>
+            <ngx-json-viewer [expanded]="false" [json]="member"></ngx-json-viewer>
+          </div>
+
+          <input type="button" value="Load {{nameOfMember(member.member.Member)}}"
+            class="self-center justify-self-center" (click)="loadByLogin(member.member.Login)">
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</div>

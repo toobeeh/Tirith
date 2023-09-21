@@ -19,7 +19,7 @@ export interface mappedLobby {
 })
 export class AdminService {
 
-  readonly baseUrl = environment.apiUrl + "/admin";
+  readonly baseUrl = environment.apiUrl + "/lobbies";
 
   constructor(private http: HttpClient) { }
 
@@ -28,10 +28,10 @@ export class AdminService {
   }
 
   getLobbies() {
-    return this.http.get<mappedLobby[]>(this.baseUrl + "/lobbies");
+    return this.http.get<mappedLobby[]>(this.baseUrl);
   }
 
   getLobbyDrops(key: string) {
-    return this.http.get<ptrSchema.PastDrops[]>(this.baseUrl + "/lobbies/" + key + "/drops");
+    return this.http.get<ptrSchema.PastDrops[]>(this.baseUrl + "/" + key + "/drops");
   }
 }

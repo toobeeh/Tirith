@@ -20,6 +20,7 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
+    "@babel/preset-typescript": "^7.22.15",
     "@nest-middlewares/response-time": "^7.0.1",
     "@nestjs/common": "^9.4.0",
     "@nestjs/config": "^2.3.1",

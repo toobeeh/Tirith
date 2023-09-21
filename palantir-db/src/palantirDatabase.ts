@@ -143,6 +143,94 @@ export class PalantirDatabase {
     }
 
     /**
+     * Get a palantir user by their associated discord ID
+     * @param id The user's discord account id
+     * @returns The palantir user object
+     */
+    async getUserByDiscordID(id: string) {
+        let result = this.emptyResult<types.member>();
+
+        try {
+            let row = await this.first<schema.Members>("SELECT * FROM Members WHERE JSON_EXTRACT(Member, '$.UserID') = ?", [id]);
+            if (!row) throw new Error("no member found");
+            const member = await this.getUserByLogin(row.Login);
+            result = member;
+        }
+        catch (e) {
+            console.warn("Error in query: ", e);
+        }
+        return result;
+    }
+
+    /**
+     * Updates a palantir user to a new associated discord ID
+     * @param currentID The user's currently associated discord account id
+     * @param newID The user's newly associated discord account id
+     * @returns The palantir user object
+     */
+    async updateUserDiscordID(currentID: string, newID: string, login: number) {
+        let result = this.emptyResult<types.member>();
+
+        try {
+
+            /* get existing with new acc and add drops & bubbles, then delete */
+            let existing = await this.first<schema.Members>("SELECT * FROM Members WHERE JSON_EXTRACT(Member, '$.UserID') = ?", [newID]);
+            if (existing !== null) {
+
+                const existingLogin = (JSON.parse(existing.Member) as types.member["member"]).UserLogin;
+
+                /* add bubbles and drops */
+                await this.update(
+                    "UPDATE Members SET Drops = Drops + ?, Bubbles = Bubbles + ? WHERE JSON_EXTRACT(Member, '$.UserID') = ?",
+                    [existing.Drops, existing.Bubbles, currentID]
+                );
+
+                /* remove old account */
+                await this.update(
+                    "DELETE FROM Members WHERE JSON_EXTRACT(Member, '$.UserID') = ?", [newID]
+                );
+
+                /* remove old bubble traces */
+                await this.update(
+                    "DELETE FROM BubbleTraces WHERE Login = ?", [existingLogin]
+                );
+            }
+
+            let updateMmber = await this.update("UPDATE Members SET Member = JSON_SET(Member, '$.UserID', ?) WHERE JSON_EXTRACT(Member, '$.UserID') = ?", [newID, currentID]);
+            if (updateMmber.affectedRows < 1) throw new Error("no member to update found");
+
+            await this.update("UPDATE PastDrops SET CaughtLobbyPlayerID = ? WHERE CaughtLobbyPlayerID = ?", [newID, currentID]);
+
+            const member = await this.getUserByLogin(login);
+            result = member;
+        }
+        catch (e) {
+            console.warn("Error in query: ", e);
+        }
+        return result;
+    }
+
+    /**
+     * Get members that match a search string
+     * @param content a string that should be contained in the member json
+     * @returns all matching members
+     */
+    async getMembersThatContain(content: string) {
+        let result = this.emptyResult<schema.Members[]>();
+
+        try {
+            let results = await this.get<schema.Members>("SELECT * FROM Members WHERE Member LIKE ?", [`%${content}%`]);
+
+            result.result = results;
+            result.success = true;
+        }
+        catch (e) {
+            console.warn("Error in query: ", e);
+        }
+        return result;
+    }
+
+    /**
      * Get a palantir user login by access token
      * @param accessToken The user's access token
      * @returns The user's login token

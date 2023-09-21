@@ -33,7 +33,8 @@ const routes: Routes = [
       navigation: [
         ["Home", "/", "route"],
         ["Admin Panel", "/admin", "route"],
-        ["Lobbies", "/admin/lobbies", "route"]
+        ["Lobbies", "/admin/lobbies", "route"],
+        ["Members", "/admin/members", "route"]
       ]
     }
   },

@@ -1,5 +1,5 @@
 import { Component, OnDestroy } from '@angular/core';
-import { AdminService, mappedLobby } from '../../services/admin.service';
+import { AdminService, mappedLobby } from '../../services/lobbies.service';
 import { Observable, map } from 'rxjs';
 import { PastDrops } from 'palantir-db/dist/src/schema';
 

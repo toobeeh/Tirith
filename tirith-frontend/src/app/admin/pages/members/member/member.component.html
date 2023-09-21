@@ -1,0 +1,33 @@
+<div *ngIf="member$">
+  <ng-container *ngIf="member$ && (member$ | async) as member else loading">
+    <h2>{{member.member.UserName}}</h2>
+
+    <br>
+
+    <div class="grid grid-cols-2 gap-8">
+
+      <div>
+        <h3>Member Details</h3>
+        <ngx-json-viewer [expanded]="false" [json]="member"></ngx-json-viewer>
+      </div>
+
+      <div class="flex flex-col gap-8 p-3">
+        <div>
+          <h3>Switch linked Discord ID</h3>
+          <p>This updates the ID in the Member table row and all IDs in the PastDrops table.</p>
+          <p>If there already exists a temporary member for the new ID, all of its Bubbles and Drops are added to the
+            old account. The temporary member and its bubble traces is then deleted.</p>
+          <br>
+          <div class="flex gap-4">
+            <input #id type="number" placeholder="New Discord ID" class="grow">
+            <input type="button" value="Update Member" (click)="updateDiscordID(member.member.UserLogin, id.value)">
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </ng-container>
+  <ng-template #loading>
+    <h3>Loading Member...</h3>
+  </ng-template>
+</div>
