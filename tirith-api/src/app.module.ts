@@ -11,7 +11,7 @@ import { DiscordOauthService } from './services/discord-oauth.service';
 import { AuthModule } from './modules/auth/auth.module';
 
 const ENV = process.env.NODE_ENV;
-console.log(ENV);
+console.log(`Starting in environment ${ENV}`);
 
 @Module({
   imports: [
@@ -24,6 +24,7 @@ console.log(ENV);
     AdminModule, AuthModule
   ],
   controllers: [AppController],
-  providers: [AuthentificationService, PalantirdbService, DiscordOauthService],
+  providers: [
+    AuthentificationService, PalantirdbService, DiscordOauthService],
 })
 export class AppModule { }

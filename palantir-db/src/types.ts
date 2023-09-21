@@ -242,7 +242,7 @@ export interface guildLobby extends lobby, palantirLobby {
 /**
 * Lobby data containing skribbl and palantir data
 */
-export interface reportLobby extends lobby, palantirLobby {
+export interface reportLobby extends guildLobby {
 }
 
 /**

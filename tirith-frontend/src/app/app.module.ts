@@ -1,3 +1,4 @@
+import { MembersService } from './../../../tirith-api/src/services/members.service';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
@@ -8,14 +9,24 @@ import { PublicModule } from './public/public.module';
 import { SharedModule } from './shared/shared.module';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AuthInterceptor } from './shared/interceptors/auth.interceptor';
-import { NgxJsonViewerModule } from 'ngx-json-viewer';
 import { AuthModule } from './auth/auth.module';
+import { environment } from 'src/environments/environment';
+import { ApiModule, Configuration, ConfigurationParameters } from 'src/api';
+
+
+export const apiConfigFactory = () => {
+  const params: ConfigurationParameters = {
+    basePath: environment.apiUrl,
+  };
+  return new Configuration(params);
+};
 
 @NgModule({
   declarations: [
     AppComponent
   ],
   imports: [
+    ApiModule.forRoot(apiConfigFactory),
     BrowserModule,
     AppRoutingModule,
     AdminModule,

@@ -5,10 +5,11 @@ https://docs.nestjs.com/controllers#controllers
 import { Body, Controller, Get, HttpException, HttpStatus, Post, Query } from '@nestjs/common';
 import { PalantirdbService } from 'src/services/palantirdb.service';
 import { DiscordOauthService } from 'src/services/discord-oauth.service';
-import { Registration, RegistrationResult } from './dto/registration.dto';
-import { ApiResponse } from '@nestjs/swagger';
+import { RegistrationRequest, TokenResponse } from './dto/registration.dto';
+import { ApiResponse, ApiTags } from '@nestjs/swagger';
 
 @Controller("auth")
+@ApiTags("auth")
 export class AuthController {
     constructor(private db: PalantirdbService, private discordOauth: DiscordOauthService) { }
 
@@ -18,7 +19,8 @@ export class AuthController {
      * @returns the access token of the user, if one exists
      */
     @Get("token")
-    async token(@Query("code") code: string) {
+    @ApiResponse({ status: 200, type: TokenResponse, description: "Oauth and token obtained successful" })
+    async getAccessToken(@Query("code") code: string): Promise<TokenResponse> {
 
         /* check if code present */
         if (code === null || code === undefined || code.length === 0) throw new HttpException("No auth code present", HttpStatus.BAD_REQUEST);
@@ -27,16 +29,21 @@ export class AuthController {
         const user = await this.discordOauth.getUser(oauthAccessToken);
         try {
             const accessToken = await this.db.database.getAccessToken(user.id);
-            return { ...accessToken.result, user };
+            return { ...accessToken.result, userId: user.id, userName: user.username };
         }
         catch {
             throw new HttpException("No user exists for this discord id", HttpStatus.NOT_FOUND);
         }
     }
 
+    /**
+     * Create a new palantir account for a discord user
+     * @param registration The registration body data
+     * @returns Details of the oauth user and the new user
+     */
     @Post("register")
-    @ApiResponse({ status: 200, type: RegistrationResult })
-    async register(@Body() { code, connectTypo }: Registration): Promise<RegistrationResult> {
+    @ApiResponse({ status: 200, type: TokenResponse, description: "Oauth successful and user created" })
+    async registerDiscordUser(@Body() { code, connectTypo }: RegistrationRequest): Promise<TokenResponse> {
 
         /* check if code present */
         if (code === null || code === undefined || code.length === 0) throw new HttpException("No auth code present", HttpStatus.BAD_REQUEST);
@@ -49,7 +56,7 @@ export class AuthController {
         /* check if user exists and if so, return existing access token*/
         try {
             const accessToken = await this.db.database.getAccessToken(user.id);
-            return { ...accessToken.result, user };
+            return { ...accessToken.result, userId: user.id, userName: user.username };
         }
         catch { }
 
@@ -57,6 +64,6 @@ export class AuthController {
         if (newUser.success === false) throw new HttpException("Could not create user", HttpStatus.INTERNAL_SERVER_ERROR);
         const accessToken = await this.db.database.getAccessToken(user.id);
 
-        return { ...accessToken.result, user, member: newUser.result };
+        return { ...accessToken.result, userId: user.id, userName: user.username };
     }
 }

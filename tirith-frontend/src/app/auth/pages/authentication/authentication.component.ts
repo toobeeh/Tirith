@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { AuthService } from '../../services/auth.service';
+import { ActivatedRoute } from '@angular/router';
+import { AuthService } from 'src/api';
 
 @Component({
   selector: 'app-authentication',
@@ -43,7 +43,7 @@ export class AuthenticationComponent implements OnInit {
           this.accessToken = data.accessToken;
 
           /* close window and emit data */
-          window.opener?.postMessage({ accessToken: this.accessToken, username: data.user.username }, "*");
+          window.opener?.postMessage({ accessToken: this.accessToken, username: data.userName }, "*");
           setTimeout(() => window.close(), 1000);
         },
         error: () => {
@@ -61,12 +61,12 @@ export class AuthenticationComponent implements OnInit {
   createAccount(connectTypo: boolean) {
     if (!this.authCode) throw new Error("auth code missing");
 
-    this.authService.createNewMember(this.authCode, connectTypo).subscribe({
+    this.authService.registerDiscordUser({ code: this.authCode, connectTypo }).subscribe({
       next: (data) => {
         this.accessToken = data.accessToken;
 
         /* close window and emit data */
-        window.opener?.postMessage({ accessToken: this.accessToken, username: data.user.username }, "*");
+        window.opener?.postMessage({ accessToken: this.accessToken, username: data.userName }, "*");
         setTimeout(() => window.close(), 2000);
       }
     });

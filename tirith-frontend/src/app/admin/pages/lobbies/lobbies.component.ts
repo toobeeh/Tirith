@@ -1,26 +1,25 @@
 import { Component, OnDestroy } from '@angular/core';
-import { AdminService, mappedLobby } from '../../services/lobbies.service';
-import { Observable, map } from 'rxjs';
-import { PastDrops } from 'palantir-db/dist/src/schema';
+import { Observable } from 'rxjs';
+import { DropDto, LobbiesResponseDto, LobbiesService } from 'src/api';
 
 @Component({
   templateUrl: './lobbies.component.html',
   styleUrls: ['./lobbies.component.css']
 })
 export class LobbiesComponent implements OnDestroy {
-  lobbies: mappedLobby[] = [];
+  lobbies: LobbiesResponseDto[] = [];
   interval: any;
 
-  lobbyInspect?: mappedLobby;
-  lobbyDrops$?: Observable<PastDrops[]>;
+  lobbyInspect?: LobbiesResponseDto;
+  lobbyDrops$?: Observable<DropDto[]>;
 
-  constructor(public service: AdminService) {
-    this.service.getLobbies().subscribe(l => {
+  constructor(public lobbiesService: LobbiesService) {
+    this.lobbiesService.getAllLobbies().subscribe(l => {
       this.lobbies = l
     });
 
     this.interval = setInterval(() => {
-      this.service.getLobbies().subscribe(l => {
+      this.lobbiesService.getAllLobbies().subscribe(l => {
         this.lobbies = l
       });
     }, 5000);
@@ -30,16 +29,16 @@ export class LobbiesComponent implements OnDestroy {
     clearInterval(this.interval);
   }
 
-  lobbyPlayers(lobby: mappedLobby) {
-    return lobby.report.Players.map(p => p.Name).join(", ");
+  lobbyPlayers(lobby: LobbiesResponseDto) {
+    return lobby.details.Players.map(p => p.Name).join(", ");
   }
 
-  inspectLobby(lobby: mappedLobby) {
+  inspectLobby(lobby: LobbiesResponseDto) {
     this.lobbyInspect = lobby;
-    this.lobbyDrops$ = this.service.getLobbyDrops(lobby.lobby.Key);
+    this.lobbyDrops$ = this.lobbiesService.getLobbyDrops(lobby.lobby.Key);
   }
 
-  wrapDropsInObject(drops: PastDrops[] | null) {
+  wrapDropsInObject(drops: DropDto[] | null) {
     return { drops: drops };
   }
 }

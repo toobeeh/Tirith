@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
-import { MembersService } from 'src/app/admin/services/members.service';
+import { MemberDto, MembersService } from 'src/api';
 
 @Component({
   selector: 'app-member',
@@ -10,7 +10,7 @@ import { MembersService } from 'src/app/admin/services/members.service';
 })
 export class MemberComponent implements OnInit {
 
-  member$?: Observable<any>;
+  member$?: Observable<MemberDto>;
 
   constructor(private route: ActivatedRoute, private router: Router, private memberService: MembersService) { }
 
@@ -21,8 +21,8 @@ export class MemberComponent implements OnInit {
     this.member$ = this.memberService.getMemberByLogin(login);
   }
 
-  updateDiscordID(login: number, newID: string) {
-    this.memberService.updateDiscordID(login, newID).subscribe({
+  updateDiscordID(login: string, newID: string) {
+    this.memberService.updateMemberDiscordID(Number(login), { id: newID }).subscribe({
       next: data => {
         this.member$ = of(data);
       },

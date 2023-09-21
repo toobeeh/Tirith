@@ -1,24 +1,26 @@
 import { ApiProperty } from "@nestjs/swagger";
-import * as DiscordOauth from "discord-oauth2";
-import { Members } from "palantir-db/dist/src/schema";
+/* import { Members } from "palantir-db/dist/src/schema"; */
 
-export class Registration {
+export class RegistrationRequest {
 
-    @ApiProperty()
+    @ApiProperty({ description: "The discord oauth authorization code" })
     code: string;
 
-    @ApiProperty()
+    @ApiProperty({ description: "The flag whether the user wants to conenct to the typo server" })
     connectTypo: boolean;
 }
 
-export class RegistrationResult {
+export class TokenResponse {
 
-    @ApiProperty()
+    @ApiProperty({ description: "The acces token to log in to the new account" })
     accessToken: string;
 
-    @ApiProperty()
-    user: DiscordOauth.User;
+    @ApiProperty({ description: "The discord user id of the oauth code" })
+    userId: string;
 
-    @ApiProperty()
-    member?: Members;
+    @ApiProperty({ description: "The discord user name of the oauth code" })
+    userName: string;
+
+    /* @ApiProperty({ name: "The unprocessed user data of the newly created user" })
+    memberRaw?: Members; */
 }

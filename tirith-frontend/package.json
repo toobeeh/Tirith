@@ -7,7 +7,8 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "start:dev": "ng serve -o"
+    "start:dev": "ng serve -o",
+    "generate:api": "openapi-generator-cli generate -i http://localhost:3000/docs-json -g typescript-angular -o src/api/ -p=removeOperationIdPrefix=true"
   },
   "private": true,
   "dependencies": {
@@ -30,6 +31,7 @@
     "@angular-devkit/build-angular": "^15.2.1",
     "@angular/cli": "~15.2.1",
     "@angular/compiler-cli": "^15.2.0",
+    "@openapitools/openapi-generator-cli": "^2.7.0",
     "@types/jasmine": "~4.3.0",
     "autoprefixer": "^10.4.14",
     "jasmine-core": "~4.5.0",

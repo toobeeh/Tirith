@@ -17,7 +17,11 @@ export class AuthentificationGuard implements CanActivate {
   canActivate(
     context: ExecutionContext,
   ): boolean | Promise<boolean> | Observable<boolean> {
+
+    /* get user from request, requires member guard in order before */
     const user: member = context.switchToHttp().getRequest().user;
+
+    /* get user flags and check if they math the required role */
     const requiredRole = getRequiredRole(context, this.reflector);
     const flags = this.auth.parseFlags(user.flags);
     return requiredRole === AuthRoles.Admin ? flags.moderator || flags.admin : true;

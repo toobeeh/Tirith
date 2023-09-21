@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AdminService } from '../../services/lobbies.service';
+import { LobbiesService } from 'src/api';
 
 @Component({
   templateUrl: './reports.component.html',
@@ -9,7 +9,7 @@ export class ReportsComponent {
 
   reports$;
 
-  constructor(private service: AdminService) {
-    this.reports$ = service.getReports();
+  constructor(private service: LobbiesService) {
+    this.reports$ = service.getAllReports();
   }
 }

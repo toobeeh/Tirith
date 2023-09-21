@@ -1,6 +1,6 @@
 <div *ngIf="member$">
   <ng-container *ngIf="member$ && (member$ | async) as member else loading">
-    <h2>{{member.member.UserName}}</h2>
+    <h2>{{member.userName}}</h2>
 
     <br>
 
@@ -20,7 +20,7 @@
           <br>
           <div class="flex gap-4">
             <input #id type="number" placeholder="New Discord ID" class="grow">
-            <input type="button" value="Update Member" (click)="updateDiscordID(member.member.UserLogin, id.value)">
+            <input type="button" value="Update Member" (click)="updateDiscordID(member.userLogin, id.value)">
           </div>
         </div>
       </div>
