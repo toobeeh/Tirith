@@ -11,15 +11,21 @@ import { DropsService } from 'src/services/drops.service';
 
 @Controller("drops")
 @ApiTags("drops")
-@RequiredRole(AuthRoles.Admin)
-@UseGuards(MemberGuard, AuthentificationGuard)
 export class DropsController {
 
     constructor(private service: DropsService) { }
 
     @Get("next")
     @ApiResponse({ status: 200, type: String, description: "The next drop" })
-    getAllReports(): Promise<string> {
+    @RequiredRole(AuthRoles.Admin)
+    @UseGuards(MemberGuard, AuthentificationGuard)
+    getNextDrop(): Promise<string> {
+        return this.service.getNextDrop();
+    }
+
+    @Get("nextbare")
+    @ApiResponse({ status: 200, type: String, description: "The next drop" })
+    getNextDropbare(): Promise<string> {
         return this.service.getNextDrop();
     }
 
