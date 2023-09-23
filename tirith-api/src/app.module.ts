@@ -1,8 +1,9 @@
+import { DropsService } from './services/drops.service';
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AuthentificationService } from './services/authentification.service';
 import { PalantirdbService } from './services/palantirdb.service';
-import { AdminModule } from './modules/admin/admin.module';
+import { PalantirModule } from './modules/palantir/palantir.module';
 import { ConfigModule } from '@nestjs/config';
 
 import config from './config/production.config';
@@ -21,10 +22,12 @@ console.log(`Starting in environment ${ENV}`);
       ],
       isGlobal: true
     }),
-    AdminModule, AuthModule
+    PalantirModule, AuthModule
   ],
-  controllers: [AppController],
+  controllers: [
+    AppController],
   providers: [
+    DropsService,
     AuthentificationService, PalantirdbService, DiscordOauthService],
 })
 export class AppModule { }

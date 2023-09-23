@@ -4,9 +4,9 @@ https://docs.nestjs.com/providers#services
 
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PalantirdbService } from './palantirdb.service';
-import { MemberDto } from 'src/modules/admin/dto/member.dto';
 import { member } from 'palantir-db/dist/src/types';
-import { MemberSearchDto } from 'src/modules/admin/dto/memberSearch.dto';
+import { MemberDto } from 'src/modules/palantir/dto/member.dto';
+import { MemberSearchDto } from 'src/modules/palantir/dto/memberSearch.dto';
 
 @Injectable()
 export class MembersService {

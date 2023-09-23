@@ -1,12 +1,15 @@
 import { ExecutionContext, SetMetadata } from "@nestjs/common";
 import { Reflector } from "@nestjs/core";
+import { Request } from 'express';
 
 /**
  * Enum with possible authentification levels
  */
 export enum AuthRoles {
     Admin,
-    Member
+    Moderator,
+    Member,
+    None
 }
 
 /**
@@ -29,4 +32,25 @@ export const getRequiredRole = (context: ExecutionContext, reflector: Reflector)
         if (role === undefined) throw new Error("no auth annotation present");
     }
     return role;
+}
+
+/**
+ * Identifies the parameter which bypasses the role guard, indicating that 
+ * the requesting user is accessing its own resource with full access
+ * @param param the path parameter which identifies the user identification
+ * @returns a custom decorator
+ */
+export const ResourceOwner = (paramName: string) => SetMetadata('guardResourceOwner', paramName);
+
+/**
+ * Get the user owner identification of the requested resource
+ * @param context the execution context of the calling guard
+ * @param reflector the reflextor isntance of the calling guard
+ * @returns the resource owner id, or undefined if none set
+ */
+export const getResourceOwner = (context: ExecutionContext, reflector: Reflector) => {
+    const paramName = reflector.get<string>('guardResourceOwner', context.getHandler());
+    const value = context.switchToHttp().getRequest<Request>().params[paramName];
+    const id = Number(value);
+    return Number.isInteger(id) ? id : undefined;
 }

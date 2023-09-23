@@ -11,16 +11,19 @@ import { LobbiesService } from 'src/services/lobbies.service';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { ResponseReshapeInterceptor } from 'src/interceptors/responsereshape.interceptor';
 import { MembersService } from 'src/services/members.service';
+import { DropsController } from './drops.controller';
+import { DropsService } from 'src/services/drops.service';
 
 @Module({
     imports: [],
     controllers: [
         LobbiesController,
-        MembersController
+        MembersController,
+        DropsController
     ],
-    providers: [AuthentificationService, LobbiesService, MembersService, PalantirdbService, {
+    providers: [AuthentificationService, DropsService, LobbiesService, MembersService, PalantirdbService, {
         provide: APP_INTERCEPTOR,
         useClass: ResponseReshapeInterceptor,
     },],
 })
-export class AdminModule { }
+export class PalantirModule { }

@@ -13,10 +13,20 @@ export class LobbiesService {
     constructor(private databaseService: PalantirdbService) { }
 
     /**
+     * gets active lobbies per each guild
+     * @returns array of guild lobbies
+     */
+    async getGuildLobbies() {
+        const result = await this.database.getActiveLobbies();
+        if (!result.success) throw new HttpException("Failed to load lobbies", HttpStatus.INTERNAL_SERVER_ERROR);
+        return result.result;
+    }
+
+    /**
      * Gets all currently active lobbies
      * @returns array of the active lobbies
      */
-    async getLobbies() {
+    async inspectLobbies() {
 
         const reports = await this.database.getReports();
         const lobbies = await this.database.getAllActiveLobbies();

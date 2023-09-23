@@ -6,7 +6,7 @@ import { Body, Controller, Get, Param, Patch, Query, UseGuards } from '@nestjs/c
 import { AuthentificationGuard } from 'src/guards/authentification.guard';
 import { UpdateDiscordID } from './dto/updateDiscord.dto';
 import { MemberGuard } from 'src/guards/member.guard';
-import { AuthRoles, RequiredRole } from 'src/decorators/roles.decorator';
+import { AuthRoles, RequiredRole, ResourceOwner } from 'src/decorators/roles.decorator';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { MembersService } from 'src/services/members.service';
 import { MemberDto } from './dto/member.dto';
@@ -14,7 +14,7 @@ import { MemberSearchDto } from './dto/memberSearch.dto';
 
 @Controller("members")
 @ApiTags("members")
-@RequiredRole(AuthRoles.Admin)
+@RequiredRole(AuthRoles.Moderator)
 @UseGuards(MemberGuard, AuthentificationGuard)
 export class MembersController {
 
@@ -27,6 +27,7 @@ export class MembersController {
     }
 
     @Get(":login")
+    @ResourceOwner("login")
     @ApiResponse({ status: 200, type: MemberDto, description: "An array of matching members" })
     async getMemberByLogin(@Param('login') login: number): Promise<MemberDto> {
         return this.service.getByLogin(login);

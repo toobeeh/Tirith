@@ -14,7 +14,7 @@ import { DropDto } from './dto/drops.dto';
 
 @Controller("lobbies")
 @ApiTags("lobbies")
-@RequiredRole(AuthRoles.Admin)
+@RequiredRole(AuthRoles.Moderator)
 @UseGuards(MemberGuard, AuthentificationGuard)
 export class LobbiesController {
 
@@ -26,10 +26,16 @@ export class LobbiesController {
         return this.service.getLobbyReports();
     }
 
+    /* @Get("grouped")
+    @ApiResponse({ status: 200, type: ReportsResponseDto, isArray: true, description: "An array of all current lobbies grouped by target guild" })
+    getGuildLobbies(): Promise<ReportsResponseDto[]> {
+        return this.service.getGuildLobbies();
+    } */
+
     @Get()
     @ApiResponse({ status: 200, type: LobbiesResponseDto, isArray: true, description: "An array of all current lobbies" })
-    getAllLobbies(): Promise<LobbiesResponseDto[]> {
-        return this.service.getLobbies();
+    inspectAllLobbies(): Promise<LobbiesResponseDto[]> {
+        return this.service.inspectLobbies();
     }
 
     @Get(":key/drops")

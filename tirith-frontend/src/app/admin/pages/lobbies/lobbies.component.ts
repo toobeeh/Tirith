@@ -14,12 +14,12 @@ export class LobbiesComponent implements OnDestroy {
   lobbyDrops$?: Observable<DropDto[]>;
 
   constructor(public lobbiesService: LobbiesService) {
-    this.lobbiesService.getAllLobbies().subscribe(l => {
+    this.lobbiesService.inspectAllLobbies().subscribe(l => {
       this.lobbies = l
     });
 
     this.interval = setInterval(() => {
-      this.lobbiesService.getAllLobbies().subscribe(l => {
+      this.lobbiesService.inspectAllLobbies().subscribe(l => {
         this.lobbies = l
       });
     }, 5000);

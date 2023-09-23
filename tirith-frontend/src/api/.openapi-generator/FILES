@@ -4,6 +4,7 @@ api.module.ts
 api/api.ts
 api/auth.service.ts
 api/default.service.ts
+api/drops.service.ts
 api/lobbies.service.ts
 api/members.service.ts
 configuration.ts
