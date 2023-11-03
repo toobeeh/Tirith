@@ -85,4 +85,15 @@ export class MembersService {
         return this.mapDatabaseMember(update.result);
     }
 
+    /**
+     * Udpates the linked discord account of a member
+     * @param login the member login
+     * @param newID the new member discord id
+     * @returns the updated member
+     */
+    async clearDropBoost(login: number): Promise<void> {
+        const res = await this.database.clearDropboost(login.toString());
+        if (!res) throw new HttpException("Failed to clear dropbost", HttpStatus.BAD_REQUEST);
+    }
+
 }

@@ -587,6 +587,23 @@ export class PalantirDatabase {
     }
 
     /**
+     *  Clear a user's current dropboost
+     * @param login the users login
+     * @returns Indicator if the query succeeded
+     */
+    async clearDropboost(login: string) {
+        let success = false;
+        try {
+            await this.get("DELETE FROM DropBoosts WHERE Login = ?", [login]);
+            success = true;
+        }
+        catch (e) {
+            console.warn("Error in query: ", e);
+        }
+        return success;
+    }
+
+    /**
       * Get a drop by its ID
       * @param id ID of the drop; if -1 the current drop is returned
       * @returns The drop
