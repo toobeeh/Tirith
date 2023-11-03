@@ -24,6 +24,15 @@
           </div>
         </div>
       </div>
+
+      <div class="flex flex-col gap-8 p-3">
+        <div>
+          <h3>Clear Dropboost</h3>
+          <p>This clears an existing drop boost of this member, if present.</p>
+          <br>
+          <input type="button" value="Clear Dropboost" (click)="clearDropboost(member.userLogin)">
+        </div>
+      </div>
     </div>
 
   </ng-container>

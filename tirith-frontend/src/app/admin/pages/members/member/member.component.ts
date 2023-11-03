@@ -32,4 +32,15 @@ export class MemberComponent implements OnInit {
     })
   }
 
+  clearDropboost(login: string) {
+    this.memberService.clearMemberDropboost(Number(login)).subscribe({
+      next: data => {
+        console.log("dropboost cleared");
+      },
+      error: () => {
+        throw new Error("error updating member discord ID");
+      }
+    });
+  }
+
 }
