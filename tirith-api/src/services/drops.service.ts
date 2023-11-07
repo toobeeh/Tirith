@@ -13,13 +13,12 @@ export class DropsService {
     constructor(private databaseService: PalantirdbService) { }
 
     /**
-     * Searches for all members that contain a given string
-     * @param content the string to search for
-     * @returns matching members
+     * Gets the next drop ID
+     * @returns id of the next drop
      */
-    async getNextDrop(): Promise<string> {
+    async getNextDrop(): Promise<number> {
         const res = await this.database.getDrop();
-        if (!res.success) throw new HttpException("Search could not be processed", HttpStatus.INTERNAL_SERVER_ERROR);
+        if (!res.success) throw new HttpException("Could not get next drop", HttpStatus.INTERNAL_SERVER_ERROR);
 
         return res.result.DropID;
     }

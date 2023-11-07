@@ -13,15 +13,18 @@ import { ResponseReshapeInterceptor } from 'src/interceptors/responsereshape.int
 import { MembersService } from 'src/services/members.service';
 import { DropsController } from './drops.controller';
 import { DropsService } from 'src/services/drops.service';
+import { AwardsController } from './awards.controller';
+import { AwardsService } from 'src/services/awards.service';
 
 @Module({
     imports: [],
     controllers: [
         LobbiesController,
         MembersController,
-        DropsController
+        DropsController,
+        AwardsController
     ],
-    providers: [AuthentificationService, DropsService, LobbiesService, MembersService, PalantirdbService, {
+    providers: [AuthentificationService, DropsService, LobbiesService, MembersService, PalantirdbService, AwardsService, {
         provide: APP_INTERCEPTOR,
         useClass: ResponseReshapeInterceptor,
     },],

@@ -19,13 +19,7 @@ export class DropsController {
     @ApiResponse({ status: 200, type: String, description: "The next drop" })
     @RequiredRole(AuthRoles.Admin)
     @UseGuards(MemberGuard, AuthentificationGuard)
-    getNextDrop(): Promise<string> {
-        return this.service.getNextDrop();
-    }
-
-    @Get("nextbare")
-    @ApiResponse({ status: 200, type: String, description: "The next drop" })
-    getNextDropbare(): Promise<string> {
+    getNextDrop(): Promise<number> {
         return this.service.getNextDrop();
     }
 

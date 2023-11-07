@@ -778,6 +778,20 @@ export class PalantirDatabase {
         return result;
     }
 
+    async getAllAwards() {
+        let result = this.emptyResult<Array<schema.Awards>>();
+
+        try {
+            let rows = await this.get<any>(`SELECT * FROM Awards;`, []);
+            result.result = rows;
+            result.success = true;
+        }
+        catch (e) {
+            console.warn("Error in query: ", e);
+        }
+        return result;
+    }
+
     async getDropsFromLobby(lobbyKey: string) {
         let result = this.emptyResult<schema.PastDrops[]>();
 
