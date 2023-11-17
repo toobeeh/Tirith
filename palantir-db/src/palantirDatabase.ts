@@ -327,7 +327,7 @@ export class PalantirDatabase {
             };
             const stringifiedMember = JSON.stringify(member);
 
-            await this.get("INSERT INTO Members VALUES(?, ?, 0, '', 0, 0, NULL, NULL, NULL, '', '', NULL)", [login, stringifiedMember]);
+            await this.get("INSERT INTO Members VALUES(?, ?, 0, '', 0, 0, NULL, NULL, NULL, '', '', NULL, NULL)", [login, stringifiedMember]);
             const newMember = await this.first<schema.Members>("SELECT * FROM Members WHERE Login = ?", [login]);
             if (!newMember) throw new Error("new member with login " + login + " not found");
 
