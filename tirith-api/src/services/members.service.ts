@@ -5,7 +5,7 @@ https://docs.nestjs.com/providers#services
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PalantirdbService } from './palantirdb.service';
 import { member } from 'palantir-db/dist/src/types';
-import { MemberDto } from 'src/modules/palantir/dto/member.dto';
+import { AccessTokenDto, MemberDto } from 'src/modules/palantir/dto/member.dto';
 import { MemberSearchDto } from 'src/modules/palantir/dto/memberSearch.dto';
 
 @Injectable()
@@ -101,12 +101,12 @@ export class MembersService {
      * @param login the member login
      * @returns the user's access token
      */
-    async getAccessToken(login: number): Promise<string> {
+    async getAccessToken(login: number): Promise<AccessTokenDto> {
         const memberRes = await this.database.getUserByLogin(login);
         if (!memberRes.success) throw new HttpException("No user for this login", HttpStatus.NOT_FOUND);
 
         const res = await this.database.getAccessToken(memberRes.result.member.UserID);
-        return res.result.accessToken;
+        return { Token: res.result.accessToken };
     }
 
 }

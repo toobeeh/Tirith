@@ -1,3 +1,4 @@
+export * from './accessTokenDto';
 export * from './awardDto';
 export * from './dropDto';
 export * from './guildDto';

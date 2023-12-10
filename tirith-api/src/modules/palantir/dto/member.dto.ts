@@ -69,3 +69,9 @@ export class WebhookDto {
     URL: string;
 }
 
+export class AccessTokenDto {
+
+    @XApiProperty({ description: "The access token of an user" })
+    Token: string;
+}
+

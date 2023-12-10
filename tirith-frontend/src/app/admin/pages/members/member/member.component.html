@@ -11,36 +11,38 @@
         <ngx-json-viewer [expanded]="false" [json]="member"></ngx-json-viewer>
       </div>
 
-      <div class="flex flex-col gap-8 p-3">
-        <div>
-          <h3>Switch linked Discord ID</h3>
-          <p>This updates the ID in the Member table row and all IDs in the PastDrops table.</p>
-          <p>If there already exists a temporary member for the new ID, all of its Bubbles and Drops are added to the
-            old account. The temporary member and its bubble traces is then deleted.</p>
-          <br>
-          <div class="flex gap-4">
-            <input #id type="number" placeholder="New Discord ID" class="grow">
-            <input type="button" value="Update Member" (click)="updateDiscordID(member.userLogin, id.value)">
+      <div class="flex flex-col gap-8">
+        <div class="flex flex-col gap-8 p-3">
+          <div>
+            <h3>Switch linked Discord ID</h3>
+            <p>This updates the ID in the Member table row and all IDs in the PastDrops table.</p>
+            <p>If there already exists a temporary member for the new ID, all of its Bubbles and Drops are added to the
+              old account. The temporary member and its bubble traces is then deleted.</p>
+            <br>
+            <div class="flex gap-4">
+              <input #id type="number" placeholder="New Discord ID" class="grow">
+              <input type="button" value="Update Member" (click)="updateDiscordID(member.userLogin, id.value)">
+            </div>
           </div>
         </div>
-      </div>
 
-      <div class="flex flex-col gap-8 p-3">
-        <div>
-          <h3>Clear Dropboost</h3>
-          <p>This clears an existing drop boost of this member, if present.</p>
-          <br>
-          <input type="button" value="Clear Dropboost" (click)="clearDropboost(member.userLogin)">
+        <div class="flex flex-col gap-8 p-3">
+          <div>
+            <h3>Clear Dropboost</h3>
+            <p>This clears an existing drop boost of this member, if present.</p>
+            <br>
+            <input type="button" value="Clear Dropboost" (click)="clearDropboost(member.userLogin)">
+          </div>
         </div>
-      </div>
-    </div>
 
-    <div class="flex flex-col gap-8 p-3">
-      <div>
-        <h3>Copy Access Token</h3>
-        <p>Copies the access token of this user to the clipboard.</p>
-        <br>
-        <input type="button" value="Copy Token" (click)="copyToken(member.userLogin)">
+        <div class="flex flex-col gap-8 p-3">
+          <div>
+            <h3>Copy Access Token</h3>
+            <p>Copies the access token of this user to the clipboard.</p>
+            <br>
+            <input type="button" value="Copy Token" (click)="copyToken(member.userLogin)">
+          </div>
+        </div>
       </div>
     </div>
 

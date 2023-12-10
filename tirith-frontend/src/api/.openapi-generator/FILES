@@ -12,6 +12,7 @@ configuration.ts
 encoder.ts
 git_push.sh
 index.ts
+model/accessTokenDto.ts
 model/awardDto.ts
 model/dropDto.ts
 model/guildDto.ts

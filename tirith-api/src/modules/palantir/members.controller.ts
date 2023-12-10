@@ -9,7 +9,7 @@ import { MemberGuard } from 'src/guards/member.guard';
 import { AuthRoles, RequiredRole, ResourceOwner } from 'src/decorators/roles.decorator';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { MembersService } from 'src/services/members.service';
-import { MemberDto } from './dto/member.dto';
+import { AccessTokenDto, MemberDto } from './dto/member.dto';
 import { MemberSearchDto } from './dto/memberSearch.dto';
 
 @Controller("members")
@@ -35,8 +35,8 @@ export class MembersController {
 
     @Get(":login/token")
     @ResourceOwner("login")
-    @ApiResponse({ status: 200, type: String, description: "The access token of a member with this login" })
-    async getMemberAccessToken(@Param('login') login: number): Promise<string> {
+    @ApiResponse({ status: 200, type: AccessTokenDto, description: "The access token of a member with this login" })
+    async getMemberAccessToken(@Param('login') login: number): Promise<AccessTokenDto> {
         return this.service.getAccessToken(login);
     }
 
