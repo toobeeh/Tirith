@@ -28,13 +28,20 @@ export class MembersController {
 
     @Get(":login")
     @ResourceOwner("login")
-    @ApiResponse({ status: 200, type: MemberDto, description: "An array of matching members" })
+    @ApiResponse({ status: 200, type: MemberDto, description: "The member with specified login" })
     async getMemberByLogin(@Param('login') login: number): Promise<MemberDto> {
         return this.service.getByLogin(login);
     }
 
+    @Get(":login/token")
+    @ResourceOwner("login")
+    @ApiResponse({ status: 200, type: String, description: "The access token of a member with this login" })
+    async getMemberAccessToken(@Param('login') login: number): Promise<string> {
+        return this.service.getAccessToken(login);
+    }
+
     @Patch(":login/discord")
-    @ApiResponse({ status: 200, type: MemberDto, description: "An array of matching members" })
+    @ApiResponse({ status: 200, type: MemberDto, description: "The updated member" })
     async updateMemberDiscordID(@Param('login') login: number, @Body() { id }: UpdateDiscordID): Promise<MemberDto> {
         return this.service.updateDiscordID(login, id);
     }
@@ -46,7 +53,7 @@ export class MembersController {
     }
 
     @Get("discord/:id")
-    @ApiResponse({ status: 200, type: MemberDto, description: "An array of matching members" })
+    @ApiResponse({ status: 200, type: MemberDto, description: "The member with specified discord id" })
     async getMemberByDiscordID(@Param('id') id: string): Promise<MemberDto> {
         return this.service.getByDiscordID(id);
     }

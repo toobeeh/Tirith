@@ -96,4 +96,17 @@ export class MembersService {
         if (!res) throw new HttpException("Failed to clear dropbost", HttpStatus.BAD_REQUEST);
     }
 
+    /**
+     * Gets the accesstoken for a user login
+     * @param login the member login
+     * @returns the user's access token
+     */
+    async getAccessToken(login: number): Promise<string> {
+        const memberRes = await this.database.getUserByLogin(login);
+        if (!memberRes.success) throw new HttpException("No user for this login", HttpStatus.NOT_FOUND);
+
+        const res = await this.database.getAccessToken(memberRes.result.member.UserID);
+        return res.result.accessToken;
+    }
+
 }
