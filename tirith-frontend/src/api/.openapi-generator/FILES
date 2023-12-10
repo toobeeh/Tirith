@@ -3,6 +3,7 @@ README.md
 api.module.ts
 api/api.ts
 api/auth.service.ts
+api/awards.service.ts
 api/default.service.ts
 api/drops.service.ts
 api/lobbies.service.ts
@@ -11,6 +12,7 @@ configuration.ts
 encoder.ts
 git_push.sh
 index.ts
+model/awardDto.ts
 model/dropDto.ts
 model/guildDto.ts
 model/lobbiesResponseDto.ts

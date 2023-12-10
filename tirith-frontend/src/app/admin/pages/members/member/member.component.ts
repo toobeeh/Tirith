@@ -43,4 +43,15 @@ export class MemberComponent implements OnInit {
     });
   }
 
+  copyToken(login: string) {
+    this.memberService.getMemberAccessToken(Number(login)).subscribe({
+      next: data => {
+        navigator.clipboard.writeText(data);
+      },
+      error: () => {
+        throw new Error("error updating member discord ID");
+      }
+    });
+  }
+
 }

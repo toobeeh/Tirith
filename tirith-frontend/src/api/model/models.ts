@@ -1,3 +1,4 @@
+export * from './awardDto';
 export * from './dropDto';
 export * from './guildDto';
 export * from './lobbiesResponseDto';

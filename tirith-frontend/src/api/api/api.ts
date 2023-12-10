@@ -1,5 +1,7 @@
 export * from './auth.service';
 import { AuthService } from './auth.service';
+export * from './awards.service';
+import { AwardsService } from './awards.service';
 export * from './default.service';
 import { DefaultService } from './default.service';
 export * from './drops.service';
@@ -8,4 +10,4 @@ export * from './lobbies.service';
 import { LobbiesService } from './lobbies.service';
 export * from './members.service';
 import { MembersService } from './members.service';
-export const APIS = [AuthService, DefaultService, DropsService, LobbiesService, MembersService];
+export const APIS = [AuthService, AwardsService, DefaultService, DropsService, LobbiesService, MembersService];
