@@ -1,3 +1,4 @@
+import { SpritesService } from './services/sprites.service';
 import { DropsService } from './services/drops.service';
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
@@ -25,8 +26,10 @@ console.log(`Starting in environment ${ENV}`);
     PalantirModule, AuthModule
   ],
   controllers: [
-    AppController],
+    AppController
+  ],
   providers: [
+    SpritesService,
     DropsService,
     AuthentificationService, PalantirdbService, DiscordOauthService],
 })

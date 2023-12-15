@@ -805,6 +805,64 @@ export class PalantirDatabase {
         }
         return result;
     }
+
+    async getAllEvents() {
+        let result = this.emptyResult<Array<schema.Events>>();
+
+        try {
+            let rows = await this.get<schema.Events>(`SELECT * FROM Events;`, []);
+            result.result = rows;
+            result.success = true;
+        }
+        catch (e) {
+            console.warn("Error in query: ", e);
+        }
+        return result;
+    }
+
+    async getEvent(id: number) {
+        let result = this.emptyResult<schema.Events>();
+
+        try {
+            let rows = await this.get<schema.Events>(`SELECT * FROM Events WHERE EventID = ?;`, [id]);
+            if (rows.length < 1) throw new Error("event not found");
+            result.result = rows[0];
+            result.success = true;
+        }
+        catch (e) {
+            console.warn("Error in query: ", e);
+        }
+        return result;
+    }
+
+    async getAllScenes() {
+        let result = this.emptyResult<Array<schema.Scenes>>();
+
+        try {
+            let rows = await this.get<schema.Scenes>(`SELECT * FROM Scenes;`, []);
+            result.result = rows;
+            result.success = true;
+        }
+        catch (e) {
+            console.warn("Error in query: ", e);
+        }
+        return result;
+    }
+
+    async getScene(id: number) {
+        let result = this.emptyResult<schema.Scenes>();
+
+        try {
+            let rows = await this.get<schema.Scenes>(`SELECT * FROM Scenes WHERE ID = ?;`, [id]);
+            if (rows.length < 1) throw new Error("scene not found");
+            result.result = rows[0];
+            result.success = true;
+        }
+        catch (e) {
+            console.warn("Error in query: ", e);
+        }
+        return result;
+    }
 }
 
 export default PalantirDatabase;

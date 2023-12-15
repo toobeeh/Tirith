@@ -15,6 +15,11 @@ import { DropsController } from './drops.controller';
 import { DropsService } from 'src/services/drops.service';
 import { AwardsController } from './awards.controller';
 import { AwardsService } from 'src/services/awards.service';
+import { ScenesController } from './scenes.controller';
+import { SpritesController } from './sprites.controller';
+import { SpritesService } from 'src/services/sprites.service';
+import { ScenesService } from 'src/services/scenes.service';
+import { EventsService } from 'src/services/events.service';
 
 @Module({
     imports: [],
@@ -22,11 +27,24 @@ import { AwardsService } from 'src/services/awards.service';
         LobbiesController,
         MembersController,
         DropsController,
-        AwardsController
+        AwardsController,
+        ScenesController,
+        SpritesController
     ],
-    providers: [AuthentificationService, DropsService, LobbiesService, MembersService, PalantirdbService, AwardsService, {
-        provide: APP_INTERCEPTOR,
-        useClass: ResponseReshapeInterceptor,
-    },],
+    providers: [
+        AuthentificationService,
+        DropsService,
+        LobbiesService,
+        MembersService,
+        PalantirdbService,
+        AwardsService,
+        SpritesService,
+        ScenesService,
+        EventsService,
+        {
+            provide: APP_INTERCEPTOR,
+            useClass: ResponseReshapeInterceptor,
+        },
+    ],
 })
 export class PalantirModule { }
