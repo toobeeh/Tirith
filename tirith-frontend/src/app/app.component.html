@@ -29,7 +29,7 @@
 </div>
 
 <!-- top bar -->
-<div class="flex justify-evenly w-full" id="logoContainer">
+<div class="flex justify-evenly w-full fadeOutToast" id="logoContainer">
   <a routerLink="/">
     <img id="logo" src="res/moon.gif" />
   </a>
@@ -40,8 +40,17 @@
 </div>
 
 <!-- content -->
-<div class="pt-[8rem] mb-[10rem] px-[15vw]">
+<div class="pt-[8rem] mb-[10rem] px-[15vw] fadeOutToast" [style.opacity]="toastOpened ? 0.1 : 1">
   <router-outlet></router-outlet>
+</div>
+
+<!-- toast -->
+<div class="fixed top-0 left-0 w-screen h-screen grid place-content-center pointer-events-none gap-7"
+  *ngIf="toastOpened">
+  <div *ngFor="let msg of toastMessages">
+    <h2>{{msg.title}}</h2>
+    <h3>{{msg.content}}</h3>
+  </div>
 </div>
 
 <!-- footer -->
