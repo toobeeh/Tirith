@@ -20,6 +20,7 @@ import { SpritesController } from './sprites.controller';
 import { SpritesService } from 'src/services/sprites.service';
 import { ScenesService } from 'src/services/scenes.service';
 import { EventsService } from 'src/services/events.service';
+import { EventsController } from './events.controller';
 
 @Module({
     imports: [],
@@ -29,7 +30,8 @@ import { EventsService } from 'src/services/events.service';
         DropsController,
         AwardsController,
         ScenesController,
-        SpritesController
+        SpritesController,
+        EventsController
     ],
     providers: [
         AuthentificationService,
@@ -38,9 +40,9 @@ import { EventsService } from 'src/services/events.service';
         MembersService,
         PalantirdbService,
         AwardsService,
+        EventsService,
         SpritesService,
         ScenesService,
-        EventsService,
         {
             provide: APP_INTERCEPTOR,
             useClass: ResponseReshapeInterceptor,

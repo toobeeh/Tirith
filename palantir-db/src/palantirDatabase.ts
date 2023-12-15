@@ -863,6 +863,66 @@ export class PalantirDatabase {
         }
         return result;
     }
+
+    async getAllSprites() {
+        let result = this.emptyResult<Array<schema.Sprites>>();
+
+        try {
+            let rows = await this.get<schema.Sprites>(`SELECT * FROM Sprites;`, []);
+            result.result = rows;
+            result.success = true;
+        }
+        catch (e) {
+            console.warn("Error in query: ", e);
+        }
+        return result;
+    }
+
+    async getSprite(id: number) {
+        let result = this.emptyResult<schema.Sprites>();
+
+        try {
+            let rows = await this.get<schema.Sprites>(`SELECT * FROM Sprites WHERE ID = ?;`, [id]);
+            if (rows.length < 1) throw new Error("sprite not found");
+            result.result = rows[0];
+            result.success = true;
+        }
+        catch (e) {
+            console.warn("Error in query: ", e);
+        }
+        return result;
+    }
+
+    async getAllEventDrops(eventId?: number) {
+        let result = this.emptyResult<Array<schema.EventDrops>>();
+
+        try {
+            let rows = eventId !== undefined ?
+                await this.get<schema.EventDrops>(`SELECT * FROM EventDrops WHERE EventID = ?;`, [eventId]) :
+                await this.get<schema.EventDrops>(`SELECT * FROM EventDrops;`, []);
+            result.result = rows;
+            result.success = true;
+        }
+        catch (e) {
+            console.warn("Error in query: ", e);
+        }
+        return result;
+    }
+
+    async getEventDrop(id: number) {
+        let result = this.emptyResult<schema.EventDrops>();
+
+        try {
+            let rows = await this.get<schema.EventDrops>(`SELECT * FROM EventDrops WHERE EventDropID = ?;`, [id]);
+            if (rows.length < 1) throw new Error("event drop not found");
+            result.result = rows[0];
+            result.success = true;
+        }
+        catch (e) {
+            console.warn("Error in query: ", e);
+        }
+        return result;
+    }
 }
 
 export default PalantirDatabase;

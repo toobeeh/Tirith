@@ -1,5 +1,3 @@
-import { SpritesService } from './services/sprites.service';
-import { DropsService } from './services/drops.service';
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AuthentificationService } from './services/authentification.service';
@@ -29,8 +27,6 @@ console.log(`Starting in environment ${ENV}`);
     AppController
   ],
   providers: [
-    SpritesService,
-    DropsService,
     AuthentificationService, PalantirdbService, DiscordOauthService],
 })
 export class AppModule { }

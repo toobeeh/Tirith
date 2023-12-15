@@ -1,4 +1,5 @@
 import { XApiProperty } from "src/decorators/apiProperty.decorator";
+import { EventDto } from "./events.dto";
 
 export class DropDto {
 
@@ -19,4 +20,19 @@ export class DropDto {
 
     @XApiProperty({ description: "Response time of the catch" })
     LeagueWeight: number;
+}
+
+export class EventDropDto {
+
+    @XApiProperty({ description: "Unique event drop ID" })
+    id: number;
+
+    @XApiProperty({ description: "Drop name" })
+    name: string;
+
+    @XApiProperty({ description: "Drop URL" })
+    url: string;
+
+    @XApiProperty({ description: "Associated event" })
+    event: EventDto;
 }
