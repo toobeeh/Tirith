@@ -29,7 +29,7 @@ export class EventsService {
 
     private async mapEventDropToDto(drop: EventDrops): Promise<EventDropDto> {
 
-        const event = drop.EventID == 0 ? undefined : await this.eventCache.getOrFetch(
+        const event = drop.EventID == 1000 ? undefined : await this.eventCache.getOrFetch(
             drop.EventID,
             () => this.getEvent(drop.EventID)
         );
@@ -57,16 +57,16 @@ export class EventsService {
     }
 
     async getAllEventDrops(eventId?: number): Promise<EventDropDto[]> {
-        const events = await this.database.getAllEventDrops(eventId);
-        if (!events.success) throw new HttpException("Could not load event drops", HttpStatus.INTERNAL_SERVER_ERROR);
+        const drops = await this.database.getAllEventDrops(eventId);
+        if (!drops.success) throw new HttpException("Could not load event drops", HttpStatus.INTERNAL_SERVER_ERROR);
 
-        return Promise.all(events.result.map(event => this.mapEventDropToDto(event)));
+        return Promise.all(drops.result.map(drop => this.mapEventDropToDto(drop)));
     }
 
     async getEventDrop(id: number): Promise<EventDropDto> {
-        const event = await this.database.getEventDrop(id);
-        if (!event.success) throw new HttpException("Event drop " + id + " not found", HttpStatus.NOT_FOUND);
+        const drop = await this.database.getEventDrop(id);
+        if (!drop.success) throw new HttpException("Event drop " + id + " not found", HttpStatus.NOT_FOUND);
 
-        return this.mapEventDropToDto(event.result);
+        return this.mapEventDropToDto(drop.result);
     }
 }

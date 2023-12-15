@@ -20,12 +20,6 @@ export class EventsController {
         return this.service.getAllEvents();
     }
 
-    @Get(":id")
-    @ApiResponse({ status: 200, type: EventDto, description: "The event that matches the given ID" })
-    async getEventById(@Param('id') id: number): Promise<EventDto> {
-        return this.service.getEvent(id);
-    }
-
     @Get("drops")
     @ApiResponse({ status: 200, type: EventDropDto, isArray: true, description: "An array containing all event drops" })
     async getAllEventDrops(): Promise<EventDropDto[]> {
@@ -36,5 +30,17 @@ export class EventsController {
     @ApiResponse({ status: 200, type: EventDropDto, description: "The event drop that matches the given ID" })
     async getEventDrop(@Param('id') id: number): Promise<EventDropDto> {
         return this.service.getEventDrop(id);
+    }
+
+    @Get(":id")
+    @ApiResponse({ status: 200, type: EventDto, description: "The event that matches the given ID" })
+    async getEventById(@Param('id') id: number): Promise<EventDto> {
+        return this.service.getEvent(id);
+    }
+
+    @Get(":id/drops/")
+    @ApiResponse({ status: 200, type: EventDropDto, isArray: true, description: "All event drops of an event" })
+    async getEventDropsOfEvent(@Param('id') id: number): Promise<EventDropDto[]> {
+        return this.service.getAllEventDrops(id);
     }
 }

@@ -1,6 +1,6 @@
 /**
  * Skribbl Typo API
- * Skribbl typo admin and auth api
+ * Skribbl Typo API for resources, admin tools and authentification.
  *
  * The version of the OpenAPI document: 1.0
  * 

@@ -9,20 +9,22 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { EventDto } from './eventDto';
 
 
-export interface MemberSearchDto { 
+export interface EventDropDto { 
     /**
-     * The member\'s palantir accunt user name
+     * Unique event drop ID
      */
-    userName: string;
+    id: number;
     /**
-     * The member\'s palantir identification
+     * Drop name
      */
-    userLogin: string;
+    name: string;
     /**
-     * The raw database member result
+     * Drop URL
      */
-    rawMember: object;
+    url: string;
+    event: EventDto;
 }
 

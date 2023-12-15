@@ -11,30 +11,26 @@
  */
 
 
-export interface DropDto { 
+export interface EventDto { 
     /**
-     * Drop ID
+     * Event name
      */
-    DropID: number;
+    name: string;
     /**
-     * Lobby where the drop has been caught
+     * Event unique ID
      */
-    CaughtLobbyKey: string;
+    id: number;
     /**
-     * Discord User ID of the catcher
+     * Event description
      */
-    CaughtLobbyPlayerID: string;
+    description: string;
     /**
-     * Timestamp of the drop
+     * Event start date
      */
-    ValidFrom: string;
+    eventStart: string;
     /**
-     * Event Drop ID
+     * Event length in days
      */
-    EventDropID: number;
-    /**
-     * Response time of the catch
-     */
-    LeagueWeight: number;
+    eventLength: number;
 }
 

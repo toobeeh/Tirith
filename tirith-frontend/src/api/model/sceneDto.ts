@@ -9,32 +9,34 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { EventDto } from './eventDto';
 
 
-export interface DropDto { 
+export interface SceneDto { 
     /**
-     * Drop ID
+     * Scene name
      */
-    DropID: number;
+    name: string;
     /**
-     * Lobby where the drop has been caught
+     * Scene unique ID
      */
-    CaughtLobbyKey: string;
+    id: number;
     /**
-     * Discord User ID of the catcher
+     * Scene url
      */
-    CaughtLobbyPlayerID: string;
+    url: string;
+    event: EventDto;
     /**
-     * Timestamp of the drop
+     * Primary text color
      */
-    ValidFrom: string;
+    primaryColor: string;
     /**
-     * Event Drop ID
+     * Guessed text color
      */
-    EventDropID: number;
+    guessedColor: string;
     /**
-     * Response time of the catch
+     * Scene artist name
      */
-    LeagueWeight: number;
+    artist: string;
 }
 

@@ -1,6 +1,8 @@
 export * from './accessTokenDto';
 export * from './awardDto';
 export * from './dropDto';
+export * from './eventDropDto';
+export * from './eventDto';
 export * from './guildDto';
 export * from './lobbiesResponseDto';
 export * from './lobbyDetailsDto';
@@ -11,6 +13,8 @@ export * from './palantirLobbyDto';
 export * from './palantirLobbyPlayerDto';
 export * from './registrationRequest';
 export * from './reportsResponseDto';
+export * from './sceneDto';
+export * from './spriteDto';
 export * from './tokenResponse';
 export * from './updateDiscordID';
 export * from './webhookDto';

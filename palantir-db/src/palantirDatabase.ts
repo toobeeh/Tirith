@@ -825,7 +825,7 @@ export class PalantirDatabase {
 
         try {
             let rows = await this.get<schema.Events>(`SELECT * FROM Events WHERE EventID = ?;`, [id]);
-            if (rows.length < 1) throw new Error("event not found");
+            if (rows.length < 1) throw new Error("event " + id + " not found");
             result.result = rows[0];
             result.success = true;
         }

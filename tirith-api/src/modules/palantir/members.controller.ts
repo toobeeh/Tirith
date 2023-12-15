@@ -7,7 +7,7 @@ import { AuthentificationGuard } from 'src/guards/authentification.guard';
 import { UpdateDiscordID } from './dto/updateDiscord.dto';
 import { MemberGuard } from 'src/guards/member.guard';
 import { AuthRoles, RequiredRole, ResourceOwner } from 'src/decorators/roles.decorator';
-import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { MembersService } from 'src/services/members.service';
 import { AccessTokenDto, MemberDto } from './dto/member.dto';
 import { MemberSearchDto } from './dto/memberSearch.dto';
@@ -16,6 +16,7 @@ import { MemberSearchDto } from './dto/memberSearch.dto';
 @ApiTags("members")
 @RequiredRole(AuthRoles.Moderator)
 @UseGuards(MemberGuard, AuthentificationGuard)
+@ApiBearerAuth()
 export class MembersController {
 
     constructor(private service: MembersService) { }

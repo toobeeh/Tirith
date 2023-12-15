@@ -6,8 +6,11 @@ api/auth.service.ts
 api/awards.service.ts
 api/default.service.ts
 api/drops.service.ts
+api/events.service.ts
 api/lobbies.service.ts
 api/members.service.ts
+api/scenes.service.ts
+api/sprites.service.ts
 configuration.ts
 encoder.ts
 git_push.sh
@@ -15,6 +18,8 @@ index.ts
 model/accessTokenDto.ts
 model/awardDto.ts
 model/dropDto.ts
+model/eventDropDto.ts
+model/eventDto.ts
 model/guildDto.ts
 model/lobbiesResponseDto.ts
 model/lobbyDetailsDto.ts
@@ -26,6 +31,8 @@ model/palantirLobbyDto.ts
 model/palantirLobbyPlayerDto.ts
 model/registrationRequest.ts
 model/reportsResponseDto.ts
+model/sceneDto.ts
+model/spriteDto.ts
 model/tokenResponse.ts
 model/updateDiscordID.ts
 model/webhookDto.ts

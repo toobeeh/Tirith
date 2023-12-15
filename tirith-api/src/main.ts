@@ -8,10 +8,9 @@ async function bootstrap() {
 
   const config = new DocumentBuilder()
     .setTitle('Skribbl Typo API')
-    .setDescription('Skribbl typo admin and auth api')
+    .setDescription('Skribbl Typo API for resources, admin tools and authentification.')
     .setVersion('1.0')
     .addBearerAuth()
-    .addSecurityRequirements('bearer')
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('docs', app, document);

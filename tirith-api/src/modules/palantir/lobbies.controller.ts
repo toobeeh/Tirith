@@ -8,7 +8,7 @@ import { AuthentificationGuard } from 'src/guards/authentification.guard';
 import { MemberGuard } from 'src/guards/member.guard';
 import { LobbiesService } from 'src/services/lobbies.service';
 import { ReportsResponseDto } from './dto/reports.dto';
-import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { LobbiesResponseDto } from './dto/lobbies.dto';
 import { DropDto } from './dto/drops.dto';
 
@@ -16,6 +16,7 @@ import { DropDto } from './dto/drops.dto';
 @ApiTags("lobbies")
 @RequiredRole(AuthRoles.Moderator)
 @UseGuards(MemberGuard, AuthentificationGuard)
+@ApiBearerAuth()
 export class LobbiesController {
 
     constructor(private service: LobbiesService) { }

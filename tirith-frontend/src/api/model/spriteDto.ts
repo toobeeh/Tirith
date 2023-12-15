@@ -9,32 +9,34 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { EventDropDto } from './eventDropDto';
 
 
-export interface DropDto { 
+export interface SpriteDto { 
     /**
-     * Drop ID
+     * Sprite name
      */
-    DropID: number;
+    name: string;
     /**
-     * Lobby where the drop has been caught
+     * Sprite unique ID
      */
-    CaughtLobbyKey: string;
+    id: number;
     /**
-     * Discord User ID of the catcher
+     * Sprite url
      */
-    CaughtLobbyPlayerID: string;
+    url: string;
+    eventDrop: EventDropDto;
     /**
-     * Timestamp of the drop
+     * Flag for rainbow shift
      */
-    ValidFrom: string;
+    isRainbowAllowed: boolean;
     /**
-     * Event Drop ID
+     * Flag for special sprite
      */
-    EventDropID: number;
+    isSpecial: boolean;
     /**
-     * Response time of the catch
+     * Sprite artist name
      */
-    LeagueWeight: number;
+    artist: string;
 }
 
