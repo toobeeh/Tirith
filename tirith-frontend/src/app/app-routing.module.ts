@@ -18,6 +18,7 @@ const routes: Routes = [
       navigation: [
         ["Get Typo", "https://tobeh.host/typo/", "external"],
         ["Infos & Help", "help", "route", true],
+        ["Tools", "tools", "route", true],
         ["Admin Panel", "admin", "route"],
       ]
     }

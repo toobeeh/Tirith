@@ -8,14 +8,24 @@ import { DiscordComponent } from './pages/help/discord/discord.component';
 import { PalantirComponent } from './pages/help/palantir/palantir.component';
 import { HelpComponent } from './pages/help/help.component';
 import { NavContentGuard } from '../shared/guards/nav-content.guard';
+import { ToolsComponent } from './pages/tools/tools.component';
+import { SpritesComponent } from './pages/tools/sprites/sprites.component';
+import { ScenesComponent } from './pages/tools/scenes/scenes.component';
 
-const navigationData = {
+const helpNavigationData = {
   navigation: [
-    ["Get Typo", "https://tobeh.host/typo/", "external"],
     ["Help", "help", "route"],
     ["Discord Bot", "help/discord", "route"],
     ["Bot Setup", "help/palantir", "route"],
     ["Features", "help/features", "route"],
+  ]
+};
+
+const toolsNavigationData = {
+  navigation: [
+    ["Tools", "tools", "route"],
+    ["Sprites", "sprites", "route"],
+    ["Scenes", "scenes", "route"],
   ]
 };
 
@@ -35,28 +45,49 @@ const routes: Routes = [
     component: HelpComponent,
     pathMatch: "full",
     canActivate: [NavContentGuard],
-    data: navigationData
+    data: helpNavigationData
   },
   {
     path: 'help/features',
     component: FeaturesComponent,
     pathMatch: "full",
     canActivate: [NavContentGuard],
-    data: navigationData
+    data: helpNavigationData
   },
   {
     path: 'help/discord',
     component: DiscordComponent,
     pathMatch: "full",
     canActivate: [NavContentGuard],
-    data: navigationData
+    data: helpNavigationData
   },
   {
     path: 'help/palantir',
     component: PalantirComponent,
     pathMatch: "full",
     canActivate: [NavContentGuard],
-    data: navigationData
+    data: helpNavigationData
+  },
+  {
+    path: 'tools',
+    component: ToolsComponent,
+    pathMatch: "full",
+    canActivate: [NavContentGuard],
+    data: toolsNavigationData
+  },
+  {
+    path: 'tools/sprites',
+    component: SpritesComponent,
+    pathMatch: "full",
+    canActivate: [NavContentGuard],
+    data: toolsNavigationData
+  },
+  {
+    path: 'tools/scenes',
+    component: ScenesComponent,
+    pathMatch: "full",
+    canActivate: [NavContentGuard],
+    data: toolsNavigationData
   },
   {
     path: 'privacy',

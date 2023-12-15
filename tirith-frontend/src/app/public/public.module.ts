@@ -9,6 +9,10 @@ import { PrivacyComponent } from './pages/help/privacy/privacy.component';
 import { DiscordComponent } from './pages/help/discord/discord.component';
 import { PalantirComponent } from './pages/help/palantir/palantir.component';
 import { HelpComponent } from './pages/help/help.component';
+import { ToolsComponent } from './pages/tools/tools.component';
+import { RainbowPreviewComponent } from './pages/tools/rainbow-preview/rainbow-preview.component';
+import { ScenesComponent } from './pages/tools/scenes/scenes.component';
+import { SpritesComponent } from './pages/tools/sprites/sprites.component';
 
 
 @NgModule({
@@ -19,7 +23,11 @@ import { HelpComponent } from './pages/help/help.component';
     PrivacyComponent,
     DiscordComponent,
     PalantirComponent,
-    HelpComponent
+    HelpComponent,
+    ToolsComponent,
+    RainbowPreviewComponent,
+    ScenesComponent,
+    SpritesComponent
   ],
   imports: [
     CommonModule,
