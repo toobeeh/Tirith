@@ -22,10 +22,14 @@ export interface SpriteDto {
      */
     id: number;
     /**
+     * Sprite cost in bubbles or eventdrops
+     */
+    cost: number;
+    /**
      * Sprite url
      */
     url: string;
-    eventDrop: EventDropDto;
+    eventDrop?: EventDropDto;
     /**
      * Flag for rainbow shift
      */
@@ -33,10 +37,10 @@ export interface SpriteDto {
     /**
      * Flag for special sprite
      */
-    isSpecial: boolean;
+    isSpecial?: boolean;
     /**
      * Sprite artist name
      */
-    artist: string;
+    artist?: string;
 }
 

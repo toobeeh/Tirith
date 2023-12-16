@@ -1,1 +1,33 @@
-<p>sprites works!</p>,
+<h1>Sprite List</h1>
+<div class="flex flex-row gap-7 justify-center">
+  <h3 class="w-auto">Filter sprite tags: </h3>
+  <input [formControl]="filterInput" type="text" placeholder="#regular">
+</div>
+<br>
+<div class="flex flex-wrap gap-12 justify-center">
+
+  <ng-container *ngIf="sprites$ | async as sprites; else loading">
+    <div *ngFor="let sprite of sprites" class="sprite">
+      <div tabindex="0" class="thumbnail" style="background-image: url({{sprite.url}})"> </div>
+      <div class="card">
+        <div>
+          <h3>#{{sprite.id}}</h3>
+        </div>
+        <div>
+          <h2>{{sprite.name}}</h2>
+        </div>
+        <div class="flexrow flexcenter fullwidth"><img src="{{sprite.url}}"></div>
+
+        <div>
+          <h3>💰 {{sprite.cost}} {{sprite.eventDrop ? sprite.eventDrop .name + " Drops" : "Bubbles"}}</h3>
+        </div>
+        <h3> {{sprite.tags.join(" ")}} </h3>
+      </div>
+    </div>
+  </ng-container>
+
+  <ng-template #loading>
+    <h3>Loading sprites...</h3>
+  </ng-template>
+
+</div>

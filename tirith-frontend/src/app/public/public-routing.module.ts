@@ -24,8 +24,8 @@ const helpNavigationData = {
 const toolsNavigationData = {
   navigation: [
     ["Tools", "tools", "route"],
-    ["Sprites", "sprites", "route"],
-    ["Scenes", "scenes", "route"],
+    ["Sprites", "tools/sprites", "route"],
+    ["Scenes", "tools/scenes", "route"],
   ]
 };
 

@@ -4,9 +4,8 @@ https://docs.nestjs.com/controllers#controllers
 
 import { Controller, Get, Param } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
-import { EventDto } from './dto/events.dto';
+import { EventDropDto, EventDto } from './dto/events.dto';
 import { EventsService } from 'src/services/events.service';
-import { EventDropDto } from './dto/drops.dto';
 
 @Controller("events")
 @ApiTags("events")

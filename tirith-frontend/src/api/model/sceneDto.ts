@@ -25,18 +25,18 @@ export interface SceneDto {
      * Scene url
      */
     url: string;
-    event: EventDto;
+    event?: EventDto;
     /**
      * Primary text color
      */
-    primaryColor: string;
+    primaryColor?: string;
     /**
      * Guessed text color
      */
-    guessedColor: string;
+    guessedColor?: string;
     /**
      * Scene artist name
      */
-    artist: string;
+    artist?: string;
 }
 

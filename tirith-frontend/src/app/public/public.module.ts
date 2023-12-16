@@ -13,6 +13,7 @@ import { ToolsComponent } from './pages/tools/tools.component';
 import { RainbowPreviewComponent } from './pages/tools/rainbow-preview/rainbow-preview.component';
 import { ScenesComponent } from './pages/tools/scenes/scenes.component';
 import { SpritesComponent } from './pages/tools/sprites/sprites.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -30,6 +31,8 @@ import { SpritesComponent } from './pages/tools/sprites/sprites.component';
     SpritesComponent
   ],
   imports: [
+    FormsModule,
+    ReactiveFormsModule,
     CommonModule,
     PublicRoutingModule
   ]

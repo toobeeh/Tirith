@@ -5,11 +5,10 @@ https://docs.nestjs.com/providers#services
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PalantirdbService } from './palantirdb.service';
 import { Sprites } from 'palantir-db/dist/src/schema';
-import { DropsService } from './drops.service';
 import { SpriteDto } from 'src/modules/palantir/dto/sprites.dto';
-import { EventDropDto } from 'src/modules/palantir/dto/drops.dto';
 import { DtoCache } from './dtoCache';
 import { EventsService } from './events.service';
+import { EventDropDto } from 'src/modules/palantir/dto/events.dto';
 
 @Injectable()
 export class SpritesService {
@@ -32,6 +31,7 @@ export class SpritesService {
             eventDrop: eventDrop,
             id: sprite.ID,
             artist: sprite.Artist,
+            cost: sprite.Cost,
             url: sprite.URL,
             isRainbowAllowed: sprite.Rainbow == 1,
             isSpecial: sprite.Special == 1
