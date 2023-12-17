@@ -14,6 +14,11 @@ import { RainbowPreviewComponent } from './pages/tools/rainbow-preview/rainbow-p
 import { ScenesComponent } from './pages/tools/scenes/scenes.component';
 import { SpritesComponent } from './pages/tools/sprites/sprites.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CardBuilderComponent } from './pages/tools/card-builder/card-builder.component';
+import { ColorAlphaModule } from 'ngx-color/alpha';
+import { ColorHueModule } from 'ngx-color/hue';
+import { ColorShadeModule } from 'ngx-color/shade';
+import { ColorChromeModule } from 'ngx-color/chrome';
 
 
 @NgModule({
@@ -27,11 +32,16 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     HelpComponent,
     ToolsComponent,
     RainbowPreviewComponent,
+    CardBuilderComponent,
     ScenesComponent,
     SpritesComponent
   ],
   imports: [
     FormsModule,
+    ColorAlphaModule,
+    ColorHueModule,
+    ColorChromeModule,
+    ColorShadeModule,
     ReactiveFormsModule,
     CommonModule,
     PublicRoutingModule

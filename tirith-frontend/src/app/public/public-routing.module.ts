@@ -11,6 +11,8 @@ import { NavContentGuard } from '../shared/guards/nav-content.guard';
 import { ToolsComponent } from './pages/tools/tools.component';
 import { SpritesComponent } from './pages/tools/sprites/sprites.component';
 import { ScenesComponent } from './pages/tools/scenes/scenes.component';
+import { RainbowPreviewComponent } from './pages/tools/rainbow-preview/rainbow-preview.component';
+import { CardBuilderComponent } from './pages/tools/card-builder/card-builder.component';
 
 const helpNavigationData = {
   navigation: [
@@ -24,6 +26,8 @@ const helpNavigationData = {
 const toolsNavigationData = {
   navigation: [
     ["Tools", "tools", "route"],
+    ["Card Builder", "tools/card-builder", "route"],
+    ["Rainbow Preview", "tools/rainbow-preview", "route"],
     ["Sprites", "tools/sprites", "route"],
     ["Scenes", "tools/scenes", "route"],
   ]
@@ -85,6 +89,20 @@ const routes: Routes = [
   {
     path: 'tools/scenes',
     component: ScenesComponent,
+    pathMatch: "full",
+    canActivate: [NavContentGuard],
+    data: toolsNavigationData
+  },
+  {
+    path: 'tools/rainbow-preview',
+    component: RainbowPreviewComponent,
+    pathMatch: "full",
+    canActivate: [NavContentGuard],
+    data: toolsNavigationData
+  },
+  {
+    path: 'tools/card-builder',
+    component: CardBuilderComponent,
     pathMatch: "full",
     canActivate: [NavContentGuard],
     data: toolsNavigationData

@@ -64,6 +64,14 @@ h3 {
   font-weight: bold;
 }
 
+h4 {
+  width: 100%;
+  color: #aa8dd8;
+  font-size: 1.1rem;
+  text-align: center;
+  font-weight: 500;
+}
+
 
 input[type="text"],
 input[type="number"] {

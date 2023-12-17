@@ -1,17 +1,31 @@
-<h1>Test the rainbow color feature</h1>
-<h2>Rainbow sprites (marked with 🌈) can be color-customized.<br>
-  To adjust the color, you need to choose a number which will change the sprite's color channels.<br>
+<h1>Rainbow Preview</h1>
+<h3>Rainbow sprites (marked with 🌈) can be color-customized.<br>
+  To adjust the color, you need to choose a number between 0 and 200 which will change the sprite's color channels.<br>
   Here you can test out which color modification looks the best.
-</h2>
-
-<div class="flex flex-row gap-7 items-center">
-  <input type="number" #rainbowSpriteID placeholder="Sprite ID" />
-  <input type="number" #rainbowShift placeholder="Rainbow Shift" />
-  <input type="button" value="Preview Sprite">
+</h3>
+<br>
+<div class="flex flex-row gap-7 justify-center">
+  <input type="number" [formControl]="spriteInput" placeholder="Sprite ID" />
+  <input type="number" [formControl]="rainbowInput" placeholder="Rainbow Shift" />
+  <input type="button" value="Preview Sprite" (click)="setSpriteSource()">
 </div>
+<br>
+<div *ngIf="sprite !== undefined" class="flex flex-col items-center justify-center gap-7">
+  <div class="sprite">
+    <div tabindex="0" class="thumbnail" style="background-image: url({{sprite.url}})"> </div>
+    <div class="card">
+      <div>
+        <h3>#{{sprite.id}}</h3>
+      </div>
+      <div>
+        <h2>{{sprite.name}}</h2>
+      </div>
+      <div class="flexrow flexcenter fullwidth"><img src="{{sprite.url}}"></div>
 
-<div class="flex flex-row gap-7 items-center">
-  <input type="number" #rainbowSpriteID placeholder="Sprite ID" />
-  <input type="number" #rainbowShift placeholder="Rainbow Shift" />
-  <input type="button" value="Preview Sprite">
+      <div>
+        <h3>💰 {{sprite.cost}} {{sprite.eventDrop ? sprite.eventDrop .name + " Drops" : "Bubbles"}}</h3>
+      </div>
+    </div>
+  </div>
+  <h3>>rainbow {{spriteInput.value}} {{rainbowInput.value}}</h3>
 </div>
