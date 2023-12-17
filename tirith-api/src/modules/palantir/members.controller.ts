@@ -2,7 +2,7 @@
 https://docs.nestjs.com/controllers#controllers
 */
 
-import { Body, Controller, Delete, Get, Param, Patch, Query, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Query, Req, UseGuards } from '@nestjs/common';
 import { AuthentificationGuard } from 'src/guards/authentification.guard';
 import { UpdateDiscordID } from './dto/updateDiscord.dto';
 import { MemberGuard } from 'src/guards/member.guard';
@@ -11,6 +11,7 @@ import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { MembersService } from 'src/services/members.service';
 import { AccessTokenDto, MemberDto } from './dto/member.dto';
 import { MemberSearchDto } from './dto/memberSearch.dto';
+import { member } from 'palantir-db/dist/src/types';
 
 @Controller("members")
 @ApiTags("members")
@@ -25,6 +26,13 @@ export class MembersController {
     @ApiResponse({ status: 200, type: MemberSearchDto, isArray: true, description: "An array of matching members" })
     async findMembersWildcardSearch(@Query('content') content: string): Promise<MemberSearchDto[]> {
         return this.service.wildcardSearch(content);
+    }
+
+    @Get("me")
+    @ApiResponse({ status: 200, type: MemberDto, description: "The authenticated member" })
+    async getAuthenticatedMember(@Req() request: Request): Promise<MemberDto> {
+        const login = Number(((request as any).user as member).member.UserLogin);
+        return this.service.getByLogin(login);
     }
 
     @Get(":login")

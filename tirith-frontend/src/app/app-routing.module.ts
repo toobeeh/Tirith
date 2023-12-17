@@ -5,6 +5,7 @@ import { AdminRoutingModule } from './admin/admin-routing.module';
 import { AuthGuard } from './shared/guards/auth.guard';
 import { NavContentGuard } from './shared/guards/nav-content.guard';
 import { AuthRoutingModule } from './auth/auth-routing.module';
+import { UserRoutingModule } from './user/user-routing.module';
 
 const routes: Routes = [
 
@@ -19,6 +20,7 @@ const routes: Routes = [
         ["Get Typo", "https://tobeh.host/typo/", "external"],
         ["Infos & Help", "help", "route", true],
         ["Admin Panel", "admin", "route"],
+        ["My Profile", "user", "route"],
         ["Tools", "tools", "route", true],
       ]
     }
@@ -36,6 +38,20 @@ const routes: Routes = [
         ["Admin Panel", "/admin", "route"],
         ["Lobbies", "/admin/lobbies", "route"],
         ["Members", "/admin/members", "route"]
+      ]
+    }
+  },
+
+  // Load the UserRoutingModule for any path containing "user"
+  {
+    path: 'user',
+    loadChildren: () => UserRoutingModule,
+    canActivate: [AuthGuard, NavContentGuard],
+    canActivateChild: [AuthGuard, NavContentGuard],
+    data: {
+      navigation: [
+        ["Home", "/", "route"],
+        ["My Profile", "/user", "route"],
       ]
     }
   },

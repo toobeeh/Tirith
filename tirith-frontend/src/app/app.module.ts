@@ -11,6 +11,7 @@ import { AuthInterceptor } from './shared/interceptors/auth.interceptor';
 import { AuthModule } from './auth/auth.module';
 import { environment } from 'src/environments/environment';
 import { ApiModule, Configuration, ConfigurationParameters } from 'src/api';
+import { UserModule } from './user/user.module';
 
 
 export const apiConfigFactory = () => {
@@ -32,6 +33,7 @@ export const apiConfigFactory = () => {
     PublicModule,
     SharedModule,
     AuthModule,
+    UserModule,
     HttpClientModule
   ],
   providers: [

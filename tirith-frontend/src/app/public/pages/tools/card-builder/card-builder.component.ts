@@ -105,7 +105,7 @@ export class CardBuilderComponent {
     `;
 
     const badgesStyle = `
-      #early, moderator * {opacity: .5}
+      #early, #moderator * {opacity: .5}
     `;
 
     const svg = this.templateSvg
