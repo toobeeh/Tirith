@@ -84,11 +84,11 @@ export class CardBuilderComponent {
   }
 
   getCurrentColorConfig() {
-    const bgOpacity = new TinyColor(this.colors.get(colorInput.backgroundOpacity) ?? this.getModeDefault(colorInput.backgroundOpacity)).getAlpha().toFixed(2);
-    const lightText = this.colors.get(colorInput.light) ?? this.getModeDefault(colorInput.light);
-    const darkText = this.colors.get(colorInput.dark) ?? this.getModeDefault(colorInput.dark);
-    const headerColor = new TinyColor(this.colors.get(colorInput.header) ?? this.getModeDefault(colorInput.header)).toHexString();
-    const headerOpacity = new TinyColor(this.colors.get(colorInput.header) ?? this.getModeDefault(colorInput.header)).getAlpha().toFixed(2);
+    const bgOpacity = (Math.round(new TinyColor(this.colors.get(colorInput.backgroundOpacity) ?? this.getModeDefault(colorInput.backgroundOpacity)).getAlpha() * 100) / 100).toString();
+    const lightText = new TinyColor(this.colors.get(colorInput.light) ?? this.getModeDefault(colorInput.light)).toHexString();
+    const darkText = new TinyColor(this.colors.get(colorInput.dark) ?? this.getModeDefault(colorInput.dark)).toHexString();
+    const headerColor = new TinyColor(this.colors.get(colorInput.header) ?? this.getModeDefault(colorInput.header)).toHex8String();
+    const headerOpacity = (Math.round(new TinyColor(this.colors.get(colorInput.header) ?? this.getModeDefault(colorInput.header)).getAlpha() * 100) / 100).toString();
 
     return { bgOpacity, lightText, darkText, headerColor, headerOpacity };
   }
@@ -157,13 +157,21 @@ export class CardBuilderComponent {
     const colors = this.getCurrentColorConfig();
     const tag = this.imgur?.imgurTag ?? "-";
 
-    return `>customcard ${colors.headerColor} ${colors.lightText} ${colors.darkText} ${tag} ${colors.bgOpacity} ${colors.headerOpacity}`
+    return `>customcard ${colors.headerColor.slice(0, -2)} ${colors.lightText} ${colors.darkText} ${tag} ${colors.bgOpacity} ${colors.headerOpacity}`
   }
 
   /* HELPERS FOR PROCESSING BACKGROUND */
 
   async uploadImageToImgur(url: string) {
-    const image = await this.loadImage(url);
+    let image: HTMLImageElement;
+    try {
+      image = await this.loadImage(url, false);
+    }
+    catch {
+      this.toastService.show({ message: { title: "Be patient...", content: "This image might take longer to load, since the source does not allow direct access.\nTry sources like discord for faster processng." } });
+      image = await this.loadImage(url);
+    }
+
     const croppedImage = this.getCroppedImageBackground(image);
 
     const formdata = new FormData();

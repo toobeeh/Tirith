@@ -48,7 +48,7 @@
 <div class="fixed top-0 left-0 w-screen h-screen grid place-content-center gap-7" *ngIf="toastOpened">
   <div *ngFor="let msg of toastMessages">
     <h2>{{msg.title}}</h2>
-    <h3>{{msg.content}}</h3>
+    <h3 class="whitespace-pre">{{msg.content}}</h3>
   </div>
 </div>
 
