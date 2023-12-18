@@ -11,7 +11,9 @@ import { ReportsResponseDto } from './dto/reports.dto';
 import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { LobbiesResponseDto } from './dto/lobbies.dto';
 import { DropDto } from './dto/drops.dto';
+import { ApiSecurityNotes } from 'src/decorators/apiSecurityNote.decorator';
 
+@ApiSecurityNotes()
 @Controller("lobbies")
 @ApiTags("lobbies")
 @RequiredRole(AuthRoles.Moderator)

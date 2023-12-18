@@ -6,7 +6,9 @@ import { Controller, Get, Param } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { EventDropDto, EventDto } from './dto/events.dto';
 import { EventsService } from 'src/services/events.service';
+import { ApiSecurityNotes } from 'src/decorators/apiSecurityNote.decorator';
 
+@ApiSecurityNotes()
 @Controller("events")
 @ApiTags("events")
 export class EventsController {

@@ -6,10 +6,10 @@ import { Request } from 'express';
  * Enum with possible authentification levels
  */
 export enum AuthRoles {
-    Admin,
-    Moderator,
-    Member,
-    None
+    Admin = "Administrator",
+    Moderator = "Moderator",
+    Member = "Member",
+    None = "None"
 }
 
 /**

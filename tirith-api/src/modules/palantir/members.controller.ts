@@ -12,7 +12,9 @@ import { MembersService } from 'src/services/members.service';
 import { AccessTokenDto, MemberDto } from './dto/member.dto';
 import { MemberSearchDto } from './dto/memberSearch.dto';
 import { member } from 'palantir-db/dist/src/types';
+import { ApiSecurityNotes } from 'src/decorators/apiSecurityNote.decorator';
 
+@ApiSecurityNotes()
 @Controller("members")
 @ApiTags("members")
 @RequiredRole(AuthRoles.Moderator)

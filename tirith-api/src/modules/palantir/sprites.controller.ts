@@ -6,7 +6,9 @@ import { Controller, Get, Param } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { SpritesService } from 'src/services/sprites.service';
 import { SpriteDto } from './dto/sprites.dto';
+import { ApiSecurityNotes } from 'src/decorators/apiSecurityNote.decorator';
 
+@ApiSecurityNotes()
 @Controller("sprites")
 @ApiTags("sprites")
 export class SpritesController {

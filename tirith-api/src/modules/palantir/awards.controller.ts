@@ -6,7 +6,9 @@ import { Controller, Get } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AwardsService } from 'src/services/awards.service';
 import { AwardDto } from './dto/awards.dto';
+import { ApiSecurityNotes } from 'src/decorators/apiSecurityNote.decorator';
 
+@ApiSecurityNotes()
 @Controller("awards")
 @ApiTags("awards")
 export class AwardsController {

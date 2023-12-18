@@ -1,0 +1,38 @@
+import { AuthRoles } from "./roles.decorator";
+
+/**
+ * Adds security destails for required roles to the swagger description.
+ */
+export const ApiSecurityNotes = (): ClassDecorator => {
+    return (target: any) => {
+
+        /* get role requirement for class */
+        const role = Reflect.getMetadata("guardRequiredRole", target) as AuthRoles ?? AuthRoles.None;
+
+        /* get methods that are a path in the controller -> endpoint */
+        const methods = Object.getOwnPropertyNames(target.prototype)
+            .map(p => target.prototype[p])
+            .map(t => ({ target: t, meta: Reflect.getMetadataKeys(t) }))
+            .filter(t => t.meta.includes("path") && t.meta.includes("method"));
+
+        methods.forEach(method => {
+
+            /* get method specific security */
+            const methodRole = Reflect.getMetadata("guardRequiredRole", method.target) as AuthRoles ?? role;
+            const ownerOverride = Reflect.getMetadata("guardResourceOwner", method.target) as string ?? null;
+            const existingMetadata = Reflect.getMetadata('swagger/apiOperation', method.target) || {};
+
+            if (!methodRole) return;
+
+            /* build security information */
+            let rolesDesc = `Required Role: ${AuthRoles[methodRole]}`;
+            if (ownerOverride != null) rolesDesc += `\n\nAccess override if {${ownerOverride}} matches the client login.`;
+
+            /* add info to swagger description */
+            Reflect.defineMetadata('swagger/apiOperation', {
+                ...existingMetadata,
+                description: (existingMetadata.description ? "\n\n" : "") + rolesDesc,
+            }, method.target);
+        });
+    };
+};
