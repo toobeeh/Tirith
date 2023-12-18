@@ -8,7 +8,7 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "start:dev": "ng serve -o",
-    "generate:api": "openapi-generator-cli generate -i http://localhost:3000/docs-json -g typescript-angular -o src/api/ -p=removeOperationIdPrefix=true"
+    "generate:api": "openapi-generator-cli generate -i http://localhost:3000/openapi.json -g typescript-angular -o src/api/ -p=removeOperationIdPrefix=true"
   },
   "private": true,
   "dependencies": {

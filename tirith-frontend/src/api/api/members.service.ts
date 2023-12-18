@@ -98,6 +98,7 @@ export class MembersService {
     }
 
     /**
+     * Required Role: Moderator
      * @param login 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
@@ -161,6 +162,8 @@ export class MembersService {
     }
 
     /**
+     * asd
+     *   Required Role: Moderator
      * @param content 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
@@ -232,6 +235,7 @@ export class MembersService {
     }
 
     /**
+     * Required Role: Member
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -292,6 +296,7 @@ export class MembersService {
     }
 
     /**
+     * Required Role: Moderator  Access override if {login} matches the client login.
      * @param login 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
@@ -356,6 +361,7 @@ export class MembersService {
     }
 
     /**
+     * Required Role: Moderator
      * @param id 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
@@ -420,6 +426,7 @@ export class MembersService {
     }
 
     /**
+     * Required Role: Moderator  Access override if {login} matches the client login.
      * @param login 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
@@ -484,6 +491,7 @@ export class MembersService {
     }
 
     /**
+     * Required Role: Moderator  Access override if {login} matches the client login.
      * @param login 
      * @param token 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
@@ -551,6 +559,7 @@ export class MembersService {
     }
 
     /**
+     * Required Role: Moderator
      * @param login 
      * @param updateDiscordID 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.

@@ -6,8 +6,10 @@ import { Body, Controller, Get, HttpException, HttpStatus, Post, Query } from '@
 import { PalantirdbService } from 'src/services/palantirdb.service';
 import { DiscordOauthService } from 'src/services/discord-oauth.service';
 import { RegistrationRequest, TokenResponse } from './dto/registration.dto';
-import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiSecurityNotes } from 'src/decorators/apiSecurityNote.decorator';
 
+@ApiSecurityNotes()
 @Controller("auth")
 @ApiTags("auth")
 export class AuthController {
@@ -19,6 +21,7 @@ export class AuthController {
      * @returns the access token of the user, if one exists
      */
     @Get("token")
+    @ApiOperation({ summary: "Get the access token for a discord user with given oauth2 auth code" })
     @ApiResponse({ status: 200, type: TokenResponse, description: "Oauth and token obtained successful" })
     async getAccessToken(@Query("code") code: string): Promise<TokenResponse> {
 
@@ -42,6 +45,7 @@ export class AuthController {
      * @returns Details of the oauth user and the new user
      */
     @Post("register")
+    @ApiOperation({ summary: "Create a palantir account for a discord user with given oauth2 auth code" })
     @ApiResponse({ status: 200, type: TokenResponse, description: "Oauth successful and user created" })
     async registerDiscordUser(@Body() { code, connectTypo }: RegistrationRequest): Promise<TokenResponse> {
 
