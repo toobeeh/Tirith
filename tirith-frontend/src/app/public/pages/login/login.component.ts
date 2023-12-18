@@ -20,7 +20,7 @@ export class LoginComponent {
           const accessToken = event.data.accessToken;
           console.log("Logged in with token: ", accessToken);
           localStorage.setItem("AUTH_BEARER", accessToken);
-          this.router.navigate(["/"]);
+          this.router.navigate(["/user"]);
         }
       }, { once: true });
     }

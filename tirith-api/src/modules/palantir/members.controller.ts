@@ -29,6 +29,7 @@ export class MembersController {
     }
 
     @Get("me")
+    @RequiredRole(AuthRoles.Member)
     @ApiResponse({ status: 200, type: MemberDto, description: "The authenticated member" })
     async getAuthenticatedMember(@Req() request: Request): Promise<MemberDto> {
         const login = Number(((request as any).user as member).member.UserLogin);

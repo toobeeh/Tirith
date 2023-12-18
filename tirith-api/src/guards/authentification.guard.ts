@@ -31,7 +31,7 @@ export class AuthentificationGuard implements CanActivate {
     const resourceOwner = getResourceOwner(context, this.reflector);
     if (user.member.UserLogin === resourceOwner?.toString()) return true;
 
-    /* get user flags and check if they math the required role */
+    /* get user flags and check if they match the required role */
     const flags = this.auth.parseFlags(user.flags);
     return requiredRole === AuthRoles.Admin ? flags.admin :
       requiredRole === AuthRoles.Moderator ? flags.moderator || flags.moderator : true;

@@ -7,6 +7,7 @@ type navArray = Array<[string, string, "external" | "route", boolean?]>;
 })
 export class NavPlanetService {
 
+  private navElement?: HTMLDivElement;
   private navLinks: navArray = [];
   private openStyle?: HTMLStyleElement;
   private hideAllStyle?: HTMLStyleElement;
@@ -44,7 +45,14 @@ export class NavPlanetService {
 
   constructor() { }
 
-  openNav(navPlanet: HTMLDivElement) {
+  registerNav(element: HTMLDivElement) {
+    this.navElement = element;
+  }
+
+  openNav(navPlanet?: HTMLDivElement) {
+
+    if (!navPlanet) navPlanet = this.navElement;
+    if (navPlanet === undefined) throw new Error("no nav element available");
 
     // get position of current planet peek
     let planRect = navPlanet.getBoundingClientRect();
@@ -88,14 +96,14 @@ export class NavPlanetService {
     setTimeout(() => {
       style.innerHTML += `
         #navClone{
-            height:80vh;
-            width:80vh;
-            top:10vh;
-            animation-name:hopUp;
+            height: 40rem;
+            width: 40rem;
+            top: calc((100% - 40rem) / 2);
+            animation-name: hopUp;
             animation-duration: 4s;
             animation-iteration-count: infinite;
             animation-timing-function: ease-in-out;
-            left:calc(50vw - 40vh);
+            left: calc((100% - 40rem) / 2);
         }
         #navClone h1{
             transition: opacity 0.5s;

@@ -33,7 +33,8 @@
   <a routerLink="/">
     <img id="logo" src="res/moon.gif" />
   </a>
-  <div #planet id="navPlanCont" (click)="navPlanet.openNav(planet)">
+  <div #planet id="navPlanCont" (click)="navPlanet.openNav(planet)"
+    [style.visibility]="navPlanet.content.length > 0 ? undefined : 'hidden'">
     <img id="navPlan" src="res/navPlan.gif">
     <img id="navPlanCap" src="res/navPlanOverlay.gif">
   </div>

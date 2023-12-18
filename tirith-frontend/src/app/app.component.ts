@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 import { NavPlanetService } from './shared/services/nav-planet.service';
 import { ToastService } from './shared/services/toast.service';
 import { trigger, state, style, transition, animate } from '@angular/animations';
@@ -17,10 +17,13 @@ const fadeInOut = trigger('fadeInOut', [
   styleUrls: ['./app.component.css'],
   animations: [fadeInOut]
 })
-export class AppComponent {
+export class AppComponent implements AfterViewInit {
   title = 'Skribbl Typo';
 
   public toastOpened = false;
+
+  @ViewChild("planet")
+  navPlanetElement?: ElementRef<HTMLDivElement>;
 
   public get toastMessages() {
     return this.toastService.currentMessages;
@@ -39,5 +42,10 @@ export class AppComponent {
         if (lastGuardToken) toastService.cancelMessage(lastGuardToken);
       }
     });
+  }
+
+  ngAfterViewInit(): void {
+    if (this.navPlanetElement == undefined) throw new Error("nav planet not referenced");
+    this.navPlanet.registerNav(this.navPlanetElement.nativeElement);
   }
 }

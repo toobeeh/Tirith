@@ -50,8 +50,8 @@ const routes: Routes = [
     canActivateChild: [AuthGuard, NavContentGuard],
     data: {
       navigation: [
-        ["Home", "/", "route"],
-        ["My Profile", "/user", "route"],
+        /* ["Home", "/", "route"],
+        ["My Profile", "/user", "route"], */
       ]
     }
   },

@@ -1,6 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import { SwaggerModule, DocumentBuilder, SwaggerCustomOptions } from '@nestjs/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -12,8 +12,19 @@ async function bootstrap() {
     .setVersion('1.0')
     .addBearerAuth()
     .build();
+
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('docs', app, document);
+
+  const swaggerOptions: SwaggerCustomOptions = {
+    customSiteTitle: "Typo API Docs",
+    customfavIcon: "https://www.typo.rip/res/128MaxFit.png",
+    jsonDocumentUrl: "openapi.json",
+    customCss: `
+      .swagger-ui .topbar { display: none }
+    `
+  };
+
+  SwaggerModule.setup('docs', app, document, swaggerOptions);
 
   await app.listen(3000);
 }
