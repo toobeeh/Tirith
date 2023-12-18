@@ -33,7 +33,7 @@ export class AppComponent {
     router.events.subscribe(event => {
       if (event instanceof GuardsCheckStart) {
         if (lastGuardToken) toastService.cancelMessage(lastGuardToken);
-        lastGuardToken = toastService.show({ message: { title: "Loading.." } });
+        lastGuardToken = toastService.show({ message: { title: "Loading.." }, durationMs: 'cancel' });
       }
       if (event instanceof GuardsCheckEnd || event instanceof NavigationCancel) {
         if (lastGuardToken) toastService.cancelMessage(lastGuardToken);
