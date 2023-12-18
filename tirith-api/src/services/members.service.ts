@@ -97,6 +97,22 @@ export class MembersService {
     }
 
     /**
+     * Removes a connected guild of a member
+     * @param login the member login
+     * @param guildToken the guild token to be filtered out
+     */
+    async removeConnectedGuild(login: number, guildToken: number): Promise<void> {
+        const user = await this.database.getUserByLogin(login);
+        if (!user.success) throw new HttpException("No user for this login", HttpStatus.NOT_FOUND);
+
+        const member = user.result.member;
+        member.Guilds = member.Guilds.filter(g => g.ObserveToken != guildToken);
+        const memberString = JSON.stringify(member);
+
+        await this.database.updateMemberJSON(login, memberString);
+    }
+
+    /**
      * Gets the accesstoken for a user login
      * @param login the member login
      * @returns the user's access token

@@ -61,6 +61,13 @@ export class MembersController {
         return this.service.clearDropBoost(login);
     }
 
+    @Delete(":login/guilds/:token")
+    @ResourceOwner("login")
+    @ApiResponse({ status: 204 })
+    async removeConnectedGuild(@Param('login') login: number, @Param('token') guildToken: number): Promise<void> {
+        return this.service.removeConnectedGuild(login, guildToken);
+    }
+
     @Get("discord/:id")
     @ApiResponse({ status: 200, type: MemberDto, description: "The member with specified discord id" })
     async getMemberByDiscordID(@Param('id') id: string): Promise<MemberDto> {

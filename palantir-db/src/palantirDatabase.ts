@@ -211,6 +211,27 @@ export class PalantirDatabase {
     }
 
     /**
+     * Updates a palantir user member string
+     * @param login the target user login
+     * @param memberString the json stringified which will replace the current data
+     */
+    async updateMemberJSON(login: number, memberString: string) {
+        let result = this.emptyResult<void>();
+
+        try {
+            const update = await this.update(
+                "UPDATE Members SET Member = ? WHERE Login = ?",
+                [memberString, login]
+            );
+            if (update.affectedRows != 1) throw new Error("no member updated");
+        }
+        catch (e) {
+            console.warn("Error in query: ", e);
+        }
+        return result;
+    }
+
+    /**
      * Get members that match a search string
      * @param content a string that should be contained in the member json
      * @returns all matching members
