@@ -2,7 +2,7 @@
 https://docs.nestjs.com/controllers#controllers
 */
 
-import { Body, Controller, Delete, Get, Param, Patch, Query, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Query, Req, UseGuards, Request } from '@nestjs/common';
 import { AuthentificationGuard } from 'src/guards/authentification.guard';
 import { UpdateDiscordID } from './dto/updateDiscord.dto';
 import { MemberGuard } from 'src/guards/member.guard';
