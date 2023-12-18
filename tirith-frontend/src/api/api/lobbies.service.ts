@@ -96,6 +96,7 @@ export class LobbiesService {
     }
 
     /**
+     * Get all logged lobby reports
      * Required Role: Moderator
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
@@ -157,6 +158,7 @@ export class LobbiesService {
     }
 
     /**
+     * Get all drops caught in a lobby
      * Required Role: Moderator
      * @param key 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
@@ -222,6 +224,7 @@ export class LobbiesService {
     }
 
     /**
+     * Get all present lobbies
      * Required Role: Moderator
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.

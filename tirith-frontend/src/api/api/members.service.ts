@@ -98,6 +98,7 @@ export class MembersService {
     }
 
     /**
+     * Delete a dropbosot of a member
      * Required Role: Moderator
      * @param login 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
@@ -162,8 +163,8 @@ export class MembersService {
     }
 
     /**
-     * asd
-     *   Required Role: Moderator
+     * Find members that contain a string
+     * Required Role: Moderator
      * @param content 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
@@ -235,6 +236,7 @@ export class MembersService {
     }
 
     /**
+     * Get the currently authenticated member
      * Required Role: Member
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
@@ -296,6 +298,7 @@ export class MembersService {
     }
 
     /**
+     * Get an access token of a member
      * Required Role: Moderator  Access override if {login} matches the client login.
      * @param login 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
@@ -361,6 +364,7 @@ export class MembersService {
     }
 
     /**
+     * Get a member by their discord id
      * Required Role: Moderator
      * @param id 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
@@ -426,6 +430,7 @@ export class MembersService {
     }
 
     /**
+     * Get a member by their login
      * Required Role: Moderator  Access override if {login} matches the client login.
      * @param login 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
@@ -491,6 +496,7 @@ export class MembersService {
     }
 
     /**
+     * Delete a server from a member\&#39;s connected guilds
      * Required Role: Moderator  Access override if {login} matches the client login.
      * @param login 
      * @param token 
@@ -559,6 +565,7 @@ export class MembersService {
     }
 
     /**
+     * Update a member\&#39;s discord ID and merge with other if present
      * Required Role: Moderator
      * @param login 
      * @param updateDiscordID 

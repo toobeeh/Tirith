@@ -94,6 +94,7 @@ export class EventsService {
     }
 
     /**
+     * Get all event drops
      * Required Role: None
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
@@ -148,6 +149,7 @@ export class EventsService {
     }
 
     /**
+     * Get all events
      * Required Role: None
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
@@ -202,6 +204,7 @@ export class EventsService {
     }
 
     /**
+     * Get an event by ID
      * Required Role: None
      * @param id 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
@@ -260,6 +263,7 @@ export class EventsService {
     }
 
     /**
+     * Get an event drop by ID
      * Required Role: None
      * @param id 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
@@ -318,6 +322,7 @@ export class EventsService {
     }
 
     /**
+     * Get all event drops of an event
      * Required Role: None
      * @param id 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
