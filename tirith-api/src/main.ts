@@ -1,6 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { SwaggerModule, DocumentBuilder, SwaggerCustomOptions } from '@nestjs/swagger';
+import { swaggerEnableDiscordLogin } from './swaggerEnableDiscord';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -21,7 +22,8 @@ async function bootstrap() {
     jsonDocumentUrl: "openapi.json",
     customCss: `
       .swagger-ui .topbar { display: none }
-    `
+    `,
+    customJsStr: swaggerEnableDiscordLogin
   };
 
   SwaggerModule.setup('docs', app, document, swaggerOptions);
