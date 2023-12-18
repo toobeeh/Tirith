@@ -27,7 +27,7 @@ export class LoginComponent {
 
     listenOnce();
 
-    window.open('https://tobeh.host/Orthanc/auth/ext/', 'Log in to Palantir', 'height=650,width=500,right=0,top=100,resizable=yes,scrollbars=yes,toolbar=yes,menubar=no,location=no,directories=no, status=yes');
+    window.open('https:/www.typo.rip/auth/', 'Log in to Palantir', 'height=650,width=500,right=0,top=100,resizable=yes,scrollbars=yes,toolbar=yes,menubar=no,location=no,directories=no, status=yes');
   }
 
 }

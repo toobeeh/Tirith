@@ -1,1 +1,76 @@
-<p>profile works!</p>
+<div *ngIf="user$ | async as profile; else loadingProfile">
+
+  <!-- overview card -->
+  <div class="grid grid-cols-4 gap-10">
+
+    <div></div>
+
+    <!-- summary -->
+    <div class="col-span-2 listCard profileHead grid grid-cols-2 items-center"
+      [style.backgroundImage]="'url(' + getActiveSceneUrl(profile.scenes) + ')'">
+      <h2 class="col-span-2">Profile of {{profile.user.userName}}</h2>
+
+      <div>
+        <h3>{{profile.user.bubbles}} Bubbles</h3>
+        <h3>{{profile.user.drops}} Drops</h3>
+      </div>
+
+      <div class="h-32 w-32 relative">
+        <div *ngFor="let url of getActiveSpriteUrls(profile.sprites)" [style.backgroundImage]="'url(' + url + ')'"
+          class="bg-cover bg-center bg-no-repeat inset-0 absolute"> </div>
+      </div>
+    </div>
+
+    <div class="w-full h-full grid place-content-center">
+      <input type="button" value="Palantir Logout" (click)="logout()">
+    </div>
+
+    <!-- scenes and sprites -->
+    <div class="listCard h-fit">
+      <h3>Sprites</h3>
+      <ul>
+        <li *ngFor="let sprite of profile.sprites"><small>#{{sprite.dto.id}}</small> {{sprite.dto.name}} <b
+            *ngIf="sprite.inv!.active">(active))</b>
+        </li>
+      </ul>
+    </div>
+
+    <div class="listCard h-fit">
+      <h3>Scenes</h3>
+      <ul>
+        <li *ngFor="let scene of profile.scenes"><small>#{{scene.dto.id}}</small> {{scene.dto.name}} <b
+            *ngIf="scene.inv!.active">(active)</b>
+        </li>
+      </ul>
+    </div>
+
+    <div class="listCard h-fit col-span-2 items-center">
+      <h3>Connected Discord servers</h3>
+
+      <details>
+        <summary>
+          About connected servers
+        </summary>
+        You can connect to discord servers to see your friends playing.<br>
+        Remove the server if you don't want people to see when you're playing.<br>
+        You can find the link to connect to a server usually in the lobbies channel.
+        <br>
+      </details>
+      <ol>
+        <li class="py-1 flex gap-5 items-center group" *ngFor="let server of profile.user.guilds">
+          <div class="font-semibold grow">{{server.GuildName}}</div>
+          <small>https://typo.rip/i?invite={{server.ObserveToken}}</small>
+          <div
+            class="text-red-500 opacity-0 font-semibold group-hover:opacity-100 cursor-pointer select-none justify-self-end">
+            Remove</div>
+        </li>
+      </ol>
+    </div>
+
+  </div>
+
+</div>
+
+<ng-template #loadingProfile>
+  <h2>Loading profile...</h2>
+</ng-template>

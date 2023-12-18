@@ -12,11 +12,15 @@ import { AuthModule } from './auth/auth.module';
 import { environment } from 'src/environments/environment';
 import { ApiModule, Configuration, ConfigurationParameters } from 'src/api';
 import { UserModule } from './user/user.module';
+import { UserService } from './shared/services/user-session.service';
 
 
 export const apiConfigFactory = () => {
   const params: ConfigurationParameters = {
     basePath: environment.apiUrl,
+    credentials: {
+      "bearer": () => UserService.getToken() ?? undefined
+    }
   };
   return new Configuration(params);
 };
@@ -36,9 +40,7 @@ export const apiConfigFactory = () => {
     UserModule,
     HttpClientModule
   ],
-  providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
-  ],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

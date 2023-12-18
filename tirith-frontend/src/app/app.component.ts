@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NavPlanetService } from './shared/services/nav-planet.service';
 import { ToastService } from './shared/services/toast.service';
 import { trigger, state, style, transition, animate } from '@angular/animations';
+import { GuardsCheckEnd, GuardsCheckStart, NavigationCancel, Router } from '@angular/router';
 
 const fadeInOut = trigger('fadeInOut', [
   state('void', style({
@@ -17,7 +18,7 @@ const fadeInOut = trigger('fadeInOut', [
   animations: [fadeInOut]
 })
 export class AppComponent {
-  title = 'SKribbl Typo';
+  title = 'Skribbl Typo';
 
   public toastOpened = false;
 
@@ -25,7 +26,18 @@ export class AppComponent {
     return this.toastService.currentMessages;
   }
 
-  constructor(public navPlanet: NavPlanetService, private toastService: ToastService) {
+  constructor(public navPlanet: NavPlanetService, private toastService: ToastService, router: Router) {
     toastService.changes.subscribe(state => this.toastOpened = state);
+
+    let lastGuardToken: Symbol | undefined;
+    router.events.subscribe(event => {
+      if (event instanceof GuardsCheckStart) {
+        if (lastGuardToken) toastService.cancelMessage(lastGuardToken);
+        lastGuardToken = toastService.show({ message: { title: "Loading.." } });
+      }
+      if (event instanceof GuardsCheckEnd || event instanceof NavigationCancel) {
+        if (lastGuardToken) toastService.cancelMessage(lastGuardToken);
+      }
+    });
   }
 }

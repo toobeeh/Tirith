@@ -1,17 +1,14 @@
 import { Injectable } from '@angular/core';
-import { map, tap } from 'rxjs';
+import { Observable, map, of, switchMap, tap } from 'rxjs';
 import { MemberDto, MembersService } from 'src/api';
 
 @Injectable({
   providedIn: 'root'
 })
-export class UserSessionService {
+export class UserService {
 
   private _user?: MemberDto;
-
-  private get token() {
-    return localStorage.getItem("AUTH_BEARER");
-  }
+  private static readonly tokenKey = "AUTH_BEARER";
 
   constructor(private memberService: MembersService) { }
 
@@ -19,15 +16,19 @@ export class UserSessionService {
     return this._user !== undefined;
   }
 
-  public get user() {
-    if (!this._user) throw new Error("Not logged in");
-    return this._user;
+  public static getToken() {
+    return localStorage.getItem(UserService.tokenKey);
   }
 
-  public refreshUser() {
-    return this.memberService.getAuthenticatedMember().pipe(
-      tap(member => this._user = member),
-      map(() => void 1)
+  public logout() {
+    this._user = undefined;
+    localStorage.removeItem(UserService.tokenKey);
+  }
+
+  public getUser(forceFetch = false) {
+    return of(this._user).pipe(
+      switchMap(user => user && !forceFetch ? of(user) : this.memberService.getAuthenticatedMember()),
+      tap(user => this._user = user)
     );
   }
 }
