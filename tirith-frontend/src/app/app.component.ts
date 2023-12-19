@@ -39,7 +39,7 @@ export class AppComponent implements AfterViewInit {
     router.events.subscribe(event => {
       if (event instanceof GuardsCheckStart) {
         if (lastGuardToken) toastService.cancelMessage(lastGuardToken);
-        lastGuardToken = toastService.show({ message: { title: "Loading.." }, durationMs: 'cancel' });
+        lastGuardToken = toastService.show({ message: { title: "Loading page.." }, durationMs: 'cancel' });
       }
       if (event instanceof GuardsCheckEnd || event instanceof NavigationCancel) {
         if (lastGuardToken) toastService.cancelMessage(lastGuardToken);

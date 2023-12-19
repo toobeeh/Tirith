@@ -20,6 +20,7 @@ import { ColorHueModule } from 'ngx-color/hue';
 import { ColorShadeModule } from 'ngx-color/shade';
 import { ColorChromeModule } from 'ngx-color/chrome';
 import { WorkshopComponent } from './pages/tools/workshop/workshop.component';
+import { InviteComponent } from './pages/invite/invite.component';
 
 
 @NgModule({
@@ -36,7 +37,8 @@ import { WorkshopComponent } from './pages/tools/workshop/workshop.component';
     CardBuilderComponent,
     ScenesComponent,
     SpritesComponent,
-    WorkshopComponent
+    WorkshopComponent,
+    InviteComponent
   ],
   imports: [
     FormsModule,

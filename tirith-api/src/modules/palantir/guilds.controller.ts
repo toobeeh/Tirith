@@ -18,7 +18,7 @@ export class GuildsController {
     @Get(":token/invite")
     @ApiOperation({ summary: "Get invite information of a guild" })
     @ApiResponse({ status: 200, type: GuildInviteDto, description: "The invite information of a guild" })
-    async getSpriteById(@Param('token') token: number): Promise<GuildInviteDto> {
+    async getGuildInvite(@Param('token') token: number): Promise<GuildInviteDto> {
         return this.service.getGuildPreview(token);
     }
 }

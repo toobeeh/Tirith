@@ -1,0 +1,31 @@
+<div class="w-full h-full grid place-content-center">
+
+  <div class="card p-5 grid grid-cols-[auto_auto_auto_auto] grid-rows-4 items-center gap-5"
+    *ngIf="invite$ | async as invite; else loading">
+
+    <div class="h-32 w-32 rounded-full bg-center bg-no-repeat bg-contain row-span-4"
+      [style.backgroundImage]="'url(' + invite.invite.iconUrl + ')'"> </div>
+
+    <h2 class="col-span-3">Invite from {{invite.invite.name}}</h2>
+
+    <h3 class="col-span-3">{{invite.invite.connectedMembers}} people have already connected</h3>
+
+    <ul class="row-span-2 col-span-2 align-middle">
+      <li>Easily join your friends on skribbl.io</li>
+      <li>Show on Discord when you're playing</li>
+      <li>Be part of the Palantir leaderboard</li>
+    </ul>
+
+    <input *ngIf="invite.user !== undefined && !userHasJoined(invite.invite, invite.user)" class="row-span-2"
+      type="button" value="Connect {{invite.invite.name}}" (click)="connect(invite.invite, invite.user)">
+    <input *ngIf="invite.user === undefined" class="row-span-2" type="button" value="Log in to connect"
+      (click)="redirectToLogin()">
+    <div *ngIf="invite.user !== undefined && userHasJoined(invite.invite, invite.user)" class="row-span-2">
+      <h3>You're in!</h3>
+    </div>
+  </div>
+
+  <ng-template #loading>
+    <h2>Loading invite..</h2>
+  </ng-template>
+</div>

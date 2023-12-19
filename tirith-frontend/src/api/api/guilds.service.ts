@@ -98,12 +98,12 @@ export class GuildsService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getSpriteById(token: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<GuildInviteDto>;
-    public getSpriteById(token: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<GuildInviteDto>>;
-    public getSpriteById(token: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<GuildInviteDto>>;
-    public getSpriteById(token: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+    public getGuildInvite(token: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<GuildInviteDto>;
+    public getGuildInvite(token: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<GuildInviteDto>>;
+    public getGuildInvite(token: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<GuildInviteDto>>;
+    public getGuildInvite(token: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
         if (token === null || token === undefined) {
-            throw new Error('Required parameter token was null or undefined when calling getSpriteById.');
+            throw new Error('Required parameter token was null or undefined when calling getGuildInvite.');
         }
 
         let localVarHeaders = this.defaultHeaders;

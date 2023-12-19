@@ -43,6 +43,10 @@ export class UserService {
     );
   }
 
+  public invalidateUser() {
+    this._user = undefined;
+  }
+
   public parseFlags(flags: number): userFlags {
     const flagArray = ("00000000" + (flags >>> 0).toString(2)).slice(-8).split("")
       .map(f => Number(f)).reverse();

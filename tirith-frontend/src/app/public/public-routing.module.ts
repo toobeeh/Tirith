@@ -14,6 +14,7 @@ import { ScenesComponent } from './pages/tools/scenes/scenes.component';
 import { RainbowPreviewComponent } from './pages/tools/rainbow-preview/rainbow-preview.component';
 import { CardBuilderComponent } from './pages/tools/card-builder/card-builder.component';
 import { WorkshopComponent } from './pages/tools/workshop/workshop.component';
+import { InviteComponent } from './pages/invite/invite.component';
 
 const helpNavigationData = {
   navigation: [
@@ -108,6 +109,10 @@ const routes: Routes = [
   {
     path: 'privacy',
     component: PrivacyComponent
+  },
+  {
+    path: 'invite/:token',
+    component: InviteComponent
   }
 ];
 
