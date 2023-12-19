@@ -1,8 +1,11 @@
 <h1>Sprite List</h1><br>
-<div class="flex flex-row gap-7 justify-center">
+<div class="flex flex-row gap-7 justify-center items-center">
   <h4 class="w-auto">Filter sprite tags: </h4>
   <input [formControl]="filterInput" type="text" placeholder="#regular">
+  <input type="button" [value]="orderModeCaption" (click)="toggleOrderMode()">
+  <input type="button" [value]="orderDirectionCaption" (click)="toggleOrderDirection()">
 </div>
+<br>
 <br>
 <div class="flex flex-wrap gap-12 justify-center">
 

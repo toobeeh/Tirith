@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormBuilder, FormControl } from '@angular/forms';
-import { debounce, debounceTime, map } from 'rxjs';
+import { debounce, debounceTime, map, of } from 'rxjs';
 import { SpriteDto, SpritesService } from 'src/api';
 
 @Component({
@@ -19,11 +19,13 @@ export class SpritesComponent {
   public filterInput = new FormControl("#regular");
 
   public sprites$;
+  private orderMode: "price" | "id" = "id";
+  private orderDirection: "asc" | "desc" = "asc";
 
   constructor(spriteService: SpritesService) {
 
     this.sprites$ = this.filterInput.valueChanges
-      .pipe(debounceTime(200), map(() => this.filterSprites()));
+      .pipe(debounceTime(100), map(() => this.filterSprites()));
 
     spriteService.getAllSprites().subscribe(sprites => {
       this.sprites = sprites;
@@ -31,12 +33,25 @@ export class SpritesComponent {
     });
   }
 
+  public get orderModeCaption() {
+    return this.orderMode == "price" ? "Ordered By Price" : "Ordered By ID";
+  }
+
+  public get orderDirectionCaption() {
+    return this.orderDirection == "asc" ? "Ascending" : "Descending";
+  }
+
   private filterSprites() {
     const filter = this.filterInput.value ?? "";
 
     return this.sprites
       .map(s => ({ ...s, tags: this.getSpriteTags(s) }))
-      .filter(s => s.tags.some(tag => tag.toLocaleLowerCase().includes(filter.toLocaleLowerCase())));
+      .filter(s => s.tags.some(tag => tag.toLocaleLowerCase().includes(filter.toLocaleLowerCase())))
+      .sort((a, b) => {
+        let propA = this.orderMode === "id" ? a.id : a.cost;
+        let propB = this.orderMode === "id" ? b.id : b.cost;
+        return this.orderDirection === "asc" ? propA - propB : propB - propA;
+      });
   }
 
   private getSpriteTags(sprite: SpriteDto) {
@@ -50,6 +65,16 @@ export class SpritesComponent {
     if (sprite.isRainbowAllowed) tags.push("rainbow");
 
     return tags.map(t => `#${t}`);
+  }
+
+  public toggleOrderMode() {
+    this.orderMode = this.orderMode === "id" ? "price" : "id";
+    this.filterInput.setValue(this.filterInput.value);
+  }
+
+  public toggleOrderDirection() {
+    this.orderDirection = this.orderDirection === "asc" ? "desc" : "asc";
+    this.filterInput.setValue(this.filterInput.value);
   }
 
 }
