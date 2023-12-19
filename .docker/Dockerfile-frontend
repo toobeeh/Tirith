@@ -26,7 +26,7 @@ RUN echo "Building app...\n" && \
     echo "build was completed."
 
 # Copy to cwd node (???)
-RUN cp /app/tirith-frontend/dist /app/dist
+RUN cp -r /app/tirith-frontend/dist /app/dist
 
 # Copy the entrypoint script
 COPY .docker/entrypoint-frontend.sh /entrypoint.sh
