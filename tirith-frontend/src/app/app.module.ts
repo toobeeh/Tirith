@@ -31,7 +31,7 @@ export const apiConfigFactory = () => {
   ],
   imports: [
     ApiModule.forRoot(apiConfigFactory),
-    BrowserModule,
+    BrowserModule.withServerTransition({ appId: 'serverApp' }),
     AppRoutingModule,
     AdminModule,
     PublicModule,

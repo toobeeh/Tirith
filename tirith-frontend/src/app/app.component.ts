@@ -1,8 +1,9 @@
-import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Optional, ViewChild } from '@angular/core';
 import { NavPlanetService } from './shared/services/nav-planet.service';
 import { ToastService } from './shared/services/toast.service';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { GuardsCheckEnd, GuardsCheckStart, NavigationCancel, Router } from '@angular/router';
+import { SsrMetadataService } from './shared/services/ssr-metadata.service';
 
 const fadeInOut = trigger('fadeInOut', [
   state('void', style({
@@ -29,8 +30,10 @@ export class AppComponent implements AfterViewInit {
     return this.toastService.currentMessages;
   }
 
-  constructor(public navPlanet: NavPlanetService, private toastService: ToastService, router: Router) {
+  constructor(public navPlanet: NavPlanetService, private toastService: ToastService, router: Router, @Optional() ssrTags?: SsrMetadataService) {
     toastService.changes.subscribe(state => this.toastOpened = state);
+
+    ssrTags?.updateMetadata();
 
     let lastGuardToken: Symbol | undefined;
     router.events.subscribe(event => {
