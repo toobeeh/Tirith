@@ -25,12 +25,14 @@ RUN echo "Building app...\n" && \
     npm run build -w tirith-frontend || exit 1 && \
     echo "build was completed."
 
+# Copy to cwd node (???)
+COPY /app/tirith-frontend/dist /app/dist
+
 # Copy the entrypoint script
 COPY .docker/entrypoint-frontend.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
 EXPOSE 4000
-WORKDIR /app/tirith-frontend
 
 ENTRYPOINT ["/entrypoint.sh"]
-CMD ["node", "dist/Tirith/server/main.js"]
+CMD ["node", "/app/tirith-frontend/dist/Tirith/server/main.js"]
