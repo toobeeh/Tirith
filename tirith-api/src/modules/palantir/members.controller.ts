@@ -83,7 +83,7 @@ export class MembersController {
     @ApiOperation({ summary: "Connect a user to a guild with given token" })
     @ApiResponse({ status: 204 })
     async connectMemberToGuild(@Param('login') login: number, @Param('token') guildToken: number): Promise<void> {
-        return this.service.removeConnectedGuild(login, guildToken);
+        return this.service.connectMemberToGuild(login, guildToken);
     }
 
     @Get("discord/:id")
