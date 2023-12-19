@@ -78,6 +78,14 @@ export class MembersController {
         return this.service.removeConnectedGuild(login, guildToken);
     }
 
+    @Patch(":login/guilds/:token")
+    @ResourceOwner("login")
+    @ApiOperation({ summary: "Connect a user to a guild with given token" })
+    @ApiResponse({ status: 204 })
+    async connectMemberToGuild(@Param('login') login: number, @Param('token') guildToken: number): Promise<void> {
+        return this.service.removeConnectedGuild(login, guildToken);
+    }
+
     @Get("discord/:id")
     @ApiOperation({ summary: "Get a member by their discord id" })
     @ApiResponse({ status: 200, type: MemberDto, description: "The member with specified discord id" })

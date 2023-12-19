@@ -944,6 +944,21 @@ export class PalantirDatabase {
         }
         return result;
     }
+
+    async getGuildByToken(token: number) {
+        let result = this.emptyResult<schema.Palantiri>();
+
+        try {
+            let rows = await this.get<schema.Palantiri>(`SELECT * FROM Palantiri WHERE Token = ?;`, [token]);
+            if (rows.length < 1) throw new Error("guild not found");
+            result.result = rows[0];
+            result.success = true;
+        }
+        catch (e) {
+            console.warn("Error in query: ", e);
+        }
+        return result;
+    }
 }
 
 export default PalantirDatabase;

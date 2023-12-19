@@ -106,10 +106,36 @@ export class MembersService {
         if (!user.success) throw new HttpException("No user for this login", HttpStatus.NOT_FOUND);
 
         const member = user.result.member;
-        member.Guilds = member.Guilds.filter(g => g.ObserveToken != guildToken);
+        const newGuilds = member.Guilds.filter(g => g.ObserveToken != guildToken);
+        if (newGuilds.length === member.Guilds.length) throw new HttpException(`User is not connected to any guild with token ${guildToken}`, HttpStatus.NOT_FOUND);
+
+        member.Guilds = newGuilds;
         const memberString = JSON.stringify(member);
 
-        await this.database.updateMemberJSON(login, memberString);
+        const update = await this.database.updateMemberJSON(login, memberString);
+        if (!update.success) throw new HttpException("Error updating the member", HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    /**
+     * Adds a guild to the connected guilds of a member
+     * @param login the member login
+     * @param guildToken the guild token to be added
+     */
+    async connectMemberToGuild(login: number, guildToken: number): Promise<void> {
+        const user = await this.database.getUserByLogin(login);
+        if (!user.success) throw new HttpException("No user for this login", HttpStatus.NOT_FOUND);
+
+        const member = user.result.member;
+        if (member.Guilds.some(g => g.ObserveToken === guildToken)) throw new HttpException(`User is already connected to guild with token ${guildToken}`, HttpStatus.CONFLICT);
+
+        const result = await this.database.getGuildByToken(guildToken);
+        if (result.success) throw new HttpException("No guild with that token found", HttpStatus.NOT_FOUND);
+
+        member.Guilds.push()
+        const memberString = JSON.stringify(member);
+
+        const update = await this.database.updateMemberJSON(login, memberString);
+        if (!update.success) throw new HttpException("Error updating the member", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     /**

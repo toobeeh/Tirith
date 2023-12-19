@@ -16,7 +16,7 @@ export function app(): express.Express {
   const distFolder = join(process.cwd(), 'dist/Tirith/browser');
   const indexHtml = existsSync(join(distFolder, 'index.original.html')) ? 'index.original.html' : 'index';
 
-  console.log(distFolder);
+  console.log(`Serving static files from ${distFolder}`);
 
   // Our Universal express-engine (found @ https://github.com/angular/universal/tree/main/modules/express-engine)
   server.engine('html', ngExpressEngine({
@@ -40,8 +40,6 @@ export function app(): express.Express {
 
     // check whether User-Agent is bot
     if (isbot(req.header('User-Agent') ?? "")) {
-
-      console.log("ssr");
 
       // render app page on the server
       res.render(indexHtml, {
