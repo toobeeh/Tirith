@@ -7,6 +7,7 @@ api/awards.service.ts
 api/default.service.ts
 api/drops.service.ts
 api/events.service.ts
+api/guilds.service.ts
 api/lobbies.service.ts
 api/members.service.ts
 api/scenes.service.ts
@@ -21,6 +22,7 @@ model/dropDto.ts
 model/eventDropDto.ts
 model/eventDto.ts
 model/guildDto.ts
+model/guildInviteDto.ts
 model/lobbiesResponseDto.ts
 model/lobbyDetailsDto.ts
 model/lobbyPlayerDto.ts

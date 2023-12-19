@@ -4,6 +4,7 @@ export * from './dropDto';
 export * from './eventDropDto';
 export * from './eventDto';
 export * from './guildDto';
+export * from './guildInviteDto';
 export * from './lobbiesResponseDto';
 export * from './lobbyDetailsDto';
 export * from './lobbyPlayerDto';
