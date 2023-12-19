@@ -960,6 +960,20 @@ export class PalantirDatabase {
         }
         return result;
     }
+
+    async getGuildConnectedMembers(token: number) {
+        let result = this.emptyResult<number>();
+
+        try {
+            let rows = await this.get<{ count: number }>(`SELECT COUNT(*) as count FROM Members WHERE Member LIKE CONCAT('%ObserveToken":"', ?, '%')`, [token]);
+            result.result = rows[0].count;
+            result.success = true;
+        }
+        catch (e) {
+            console.warn("Error in query: ", e);
+        }
+        return result;
+    }
 }
 
 export default PalantirDatabase;

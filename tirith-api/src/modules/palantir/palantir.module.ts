@@ -21,9 +21,15 @@ import { SpritesService } from 'src/services/sprites.service';
 import { ScenesService } from 'src/services/scenes.service';
 import { EventsService } from 'src/services/events.service';
 import { EventsController } from './events.controller';
+import { DiscordApiService } from 'src/services/discord-api.service';
+import { HttpModule } from '@nestjs/axios';
+import { GuildsController } from './guilds.controller';
+import { GuildsService } from 'src/services/guilds.service';
 
 @Module({
-    imports: [],
+    imports: [
+        HttpModule
+    ],
     controllers: [
         LobbiesController,
         MembersController,
@@ -31,7 +37,8 @@ import { EventsController } from './events.controller';
         AwardsController,
         ScenesController,
         SpritesController,
-        EventsController
+        EventsController,
+        GuildsController
     ],
     providers: [
         AuthentificationService,
@@ -43,6 +50,8 @@ import { EventsController } from './events.controller';
         EventsService,
         SpritesService,
         ScenesService,
+        DiscordApiService,
+        GuildsService,
         {
             provide: APP_INTERCEPTOR,
             useClass: ResponseReshapeInterceptor,
