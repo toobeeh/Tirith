@@ -23,6 +23,11 @@ export class ToolsComponent {
     image: "url(https://tobeh.host/scenes/sceneSpace.gif)",
   };
 
+  tutorialCard = {
+    color: "rgb(220 252 231)",
+    image: "url(https://tobeh.host/scenes/sceneEmerald_Dust.gif)",
+  };
+
   cards = [
     {
       name: "Sprite List",
@@ -43,6 +48,11 @@ export class ToolsComponent {
       name: "Card Builder",
       link: "card-builder",
       ... this.toolsCard
+    },
+    {
+      name: "Sprite Workshop",
+      link: "workshop",
+      ... this.tutorialCard
     }
   ];
 }

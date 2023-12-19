@@ -19,6 +19,7 @@ import { ColorAlphaModule } from 'ngx-color/alpha';
 import { ColorHueModule } from 'ngx-color/hue';
 import { ColorShadeModule } from 'ngx-color/shade';
 import { ColorChromeModule } from 'ngx-color/chrome';
+import { WorkshopComponent } from './pages/tools/workshop/workshop.component';
 
 
 @NgModule({
@@ -34,7 +35,8 @@ import { ColorChromeModule } from 'ngx-color/chrome';
     RainbowPreviewComponent,
     CardBuilderComponent,
     ScenesComponent,
-    SpritesComponent
+    SpritesComponent,
+    WorkshopComponent
   ],
   imports: [
     FormsModule,

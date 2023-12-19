@@ -134,6 +134,7 @@ input[type="button"]:focus {
 
 a {
   cursor: pointer !important;
+  color: #aa8dd8 !important;
 }
 
 

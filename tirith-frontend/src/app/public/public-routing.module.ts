@@ -13,6 +13,7 @@ import { SpritesComponent } from './pages/tools/sprites/sprites.component';
 import { ScenesComponent } from './pages/tools/scenes/scenes.component';
 import { RainbowPreviewComponent } from './pages/tools/rainbow-preview/rainbow-preview.component';
 import { CardBuilderComponent } from './pages/tools/card-builder/card-builder.component';
+import { WorkshopComponent } from './pages/tools/workshop/workshop.component';
 
 const helpNavigationData = {
   navigation: [
@@ -103,6 +104,13 @@ const routes: Routes = [
   {
     path: 'tools/card-builder',
     component: CardBuilderComponent,
+    pathMatch: "full",
+    canActivate: [NavContentGuard],
+    data: toolsNavigationData
+  },
+  {
+    path: 'tools/workshop',
+    component: WorkshopComponent,
     pathMatch: "full",
     canActivate: [NavContentGuard],
     data: toolsNavigationData
