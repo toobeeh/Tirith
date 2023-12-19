@@ -3,6 +3,11 @@ import { ActivatedRouteSnapshot, CanActivate, CanActivateChild, RouterStateSnaps
 import { Observable } from 'rxjs';
 import { NavPlanetService } from '../services/nav-planet.service';
 
+/**
+ * A guard that updates the nav items depending on route metadata.
+ * The guard just has to be called on the parent route with canactivate & canactivate to be active on all child routes.
+ * the child rotues can set the content wit the "navigation" route data.
+ */
 @Injectable({
   providedIn: 'root'
 })

@@ -49,70 +49,60 @@ const routes: Routes = [
     path: 'help',
     component: HelpComponent,
     pathMatch: "full",
-    canActivate: [NavContentGuard],
     data: helpNavigationData
   },
   {
     path: 'help/features',
     component: FeaturesComponent,
     pathMatch: "full",
-    canActivate: [NavContentGuard],
     data: helpNavigationData
   },
   {
     path: 'help/discord',
     component: DiscordComponent,
     pathMatch: "full",
-    canActivate: [NavContentGuard],
     data: helpNavigationData
   },
   {
     path: 'help/palantir',
     component: PalantirComponent,
     pathMatch: "full",
-    canActivate: [NavContentGuard],
     data: helpNavigationData
   },
   {
     path: 'tools',
     component: ToolsComponent,
     pathMatch: "full",
-    canActivate: [NavContentGuard],
     data: toolsNavigationData
   },
   {
     path: 'tools/sprites',
     component: SpritesComponent,
     pathMatch: "full",
-    canActivate: [NavContentGuard],
     data: toolsNavigationData
   },
   {
     path: 'tools/scenes',
     component: ScenesComponent,
     pathMatch: "full",
-    canActivate: [NavContentGuard],
     data: toolsNavigationData
   },
   {
     path: 'tools/rainbow-preview',
     component: RainbowPreviewComponent,
     pathMatch: "full",
-    canActivate: [NavContentGuard],
     data: toolsNavigationData
   },
   {
     path: 'tools/card-builder',
     component: CardBuilderComponent,
     pathMatch: "full",
-    canActivate: [NavContentGuard],
     data: toolsNavigationData
   },
   {
     path: 'tools/workshop',
     component: WorkshopComponent,
     pathMatch: "full",
-    canActivate: [NavContentGuard],
     data: toolsNavigationData
   },
   {

@@ -2,10 +2,10 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { PublicRoutingModule } from './public/public-routing.module';
 import { AdminRoutingModule } from './admin/admin-routing.module';
-import { AuthGuard } from './shared/guards/auth.guard';
 import { NavContentGuard } from './shared/guards/nav-content.guard';
 import { AuthRoutingModule } from './auth/auth-routing.module';
 import { UserRoutingModule } from './user/user-routing.module';
+import { RoleGuard } from './shared/guards/role.guard';
 
 const routes: Routes = [
 
@@ -30,9 +30,12 @@ const routes: Routes = [
   {
     path: 'admin',
     loadChildren: () => AdminRoutingModule,
-    canActivate: [AuthGuard, NavContentGuard],
-    canActivateChild: [AuthGuard, NavContentGuard],
+    canActivate: [RoleGuard, NavContentGuard],
+    canActivateChild: [NavContentGuard],
     data: {
+      requiredFlags: {
+        moderator: true
+      },
       navigation: [
         ["Home", "/", "route"],
         ["Admin Panel", "/admin", "route"],
@@ -46,8 +49,8 @@ const routes: Routes = [
   {
     path: 'user',
     loadChildren: () => UserRoutingModule,
-    canActivate: [AuthGuard, NavContentGuard],
-    canActivateChild: [AuthGuard, NavContentGuard],
+    canActivate: [RoleGuard, NavContentGuard],
+    canActivateChild: [NavContentGuard],
     data: {
       navigation: [
         /* ["Home", "/", "route"],
@@ -71,7 +74,7 @@ const routes: Routes = [
 @NgModule({
   imports: [RouterModule.forRoot(routes, {
     initialNavigation: 'enabledBlocking'
-})],
+  })],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
