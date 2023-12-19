@@ -80,7 +80,7 @@ export class MembersController {
 
     @Patch(":login/guilds/:token")
     @ResourceOwner("login")
-    @ApiOperation({ summary: "Connect a user to a guild with given token" })
+    @ApiOperation({ summary: "Connect a user to a guild with given server token" })
     @ApiResponse({ status: 204 })
     async connectMemberToGuild(@Param('login') login: number, @Param('token') guildToken: number): Promise<void> {
         return this.service.connectMemberToGuild(login, guildToken);

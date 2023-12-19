@@ -224,6 +224,7 @@ export class PalantirDatabase {
                 [memberString, login]
             );
             if (update.affectedRows != 1) throw new Error("no member updated");
+            result.success = true;
         }
         catch (e) {
             console.warn("Error in query: ", e);

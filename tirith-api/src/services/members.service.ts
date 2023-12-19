@@ -129,9 +129,10 @@ export class MembersService {
         if (member.Guilds.some(g => g.ObserveToken === guildToken)) throw new HttpException(`User is already connected to guild with token ${guildToken}`, HttpStatus.CONFLICT);
 
         const result = await this.database.getGuildByToken(guildToken);
-        if (result.success) throw new HttpException("No guild with that token found", HttpStatus.NOT_FOUND);
+        if (!result.success) throw new HttpException("No guild with that token found", HttpStatus.NOT_FOUND);
 
-        member.Guilds.push()
+        const newGuild = JSON.parse(result.result.Palantir);
+        member.Guilds.push(newGuild);
         const memberString = JSON.stringify(member);
 
         const update = await this.database.updateMemberJSON(login, memberString);
