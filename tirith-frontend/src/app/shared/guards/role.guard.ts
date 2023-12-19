@@ -23,6 +23,8 @@ export class RoleGuard implements CanActivate {
     let routeFlags = route.data['requiredFlags'] as Partial<userFlags> | undefined;
     const requiredFlags = routeFlags ?? {}; // if undefined: anyone logged-in member can access
 
+    const url = state.url;
+
     const result = this.userService.getUser().pipe(
       map(user => this.userService.parseFlags(user.flags)),
       map(flags => Object.entries(requiredFlags).every(entry => flags[entry[0] as keyof userFlags] === entry[1])),
@@ -30,7 +32,7 @@ export class RoleGuard implements CanActivate {
         if (!result) this.toastService.show({ message: { title: "Unauthorized to access this page" }, durationMs: 1000 })
       }),
       map(result => result ? result : this.router.createUrlTree(["/"])),
-      catchError(() => of(this.router.createUrlTree(["/login"])))
+      catchError(() => of(this.router.createUrlTree(["/login"], { queryParams: { continue: encodeURI(url) } })))
     );
 
     return result;

@@ -32,8 +32,8 @@ export class InviteComponent implements OnInit {
     }
   }
 
-  redirectToLogin() {
-    this.router.navigate(["/login"]);
+  redirectToLogin(invite: number) {
+    this.router.navigate(["/login"], { queryParams: { continue: encodeURI(`/invite/${invite}`) } });
   }
 
   userHasJoined(invite: GuildInviteDto, user: MemberDto) {

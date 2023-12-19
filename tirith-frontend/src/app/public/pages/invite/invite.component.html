@@ -19,7 +19,7 @@
     <input *ngIf="invite.user !== undefined && !userHasJoined(invite.invite, invite.user)" class="row-span-2"
       type="button" value="Connect {{invite.invite.name}}" (click)="connect(invite.invite, invite.user)">
     <input *ngIf="invite.user === undefined" class="row-span-2" type="button" value="Log in to connect"
-      (click)="redirectToLogin()">
+      (click)="redirectToLogin(invite.invite.token)">
     <div *ngIf="invite.user !== undefined && userHasJoined(invite.invite, invite.user)" class="row-span-2">
       <h3>You're in!</h3>
     </div>

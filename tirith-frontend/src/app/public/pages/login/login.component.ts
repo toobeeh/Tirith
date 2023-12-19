@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Route, Router } from '@angular/router';
 
 @Component({
   templateUrl: './login.component.html',
@@ -7,9 +7,11 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent {
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private route: ActivatedRoute) { }
 
   initLogin() {
+
+    const continueParam = this.route.snapshot.queryParamMap.get("continue");
 
     /* handler for window messages */
     const listenOnce = () => {
@@ -20,7 +22,7 @@ export class LoginComponent {
           const accessToken = event.data.accessToken;
           console.log("Logged in with token: ", accessToken);
           localStorage.setItem("AUTH_BEARER", accessToken);
-          this.router.navigate(["/user"]);
+          this.router.navigate([continueParam ? decodeURI(continueParam) : "/user"]);
         }
       }, { once: true });
     }
