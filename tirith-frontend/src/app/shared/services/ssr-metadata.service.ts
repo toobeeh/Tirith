@@ -20,7 +20,8 @@ export class SsrMetadataService {
     ogImageType: "image/png",
     ogImageWidth: "1200",
     ogImageHeight: "630",
-    author: "tobeh"
+    author: "tobeh",
+    twitterCard: "summary_large_image"
   };
 
   private addedTags: HTMLMetaElement[] = [];
@@ -37,7 +38,6 @@ export class SsrMetadataService {
       { name: 'robots', content: index ? 'index, follow' : 'noindex' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       { 'http-equiv': 'Content-Type', content: 'text/html; charset=utf-8' },
-      { name: 'twitter:card', content: "summary_large_image" },
     ];
 
     this.addedTags.forEach(t => t.remove());
@@ -65,6 +65,7 @@ export class SsrMetadataService {
       metadata.ogImageWidth ? { property: 'og:image:width', content: metadata.ogImageWidth } : null,
       metadata.ogImageHeight ? { property: 'og:image:height', content: metadata.ogImageHeight } : null,
       metadata.ogImage ? { name: 'twitter:image', content: metadata.ogImage } : null,
+      metadata.twitterCard ? { name: "twitter:card", content: "summary_large_image" } : null,
 
       metadata.themeColor ? { name: 'theme-color', content: metadata.themeColor } : null,
 
