@@ -8,6 +8,8 @@ import { DiscordOauthService } from 'src/services/discord-oauth.service';
 import { RegistrationRequest, TokenResponse } from './dto/registration.dto';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { ApiSecurityNotes } from 'src/decorators/apiSecurityNote.decorator';
+import { Throttle } from '@nestjs/throttler';
+import { throttleFivePerFiveHours } from 'src/guards/trottleConfigs';
 
 @ApiSecurityNotes()
 @Controller("auth")
@@ -47,6 +49,7 @@ export class AuthController {
     @Post("register")
     @ApiOperation({ summary: "Create a palantir account for a discord user with given oauth2 auth code" })
     @ApiResponse({ status: 200, type: TokenResponse, description: "Oauth successful and user created" })
+    @Throttle({ throttleFivePerFiveHours })
     async registerDiscordUser(@Body() { code, connectTypo }: RegistrationRequest): Promise<TokenResponse> {
 
         /* check if code present */

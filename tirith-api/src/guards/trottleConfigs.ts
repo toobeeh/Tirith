@@ -19,6 +19,17 @@ export const throttleFivePerFiveHours: throttleConfig = {
 };
 
 /**
+ * Rate limit config: 10 / 10 mins
+ * Use for requests that access costy external ressources.
+ */
+export const throttleTenPerTenMinutes: throttleConfig = {
+    name: "throttleTenPerTenMinutes",
+    limit: 10,
+    ttl: minutes(10),
+    description: "Requests that access costy external ressources"
+};
+
+/**
  * Rate limit config: 10 / minute
  * Use for classical get-resources
  */
