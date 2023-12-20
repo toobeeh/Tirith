@@ -45,7 +45,6 @@ export class InviteComponent implements OnInit {
             ogImage: data.iconUrl,
             ogDescription: `Add this server to play with ${data.connectedMembers} other Typo users 🤩`
           }, false);
-          if (this.ssrMetadata) console.log("ssr meta rendered");
         }),
         switchMap(invite => this.userService.getUser().pipe(
           catchError(() => of(undefined)),

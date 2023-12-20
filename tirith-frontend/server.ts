@@ -38,8 +38,6 @@ export function app(): express.Express {
     // will be useful for generating meta tags;
     const hostUrl = req.protocol + '://' + req.get('Host');
 
-    console.log(req.header('User-Agent'));
-
     // check whether User-Agent is bot
     if (isbot(req.header('User-Agent') ?? "")) {
 
