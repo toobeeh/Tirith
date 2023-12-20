@@ -23,46 +23,51 @@ export class SsrMetadataService {
     author: "tobeh"
   };
 
+  private addedTags: HTMLMetaElement[] = [];
+
   constructor(private metaService: Meta, private titleService: Title, @Inject(HOST_URL) private hostUrl: string, private router: Router) { }
 
-  public updateMetadata(metadata?: Partial<SsrMetadataService["defaultMetadata"]>, index: boolean = true): void {
-    const pageMetadata = { ...this.defaultMetadata, ...metadata };
+  public updateMetadata(metadata?: Partial<SsrMetadataService["defaultMetadata"]>, defaults: boolean = true, index: boolean = true): void {
+    const pageMetadata = defaults ? { ...this.defaultMetadata, ...metadata } : (metadata ?? {});
     const metatags: MetaDefinition[] = this.generateMetaDefinitions(pageMetadata);
 
-    this.metaService.addTags([
+    const tags = [
       ...metatags,
       { property: 'og:url', content: `${this.hostUrl}${this.router.url}` },
       { name: 'robots', content: index ? 'index, follow' : 'noindex' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       { 'http-equiv': 'Content-Type', content: 'text/html; charset=utf-8' },
       { name: 'twitter:card', content: "summary_large_image" },
-    ]);
+    ];
 
-    this.titleService.setTitle(pageMetadata.title);
+    this.addedTags.forEach(t => t.remove());
+    this.addedTags = this.metaService.addTags(tags);
+
+    this.titleService.setTitle(pageMetadata.title ?? this.defaultMetadata.title);
   }
 
-  private generateMetaDefinitions(metadata: SsrMetadataService["defaultMetadata"]): MetaDefinition[] {
+  private generateMetaDefinitions(metadata: Partial<SsrMetadataService["defaultMetadata"]>): MetaDefinition[] {
     return [
-      { name: 'title', content: metadata.title },
-      { property: 'og:title', content: metadata.ogTitle },
-      { property: 'og:site_name', content: metadata.ogSiteName },
+      metadata.title ? { name: 'title', content: metadata.title } : null,
+      metadata.ogTitle ? { property: 'og:title', content: metadata.ogTitle } : null,
+      metadata.ogSiteName ? { property: 'og:site_name', content: metadata.ogSiteName } : null,
 
-      { name: 'description', content: metadata.description },
-      { property: 'og:description', content: metadata.ogDescription },
+      metadata.description ? { name: 'description', content: metadata.description } : null,
+      metadata.ogDescription ? { property: 'og:description', content: metadata.ogDescription } : null,
 
-      { name: 'author', content: metadata.author },
-      { property: 'og:author', content: metadata.author },
+      metadata.author ? { name: 'author', content: metadata.author } : null,
+      metadata.author ? { property: 'og:author', content: metadata.author } : null,
 
-      { name: 'keywords', content: metadata.keywords.join(', ') },
+      metadata.keywords ? { name: 'keywords', content: metadata.keywords.join(', ') } : null,
 
-      { property: 'og:image', content: metadata.ogImage },
-      { property: 'og:image:type', content: metadata.ogImageType },
-      { property: 'og:image:width', content: metadata.ogImageWidth },
-      { property: 'og:image:height', content: metadata.ogImageHeight },
-      { name: 'twitter:image', content: metadata.ogImage },
+      metadata.ogImage ? { property: 'og:image', content: metadata.ogImage } : null,
+      metadata.ogImageType ? { property: 'og:image:type', content: metadata.ogImageType } : null,
+      metadata.ogImageWidth ? { property: 'og:image:width', content: metadata.ogImageWidth } : null,
+      metadata.ogImageHeight ? { property: 'og:image:height', content: metadata.ogImageHeight } : null,
+      metadata.ogImage ? { name: 'twitter:image', content: metadata.ogImage } : null,
 
-      { name: 'theme-color', content: metadata.themeColor },
+      metadata.themeColor ? { name: 'theme-color', content: metadata.themeColor } : null,
 
-    ];
+    ].filter(e => e != null) as MetaDefinition[];
   }
 }
