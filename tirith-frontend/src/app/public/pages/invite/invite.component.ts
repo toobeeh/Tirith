@@ -1,6 +1,6 @@
 import { Component, OnInit, Optional } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, catchError, map, of, switchMap, tap } from 'rxjs';
+import { Observable, catchError, map, of, switchMap, tap, throwError } from 'rxjs';
 import { GuildInviteDto, GuildsService, MemberDto, MembersService } from 'src/api';
 import { SsrMetadataService } from 'src/app/shared/services/ssr-metadata.service';
 import { ToastService } from 'src/app/shared/services/toast.service';
@@ -33,6 +33,11 @@ export class InviteComponent implements OnInit {
     }
     else {
       this.invite$ = this.guildsService.getGuildInvite(token).pipe(
+        catchError(err => {
+          this.toastService.show({ message: { title: "Invalid Server Invite :(" } });
+          this.router.navigate(["/"]);
+          return throwError(() => err);
+        }),
         tap((data) => {
           this.ssrMetadata?.updateMetadata({
             ogSiteName: `🔮 ${data.name} is using Palantir`,
@@ -45,7 +50,7 @@ export class InviteComponent implements OnInit {
         switchMap(invite => this.userService.getUser().pipe(
           catchError(() => of(undefined)),
           map(user => ({ user, invite }))
-        ))
+        )),
       );
     }
   }
