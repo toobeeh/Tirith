@@ -974,6 +974,94 @@ export class PalantirDatabase {
         }
         return result;
     }
+
+    async shareTheme(id: string, themeJson: string) {
+        let result = this.emptyResult<never>();
+
+        try {
+            let rows = await this.update(`INSERT INTO ThemeShares VALUES (?, ?)`, [id, themeJson]);
+            if (rows.affectedRows !== 1) throw new Error("didnt insert theme");
+            result.success = true;
+        }
+        catch (e) {
+            console.warn("Error in query: ", e);
+        }
+        return result;
+    }
+
+    async getTheme(id: string) {
+        let result = this.emptyResult<string>();
+
+        try {
+            let rows = await this.get<schema.ThemeShares>(`SELECT * FROM ThemeShares WHERE ID = ?`, [id]);
+            if (rows.length !== 1) throw new Error("didnt find theme " + id);
+            result.result = rows[0].Theme;
+            result.success = true;
+        }
+        catch (e) {
+            console.warn("Error in query: ", e);
+        }
+        return result;
+    }
+
+    async getAllPublishedThemes() {
+        let result = this.emptyResult<schema.UserThemes[]>();
+
+        try {
+            let rows = await this.get<schema.UserThemes>(`SELECT * FROM UserThemes`, []);
+            result.result = rows;
+            result.success = true;
+        }
+        catch (e) {
+            console.warn("Error in query: ", e);
+        }
+        return result;
+    }
+
+    async publishTheme(id: string, owner: string) {
+        let result = this.emptyResult<never>();
+
+        try {
+            let rows = await this.update(`INSERT INTO UserThemes VALUES (?, ?, 1, 0)`, [id, owner]);
+            if (rows.affectedRows !== 1) throw new Error("didnt publish theme " + id);
+            result.success = true;
+        }
+        catch (e) {
+            console.warn("Error in query: ", e);
+        }
+        return result;
+    }
+
+    async updatePublishedTheme(id: string, newTheme: string) {
+        let result = this.emptyResult<never>();
+
+        try {
+            let rows = await this.update(`UPDATE ThemeShares SET Theme = ? WHERE ID =  ?`, [newTheme, id]);
+            if (rows.affectedRows !== 1) throw new Error("didnt update theme content of published theme " + id);
+
+            rows = await this.update(`UPDATE UserThemes SET Version = Version+1 WHERE ID = ?`, [id]);
+            if (rows.affectedRows !== 1) throw new Error("didnt update version of published theme " + id);
+            result.success = true;
+        }
+        catch (e) {
+            console.warn("Error in query: ", e);
+        }
+        return result;
+    }
+
+    async incrementThemeUses(id: string) {
+        let result = this.emptyResult<never>();
+
+        try {
+            let rows = await this.update(`UPDATE UserThemes SET Downloads = Downloads+1 WHERE ID = ?`, [id]);
+            if (rows.affectedRows !== 1) throw new Error("didnt update theme " + id);
+            result.success = true;
+        }
+        catch (e) {
+            console.warn("Error in query: ", e);
+        }
+        return result;
+    }
 }
 
 export default PalantirDatabase;

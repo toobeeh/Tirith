@@ -64,7 +64,7 @@ export class MembersController {
     }
 
     @Delete(":login/dropboost")
-    @ApiOperation({ summary: "Delete a dropbosot of a member" })
+    @ApiOperation({ summary: "Delete a dropboost of a member" })
     @ApiResponse({ status: 204 })
     async clearMemberDropboost(@Param('login') login: number): Promise<void> {
         return this.service.clearDropBoost(login);

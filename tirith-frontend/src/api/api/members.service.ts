@@ -98,7 +98,7 @@ export class MembersService {
     }
 
     /**
-     * Delete a dropbosot of a member
+     * Delete a dropboost of a member
      * Required Role: Moderator
      * @param login 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.

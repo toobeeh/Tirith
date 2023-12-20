@@ -1,7 +1,8 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Optional } from '@angular/core';
 import { FormBuilder, FormControl } from '@angular/forms';
 import { debounce, debounceTime, map, of } from 'rxjs';
 import { SpriteDto, SpritesService } from 'src/api';
+import { SsrMetadataService } from 'src/app/shared/services/ssr-metadata.service';
 
 @Component({
   selector: 'app-sprites',
@@ -22,7 +23,12 @@ export class SpritesComponent {
   private orderMode: "price" | "id" = "id";
   private orderDirection: "asc" | "desc" = "asc";
 
-  constructor(spriteService: SpritesService) {
+  constructor(spriteService: SpritesService, @Optional() meta?: SsrMetadataService) {
+
+    meta?.updateMetadata({
+      title: "typo.rip - Sprites list",
+      ogDescription: "View a list of all available sprites in skribbltypo."
+    });
 
     this.sprites$ = this.filterInput.valueChanges
       .pipe(debounceTime(100), map(() => this.filterSprites()));

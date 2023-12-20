@@ -18,4 +18,6 @@ export * from './scenes.service';
 import { ScenesService } from './scenes.service';
 export * from './sprites.service';
 import { SpritesService } from './sprites.service';
-export const APIS = [AuthService, AwardsService, DefaultService, DropsService, EventsService, GuildsService, LobbiesService, MembersService, ScenesService, SpritesService];
+export * from './themes.service';
+import { ThemesService } from './themes.service';
+export const APIS = [AuthService, AwardsService, DefaultService, DropsService, EventsService, GuildsService, LobbiesService, MembersService, ScenesService, SpritesService, ThemesService];

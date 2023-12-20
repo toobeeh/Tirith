@@ -12,6 +12,7 @@ api/lobbies.service.ts
 api/members.service.ts
 api/scenes.service.ts
 api/sprites.service.ts
+api/themes.service.ts
 configuration.ts
 encoder.ts
 git_push.sh
@@ -35,6 +36,12 @@ model/registrationRequest.ts
 model/reportsResponseDto.ts
 model/sceneDto.ts
 model/spriteDto.ts
+model/themeDto.ts
+model/themeListingDto.ts
+model/themeMetaDto.ts
+model/themePublishRequestDto.ts
+model/themeShareDto.ts
+model/themeUpdateRequestDto.ts
 model/tokenResponse.ts
 model/updateDiscordID.ts
 model/webhookDto.ts
