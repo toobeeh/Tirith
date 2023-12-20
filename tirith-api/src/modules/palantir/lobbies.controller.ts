@@ -4,7 +4,7 @@ https://docs.nestjs.com/controllers#controllers
 
 import { Controller, Get, Param, UseGuards } from '@nestjs/common';
 import { AuthRoles, RequiredRole } from 'src/decorators/roles.decorator';
-import { AuthentificationGuard } from 'src/guards/authentification.guard';
+import { RoleGuard } from 'src/guards/role.guard';
 import { MemberGuard } from 'src/guards/member.guard';
 import { LobbiesService } from 'src/services/lobbies.service';
 import { ReportsResponseDto } from './dto/reports.dto';
@@ -17,7 +17,7 @@ import { ApiSecurityNotes } from 'src/decorators/apiSecurityNote.decorator';
 @Controller("lobbies")
 @ApiTags("lobbies")
 @RequiredRole(AuthRoles.Moderator)
-@UseGuards(MemberGuard, AuthentificationGuard)
+@UseGuards(MemberGuard, RoleGuard)
 @ApiBearerAuth()
 export class LobbiesController {
 

@@ -9,6 +9,9 @@ import config from './config/production.config';
 import configDev from './config/development.config';
 import { DiscordOauthService } from './services/discord-oauth.service';
 import { AuthModule } from './modules/auth/auth.module';
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
+import { APP_GUARD } from '@nestjs/core';
+import { throttles } from './guards/trottleConfigs';
 
 const ENV = process.env.NODE_ENV;
 console.log(`Starting in environment ${ENV}`);
@@ -21,12 +24,18 @@ console.log(`Starting in environment ${ENV}`);
       ],
       isGlobal: true
     }),
+    ThrottlerModule.forRoot([
+      throttles.default
+    ]),
     PalantirModule, AuthModule
   ],
   controllers: [
     AppController
   ],
-  providers: [
+  providers: [{
+    provide: APP_GUARD,
+    useClass: ThrottlerGuard
+  },
     AuthentificationService, PalantirdbService, DiscordOauthService],
 })
 export class AppModule { }

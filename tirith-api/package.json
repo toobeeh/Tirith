@@ -28,6 +28,7 @@
     "@nestjs/core": "^9.0.0",
     "@nestjs/platform-express": "^9.0.0",
     "@nestjs/swagger": "^6.3.0",
+    "@nestjs/throttler": "^5.1.1",
     "axios": "^1.6.2",
     "class-transformer": "^0.5.1",
     "discord-oauth2": "^2.11.0",

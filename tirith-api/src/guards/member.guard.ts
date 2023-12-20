@@ -5,6 +5,10 @@ import { Request } from 'express';
 import { Injectable, CanActivate, ExecutionContext, HttpException, HttpStatus } from '@nestjs/common';
 import { AuthentificationService } from 'src/services/authentification.service';
 
+/**
+ * A guard that adds an user obejct to the request.
+ * Requests without valid BEARER token are rejected.
+ */
 @Injectable()
 export class MemberGuard implements CanActivate {
 

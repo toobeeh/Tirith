@@ -3,11 +3,11 @@ https://docs.nestjs.com/controllers#controllers
 */
 
 import { Body, Controller, Delete, Get, Param, Patch, Query, Req, UseGuards, Request } from '@nestjs/common';
-import { AuthentificationGuard } from 'src/guards/authentification.guard';
+import { RoleGuard } from 'src/guards/role.guard';
 import { UpdateDiscordID } from './dto/updateDiscord.dto';
 import { MemberGuard } from 'src/guards/member.guard';
 import { AuthRoles, RequiredRole, ResourceOwner } from 'src/decorators/roles.decorator';
-import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { MembersService } from 'src/services/members.service';
 import { AccessTokenDto, MemberDto } from './dto/member.dto';
 import { MemberSearchDto } from './dto/memberSearch.dto';
@@ -15,11 +15,10 @@ import { member } from 'palantir-db/dist/src/types';
 import { ApiSecurityNotes } from 'src/decorators/apiSecurityNote.decorator';
 
 @ApiSecurityNotes()
+@RequiredRole(AuthRoles.Moderator)
+@UseGuards(MemberGuard, RoleGuard)
 @Controller("members")
 @ApiTags("members")
-@RequiredRole(AuthRoles.Moderator)
-@UseGuards(MemberGuard, AuthentificationGuard)
-@ApiBearerAuth()
 export class MembersController {
 
     constructor(private service: MembersService) { }

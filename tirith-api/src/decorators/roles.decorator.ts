@@ -1,12 +1,13 @@
 import { ExecutionContext, SetMetadata } from "@nestjs/common";
 import { Reflector } from "@nestjs/core";
+import { ApiBearerAuth } from "@nestjs/swagger";
 import { Request } from 'express';
 
 /**
  * Enum with possible authentification levels
  */
 export enum AuthRoles {
-    Admin = "Administrator",
+    Administrator = "Administrator",
     Moderator = "Moderator",
     Member = "Member",
     None = "None"
@@ -14,10 +15,41 @@ export enum AuthRoles {
 
 /**
  * Set the required role for the authentification guard
+ * If the role is not "None", the annotation for ApiBearerAuth is applied.
  * @param param the required role a member must have to access this resource
  * @returns a custom decorator
  */
-export const RequiredRole = (param: AuthRoles) => SetMetadata('guardRequiredRole', param);
+export const RequiredRole = (param: AuthRoles): MethodDecorator & ClassDecorator => {
+    return (target: any, key?: string | symbol, descriptor?: any) => {
+
+        /* applied to controller */
+        if (!key) {
+
+            /* get methods that are a path in the controller -> endpoint */
+            const controllers = Object.getOwnPropertyNames(target.prototype)
+                .map(p => ({ target: target.prototype[p], prop: p }))
+                .map(t => ({ target: t.target, prop: t.prop, meta: Reflect.getMetadataKeys(t.target) }))
+                .filter(t => t.meta.includes("path") && t.meta.includes("method"));
+
+            /* apply to each endpoint */
+            controllers.forEach(c => {
+                const desc = Object.getOwnPropertyDescriptor(target.prototype, c.prop);
+                RequiredRole(param)(target, c.prop, desc);
+            });
+        }
+
+        /* applied to single endpoint */
+        else if (descriptor.value) {
+            target = descriptor.value;
+
+            /* skip if already processsed - decorators apply first for methods */
+            if (Reflect.hasMetadata("guardRequiredRole", target)) return;
+
+            if (param !== AuthRoles.None) ApiBearerAuth()(target)
+            SetMetadata('guardRequiredRole', param)(target);
+        }
+    }
+}
 
 /**
  * Get the required role for the authentification guard
@@ -26,11 +58,8 @@ export const RequiredRole = (param: AuthRoles) => SetMetadata('guardRequiredRole
  * @returns the required role according to the annotation of the method or class
  */
 export const getRequiredRole = (context: ExecutionContext, reflector: Reflector) => {
-    let role = reflector.get<AuthRoles>('guardRequiredRole', context.getHandler());
-    if (role === undefined) {
-        role = reflector.get<AuthRoles>('guardRequiredRole', context.getClass());
-        if (role === undefined) throw new Error("no auth annotation present");
-    }
+    const role = Reflect.getMetadata('guardRequiredRole', context.getHandler()) as AuthRoles;
+    if (role === undefined) throw new Error("no auth annotation present");
     return role;
 }
 

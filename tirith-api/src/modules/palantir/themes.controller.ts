@@ -10,9 +10,12 @@ import { ThemeDto, ThemeListingDto, ThemePublishRequestDto, ThemeShareDto, Theme
 import { ThemesService } from 'src/services/themes.service';
 import { RequiredRole, AuthRoles } from 'src/decorators/roles.decorator';
 import { MemberGuard } from 'src/guards/member.guard';
-import { AuthentificationGuard } from 'src/guards/authentification.guard';
+import { RoleGuard } from 'src/guards/role.guard';
+import { Throttle } from '@nestjs/throttler';
+import { throttleFivePerFiveHours } from 'src/guards/trottleConfigs';
 
 @ApiSecurityNotes()
+@UseGuards(RoleGuard)
 @Controller("themes")
 @ApiTags("themes")
 export class ThemesController {
@@ -28,7 +31,7 @@ export class ThemesController {
 
     @Post("share")
     @ApiOperation({ summary: "Share a theme to be used by others" })
-    @ApiResponse({ status: 200, type: ThemeShareDto, description: "The newly created theme with id" })
+    @ApiResponse({ status: 201, type: ThemeShareDto, description: "The newly created theme with id" })
     async shareTheme(@Body() theme: ThemeDto): Promise<ThemeShareDto> {
         return this.service.shareTheme(theme);
     }
@@ -41,6 +44,7 @@ export class ThemesController {
     }
 
     @Get(":id/use")
+    @Throttle({ throttleFivePerFiveHours })
     @ApiOperation({ summary: "Get a theme by ID and increment use counter" })
     @ApiResponse({ status: 200, type: ThemeDto, description: "The theme that matches the given ID" })
     async useThemeById(@Param('id') id: string): Promise<ThemeDto> {
@@ -48,18 +52,16 @@ export class ThemesController {
     }
 
     @Post(":id/public")
-    @UseGuards(MemberGuard, AuthentificationGuard)
-    @ApiBearerAuth()
+    @UseGuards(MemberGuard)
     @RequiredRole(AuthRoles.Moderator)
     @ApiOperation({ summary: "Publish a theme to the public theme list" })
-    @ApiResponse({ status: 200, type: SpriteDto, description: "The newly created theme with id" })
+    @ApiResponse({ status: 201, type: SpriteDto, description: "The newly created theme with id" })
     async publishTheme(@Param('id') id: string, @Body() publish: ThemePublishRequestDto): Promise<ThemeShareDto> {
         return this.service.publishTheme(id, publish.owner);
     }
 
     @Patch(":id/public")
-    @UseGuards(MemberGuard, AuthentificationGuard)
-    @ApiBearerAuth()
+    @UseGuards(MemberGuard)
     @RequiredRole(AuthRoles.Moderator)
     @ApiOperation({ summary: "Update the theme content from the provided new share and increment version" })
     @ApiResponse({ status: 200, type: SpriteDto, description: "The newly created theme with id" })
