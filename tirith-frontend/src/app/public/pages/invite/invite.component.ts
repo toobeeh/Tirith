@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Optional } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, catchError, map, of, switchMap, tap } from 'rxjs';
 import { GuildInviteDto, GuildsService, MemberDto, MembersService } from 'src/api';
+import { SsrMetadataService } from 'src/app/shared/services/ssr-metadata.service';
 import { ToastService } from 'src/app/shared/services/toast.service';
 import { UserService } from 'src/app/shared/services/user-session.service';
 
@@ -13,7 +14,15 @@ import { UserService } from 'src/app/shared/services/user-session.service';
 export class InviteComponent implements OnInit {
   invite$?: Observable<{ invite: GuildInviteDto, user?: MemberDto }>;
 
-  constructor(private route: ActivatedRoute, private guildsService: GuildsService, private userService: UserService, private router: Router, private toastService: ToastService, private memberService: MembersService) { }
+  constructor(
+    private route: ActivatedRoute,
+    private guildsService: GuildsService,
+    private userService: UserService,
+    private router: Router,
+    private toastService: ToastService,
+    private memberService: MembersService,
+    @Optional() private ssrMetadata?: SsrMetadataService
+  ) { }
 
   ngOnInit(): void {
     const token = Number(this.route.snapshot.paramMap.get('token'));
@@ -24,6 +33,15 @@ export class InviteComponent implements OnInit {
     }
     else {
       this.invite$ = this.guildsService.getGuildInvite(token).pipe(
+        tap((data) => {
+          this.ssrMetadata?.updateMetadata({
+            ogSiteName: `🔮 ${data.name} is using Palantir`,
+            ogTitle: `🥳 Click here to connect ${data.name}`,
+            ogImage: data.iconUrl,
+            ogDescription: `Add this server to play with ${data.connectedMembers} other Typo users 🤩`
+          });
+          if (this.ssrMetadata) console.log("ssr meta rendered");
+        }),
         switchMap(invite => this.userService.getUser().pipe(
           catchError(() => of(undefined)),
           map(user => ({ user, invite }))
