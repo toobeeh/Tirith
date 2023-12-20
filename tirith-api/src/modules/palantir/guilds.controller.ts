@@ -7,6 +7,7 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { ApiSecurityNotes } from 'src/decorators/apiSecurityNote.decorator';
 import { GuildsService } from 'src/services/guilds.service';
 import { GuildInviteDto } from './dto/guilds.dto';
+import { NumberTokenParamDto } from './dto/params.dto';
 
 @ApiSecurityNotes()
 @Controller("guilds")
@@ -18,7 +19,7 @@ export class GuildsController {
     @Get(":token/invite")
     @ApiOperation({ summary: "Get invite information of a guild" })
     @ApiResponse({ status: 200, type: GuildInviteDto, description: "The invite information of a guild" })
-    async getGuildInvite(@Param('token') token: number): Promise<GuildInviteDto> {
-        return this.service.getGuildPreview(token);
+    async getGuildInvite(@Param() params: NumberTokenParamDto): Promise<GuildInviteDto> {
+        return this.service.getGuildPreview(params.token);
     }
 }

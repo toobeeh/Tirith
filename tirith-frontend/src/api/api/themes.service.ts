@@ -103,7 +103,7 @@ export class ThemesService {
 
     /**
      * Get all published themes
-     * Required Role: None
+     *   Required Role: None  Rate limit: 10 (Limit) / 60000 (TTL)
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -158,8 +158,8 @@ export class ThemesService {
 
     /**
      * Get a theme by ID
-     * Required Role: None
-     * @param id 
+     *   Required Role: None  Rate limit: 10 (Limit) / 60000 (TTL)
+     * @param id Id parameter
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -217,8 +217,8 @@ export class ThemesService {
 
     /**
      * Publish a theme to the public theme list
-     * Required Role: Moderator
-     * @param id 
+     *   Required Role: Moderator  Rate limit: 10 (Limit) / 60000 (TTL)
+     * @param id Id parameter
      * @param themePublishRequestDto 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
@@ -297,7 +297,7 @@ export class ThemesService {
 
     /**
      * Share a theme to be used by others
-     * Required Role: None
+     *   Required Role: None  Rate limit: 10 (Limit) / 60000 (TTL)
      * @param themeDto 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
@@ -366,8 +366,8 @@ export class ThemesService {
 
     /**
      * Update the theme content from the provided new share and increment version
-     * Required Role: Moderator
-     * @param id 
+     *   Required Role: Moderator  Rate limit: 10 (Limit) / 60000 (TTL)
+     * @param id Id parameter
      * @param themeUpdateRequestDto 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
@@ -446,8 +446,8 @@ export class ThemesService {
 
     /**
      * Get a theme by ID and increment use counter
-     * Required Role: None
-     * @param id 
+     *   Required Role: None  Rate limit: 10 (Limit) / 86400000 (TTL)
+     * @param id Id parameter
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */

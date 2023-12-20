@@ -99,8 +99,8 @@ export class MembersService {
 
     /**
      * Delete a dropboost of a member
-     * Required Role: Moderator
-     * @param login 
+     *   Required Role: Moderator  Rate limit: 10 (Limit) / 60000 (TTL)
+     * @param login Member Login parameter
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -164,8 +164,8 @@ export class MembersService {
 
     /**
      * Connect a user to a guild with given server token
-     * Required Role: Moderator  Access override if {login} matches the client login.
-     * @param login 
+     *   Required Role: Moderator Role override if {login} matches the client login.  Rate limit: 10 (Limit) / 60000 (TTL)
+     * @param login Member Login parameter
      * @param token 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
@@ -233,7 +233,7 @@ export class MembersService {
 
     /**
      * Find members that contain a string
-     * Required Role: Moderator
+     *   Required Role: Moderator  Rate limit: 10 (Limit) / 60000 (TTL)
      * @param content 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
@@ -306,7 +306,7 @@ export class MembersService {
 
     /**
      * Get the currently authenticated member
-     * Required Role: Member
+     *   Required Role: Member  Rate limit: 10 (Limit) / 60000 (TTL)
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -368,8 +368,8 @@ export class MembersService {
 
     /**
      * Get an access token of a member
-     * Required Role: Moderator  Access override if {login} matches the client login.
-     * @param login 
+     *   Required Role: Moderator Role override if {login} matches the client login.  Rate limit: 10 (Limit) / 60000 (TTL)
+     * @param login Member Login parameter
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -434,8 +434,8 @@ export class MembersService {
 
     /**
      * Get a member by their discord id
-     * Required Role: Moderator
-     * @param id 
+     *   Required Role: Moderator  Rate limit: 10 (Limit) / 60000 (TTL)
+     * @param id Id parameter
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -500,8 +500,8 @@ export class MembersService {
 
     /**
      * Get a member by their login
-     * Required Role: Moderator  Access override if {login} matches the client login.
-     * @param login 
+     *   Required Role: Moderator Role override if {login} matches the client login.  Rate limit: 10 (Limit) / 60000 (TTL)
+     * @param login Member Login parameter
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -566,8 +566,8 @@ export class MembersService {
 
     /**
      * Delete a server from a member\&#39;s connected guilds
-     * Required Role: Moderator  Access override if {login} matches the client login.
-     * @param login 
+     *   Required Role: Moderator Role override if {login} matches the client login.  Rate limit: 10 (Limit) / 60000 (TTL)
+     * @param login Member Login parameter
      * @param token 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
@@ -635,8 +635,8 @@ export class MembersService {
 
     /**
      * Update a member\&#39;s discord ID and merge with other if present
-     * Required Role: Moderator
-     * @param login 
+     *   Required Role: Moderator  Rate limit: 10 (Limit) / 60000 (TTL)
+     * @param login Member Login parameter
      * @param updateDiscordID 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.

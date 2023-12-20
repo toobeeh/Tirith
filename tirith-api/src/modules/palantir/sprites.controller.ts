@@ -7,6 +7,7 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { SpritesService } from 'src/services/sprites.service';
 import { SpriteDto } from './dto/sprites.dto';
 import { ApiSecurityNotes } from 'src/decorators/apiSecurityNote.decorator';
+import { NumberIdParamDto } from './dto/params.dto';
 
 @ApiSecurityNotes()
 @Controller("sprites")
@@ -25,7 +26,7 @@ export class SpritesController {
     @Get(":id")
     @ApiOperation({ summary: "Get a sprite by ID" })
     @ApiResponse({ status: 200, type: SpriteDto, description: "The sprite that matches the given ID" })
-    async getSpriteById(@Param('id') id: number): Promise<SpriteDto> {
-        return this.service.getSprites(id);
+    async getSpriteById(@Param() params: NumberIdParamDto): Promise<SpriteDto> {
+        return this.service.getSprites(params.id);
     }
 }

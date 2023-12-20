@@ -13,6 +13,7 @@ import { MemberGuard } from 'src/guards/member.guard';
 import { RoleGuard } from 'src/guards/role.guard';
 import { Throttle } from '@nestjs/throttler';
 import { throttleFivePerFiveHours } from 'src/guards/trottleConfigs';
+import { StringIdParamDto } from './dto/params.dto';
 
 @ApiSecurityNotes()
 @UseGuards(RoleGuard)
@@ -39,16 +40,16 @@ export class ThemesController {
     @Get(":id")
     @ApiOperation({ summary: "Get a theme by ID" })
     @ApiResponse({ status: 200, type: ThemeDto, description: "The theme that matches the given ID" })
-    async getThemeById(@Param('id') id: string): Promise<ThemeDto> {
-        return this.service.getThemeById(id);
+    async getThemeById(@Param() params: StringIdParamDto): Promise<ThemeDto> {
+        return this.service.getThemeById(params.id);
     }
 
     @Get(":id/use")
     @Throttle({ throttleFivePerFiveHours })
     @ApiOperation({ summary: "Get a theme by ID and increment use counter" })
     @ApiResponse({ status: 200, type: ThemeDto, description: "The theme that matches the given ID" })
-    async useThemeById(@Param('id') id: string): Promise<ThemeDto> {
-        return this.service.getThemeByIdAndUse(id);
+    async useThemeById(@Param() params: StringIdParamDto): Promise<ThemeDto> {
+        return this.service.getThemeByIdAndUse(params.id);
     }
 
     @Post(":id/public")
@@ -56,8 +57,8 @@ export class ThemesController {
     @RequiredRole(AuthRoles.Moderator)
     @ApiOperation({ summary: "Publish a theme to the public theme list" })
     @ApiResponse({ status: 201, type: SpriteDto, description: "The newly created theme with id" })
-    async publishTheme(@Param('id') id: string, @Body() publish: ThemePublishRequestDto): Promise<ThemeShareDto> {
-        return this.service.publishTheme(id, publish.owner);
+    async publishTheme(@Param() params: StringIdParamDto, @Body() publish: ThemePublishRequestDto): Promise<ThemeShareDto> {
+        return this.service.publishTheme(params.id, publish.owner);
     }
 
     @Patch(":id/public")
@@ -65,7 +66,7 @@ export class ThemesController {
     @RequiredRole(AuthRoles.Moderator)
     @ApiOperation({ summary: "Update the theme content from the provided new share and increment version" })
     @ApiResponse({ status: 200, type: SpriteDto, description: "The newly created theme with id" })
-    async updateTheme(@Param('id') id: string, @Body() update: ThemeUpdateRequestDto): Promise<ThemeShareDto> {
-        return this.service.updatePublishedTheme(id, update.newId);
+    async updateTheme(@Param() params: StringIdParamDto, @Body() update: ThemeUpdateRequestDto): Promise<ThemeShareDto> {
+        return this.service.updatePublishedTheme(params.id, update.newId);
     }
 }

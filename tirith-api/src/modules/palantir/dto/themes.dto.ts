@@ -32,7 +32,7 @@ export class ThemeDto {
     @XApiProperty({ description: "Miscellaneous settings" })
     misc: { [imageName: string]: any };
 
-    @XApiProperty({ description: "Theme metadata" })
+    @XApiProperty({ description: "Theme metadata", type: () => ThemeMetaDto })
     meta: ThemeMetaDto;
 }
 

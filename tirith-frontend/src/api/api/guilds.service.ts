@@ -93,8 +93,8 @@ export class GuildsService {
 
     /**
      * Get invite information of a guild
-     * Required Role: None
-     * @param token 
+     *   Required Role: None  Rate limit: 10 (Limit) / 60000 (TTL)
+     * @param token Token parameter
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */

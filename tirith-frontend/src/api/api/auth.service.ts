@@ -95,7 +95,7 @@ export class AuthService {
 
     /**
      * Get the access token for a discord user with given oauth2 auth code
-     * Required Role: None
+     *   Required Role: None  Rate limit: 10 (Limit) / 60000 (TTL)
      * @param code 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
@@ -161,7 +161,7 @@ export class AuthService {
 
     /**
      * Create a palantir account for a discord user with given oauth2 auth code
-     * Required Role: None
+     *   Required Role: None  Rate limit: 10 (Limit) / 60000 (TTL)
      * @param registrationRequest 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.

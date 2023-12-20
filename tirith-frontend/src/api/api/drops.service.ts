@@ -91,7 +91,7 @@ export class DropsService {
 
     /**
      * Get the next drop ID
-     * Required Role: undefined
+     *   Required Role: Administrator  Rate limit: 10 (Limit) / 60000 (TTL)
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */

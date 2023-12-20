@@ -95,7 +95,7 @@ export class EventsService {
 
     /**
      * Get all event drops
-     * Required Role: None
+     *   Required Role: None  Rate limit: 10 (Limit) / 60000 (TTL)
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -150,7 +150,7 @@ export class EventsService {
 
     /**
      * Get all events
-     * Required Role: None
+     *   Required Role: None  Rate limit: 10 (Limit) / 60000 (TTL)
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -205,8 +205,8 @@ export class EventsService {
 
     /**
      * Get an event by ID
-     * Required Role: None
-     * @param id 
+     *   Required Role: None  Rate limit: 10 (Limit) / 60000 (TTL)
+     * @param id Id parameter
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -264,8 +264,8 @@ export class EventsService {
 
     /**
      * Get an event drop by ID
-     * Required Role: None
-     * @param id 
+     *   Required Role: None  Rate limit: 10 (Limit) / 60000 (TTL)
+     * @param id Id parameter
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -323,8 +323,8 @@ export class EventsService {
 
     /**
      * Get all event drops of an event
-     * Required Role: None
-     * @param id 
+     *   Required Role: None  Rate limit: 10 (Limit) / 60000 (TTL)
+     * @param id Id parameter
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */

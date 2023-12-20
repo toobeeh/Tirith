@@ -12,6 +12,7 @@ import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagg
 import { LobbiesResponseDto } from './dto/lobbies.dto';
 import { DropDto } from './dto/drops.dto';
 import { ApiSecurityNotes } from 'src/decorators/apiSecurityNote.decorator';
+import { StringTokenParamDto } from './dto/params.dto';
 
 @ApiSecurityNotes()
 @Controller("lobbies")
@@ -43,11 +44,11 @@ export class LobbiesController {
         return this.service.inspectLobbies();
     }
 
-    @Get(":key/drops")
+    @Get(":token/drops")
     @ApiOperation({ summary: "Get all drops caught in a lobby" })
     @ApiResponse({ status: 200, type: DropDto, isArray: true, description: "An array of all drops caught in a lobby" })
-    getLobbyDrops(@Param('key') key: string): Promise<DropDto[]> {
-        return this.service.getLobbyDrops(key);
+    getLobbyDrops(@Param() params: StringTokenParamDto): Promise<DropDto[]> {
+        return this.service.getLobbyDrops(params.token);
     }
 
 }

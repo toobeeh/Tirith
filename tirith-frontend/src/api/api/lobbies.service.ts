@@ -97,7 +97,7 @@ export class LobbiesService {
 
     /**
      * Get all logged lobby reports
-     * Required Role: Moderator
+     *   Required Role: Moderator  Rate limit: 10 (Limit) / 60000 (TTL)
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -159,17 +159,17 @@ export class LobbiesService {
 
     /**
      * Get all drops caught in a lobby
-     * Required Role: Moderator
-     * @param key 
+     *   Required Role: Moderator  Rate limit: 10 (Limit) / 60000 (TTL)
+     * @param token Token parameter
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getLobbyDrops(key: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<Array<DropDto>>;
-    public getLobbyDrops(key: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<Array<DropDto>>>;
-    public getLobbyDrops(key: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<Array<DropDto>>>;
-    public getLobbyDrops(key: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
-        if (key === null || key === undefined) {
-            throw new Error('Required parameter key was null or undefined when calling getLobbyDrops.');
+    public getLobbyDrops(token: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<Array<DropDto>>;
+    public getLobbyDrops(token: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<Array<DropDto>>>;
+    public getLobbyDrops(token: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<Array<DropDto>>>;
+    public getLobbyDrops(token: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+        if (token === null || token === undefined) {
+            throw new Error('Required parameter token was null or undefined when calling getLobbyDrops.');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -210,7 +210,7 @@ export class LobbiesService {
             }
         }
 
-        let localVarPath = `/lobbies/${this.configuration.encodeParam({name: "key", value: key, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}/drops`;
+        let localVarPath = `/lobbies/${this.configuration.encodeParam({name: "token", value: token, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}/drops`;
         return this.httpClient.request<Array<DropDto>>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -225,7 +225,7 @@ export class LobbiesService {
 
     /**
      * Get all present lobbies
-     * Required Role: Moderator
+     *   Required Role: Moderator  Rate limit: 10 (Limit) / 60000 (TTL)
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */

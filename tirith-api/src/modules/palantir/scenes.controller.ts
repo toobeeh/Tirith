@@ -7,6 +7,7 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { ScenesService } from 'src/services/scenes.service';
 import { SceneDto } from './dto/scenes.dto';
 import { ApiSecurityNotes } from 'src/decorators/apiSecurityNote.decorator';
+import { NumberIdParamDto } from './dto/params.dto';
 
 @ApiSecurityNotes()
 @Controller("scenes")
@@ -25,7 +26,7 @@ export class ScenesController {
     @Get(":id")
     @ApiOperation({ summary: "Get a scene by ID" })
     @ApiResponse({ status: 200, type: SceneDto, description: "The scene that matches the given ID" })
-    async getSceneById(@Param('id') id: number): Promise<SceneDto> {
-        return this.service.getScene(id);
+    async getSceneById(@Param() params: NumberIdParamDto): Promise<SceneDto> {
+        return this.service.getScene(params.id);
     }
 }

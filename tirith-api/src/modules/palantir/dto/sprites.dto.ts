@@ -15,7 +15,7 @@ export class SpriteDto {
     @XApiProperty({ description: "Sprite url" })
     url: string;
 
-    @XApiProperty({ description: "Associated event drop", required: false })
+    @XApiProperty({ description: "Associated event drop", required: false, type: () => EventDropDto })
     eventDrop?: EventDropDto;
 
     @XApiProperty({ description: "Flag for rainbow shift" })
