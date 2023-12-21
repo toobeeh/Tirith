@@ -41,11 +41,23 @@ export const throttleTenPerMinute: throttleConfig = {
 };
 
 /**
+ * Rate limit config: 30 / minute
+ * Use for frequently used resources
+ */
+export const throttleThirtyPerMinute: throttleConfig = {
+    name: "throttleThirtyPerMinute",
+    limit: 30,
+    ttl: minutes(1),
+    description: "Requests for more frequently used resources"
+};
+
+/**
  * Mapping of all throttle configs
  */
 export const throttles = {
     throttleFivePerFiveHours,
     throttleTenPerMinute,
+    throttleTenPerTenMinutes,
 
     /* default throttle */
     default: throttleTenPerMinute
