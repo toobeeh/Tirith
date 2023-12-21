@@ -34,6 +34,8 @@ export const ApiSecurityNotes = (): ClassDecorator => {
 
             if (!methodRole && endpointThrottles.length == 0) return;
 
+            console.log(method.target, endpointThrottles, controllerThrottles);
+
             let description = "";
 
             /* build security information */

@@ -96,7 +96,7 @@ export const getThrottleOfControllerOrEndpoint = (target: any) => {
     const key_limit = "THROTTLER:LIMIT";
 
     const names: string[] = (Reflect.getMetadataKeys(target).filter(k => (k as string).startsWith(key_ttl))).map(name => name.replace(key_ttl, ""));
-    if (names.length == 0) return undefined;
+    if (names.length == 0) return [throttles.default];
 
     const throttleMatches = names.map(name => ({
         name,
