@@ -3,6 +3,13 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+  font-size: 26px;
+  @screen xl {
+    font-size: 16px;
+  }
+}
+
 .navcard {
   @apply h-40 relative grid place-content-center cursor-pointer;
 }

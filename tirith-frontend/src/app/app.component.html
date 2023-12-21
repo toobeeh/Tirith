@@ -1,12 +1,12 @@
 <!-- cloud graphics and background -->
 <div id="backgroundClouds">
-  <div class="backgroundLeft">
+  <div class="backgroundLeft hidden desktop:block">
     <div class="cloudsBack backgroundSide animateBack"></div>
     <a href="#documentation">
       <div class="cloudsFore backgroundSide animateFore"></div>
     </a>
   </div>
-  <div class="backgroundRight">
+  <div class="backgroundRight hidden desktop:block">
     <div class="cloudsBack backgroundSide animateBack"></div>
     <a href="#documentation">
       <div class="cloudsFore backgroundSide animateFore"></div>
@@ -41,7 +41,7 @@
 </div>
 
 <!-- content -->
-<div class="pt-[8rem] mb-[10rem] px-[15vw] fadeOutToast" [style.opacity]="toastOpened ? 0.05 : 1">
+<div class="pt-[8rem] mb-[10rem] px-[5vw] desktop:px-[15vw] fadeOutToast" [style.opacity]="toastOpened ? 0.05 : 1">
   <router-outlet></router-outlet>
 </div>
 
