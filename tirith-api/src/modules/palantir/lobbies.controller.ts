@@ -13,6 +13,8 @@ import { LobbiesResponseDto } from './dto/lobbies.dto';
 import { DropDto } from './dto/drops.dto';
 import { ApiSecurityNotes } from 'src/decorators/apiSecurityNote.decorator';
 import { StringTokenParamDto } from './dto/params.dto';
+import { Throttle } from '@nestjs/throttler';
+import { throttleThirtyPerMinute } from 'src/guards/trottleConfigs';
 
 @ApiSecurityNotes()
 @Controller("lobbies")
@@ -39,6 +41,7 @@ export class LobbiesController {
 
     @Get()
     @ApiOperation({ summary: "Get all present lobbies" })
+    @Throttle({ throttleThirtyPerMinute })
     @ApiResponse({ status: 200, type: LobbiesResponseDto, isArray: true, description: "An array of all current lobbies" })
     inspectAllLobbies(): Promise<LobbiesResponseDto[]> {
         return this.service.inspectLobbies();

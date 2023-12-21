@@ -1,11 +1,11 @@
-<div class="grid grid-cols-2 gap-4">
+<div class="grid desktop:grid-cols-2 gap-4">
 
   <!-- headings -->
-  <h2>Current Lobbies</h2>
-  <h2>Lobby Inspector</h2>
+  <h2 class="row-start-3 desktop:row-start-auto">Current Lobbies</h2>
+  <h2 class="row-start-1 desktop:row-start-auto">Lobby Inspector</h2>
 
   <!-- lobby cards -->
-  <div class="flex flex-row flex-wrap gap-3 h-fit">
+  <div class="row-start-4 desktop:row-start-auto flex flex-row flex-wrap gap-3 h-fit max-w-full">
 
     <div *ngFor="let lobby of lobbies"
       class="p-3 bg-white bg-opacity-5 rounded-xl cursor-pointer transition-transform hover:translate-y-1 hover:scale-95"
@@ -25,9 +25,9 @@
   </div>
 
   <!-- lobby inspector -->
-  <div *ngIf="lobbyInspect !== undefined" class="flex flex-col gap-3">
+  <div *ngIf="lobbyInspect !== undefined" class="row-start-2 desktop:row-start-auto flex flex-col gap-3">
     <h3>Lobby Data</h3>
-    <ngx-json-viewer [expanded]="false" [json]="lobbyInspect"></ngx-json-viewer>
+    <ngx-json-viewer class="max-w-[80vw]" [expanded]="false" [json]="lobbyInspect"></ngx-json-viewer>
     <h3>Lobby Drop Log</h3>
     <ngx-json-viewer *ngIf="lobbyDrops$ !== undefined" [expanded]="false" class="h-max-50 overflow-scroll"
       [json]="lobbyDrops$ | async"></ngx-json-viewer>
