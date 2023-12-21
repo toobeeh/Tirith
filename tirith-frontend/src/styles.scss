@@ -4,10 +4,10 @@
 @tailwind utilities;
 
 html {
-  font-size: 26px;
-  @screen xl {
+  font-size: 16px;
+  /* @screen desktop {
     font-size: 16px;
-  }
+  } */
 }
 
 .navcard {
