@@ -11,7 +11,7 @@ import { DiscordOauthService } from './services/discord-oauth.service';
 import { AuthModule } from './modules/auth/auth.module';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
-import { throttles } from './guards/trottleConfigs';
+import { getThrottleDefinition } from './guards/trottleConfigs';
 
 const ENV = process.env.NODE_ENV;
 console.log(`Starting in environment ${ENV}`);
@@ -25,7 +25,7 @@ console.log(`Starting in environment ${ENV}`);
       isGlobal: true
     }),
     ThrottlerModule.forRoot([
-      throttles.default
+      getThrottleDefinition("throttleTenPerMinute")
     ]),
     PalantirModule, AuthModule
   ],

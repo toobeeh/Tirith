@@ -2,8 +2,8 @@
 https://docs.nestjs.com/controllers#controllers
 */
 
-import { Body, Controller, Get, Param, Patch, Post, Put, UseGuards } from '@nestjs/common';
-import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { Body, Controller, Get, Param, Patch, Post, UseGuards } from '@nestjs/common';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { SpriteDto } from './dto/sprites.dto';
 import { ApiSecurityNotes } from 'src/decorators/apiSecurityNote.decorator';
 import { ThemeDto, ThemeListingDto, ThemePublishRequestDto, ThemeShareDto, ThemeUpdateRequestDto } from './dto/themes.dto';
@@ -12,8 +12,8 @@ import { RequiredRole, AuthRoles } from 'src/decorators/roles.decorator';
 import { MemberGuard } from 'src/guards/member.guard';
 import { RoleGuard } from 'src/guards/role.guard';
 import { Throttle } from '@nestjs/throttler';
-import { throttleFivePerFiveHours } from 'src/guards/trottleConfigs';
 import { StringIdParamDto } from './dto/params.dto';
+import { getThrottleForDefinition } from 'src/guards/trottleConfigs';
 
 @ApiSecurityNotes()
 @UseGuards(RoleGuard)
@@ -45,7 +45,7 @@ export class ThemesController {
     }
 
     @Get(":id/use")
-    @Throttle({ throttleFivePerFiveHours })
+    @Throttle(getThrottleForDefinition("throttleFivePerFiveHours"))
     @ApiOperation({ summary: "Get a theme by ID and increment use counter" })
     @ApiResponse({ status: 200, type: ThemeDto, description: "The theme that matches the given ID" })
     async useThemeById(@Param() params: StringIdParamDto): Promise<ThemeDto> {

@@ -9,7 +9,6 @@ import { GuildsService } from 'src/services/guilds.service';
 import { GuildInviteDto } from './dto/guilds.dto';
 import { NumberTokenParamDto } from './dto/params.dto';
 import { Throttle } from '@nestjs/throttler';
-import { throttleTenPerTenMinutes } from 'src/guards/trottleConfigs';
 
 @ApiSecurityNotes()
 @Controller("guilds")
@@ -21,7 +20,6 @@ export class GuildsController {
     @Get(":token/invite")
     @ApiOperation({ summary: "Get invite information of a guild" })
     @ApiResponse({ status: 200, type: GuildInviteDto, description: "The invite information of a guild" })
-    @Throttle({ throttleTenPerTenMinutes })
     async getGuildInvite(@Param() params: NumberTokenParamDto): Promise<GuildInviteDto> {
         return this.service.getGuildPreview(params.token);
     }

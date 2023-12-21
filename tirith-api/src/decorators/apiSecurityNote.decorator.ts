@@ -12,7 +12,7 @@ export const ApiSecurityNotes = (): ClassDecorator => {
         const role = Reflect.getMetadata("guardRequiredRole", target) as AuthRoles ?? AuthRoles.None;
 
         /* get throttle for class */
-        const controllerThrottle = getThrottleOfControllerOrEndpoint(target);
+        const controllerThrottles = getThrottleOfControllerOrEndpoint(target) ?? [];
 
         /* get methods that are a path in the controller -> endpoint */
         const methods = Object.getOwnPropertyNames(target.prototype)
@@ -27,9 +27,12 @@ export const ApiSecurityNotes = (): ClassDecorator => {
             const ownerOverride = Reflect.getMetadata("guardResourceOwner", method.target) as string ?? null;
             const existingMetadata = Reflect.getMetadata('swagger/apiOperation', method.target) || {};
 
-            const endpointThrottle = getThrottleOfControllerOrEndpoint(method.target) ?? controllerThrottle;
+            const endpointThrottles = getThrottleOfControllerOrEndpoint(method.target) ?? [];
+            controllerThrottles.forEach(t => {
+                if (!endpointThrottles.some(rt => t.name == rt.name)) endpointThrottles.push(t);
+            });
 
-            if (!methodRole && !endpointThrottle) return;
+            if (!methodRole && endpointThrottles.length == 0) return;
 
             let description = "";
 
@@ -41,8 +44,9 @@ export const ApiSecurityNotes = (): ClassDecorator => {
             }
 
             /* build ratelimit information */
-            if (endpointThrottle) {
-                const throttleDesc = `Rate limit: ${endpointThrottle.limit} (Limit) / ${endpointThrottle.ttl} (TTL)`;
+            if (endpointThrottles && endpointThrottles.length > 0) {
+
+                const throttleDesc = endpointThrottles.map(t => `Rate limit ${t.name}: ${t.limit} Requests / ${t.ttl} ms TTL`);
                 description += "\n\n" + throttleDesc;
             }
 
