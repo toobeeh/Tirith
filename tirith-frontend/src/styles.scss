@@ -10,6 +10,10 @@ html {
   } */
 }
 
+* {
+  text-wrap: pretty;
+}
+
 .navcard {
   @apply h-40 relative grid place-content-center cursor-pointer;
 }

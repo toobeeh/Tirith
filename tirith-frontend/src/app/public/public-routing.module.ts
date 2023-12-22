@@ -15,6 +15,7 @@ import { RainbowPreviewComponent } from './pages/tools/rainbow-preview/rainbow-p
 import { CardBuilderComponent } from './pages/tools/card-builder/card-builder.component';
 import { WorkshopComponent } from './pages/tools/workshop/workshop.component';
 import { InviteComponent } from './pages/invite/invite.component';
+import { SettingsComponent } from './pages/help/settings/settings.component';
 
 const helpNavigationData = {
   navigation: [
@@ -22,6 +23,7 @@ const helpNavigationData = {
     ["Discord Bot", "help/discord", "route"],
     ["Bot Setup", "help/palantir", "route"],
     ["Features", "help/features", "route"],
+    ["Settings", "help/settings", "route"],
   ]
 };
 
@@ -67,6 +69,12 @@ const routes: Routes = [
   {
     path: 'help/palantir',
     component: PalantirComponent,
+    pathMatch: "full",
+    data: helpNavigationData
+  },
+  {
+    path: 'help/settings',
+    component: SettingsComponent,
     pathMatch: "full",
     data: helpNavigationData
   },

@@ -21,6 +21,8 @@ import { ColorShadeModule } from 'ngx-color/shade';
 import { ColorChromeModule } from 'ngx-color/chrome';
 import { WorkshopComponent } from './pages/tools/workshop/workshop.component';
 import { InviteComponent } from './pages/invite/invite.component';
+import { SettingsComponent } from './pages/help/settings/settings.component';
+import { BrowserModule } from '@angular/platform-browser';
 
 
 @NgModule({
@@ -38,9 +40,11 @@ import { InviteComponent } from './pages/invite/invite.component';
     ScenesComponent,
     SpritesComponent,
     WorkshopComponent,
-    InviteComponent
+    InviteComponent,
+    SettingsComponent
   ],
   imports: [
+    BrowserModule,
     FormsModule,
     ColorAlphaModule,
     ColorHueModule,

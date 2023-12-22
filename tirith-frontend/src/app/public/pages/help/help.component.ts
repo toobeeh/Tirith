@@ -26,7 +26,13 @@ export class HelpComponent {
       color: "rgb(220 252 231)",
       image: "url(https://tobeh.host/scenes/sceneEmerald_Dust.gif)",
       link: "palantir"
-    }
+    },
+    {
+      name: "Extension Settings",
+      color: "rgb(251 207 232)",
+      image: "url(https://tobeh.host/scenes/scenePortal.gif)",
+      link: "settings"
+    },
   ]
 
 }
