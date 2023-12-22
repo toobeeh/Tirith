@@ -16,7 +16,7 @@
 
 <!-- invisible nav -->
 <div id="navBack" (click)="navPlanet.closeNav()"></div>
-<div id="navClone" class="flex flex-col justify-center gap-2">
+<div id="navClone" class="flex flex-col justify-center gap-5 items-center">
   <ng-container *ngFor="let item of navPlanet.content">
     <a *ngIf="item[2] == 'route'" [routerLink]="item[1]" (click)="navPlanet.closeNav()">
       <h1>{{item[0]}}</h1>

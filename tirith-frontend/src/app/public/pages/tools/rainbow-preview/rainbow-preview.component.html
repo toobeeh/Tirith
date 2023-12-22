@@ -1,10 +1,11 @@
-<h1>Rainbow Preview</h1><br>
+<h1>Rainbow Preview</h1>
+<br><br>
 <h4>Rainbow sprites (marked with 🌈) can be color-customized.<br>
   To adjust the color, you need to choose a number between 0 and 200 which will change the sprite's color channels.<br>
   Here you can test out which color modification looks the best.
 </h4>
-<br>
-<div class="flex flex-row gap-7 justify-center">
+<br><br>
+<div class="flex flex-row gap-7 justify-center flex-wrap">
   <input type="number" [formControl]="spriteInput" placeholder="Sprite ID" />
   <input type="number" [formControl]="rainbowInput" placeholder="Rainbow Shift" />
   <input type="button" value="Preview Sprite" (click)="setSpriteSource()">

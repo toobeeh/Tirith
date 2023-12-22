@@ -38,6 +38,7 @@ h1 {
   text-align: center;
   transition: letter-spacing 0.3s;
   font-weight: bold;
+  line-height: 3rem;
 }
 
 h1:hover {

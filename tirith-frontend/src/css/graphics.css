@@ -200,7 +200,7 @@ body {
 
 #logo {
   user-select: none;
-  height: 70%;
+  height: 4rem;
   cursor: pointer;
   transition: filter 0.3s;
   transform-origin: top;
@@ -231,6 +231,10 @@ body {
   opacity: 0;
 }
 
+#navClone a {
+  max-width:100vw;
+}
+
 #navClone h1:hover {
   text-shadow: -4px 4px 0px rgba(64, 79, 106, 1);
 }
@@ -247,7 +251,7 @@ body {
 #navPlanCont {
   position: relative;
   top: -90%;
-  height: 200%;
+  height: 12rem;
   transition: top 0.5s, opacity 0.2s;
   cursor: pointer;
   animation-name: wiggle;
