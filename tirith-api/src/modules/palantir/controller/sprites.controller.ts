@@ -4,10 +4,10 @@ https://docs.nestjs.com/controllers#controllers
 
 import { Controller, Get, Param } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { SpritesService } from 'src/services/sprites.service';
-import { SpriteDto } from './dto/sprites.dto';
+import { SpritesService } from 'src/modules/palantir/service/sprites.service';
+import { SpriteDto } from '../dto/sprites.dto';
 import { ApiSecurityNotes } from 'src/decorators/apiSecurityNote.decorator';
-import { NumberIdParamDto } from './dto/params.dto';
+import { NumberIdParamDto } from '../dto/params.dto';
 
 @ApiSecurityNotes()
 @Controller("sprites")

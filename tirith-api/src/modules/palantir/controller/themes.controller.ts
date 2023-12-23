@@ -4,15 +4,15 @@ https://docs.nestjs.com/controllers#controllers
 
 import { Body, Controller, Get, Param, Patch, Post, UseGuards } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { SpriteDto } from './dto/sprites.dto';
+import { SpriteDto } from '../dto/sprites.dto';
 import { ApiSecurityNotes } from 'src/decorators/apiSecurityNote.decorator';
-import { ThemeDto, ThemeListingDto, ThemePublishRequestDto, ThemeShareDto, ThemeUpdateRequestDto } from './dto/themes.dto';
-import { ThemesService } from 'src/services/themes.service';
+import { ThemeDto, ThemeListingDto, ThemePublishRequestDto, ThemeShareDto, ThemeUpdateRequestDto } from '../dto/themes.dto';
+import { ThemesService } from 'src/modules/palantir/service/themes.service';
 import { RequiredRole, AuthRoles } from 'src/decorators/roles.decorator';
 import { MemberGuard } from 'src/guards/member.guard';
 import { RoleGuard } from 'src/guards/role.guard';
 import { Throttle } from '@nestjs/throttler';
-import { StringIdParamDto } from './dto/params.dto';
+import { StringIdParamDto } from '../dto/params.dto';
 import { getThrottleForDefinition } from 'src/guards/trottleConfigs';
 
 @ApiSecurityNotes()

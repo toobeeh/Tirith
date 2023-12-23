@@ -3,7 +3,7 @@ https://docs.nestjs.com/providers#services
 */
 
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { PalantirdbService } from './palantirdb.service';
+import { PalantirdbService } from '../../../services/palantirdb.service';
 
 @Injectable()
 export class LobbiesService {

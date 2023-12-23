@@ -3,7 +3,7 @@ https://docs.nestjs.com/providers#services
 */
 
 import { Injectable } from '@nestjs/common';
-import { PalantirdbService } from './palantirdb.service';
+import { PalantirdbService } from '../../../services/palantirdb.service';
 import { AwardDto } from 'src/modules/palantir/dto/awards.dto';
 
 @Injectable()

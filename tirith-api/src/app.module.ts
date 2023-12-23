@@ -7,7 +7,7 @@ import { ConfigModule } from '@nestjs/config';
 
 import config from './config/production.config';
 import configDev from './config/development.config';
-import { DiscordOauthService } from './services/discord-oauth.service';
+import { DiscordOauthService } from './modules/auth/service/discord-oauth.service';
 import { AuthModule } from './modules/auth/auth.module';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';

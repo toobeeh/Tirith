@@ -4,10 +4,10 @@ https://docs.nestjs.com/controllers#controllers
 
 import { Controller, Get, Param } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { EventDropDto, EventDto } from './dto/events.dto';
-import { EventsService } from 'src/services/events.service';
+import { EventDropDto, EventDto } from '../dto/events.dto';
+import { EventsService } from 'src/modules/palantir/service/events.service';
 import { ApiSecurityNotes } from 'src/decorators/apiSecurityNote.decorator';
-import { NumberIdParamDto } from './dto/params.dto';
+import { NumberIdParamDto } from '../dto/params.dto';
 
 @ApiSecurityNotes()
 @Controller("events")

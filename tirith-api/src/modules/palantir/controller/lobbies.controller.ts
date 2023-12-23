@@ -6,13 +6,13 @@ import { Controller, Get, Param, UseGuards } from '@nestjs/common';
 import { AuthRoles, RequiredRole } from 'src/decorators/roles.decorator';
 import { RoleGuard } from 'src/guards/role.guard';
 import { MemberGuard } from 'src/guards/member.guard';
-import { LobbiesService } from 'src/services/lobbies.service';
-import { ReportsResponseDto } from './dto/reports.dto';
+import { LobbiesService } from 'src/modules/palantir/service/lobbies.service';
+import { ReportsResponseDto } from '../dto/reports.dto';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { LobbiesResponseDto } from './dto/lobbies.dto';
-import { DropDto } from './dto/drops.dto';
+import { LobbiesResponseDto } from '../dto/lobbies.dto';
+import { DropDto } from '../dto/drops.dto';
 import { ApiSecurityNotes } from 'src/decorators/apiSecurityNote.decorator';
-import { StringTokenParamDto } from './dto/params.dto';
+import { StringTokenParamDto } from '../dto/params.dto';
 import { Throttle } from '@nestjs/throttler';
 import { getThrottleForDefinition } from 'src/guards/trottleConfigs';
 

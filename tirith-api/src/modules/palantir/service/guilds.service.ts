@@ -3,9 +3,9 @@ https://docs.nestjs.com/providers#services
 */
 
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { PalantirdbService } from './palantirdb.service';
+import { PalantirdbService } from '../../../services/palantirdb.service';
 import { discordGuildDetails } from 'palantir-db/dist/src/types';
-import { DiscordApiGuildDto, DiscordApiService } from './discord-api.service';
+import { DiscordApiGuildDto, DiscordApiService } from '../../../services/discord-api.service';
 import { GuildInviteDto } from 'src/modules/palantir/dto/guilds.dto';
 import { map } from 'rxjs';
 

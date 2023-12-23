@@ -8,7 +8,7 @@ import { ApiSecurityNotes } from 'src/decorators/apiSecurityNote.decorator';
 import { RequiredRole, AuthRoles } from 'src/decorators/roles.decorator';
 import { RoleGuard } from 'src/guards/role.guard';
 import { MemberGuard } from 'src/guards/member.guard';
-import { DropsService } from 'src/services/drops.service';
+import { DropsService } from 'src/modules/palantir/service/drops.service';
 
 @ApiSecurityNotes()
 @RequiredRole(AuthRoles.Administrator)

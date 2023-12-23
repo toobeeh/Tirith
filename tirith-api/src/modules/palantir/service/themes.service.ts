@@ -3,7 +3,7 @@ https://docs.nestjs.com/providers#services
 */
 
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { PalantirdbService } from './palantirdb.service';
+import { PalantirdbService } from '../../../services/palantirdb.service';
 import { UserThemes } from 'palantir-db/dist/src/schema';
 import { plainToInstance } from 'class-transformer';
 import { ThemeDto, ThemeListingDto, ThemeShareDto } from 'src/modules/palantir/dto/themes.dto';

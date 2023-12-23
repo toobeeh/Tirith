@@ -4,8 +4,8 @@ https://docs.nestjs.com/controllers#controllers
 
 import { Controller, Get } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { AwardsService } from 'src/services/awards.service';
-import { AwardDto } from './dto/awards.dto';
+import { AwardsService } from 'src/modules/palantir/service/awards.service';
+import { AwardDto } from '../dto/awards.dto';
 import { ApiSecurityNotes } from 'src/decorators/apiSecurityNote.decorator';
 
 @ApiSecurityNotes()

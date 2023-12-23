@@ -3,10 +3,10 @@ https://docs.nestjs.com/providers#services
 */
 
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { PalantirdbService } from './palantirdb.service';
+import { PalantirdbService } from '../../../services/palantirdb.service';
 import { Sprites } from 'palantir-db/dist/src/schema';
 import { SpriteDto } from 'src/modules/palantir/dto/sprites.dto';
-import { DtoCache } from './dtoCache';
+import { DtoCache } from '../../../utils/dtoCache';
 import { EventsService } from './events.service';
 import { EventDropDto } from 'src/modules/palantir/dto/events.dto';
 

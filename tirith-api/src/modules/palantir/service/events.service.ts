@@ -3,9 +3,9 @@ https://docs.nestjs.com/providers#services
 */
 
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { PalantirdbService } from './palantirdb.service';
+import { PalantirdbService } from '../../../services/palantirdb.service';
 import { EventDrops, Events } from 'palantir-db/dist/src/schema';
-import { DtoCache } from './dtoCache';
+import { DtoCache } from '../../../utils/dtoCache';
 import { EventDropDto, EventDto } from 'src/modules/palantir/dto/events.dto';
 
 @Injectable()

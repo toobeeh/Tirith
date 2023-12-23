@@ -4,8 +4,8 @@ https://docs.nestjs.com/controllers#controllers
 
 import { Body, Controller, Get, HttpException, HttpStatus, Post, Query } from '@nestjs/common';
 import { PalantirdbService } from 'src/services/palantirdb.service';
-import { DiscordOauthService } from 'src/services/discord-oauth.service';
-import { RegistrationRequest, TokenResponse } from './dto/registration.dto';
+import { DiscordOauthService } from 'src/modules/auth/service/discord-oauth.service';
+import { RegistrationRequest, TokenResponse } from '../dto/registration.dto';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { ApiSecurityNotes } from 'src/decorators/apiSecurityNote.decorator';
 import { Throttle } from '@nestjs/throttler';

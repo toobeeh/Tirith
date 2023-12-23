@@ -5,9 +5,9 @@ https://docs.nestjs.com/controllers#controllers
 import { Controller, Get, Param } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { ApiSecurityNotes } from 'src/decorators/apiSecurityNote.decorator';
-import { GuildsService } from 'src/services/guilds.service';
-import { GuildInviteDto } from './dto/guilds.dto';
-import { NumberTokenParamDto } from './dto/params.dto';
+import { GuildsService } from 'src/modules/palantir/service/guilds.service';
+import { GuildInviteDto } from '../dto/guilds.dto';
+import { NumberTokenParamDto } from '../dto/params.dto';
 import { Throttle } from '@nestjs/throttler';
 
 @ApiSecurityNotes()

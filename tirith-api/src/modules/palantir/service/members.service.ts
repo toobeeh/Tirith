@@ -3,7 +3,7 @@ https://docs.nestjs.com/providers#services
 */
 
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { PalantirdbService } from './palantirdb.service';
+import { PalantirdbService } from '../../../services/palantirdb.service';
 import { member } from 'palantir-db/dist/src/types';
 import { AccessTokenDto, MemberDto } from 'src/modules/palantir/dto/member.dto';
 import { MemberSearchDto } from 'src/modules/palantir/dto/memberSearch.dto';
