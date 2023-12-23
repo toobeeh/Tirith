@@ -2,19 +2,19 @@
 https://docs.nestjs.com/controllers#controllers
 */
 
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, Inject, Param } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { ScenesService } from 'src/modules/palantir/service/scenes.service';
 import { SceneDto } from '../dto/scenes.dto';
 import { ApiSecurityNotes } from 'src/decorators/apiSecurityNote.decorator';
 import { NumberIdParamDto } from '../dto/params.dto';
+import { IScenesService } from '../service/scenes.service.interface';
 
 @ApiSecurityNotes()
 @Controller("scenes")
 @ApiTags("scenes")
 export class ScenesController {
 
-    constructor(private service: ScenesService) { }
+    constructor(@Inject(IScenesService) private service: IScenesService) { }
 
     @Get()
     @ApiOperation({ summary: "Get all scenes" })

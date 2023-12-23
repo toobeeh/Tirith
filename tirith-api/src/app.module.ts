@@ -12,6 +12,7 @@ import { AuthModule } from './modules/auth/auth.module';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
 import { getThrottleDefinition } from './guards/trottleConfigs';
+import { GrpcModule } from './modules/grpc/grpc.module';
 
 const ENV = process.env.NODE_ENV;
 console.log(`Starting in environment ${ENV}`);
@@ -27,7 +28,7 @@ console.log(`Starting in environment ${ENV}`);
     ThrottlerModule.forRoot([
       getThrottleDefinition("throttleTenPerMinute")
     ]),
-    PalantirModule, AuthModule
+    PalantirModule, AuthModule, GrpcModule
   ],
   controllers: [
     AppController

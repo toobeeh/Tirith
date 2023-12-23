@@ -7,9 +7,10 @@ import { PalantirdbService } from '../../../services/palantirdb.service';
 import { EventsService } from './events.service';
 import { SceneDto } from 'src/modules/palantir/dto/scenes.dto';
 import { Scenes } from 'palantir-db/dist/src/schema';
+import { IScenesService } from './scenes.service.interface';
 
 @Injectable()
-export class ScenesService {
+export class ScenesService implements IScenesService {
 
     private get database() { return this.databaseService.database; }
 
@@ -28,8 +29,11 @@ export class ScenesService {
     }
 
     async getAllScenes(): Promise<SceneDto[]> {
+        console.time();
         const scenes = await this.database.getAllScenes();
         if (!scenes.success) throw new HttpException("Could not load events", HttpStatus.INTERNAL_SERVER_ERROR);
+
+        console.timeEnd();
 
         return Promise.all(scenes.result.map(async scene => this.mapToDto(scene)));
     }

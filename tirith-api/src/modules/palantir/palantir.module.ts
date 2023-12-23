@@ -18,7 +18,6 @@ import { AwardsService } from 'src/modules/palantir/service/awards.service';
 import { ScenesController } from './controller/scenes.controller';
 import { SpritesController } from './controller/sprites.controller';
 import { SpritesService } from 'src/modules/palantir/service/sprites.service';
-import { ScenesService } from 'src/modules/palantir/service/scenes.service';
 import { EventsService } from 'src/modules/palantir/service/events.service';
 import { EventsController } from './controller/events.controller';
 import { DiscordApiService } from 'src/services/discord-api.service';
@@ -27,10 +26,12 @@ import { GuildsController } from './controller/guilds.controller';
 import { GuildsService } from 'src/modules/palantir/service/guilds.service';
 import { ThemesService } from 'src/modules/palantir/service/themes.service';
 import { ThemesController } from './controller/themes.controller';
+import { GrpcModule } from '../grpc/grpc.module';
 
 @Module({
     imports: [
-        HttpModule
+        HttpModule,
+        GrpcModule
     ],
     controllers: [
         LobbiesController,
@@ -52,7 +53,6 @@ import { ThemesController } from './controller/themes.controller';
         AwardsService,
         EventsService,
         SpritesService,
-        ScenesService,
         DiscordApiService,
         GuildsService,
         ThemesService,
