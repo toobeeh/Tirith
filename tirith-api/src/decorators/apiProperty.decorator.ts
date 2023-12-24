@@ -1,6 +1,6 @@
 import { ApiProperty, ApiPropertyOptions } from "@nestjs/swagger";
-import { Expose, Type } from "class-transformer";
-import { IsBooleanString, IsDefined, IsNumberString, IsString, ValidateNested } from "class-validator";
+import { Expose, Transform, Type } from "class-transformer";
+import { IsBoolean, IsDefined, IsNumber, IsString, ValidateNested, isBoolean, isBooleanString } from "class-validator";
 
 /**
  * interface that enforces a function as type to comply both swagger and classtransformer
@@ -32,10 +32,23 @@ export const XApiProperty = (options?: strictTypeOptions, expose = true): Proper
 
         /* add default validators */
         const propertyType = Reflect.getMetadata("design:type", target, key);
+
         if (options.required !== false) defaultTypeValidators.push(IsDefined());
-        if (propertyType === String) defaultTypeValidators.push(IsString());
-        if (propertyType === Number) defaultTypeValidators.push(IsNumberString());
-        if (propertyType === Boolean) defaultTypeValidators.push(IsBooleanString());
+
+        if (propertyType === String) {
+            defaultTypeValidators.push(IsString());
+        }
+
+        if (propertyType === Number) {
+            defaultTypeValidators.push(Type(() => Number));
+            defaultTypeValidators.push(IsNumber());
+        }
+
+        if (propertyType === Boolean) {
+            defaultTypeValidators.push(Transform(({ value }) => isBoolean(value) ? value : (isBooleanString(value) ? Boolean(value) : null))); // allow only strict boolean or boolean strings for query/path param
+            defaultTypeValidators.push(IsBoolean());
+        }
+
         if (options?.type) defaultTypeValidators.push(ValidateNested())
 
         defaultTypeValidators.forEach(validatorAnnotation => validatorAnnotation(target, key));
