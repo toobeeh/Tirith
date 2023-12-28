@@ -7,9 +7,10 @@ import { PalantirdbService } from '../../../services/palantirdb.service';
 import { UserThemes } from 'palantir-db/dist/src/schema';
 import { plainToInstance } from 'class-transformer';
 import { ThemeDto, ThemeListingDto, ThemeShareDto } from 'src/modules/palantir/dto/themes.dto';
+import { IThemesService } from './themes.service.interface';
 
 @Injectable()
-export class ThemesService {
+export class ThemesService implements IThemesService {
 
     private get database() { return this.databaseService.database; }
 
@@ -56,17 +57,17 @@ export class ThemesService {
         )).sort((a, b) => b.downloads - a.downloads);
     }
 
-    async getThemeById(id: string): Promise<ThemeDto> {
+    async getTheme(id: string): Promise<ThemeDto> {
         const theme = await this.database.getTheme(id);
         if (!theme.success) throw new HttpException("Theme not found", HttpStatus.NOT_FOUND);
         return this.mapThemeJsonToThemeDto(theme.result);
     }
 
-    async getThemeByIdAndUse(id: string): Promise<ThemeDto> {
+    async getThemeAndUse(id: string): Promise<ThemeDto> {
         const used = await this.database.incrementThemeUses(id);
         if (!used.success) throw new HttpException("Public theme not found", HttpStatus.NOT_FOUND);
 
-        return this.getThemeById(id);
+        return this.getTheme(id);
     }
 
     async shareTheme(theme: ThemeDto): Promise<ThemeShareDto> {

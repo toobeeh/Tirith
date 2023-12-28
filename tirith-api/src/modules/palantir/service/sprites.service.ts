@@ -9,9 +9,10 @@ import { SpriteDto } from 'src/modules/palantir/dto/sprites.dto';
 import { DtoCache } from '../../../utils/dtoCache';
 import { EventsService } from './events.service';
 import { EventDropDto } from 'src/modules/palantir/dto/events.dto';
+import { ISpritesService } from './sprites.service.interface';
 
 @Injectable()
-export class SpritesService {
+export class SpritesService implements ISpritesService {
 
     private get database() { return this.databaseService.database; }
 
@@ -45,7 +46,7 @@ export class SpritesService {
         return Promise.all(sprites.result.map(async sprite => this.mapToDto(sprite)));
     }
 
-    async getSprites(id: number): Promise<SpriteDto> {
+    async getSprite(id: number): Promise<SpriteDto> {
         const sprite = await this.database.getSprite(id);
         if (!sprite.success) throw new HttpException("Sprite " + id + " not found", HttpStatus.NOT_FOUND);
 

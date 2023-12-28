@@ -140,15 +140,6 @@ export const DoubleValue = {
     }
     return obj;
   },
-
-  create(base?: DeepPartial<DoubleValue>): DoubleValue {
-    return DoubleValue.fromPartial(base ?? {});
-  },
-  fromPartial(object: DeepPartial<DoubleValue>): DoubleValue {
-    const message = createBaseDoubleValue();
-    message.value = object.value ?? 0;
-    return message;
-  },
 };
 
 function createBaseFloatValue(): FloatValue {
@@ -196,15 +187,6 @@ export const FloatValue = {
       obj.value = message.value;
     }
     return obj;
-  },
-
-  create(base?: DeepPartial<FloatValue>): FloatValue {
-    return FloatValue.fromPartial(base ?? {});
-  },
-  fromPartial(object: DeepPartial<FloatValue>): FloatValue {
-    const message = createBaseFloatValue();
-    message.value = object.value ?? 0;
-    return message;
   },
 };
 
@@ -254,15 +236,6 @@ export const Int64Value = {
     }
     return obj;
   },
-
-  create(base?: DeepPartial<Int64Value>): Int64Value {
-    return Int64Value.fromPartial(base ?? {});
-  },
-  fromPartial(object: DeepPartial<Int64Value>): Int64Value {
-    const message = createBaseInt64Value();
-    message.value = object.value ?? 0;
-    return message;
-  },
 };
 
 function createBaseUInt64Value(): UInt64Value {
@@ -310,15 +283,6 @@ export const UInt64Value = {
       obj.value = Math.round(message.value);
     }
     return obj;
-  },
-
-  create(base?: DeepPartial<UInt64Value>): UInt64Value {
-    return UInt64Value.fromPartial(base ?? {});
-  },
-  fromPartial(object: DeepPartial<UInt64Value>): UInt64Value {
-    const message = createBaseUInt64Value();
-    message.value = object.value ?? 0;
-    return message;
   },
 };
 
@@ -368,15 +332,6 @@ export const Int32Value = {
     }
     return obj;
   },
-
-  create(base?: DeepPartial<Int32Value>): Int32Value {
-    return Int32Value.fromPartial(base ?? {});
-  },
-  fromPartial(object: DeepPartial<Int32Value>): Int32Value {
-    const message = createBaseInt32Value();
-    message.value = object.value ?? 0;
-    return message;
-  },
 };
 
 function createBaseUInt32Value(): UInt32Value {
@@ -424,15 +379,6 @@ export const UInt32Value = {
       obj.value = Math.round(message.value);
     }
     return obj;
-  },
-
-  create(base?: DeepPartial<UInt32Value>): UInt32Value {
-    return UInt32Value.fromPartial(base ?? {});
-  },
-  fromPartial(object: DeepPartial<UInt32Value>): UInt32Value {
-    const message = createBaseUInt32Value();
-    message.value = object.value ?? 0;
-    return message;
   },
 };
 
@@ -482,15 +428,6 @@ export const BoolValue = {
     }
     return obj;
   },
-
-  create(base?: DeepPartial<BoolValue>): BoolValue {
-    return BoolValue.fromPartial(base ?? {});
-  },
-  fromPartial(object: DeepPartial<BoolValue>): BoolValue {
-    const message = createBaseBoolValue();
-    message.value = object.value ?? false;
-    return message;
-  },
 };
 
 function createBaseStringValue(): StringValue {
@@ -538,15 +475,6 @@ export const StringValue = {
       obj.value = message.value;
     }
     return obj;
-  },
-
-  create(base?: DeepPartial<StringValue>): StringValue {
-    return StringValue.fromPartial(base ?? {});
-  },
-  fromPartial(object: DeepPartial<StringValue>): StringValue {
-    const message = createBaseStringValue();
-    message.value = object.value ?? "";
-    return message;
   },
 };
 
@@ -596,15 +524,6 @@ export const BytesValue = {
     }
     return obj;
   },
-
-  create(base?: DeepPartial<BytesValue>): BytesValue {
-    return BytesValue.fromPartial(base ?? {});
-  },
-  fromPartial(object: DeepPartial<BytesValue>): BytesValue {
-    const message = createBaseBytesValue();
-    message.value = object.value ?? new Uint8Array(0);
-    return message;
-  },
 };
 
 function bytesFromBase64(b64: string): Uint8Array {
@@ -631,14 +550,6 @@ function base64FromBytes(arr: Uint8Array): string {
     return globalThis.btoa(bin.join(""));
   }
 }
-
-type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
-
-export type DeepPartial<T> = T extends Builtin ? T
-  : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>>
-  : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
-  : T extends {} ? { [K in keyof T]?: DeepPartial<T[K]> }
-  : Partial<T>;
 
 function longToNumber(long: Long): number {
   if (long.gt(globalThis.Number.MAX_SAFE_INTEGER)) {

@@ -7,14 +7,19 @@ import { PalantirdbService } from '../../../services/palantirdb.service';
 import { EventDrops, Events } from 'palantir-db/dist/src/schema';
 import { DtoCache } from '../../../utils/dtoCache';
 import { EventDropDto, EventDto } from 'src/modules/palantir/dto/events.dto';
+import { IEventsService } from './events.service.interface';
 
 @Injectable()
-export class EventsService {
+export class EventsService implements IEventsService {
 
     private eventCache = new DtoCache<EventDto, number>(s => s.id, 60 * 1000);
     private get database() { return this.databaseService.database; }
 
     constructor(private databaseService: PalantirdbService) { }
+
+    getEventDropsOfEvent(id: number): Promise<EventDropDto[]> {
+        return this.getAllEventDrops(id);
+    }
 
     private mapEventToDto(event: Events): EventDto {
         return {

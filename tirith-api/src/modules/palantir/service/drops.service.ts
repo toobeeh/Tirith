@@ -4,14 +4,13 @@ https://docs.nestjs.com/providers#services
 
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PalantirdbService } from '../../../services/palantirdb.service';
-import { EventsService } from './events.service';
 
 @Injectable()
 export class DropsService {
 
     private get database() { return this.databaseService.database; }
 
-    constructor(private databaseService: PalantirdbService, private eventsService: EventsService) { }
+    constructor(private databaseService: PalantirdbService) { }
 
     /**
      * Gets the next drop ID

@@ -2,19 +2,19 @@
 https://docs.nestjs.com/controllers#controllers
 */
 
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, Inject, Param } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { SpritesService } from 'src/modules/palantir/service/sprites.service';
 import { SpriteDto } from '../dto/sprites.dto';
 import { ApiSecurityNotes } from 'src/decorators/apiSecurityNote.decorator';
 import { NumberIdParamDto } from '../dto/params.dto';
+import { ISpritesService } from '../service/sprites.service.interface';
 
 @ApiSecurityNotes()
 @Controller("sprites")
 @ApiTags("sprites")
 export class SpritesController {
 
-    constructor(private service: SpritesService) { }
+    constructor(@Inject(ISpritesService) private service: ISpritesService) { }
 
     @Get()
     @ApiOperation({ summary: "Get all sprites" })
@@ -27,6 +27,6 @@ export class SpritesController {
     @ApiOperation({ summary: "Get a sprite by ID" })
     @ApiResponse({ status: 200, type: SpriteDto, description: "The sprite that matches the given ID" })
     async getSpriteById(@Param() params: NumberIdParamDto): Promise<SpriteDto> {
-        return this.service.getSprites(params.id);
+        return this.service.getSprite(params.id);
     }
 }

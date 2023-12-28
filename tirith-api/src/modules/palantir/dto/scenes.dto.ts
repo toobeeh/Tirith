@@ -12,6 +12,9 @@ export class SceneDto {
     @XApiProperty({ description: "Scene url" })
     url: string;
 
+    @XApiProperty({ description: "Scene exclusiveness flag, cant be bought regulary or as event scene" })
+    exclusive: boolean;
+
     @XApiProperty({ description: "Associated event", required: false })
     event?: EventDto;
 

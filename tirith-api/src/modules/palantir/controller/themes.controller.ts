@@ -2,18 +2,18 @@
 https://docs.nestjs.com/controllers#controllers
 */
 
-import { Body, Controller, Get, Param, Patch, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Inject, Param, Patch, Post, UseGuards } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { SpriteDto } from '../dto/sprites.dto';
 import { ApiSecurityNotes } from 'src/decorators/apiSecurityNote.decorator';
 import { ThemeDto, ThemeListingDto, ThemePublishRequestDto, ThemeShareDto, ThemeUpdateRequestDto } from '../dto/themes.dto';
-import { ThemesService } from 'src/modules/palantir/service/themes.service';
 import { RequiredRole, AuthRoles } from 'src/decorators/roles.decorator';
 import { MemberGuard } from 'src/guards/member.guard';
 import { RoleGuard } from 'src/guards/role.guard';
 import { Throttle } from '@nestjs/throttler';
 import { StringIdParamDto } from '../dto/params.dto';
 import { getThrottleForDefinition } from 'src/guards/trottleConfigs';
+import { IThemesService } from '../service/themes.service.interface';
 
 @ApiSecurityNotes()
 @UseGuards(RoleGuard)
@@ -21,7 +21,7 @@ import { getThrottleForDefinition } from 'src/guards/trottleConfigs';
 @ApiTags("themes")
 export class ThemesController {
 
-    constructor(private service: ThemesService) { }
+    constructor(@Inject(IThemesService) private service: IThemesService) { }
 
     @Get()
     @ApiOperation({ summary: "Get all published themes" })
@@ -41,7 +41,7 @@ export class ThemesController {
     @ApiOperation({ summary: "Get a theme by ID" })
     @ApiResponse({ status: 200, type: ThemeDto, description: "The theme that matches the given ID" })
     async getThemeById(@Param() params: StringIdParamDto): Promise<ThemeDto> {
-        return this.service.getThemeById(params.id);
+        return this.service.getTheme(params.id);
     }
 
     @Get(":id/use")
@@ -49,7 +49,7 @@ export class ThemesController {
     @ApiOperation({ summary: "Get a theme by ID and increment use counter" })
     @ApiResponse({ status: 200, type: ThemeDto, description: "The theme that matches the given ID" })
     async useThemeById(@Param() params: StringIdParamDto): Promise<ThemeDto> {
-        return this.service.getThemeByIdAndUse(params.id);
+        return this.service.getThemeAndUse(params.id);
     }
 
     @Post(":id/public")

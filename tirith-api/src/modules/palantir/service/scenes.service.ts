@@ -24,7 +24,8 @@ export class ScenesService implements IScenesService {
             guessedColor: scene.GuessedColor,
             primaryColor: scene.Color,
             artist: scene.Artist.length > 0 ? scene.Artist : undefined,
-            url: scene.URL
+            url: scene.URL,
+            exclusive: scene.Exclusive == 1
         }
     }
 

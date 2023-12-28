@@ -2,19 +2,19 @@
 https://docs.nestjs.com/controllers#controllers
 */
 
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, Inject, Param } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { EventDropDto, EventDto } from '../dto/events.dto';
-import { EventsService } from 'src/modules/palantir/service/events.service';
 import { ApiSecurityNotes } from 'src/decorators/apiSecurityNote.decorator';
 import { NumberIdParamDto } from '../dto/params.dto';
+import { IEventsService } from '../service/events.service.interface';
 
 @ApiSecurityNotes()
 @Controller("events")
 @ApiTags("events")
 export class EventsController {
 
-    constructor(private service: EventsService) { }
+    constructor(@Inject(IEventsService) private service: IEventsService) { }
 
     @Get()
     @ApiOperation({ summary: "Get all events" })
@@ -48,6 +48,6 @@ export class EventsController {
     @ApiOperation({ summary: "Get all event drops of an event" })
     @ApiResponse({ status: 200, type: EventDropDto, isArray: true, description: "All event drops of an event" })
     async getEventDropsOfEvent(@Param() params: NumberIdParamDto): Promise<EventDropDto[]> {
-        return this.service.getAllEventDrops(params.id);
+        return this.service.getEventDropsOfEvent(params.id);
     }
 }

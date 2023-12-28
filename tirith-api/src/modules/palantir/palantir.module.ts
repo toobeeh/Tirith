@@ -14,17 +14,13 @@ import { MembersService } from 'src/modules/palantir/service/members.service';
 import { DropsController } from './controller/drops.controller';
 import { DropsService } from 'src/modules/palantir/service/drops.service';
 import { AwardsController } from './controller/awards.controller';
-import { AwardsService } from 'src/modules/palantir/service/awards.service';
 import { ScenesController } from './controller/scenes.controller';
 import { SpritesController } from './controller/sprites.controller';
-import { SpritesService } from 'src/modules/palantir/service/sprites.service';
-import { EventsService } from 'src/modules/palantir/service/events.service';
 import { EventsController } from './controller/events.controller';
 import { DiscordApiService } from 'src/services/discord-api.service';
 import { HttpModule } from '@nestjs/axios';
 import { GuildsController } from './controller/guilds.controller';
 import { GuildsService } from 'src/modules/palantir/service/guilds.service';
-import { ThemesService } from 'src/modules/palantir/service/themes.service';
 import { ThemesController } from './controller/themes.controller';
 import { GrpcModule } from '../grpc/grpc.module';
 
@@ -46,16 +42,12 @@ import { GrpcModule } from '../grpc/grpc.module';
     ],
     providers: [
         AuthentificationService,
-        DropsService,
         LobbiesService,
         MembersService,
         PalantirdbService,
-        AwardsService,
-        EventsService,
-        SpritesService,
+        DropsService,
         DiscordApiService,
         GuildsService,
-        ThemesService,
         {
             provide: APP_INTERCEPTOR,
             useClass: ResponseReshapeInterceptor,

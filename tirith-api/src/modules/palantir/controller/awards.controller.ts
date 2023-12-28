@@ -2,18 +2,18 @@
 https://docs.nestjs.com/controllers#controllers
 */
 
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Inject } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { AwardsService } from 'src/modules/palantir/service/awards.service';
 import { AwardDto } from '../dto/awards.dto';
 import { ApiSecurityNotes } from 'src/decorators/apiSecurityNote.decorator';
+import { IAwardsService } from '../service/awards.service.interface';
 
 @ApiSecurityNotes()
 @Controller("awards")
 @ApiTags("awards")
 export class AwardsController {
 
-    constructor(private service: AwardsService) { }
+    constructor(@Inject(IAwardsService) private service: IAwardsService) { }
 
     @Get()
     @ApiOperation({ summary: "Get all awards" })
