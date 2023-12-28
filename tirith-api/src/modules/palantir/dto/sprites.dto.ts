@@ -21,8 +21,8 @@ export class SpriteDto {
     @XApiProperty({ description: "Flag for rainbow shift" })
     isRainbowAllowed: boolean;
 
-    @XApiProperty({ description: "Flag for special sprite", required: false })
-    isSpecial?: boolean;
+    @XApiProperty({ description: "Flag for special sprite", required: true })
+    isSpecial: boolean;
 
     @XApiProperty({ description: "Sprite artist name", required: false })
     artist?: string;

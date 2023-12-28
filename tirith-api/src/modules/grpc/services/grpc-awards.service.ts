@@ -1,5 +1,5 @@
 import { IAwardsService } from "src/modules/palantir/service/awards.service.interface";
-import { AwardsDefinition } from "../proto-compiled/awards";
+import { AwardReply, AwardsDefinition } from "../proto-compiled/awards";
 import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { GrpcBaseService } from "./grpc-base.abstract";
@@ -12,11 +12,17 @@ export class GrpcAwardsService extends GrpcBaseService<AwardsDefinition> impleme
         super(AwardsDefinition, config);
     }
 
-    getAllAwards(): Promise<AwardDto[]> {
-        throw new Error("Method not implemented.");
+    private awardReplyToDto(reply: AwardReply): AwardDto {
+        return reply;
     }
 
-    getAward(id: number): Promise<AwardDto> {
-        throw new Error("Method not implemented.");
+    async getAllAwards(): Promise<AwardDto[]> {
+        const awards = await this.collectFromAsyncIterable(this.grpcClient.getAllAwards({}));
+        return awards.map(t => this.awardReplyToDto(t));
+    }
+
+    async getAward(id: number): Promise<AwardDto> {
+        const award = await this.grpcClient.getAwardById({ id });
+        return this.awardReplyToDto(award);
     }
 }
