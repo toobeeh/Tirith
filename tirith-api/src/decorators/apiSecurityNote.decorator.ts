@@ -29,8 +29,6 @@ export const ApiSecurityNotes = (): ClassDecorator => {
 
             const endpointThrottles = getThrottleOfControllerOrEndpoint(method.target) ?? [];
 
-            console.log(controllerThrottles, endpointThrottles, method.target)
-
             controllerThrottles.forEach(t => {
                 if (!endpointThrottles.some(rt => t.name == rt.name)) endpointThrottles.push(t);
             });

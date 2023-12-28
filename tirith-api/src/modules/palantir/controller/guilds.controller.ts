@@ -8,7 +8,6 @@ import { ApiSecurityNotes } from 'src/decorators/apiSecurityNote.decorator';
 import { GuildsService } from 'src/modules/palantir/service/guilds.service';
 import { GuildInviteDto } from '../dto/guilds.dto';
 import { NumberTokenParamDto } from '../dto/params.dto';
-import { Throttle } from '@nestjs/throttler';
 
 @ApiSecurityNotes()
 @Controller("guilds")

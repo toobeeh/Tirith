@@ -13,6 +13,7 @@ import { AuthentificationService } from 'src/services/authentification.service';
  * A guard that checks role requrirements and rejcets users that do not fulfill the requirement.
  * Requires the user to be present in the request (via memberguard), else 
  * all requests that do not only requrie AuthRole.None are rejected.
+ * Enable this on the controller to enable role checks for all endpoints.
  */
 @Injectable()
 export class RoleGuard implements CanActivate {
