@@ -13,6 +13,8 @@ import { GrpcAwardsService } from './services/grpc-awards.service';
 import { GrpcEventsService } from './services/grpc-events.service';
 import { GrpcSpritesService } from './services/grpc-sprites.service';
 import { GrpcThemessService } from './services/grpc-themes.service';
+import { APP_FILTER } from '@nestjs/core';
+import { GrpcExceptionsFilter } from './grpc-exception.filter';
 
 const services: Provider[] = [
     { provide: IScenesService, useClass: GrpcScenesService },
@@ -26,7 +28,11 @@ const services: Provider[] = [
     imports: [],
     controllers: [],
     providers: [
-        ...services
+        ...services,
+        {
+            provide: APP_FILTER,
+            useClass: GrpcExceptionsFilter,
+        },
     ],
     exports: [
         ...services

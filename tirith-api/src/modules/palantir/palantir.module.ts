@@ -11,8 +11,6 @@ import { LobbiesService } from 'src/modules/palantir/service/lobbies.service';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { ResponseReshapeInterceptor } from 'src/interceptors/responsereshape.interceptor';
 import { MembersService } from 'src/modules/palantir/service/members.service';
-import { DropsController } from './controller/drops.controller';
-import { DropsService } from 'src/modules/palantir/service/drops.service';
 import { AwardsController } from './controller/awards.controller';
 import { ScenesController } from './controller/scenes.controller';
 import { SpritesController } from './controller/sprites.controller';
@@ -32,7 +30,6 @@ import { GrpcModule } from '../grpc/grpc.module';
     controllers: [
         LobbiesController,
         MembersController,
-        DropsController,
         AwardsController,
         ScenesController,
         SpritesController,
@@ -45,7 +42,6 @@ import { GrpcModule } from '../grpc/grpc.module';
         LobbiesService,
         MembersService,
         PalantirdbService,
-        DropsService,
         DiscordApiService,
         GuildsService,
         {
