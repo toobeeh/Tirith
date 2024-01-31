@@ -1,6 +1,9 @@
 <div class="w-full h-full grid place-content-center">
   <h2 *ngIf="state === 'idle'">Redirecting to Discord...</h2>
-  <h3 *ngIf="state === 'idle'">Please keep this window open and allow pop-ups :)</h3>
+  <h3 *ngIf="state === 'idle'"><br>Please keep this window open and allow pop-ups :)</h3>
+  <h3 *ngIf="state === 'idle'"><br><a (click)="openIntermediate(false)"
+      href="https://discord.com/api/oauth2/authorize?client_id=715874397025468417&redirect_uri=https%3A%2F%2Fwww.typo.rip%2Fauth&response_type=code&scope=identify"
+      target="_blank">If nothing happens, click here.</a></h3>
   <h2 *ngIf="state === 'loading'">Getting things ready...</h2>
   <h2 *ngIf="state === 'success'">Login complete.<br>Welcome back!</h2>
   <div *ngIf="state === 'register'" class="flex flex-col gap-12">

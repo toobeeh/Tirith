@@ -53,13 +53,7 @@ export class AuthenticationComponent implements OnInit {
 
     /* user needs to authenticate; redirect */
     else {
-      setTimeout(() => window.open(this.oauthURL, '_blank', 'height=650,width=500,right=0,top=100,resizable=yes,scrollbars=yes,toolbar=yes,menubar=no,location=no,directories=no, status=yes'), 2000);
-      const bc = new BroadcastChannel("auth");
-      bc.onmessage = (message) => {
-        window.opener?.postMessage({ accessToken: message.data.accessToken, username: message.data.userName }, "*");
-        window.close();
-      }
-      //window.location.href = this.oauthURL;
+      this.openIntermediate();
     }
   }
 
@@ -75,6 +69,15 @@ export class AuthenticationComponent implements OnInit {
         setTimeout(() => window.close(), 2000);
       }
     });
+  }
+
+  openIntermediate(open = true) {
+    if (open) setTimeout(() => window.open(this.oauthURL, '_blank', 'height=650,width=500,right=0,top=100,resizable=yes,scrollbars=yes,toolbar=yes,menubar=no,location=no,directories=no, status=yes'), 2000);
+    const bc = new BroadcastChannel("auth");
+    bc.onmessage = (message) => {
+      window.opener?.postMessage({ accessToken: message.data.accessToken, username: message.data.userName }, "*");
+      window.close();
+    }
   }
 
 
