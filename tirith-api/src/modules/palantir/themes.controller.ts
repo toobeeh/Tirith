@@ -45,7 +45,7 @@ export class ThemesController {
     }
 
     @Get(":id/use")
-    @Throttle(getThrottleForDefinition("throttleFivePerFiveHours"))
+    /* @Throttle(getThrottleForDefinition("throttleFivePerFiveHours")) */
     @ApiOperation({ summary: "Get a theme by ID and increment use counter" })
     @ApiResponse({ status: 200, type: ThemeDto, description: "The theme that matches the given ID" })
     async useThemeById(@Param() params: StringIdParamDto): Promise<ThemeDto> {

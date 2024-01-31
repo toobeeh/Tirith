@@ -40,7 +40,7 @@ export class LobbiesController {
     } */
 
     @Get()
-    @Throttle(getThrottleForDefinition("throttleThirtyPerMinute"))
+    /* @Throttle(getThrottleForDefinition("throttleThirtyPerMinute")) */
     @ApiOperation({ summary: "Get all present lobbies" })
     @ApiResponse({ status: 200, type: LobbiesResponseDto, isArray: true, description: "An array of all current lobbies" })
     inspectAllLobbies(): Promise<LobbiesResponseDto[]> {
