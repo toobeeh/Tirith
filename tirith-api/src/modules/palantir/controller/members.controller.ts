@@ -10,7 +10,6 @@ import { AuthRoles, RequiredRole, ResourceOwner } from 'src/decorators/roles.dec
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AccessTokenDto, MemberDto } from '../dto/member.dto';
 import { MemberSearchDto } from '../dto/memberSearch.dto';
-import { member } from 'palantir-db/dist/src/types';
 import { ApiSecurityNotes } from 'src/decorators/apiSecurityNote.decorator';
 import { LoginTokenParamDto, StringIdParamDto } from '../dto/params.dto';
 import { IMembersService } from '../../../services/interfaces/members.service.interface';
@@ -36,7 +35,7 @@ export class MembersController {
     @ApiOperation({ summary: "Get the currently authenticated member" })
     @ApiResponse({ status: 200, type: MemberDto, description: "The authenticated member" })
     async getAuthenticatedMember(@Req() request: Request): Promise<MemberDto> {
-        const login = Number(((request as any).user as member).member.UserLogin);
+        const login = Number(((request as any).user as MemberDto).userLogin);
         return this.service.getByLogin(login);
     }
 

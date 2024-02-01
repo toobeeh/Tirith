@@ -5,7 +5,6 @@ https://docs.nestjs.com/modules
 */
 
 import { DiscordOauthService } from 'src/modules/auth/service/discord-oauth.service';
-import { PalantirdbService } from 'src/services/palantirdb.service';
 import { GrpcModule } from '../grpc/grpc.module';
 
 @Module({
@@ -14,7 +13,7 @@ import { GrpcModule } from '../grpc/grpc.module';
     ],
     controllers: [
         AuthController,],
-    providers: [DiscordOauthService, PalantirdbService],
+    providers: [DiscordOauthService],
 })
 export class AuthModule {
 }

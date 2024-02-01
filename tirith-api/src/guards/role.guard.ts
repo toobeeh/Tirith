@@ -4,7 +4,6 @@ https://docs.nestjs.com/guards#guards
 
 import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { member } from 'palantir-db/dist/src/types';
 import { Observable } from 'rxjs';
 import { AuthRoles, getRequiredRole, getResourceOwner } from 'src/decorators/roles.decorator';
 import { MemberDto } from 'src/modules/palantir/dto/member.dto';
