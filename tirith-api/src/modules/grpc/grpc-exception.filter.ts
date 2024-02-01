@@ -44,6 +44,8 @@ export class GrpcExceptionsFilter implements ExceptionFilter {
         return buildHttp(HttpStatus.BAD_REQUEST);
       case Status.NOT_FOUND:
         return buildHttp(HttpStatus.NOT_FOUND);
+      case Status.INVALID_ARGUMENT:
+        return buildHttp(HttpStatus.CONFLICT);
       default:
         return buildHttp(HttpStatus.INTERNAL_SERVER_ERROR);
     }

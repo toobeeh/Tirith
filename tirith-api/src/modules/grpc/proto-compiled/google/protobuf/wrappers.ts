@@ -1,6 +1,6 @@
 /* eslint-disable */
-import * as _m0 from "protobufjs/minimal";
 import Long = require("long");
+import * as _m0 from "protobufjs/minimal";
 
 export const protobufPackage = "google.protobuf";
 
@@ -31,7 +31,7 @@ export interface FloatValue {
  */
 export interface Int64Value {
   /** The int64 value. */
-  value: number;
+  value: Long;
 }
 
 /**
@@ -41,7 +41,7 @@ export interface Int64Value {
  */
 export interface UInt64Value {
   /** The uint64 value. */
-  value: number;
+  value: Long;
 }
 
 /**
@@ -191,12 +191,12 @@ export const FloatValue = {
 };
 
 function createBaseInt64Value(): Int64Value {
-  return { value: 0 };
+  return { value: Long.ZERO };
 }
 
 export const Int64Value = {
   encode(message: Int64Value, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.value !== 0) {
+    if (!message.value.isZero()) {
       writer.uint32(8).int64(message.value);
     }
     return writer;
@@ -214,7 +214,7 @@ export const Int64Value = {
             break;
           }
 
-          message.value = longToNumber(reader.int64() as Long);
+          message.value = reader.int64() as Long;
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -226,25 +226,25 @@ export const Int64Value = {
   },
 
   fromJSON(object: any): Int64Value {
-    return { value: isSet(object.value) ? globalThis.Number(object.value) : 0 };
+    return { value: isSet(object.value) ? Long.fromValue(object.value) : Long.ZERO };
   },
 
   toJSON(message: Int64Value): unknown {
     const obj: any = {};
-    if (message.value !== 0) {
-      obj.value = Math.round(message.value);
+    if (!message.value.isZero()) {
+      obj.value = (message.value || Long.ZERO).toString();
     }
     return obj;
   },
 };
 
 function createBaseUInt64Value(): UInt64Value {
-  return { value: 0 };
+  return { value: Long.UZERO };
 }
 
 export const UInt64Value = {
   encode(message: UInt64Value, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.value !== 0) {
+    if (!message.value.isZero()) {
       writer.uint32(8).uint64(message.value);
     }
     return writer;
@@ -262,7 +262,7 @@ export const UInt64Value = {
             break;
           }
 
-          message.value = longToNumber(reader.uint64() as Long);
+          message.value = reader.uint64() as Long;
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -274,13 +274,13 @@ export const UInt64Value = {
   },
 
   fromJSON(object: any): UInt64Value {
-    return { value: isSet(object.value) ? globalThis.Number(object.value) : 0 };
+    return { value: isSet(object.value) ? Long.fromValue(object.value) : Long.UZERO };
   },
 
   toJSON(message: UInt64Value): unknown {
     const obj: any = {};
-    if (message.value !== 0) {
-      obj.value = Math.round(message.value);
+    if (!message.value.isZero()) {
+      obj.value = (message.value || Long.UZERO).toString();
     }
     return obj;
   },
@@ -549,13 +549,6 @@ function base64FromBytes(arr: Uint8Array): string {
     });
     return globalThis.btoa(bin.join(""));
   }
-}
-
-function longToNumber(long: Long): number {
-  if (long.gt(globalThis.Number.MAX_SAFE_INTEGER)) {
-    throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
-  }
-  return long.toNumber();
 }
 
 if (_m0.util.Long !== Long) {

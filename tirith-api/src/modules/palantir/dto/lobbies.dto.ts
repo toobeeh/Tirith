@@ -1,7 +1,6 @@
-import { LobbyPlayerDto } from "./reports.dto";
 import { XApiProperty } from "src/decorators/apiProperty.decorator";
 
-class PalantirLobbyPlayerDto {
+export class PalantirLobbyPlayerDto {
 
     @XApiProperty({ description: "Player ingame name" })
     name: string;
@@ -56,4 +55,19 @@ export class LobbiesResponseDto {
     @XApiProperty({ description: "Lobby palantir players", type: () => PalantirLobbyPlayerDto, isArray: true })
     players: PalantirLobbyPlayerDto[];
 
+}
+
+export class LobbyPlayerDto {
+
+    @XApiProperty({ description: "Player name" })
+    Name: string;
+
+    @XApiProperty({ description: "Player score" })
+    Score: number;
+
+    @XApiProperty({ description: "Whether the player is the drawer" })
+    Drawing: boolean;
+
+    @XApiProperty({ description: "Player join ID" })
+    LobbyPlayerID: number;
 }

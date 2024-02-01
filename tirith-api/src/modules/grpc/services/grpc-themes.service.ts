@@ -1,4 +1,4 @@
-import { IThemesService } from "src/modules/palantir/service/themes.service.interface";
+import { IThemesService } from "src/modules/palantir/services/themes.service.interface";
 import { ThemeDataReply, ThemeListingReply, ThemeShareReply, ThemesDefinition } from "../proto-compiled/themes";
 import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";

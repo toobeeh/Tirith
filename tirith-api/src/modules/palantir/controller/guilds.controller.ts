@@ -2,19 +2,19 @@
 https://docs.nestjs.com/controllers#controllers
 */
 
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, Inject, Param } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { ApiSecurityNotes } from 'src/decorators/apiSecurityNote.decorator';
-import { GuildsService } from 'src/modules/palantir/service/guilds.service';
 import { GuildInviteDto } from '../dto/guilds.dto';
 import { NumberTokenParamDto } from '../dto/params.dto';
+import { IGuildsService } from '../services/guilds.service.interface';
 
 @ApiSecurityNotes()
 @Controller("guilds")
 @ApiTags("guilds")
 export class GuildsController {
 
-    constructor(private service: GuildsService) { }
+    constructor(@Inject(IGuildsService) private service: IGuildsService) { }
 
     @Get(":token/invite")
     @ApiOperation({ summary: "Get invite information of a guild" })

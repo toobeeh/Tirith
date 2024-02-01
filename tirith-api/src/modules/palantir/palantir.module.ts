@@ -4,13 +4,10 @@ import { LobbiesController } from './controller/lobbies.controller';
 https://docs.nestjs.com/modules
 */
 
-import { PalantirdbService } from 'src/services/palantirdb.service';
 import { MembersController } from './controller/members.controller';
 import { Module } from '@nestjs/common';
-import { LobbiesService } from 'src/modules/palantir/service/lobbies.service';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { ResponseReshapeInterceptor } from 'src/interceptors/responsereshape.interceptor';
-import { MembersService } from 'src/modules/palantir/service/members.service';
 import { AwardsController } from './controller/awards.controller';
 import { ScenesController } from './controller/scenes.controller';
 import { SpritesController } from './controller/sprites.controller';
@@ -18,7 +15,6 @@ import { EventsController } from './controller/events.controller';
 import { DiscordApiService } from 'src/services/discord-api.service';
 import { HttpModule } from '@nestjs/axios';
 import { GuildsController } from './controller/guilds.controller';
-import { GuildsService } from 'src/modules/palantir/service/guilds.service';
 import { ThemesController } from './controller/themes.controller';
 import { GrpcModule } from '../grpc/grpc.module';
 
@@ -39,11 +35,7 @@ import { GrpcModule } from '../grpc/grpc.module';
     ],
     providers: [
         AuthentificationService,
-        LobbiesService,
-        MembersService,
-        PalantirdbService,
         DiscordApiService,
-        GuildsService,
         {
             provide: APP_INTERCEPTOR,
             useClass: ResponseReshapeInterceptor,

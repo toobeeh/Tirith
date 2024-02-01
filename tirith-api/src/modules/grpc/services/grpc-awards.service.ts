@@ -1,4 +1,4 @@
-import { IAwardsService } from "src/modules/palantir/service/awards.service.interface";
+import { IAwardsService } from "src/modules/palantir/services/awards.service.interface";
 import { AwardReply, AwardsDefinition } from "../proto-compiled/awards";
 import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";

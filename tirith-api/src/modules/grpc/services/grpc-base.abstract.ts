@@ -21,4 +21,22 @@ export abstract class GrpcBaseService<TService extends CompatServiceDefinition> 
         return items;
     }
 
+    protected async collectFromAsyncMappedAsyncIterable<TResult, TItem>(iterable: AsyncIterable<TItem>, mapping: (item: TItem) => Promise<TResult>): Promise<TResult[]> {
+        const items = [];
+        for await (const item of iterable) {
+            items.push(await mapping(item));
+        }
+
+        return items;
+    }
+
+    protected async collectFromMappedAsyncIterable<TResult, TItem>(iterable: AsyncIterable<TItem>, mapping: (item: TItem) => TResult): Promise<TResult[]> {
+        const items = [];
+        for await (const item of iterable) {
+            items.push(mapping(item));
+        }
+
+        return items;
+    }
+
 }

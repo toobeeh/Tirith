@@ -1,4 +1,4 @@
-import { IEventsService } from "src/modules/palantir/service/events.service.interface";
+import { IEventsService } from "src/modules/palantir/services/events.service.interface";
 import { EventDropReply, EventReply, EventsDefinition } from "../proto-compiled/events";
 import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";

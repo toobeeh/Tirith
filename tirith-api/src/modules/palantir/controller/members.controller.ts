@@ -2,18 +2,18 @@
 https://docs.nestjs.com/controllers#controllers
 */
 
-import { Body, Controller, Delete, Get, Param, Patch, Query, Req, UseGuards, Request } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Query, Req, UseGuards, Request, Inject } from '@nestjs/common';
 import { RoleGuard } from 'src/guards/role.guard';
 import { UpdateDiscordID } from '../dto/updateDiscord.dto';
 import { MemberGuard } from 'src/guards/member.guard';
 import { AuthRoles, RequiredRole, ResourceOwner } from 'src/decorators/roles.decorator';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { MembersService } from 'src/modules/palantir/service/members.service';
 import { AccessTokenDto, MemberDto } from '../dto/member.dto';
 import { MemberSearchDto } from '../dto/memberSearch.dto';
 import { member } from 'palantir-db/dist/src/types';
 import { ApiSecurityNotes } from 'src/decorators/apiSecurityNote.decorator';
 import { LoginTokenParamDto, StringIdParamDto } from '../dto/params.dto';
+import { IMembersService } from '../services/members.service.interface';
 
 @ApiSecurityNotes()
 @RequiredRole(AuthRoles.Moderator)
@@ -22,7 +22,7 @@ import { LoginTokenParamDto, StringIdParamDto } from '../dto/params.dto';
 @ApiTags("members")
 export class MembersController {
 
-    constructor(private service: MembersService) { }
+    constructor(@Inject(IMembersService) private service: IMembersService) { }
 
     @Get("search")
     @ApiOperation({ summary: "Find members that contain a string" })

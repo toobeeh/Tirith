@@ -1,9 +1,9 @@
 /* eslint-disable */
 import type { CallContext, CallOptions } from "nice-grpc-common";
+import Long = require("long");
 import * as _m0 from "protobufjs/minimal";
 import { Empty } from "./google/protobuf/empty";
 import { Int32Value } from "./google/protobuf/wrappers";
-import Long = require("long");
 
 export const protobufPackage = "lobbies";
 
@@ -52,9 +52,9 @@ export interface LobbyReply {
 
 /** Request containing a logged drop claim from a lobby */
 export interface DropLogReply {
-  id: number;
+  id: Long;
   lobbyKey: string;
-  claimDiscordId: number;
+  claimDiscordId: Long;
   validFrom: string;
   eventDropId: number | undefined;
   leagueTime: number | undefined;
@@ -561,18 +561,25 @@ export const LobbyReply = {
 };
 
 function createBaseDropLogReply(): DropLogReply {
-  return { id: 0, lobbyKey: "", claimDiscordId: 0, validFrom: "", eventDropId: undefined, leagueTime: undefined };
+  return {
+    id: Long.ZERO,
+    lobbyKey: "",
+    claimDiscordId: Long.ZERO,
+    validFrom: "",
+    eventDropId: undefined,
+    leagueTime: undefined,
+  };
 }
 
 export const DropLogReply = {
   encode(message: DropLogReply, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.id !== 0) {
+    if (!message.id.isZero()) {
       writer.uint32(8).int64(message.id);
     }
     if (message.lobbyKey !== "") {
       writer.uint32(18).string(message.lobbyKey);
     }
-    if (message.claimDiscordId !== 0) {
+    if (!message.claimDiscordId.isZero()) {
       writer.uint32(24).int64(message.claimDiscordId);
     }
     if (message.validFrom !== "") {
@@ -599,7 +606,7 @@ export const DropLogReply = {
             break;
           }
 
-          message.id = longToNumber(reader.int64() as Long);
+          message.id = reader.int64() as Long;
           continue;
         case 2:
           if (tag !== 18) {
@@ -613,7 +620,7 @@ export const DropLogReply = {
             break;
           }
 
-          message.claimDiscordId = longToNumber(reader.int64() as Long);
+          message.claimDiscordId = reader.int64() as Long;
           continue;
         case 4:
           if (tag !== 34) {
@@ -647,9 +654,9 @@ export const DropLogReply = {
 
   fromJSON(object: any): DropLogReply {
     return {
-      id: isSet(object.id) ? globalThis.Number(object.id) : 0,
+      id: isSet(object.id) ? Long.fromValue(object.id) : Long.ZERO,
       lobbyKey: isSet(object.lobbyKey) ? globalThis.String(object.lobbyKey) : "",
-      claimDiscordId: isSet(object.claimDiscordId) ? globalThis.Number(object.claimDiscordId) : 0,
+      claimDiscordId: isSet(object.claimDiscordId) ? Long.fromValue(object.claimDiscordId) : Long.ZERO,
       validFrom: isSet(object.validFrom) ? globalThis.String(object.validFrom) : "",
       eventDropId: isSet(object.eventDropId) ? Number(object.eventDropId) : undefined,
       leagueTime: isSet(object.leagueTime) ? Number(object.leagueTime) : undefined,
@@ -658,14 +665,14 @@ export const DropLogReply = {
 
   toJSON(message: DropLogReply): unknown {
     const obj: any = {};
-    if (message.id !== 0) {
-      obj.id = Math.round(message.id);
+    if (!message.id.isZero()) {
+      obj.id = (message.id || Long.ZERO).toString();
     }
     if (message.lobbyKey !== "") {
       obj.lobbyKey = message.lobbyKey;
     }
-    if (message.claimDiscordId !== 0) {
-      obj.claimDiscordId = Math.round(message.claimDiscordId);
+    if (!message.claimDiscordId.isZero()) {
+      obj.claimDiscordId = (message.claimDiscordId || Long.ZERO).toString();
     }
     if (message.validFrom !== "") {
       obj.validFrom = message.validFrom;
@@ -725,13 +732,6 @@ export interface LobbiesClient<CallOptionsExt = {}> {
     request: GetLobbyDropClaimsRequest,
     options?: CallOptions & CallOptionsExt,
   ): AsyncIterable<DropLogReply>;
-}
-
-function longToNumber(long: Long): number {
-  if (long.gt(globalThis.Number.MAX_SAFE_INTEGER)) {
-    throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
-  }
-  return long.toNumber();
 }
 
 if (_m0.util.Long !== Long) {

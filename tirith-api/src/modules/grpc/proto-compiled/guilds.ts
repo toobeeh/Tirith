@@ -1,15 +1,15 @@
 /* eslint-disable */
 import type { CallContext, CallOptions } from "nice-grpc-common";
-import * as _m0 from "protobufjs/minimal";
 import Long = require("long");
+import * as _m0 from "protobufjs/minimal";
 
 export const protobufPackage = "guilds";
 
 /** Response containing a guild's properties. */
 export interface GuildReply {
-  guildId: number;
-  channelId: number;
-  messageId: number;
+  guildId: Long;
+  channelId: Long;
+  messageId: Long;
   observeToken: number;
   name: string;
   connectedMemberCount: number;
@@ -21,18 +21,25 @@ export interface GetGuildRequest {
 }
 
 function createBaseGuildReply(): GuildReply {
-  return { guildId: 0, channelId: 0, messageId: 0, observeToken: 0, name: "", connectedMemberCount: 0 };
+  return {
+    guildId: Long.ZERO,
+    channelId: Long.ZERO,
+    messageId: Long.ZERO,
+    observeToken: 0,
+    name: "",
+    connectedMemberCount: 0,
+  };
 }
 
 export const GuildReply = {
   encode(message: GuildReply, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.guildId !== 0) {
+    if (!message.guildId.isZero()) {
       writer.uint32(8).int64(message.guildId);
     }
-    if (message.channelId !== 0) {
+    if (!message.channelId.isZero()) {
       writer.uint32(16).int64(message.channelId);
     }
-    if (message.messageId !== 0) {
+    if (!message.messageId.isZero()) {
       writer.uint32(24).int64(message.messageId);
     }
     if (message.observeToken !== 0) {
@@ -59,21 +66,21 @@ export const GuildReply = {
             break;
           }
 
-          message.guildId = longToNumber(reader.int64() as Long);
+          message.guildId = reader.int64() as Long;
           continue;
         case 2:
           if (tag !== 16) {
             break;
           }
 
-          message.channelId = longToNumber(reader.int64() as Long);
+          message.channelId = reader.int64() as Long;
           continue;
         case 3:
           if (tag !== 24) {
             break;
           }
 
-          message.messageId = longToNumber(reader.int64() as Long);
+          message.messageId = reader.int64() as Long;
           continue;
         case 4:
           if (tag !== 32) {
@@ -107,9 +114,9 @@ export const GuildReply = {
 
   fromJSON(object: any): GuildReply {
     return {
-      guildId: isSet(object.guildId) ? globalThis.Number(object.guildId) : 0,
-      channelId: isSet(object.channelId) ? globalThis.Number(object.channelId) : 0,
-      messageId: isSet(object.messageId) ? globalThis.Number(object.messageId) : 0,
+      guildId: isSet(object.guildId) ? Long.fromValue(object.guildId) : Long.ZERO,
+      channelId: isSet(object.channelId) ? Long.fromValue(object.channelId) : Long.ZERO,
+      messageId: isSet(object.messageId) ? Long.fromValue(object.messageId) : Long.ZERO,
       observeToken: isSet(object.observeToken) ? globalThis.Number(object.observeToken) : 0,
       name: isSet(object.name) ? globalThis.String(object.name) : "",
       connectedMemberCount: isSet(object.connectedMemberCount) ? globalThis.Number(object.connectedMemberCount) : 0,
@@ -118,14 +125,14 @@ export const GuildReply = {
 
   toJSON(message: GuildReply): unknown {
     const obj: any = {};
-    if (message.guildId !== 0) {
-      obj.guildId = Math.round(message.guildId);
+    if (!message.guildId.isZero()) {
+      obj.guildId = (message.guildId || Long.ZERO).toString();
     }
-    if (message.channelId !== 0) {
-      obj.channelId = Math.round(message.channelId);
+    if (!message.channelId.isZero()) {
+      obj.channelId = (message.channelId || Long.ZERO).toString();
     }
-    if (message.messageId !== 0) {
-      obj.messageId = Math.round(message.messageId);
+    if (!message.messageId.isZero()) {
+      obj.messageId = (message.messageId || Long.ZERO).toString();
     }
     if (message.observeToken !== 0) {
       obj.observeToken = Math.round(message.observeToken);
@@ -214,13 +221,6 @@ export interface GuildsServiceImplementation<CallContextExt = {}> {
 export interface GuildsClient<CallOptionsExt = {}> {
   /** Gets a guild by its observe token */
   getGuildByToken(request: GetGuildRequest, options?: CallOptions & CallOptionsExt): Promise<GuildReply>;
-}
-
-function longToNumber(long: Long): number {
-  if (long.gt(globalThis.Number.MAX_SAFE_INTEGER)) {
-    throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
-  }
-  return long.toNumber();
 }
 
 if (_m0.util.Long !== Long) {

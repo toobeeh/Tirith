@@ -2,12 +2,10 @@
 https://docs.nestjs.com/controllers#controllers
 */
 
-import { Controller, Get, Param, UseGuards } from '@nestjs/common';
+import { Controller, Get, Inject, Param, UseGuards } from '@nestjs/common';
 import { AuthRoles, RequiredRole } from 'src/decorators/roles.decorator';
 import { RoleGuard } from 'src/guards/role.guard';
 import { MemberGuard } from 'src/guards/member.guard';
-import { LobbiesService } from 'src/modules/palantir/service/lobbies.service';
-import { ReportsResponseDto } from '../dto/reports.dto';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { LobbiesResponseDto } from '../dto/lobbies.dto';
 import { DropDto } from '../dto/drops.dto';
@@ -15,6 +13,7 @@ import { ApiSecurityNotes } from 'src/decorators/apiSecurityNote.decorator';
 import { StringTokenParamDto } from '../dto/params.dto';
 import { Throttle } from '@nestjs/throttler';
 import { getThrottleForDefinition } from 'src/guards/trottleConfigs';
+import { ILobbiesService } from '../services/lobbies.service.interface';
 
 @ApiSecurityNotes()
 @Controller("lobbies")
@@ -24,14 +23,14 @@ import { getThrottleForDefinition } from 'src/guards/trottleConfigs';
 @ApiBearerAuth()
 export class LobbiesController {
 
-    constructor(private service: LobbiesService) { }
+    constructor(@Inject(ILobbiesService) private service: ILobbiesService) { }
 
-    @Get("reports")
+    /* @Get("reports")
     @ApiOperation({ summary: "Get all logged lobby reports" })
     @ApiResponse({ status: 200, type: ReportsResponseDto, isArray: true, description: "An array of all current reports" })
     getAllReports(): Promise<ReportsResponseDto[]> {
         return this.service.getLobbyReports();
-    }
+    } */
 
     /* @Get("grouped")
     @ApiResponse({ status: 200, type: ReportsResponseDto, isArray: true, description: "An array of all current lobbies grouped by target guild" })

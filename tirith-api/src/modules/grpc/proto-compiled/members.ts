@@ -1,8 +1,8 @@
 /* eslint-disable */
 import type { CallContext, CallOptions } from "nice-grpc-common";
+import Long = require("long");
 import * as _m0 from "protobufjs/minimal";
 import { Empty } from "./google/protobuf/empty";
-import Long = require("long");
 
 export const protobufPackage = "members";
 
@@ -14,7 +14,7 @@ export interface MemberReply {
   scenes: string;
   flags: number;
   rainbowSprites: string;
-  discordId: number;
+  discordId: Long;
   username: string;
   login: number;
   serverConnections: number[];
@@ -44,7 +44,7 @@ export interface IdentifyMemberByLoginRequest {
 
 /** Request used to target a distinct member by id */
 export interface IdentifyMemberByDiscordIdRequest {
-  id: number;
+  id: Long;
 }
 
 /** Request to fetch members matching a plain text query */
@@ -61,7 +61,7 @@ export interface ModifyServerConnectionRequest {
 /** Request to update the linked discord id of a member */
 export interface UpdateDiscordIdRequest {
   login: number;
-  discordId: number;
+  discordId: Long;
 }
 
 function createBaseMemberReply(): MemberReply {
@@ -72,7 +72,7 @@ function createBaseMemberReply(): MemberReply {
     scenes: "",
     flags: 0,
     rainbowSprites: "",
-    discordId: 0,
+    discordId: Long.ZERO,
     username: "",
     login: 0,
     serverConnections: [],
@@ -99,7 +99,7 @@ export const MemberReply = {
     if (message.rainbowSprites !== "") {
       writer.uint32(50).string(message.rainbowSprites);
     }
-    if (message.discordId !== 0) {
+    if (!message.discordId.isZero()) {
       writer.uint32(56).int64(message.discordId);
     }
     if (message.username !== "") {
@@ -170,7 +170,7 @@ export const MemberReply = {
             break;
           }
 
-          message.discordId = longToNumber(reader.int64() as Long);
+          message.discordId = reader.int64() as Long;
           continue;
         case 8:
           if (tag !== 66) {
@@ -220,7 +220,7 @@ export const MemberReply = {
       scenes: isSet(object.scenes) ? globalThis.String(object.scenes) : "",
       flags: isSet(object.flags) ? globalThis.Number(object.flags) : 0,
       rainbowSprites: isSet(object.rainbowSprites) ? globalThis.String(object.rainbowSprites) : "",
-      discordId: isSet(object.discordId) ? globalThis.Number(object.discordId) : 0,
+      discordId: isSet(object.discordId) ? Long.fromValue(object.discordId) : Long.ZERO,
       username: isSet(object.username) ? globalThis.String(object.username) : "",
       login: isSet(object.login) ? globalThis.Number(object.login) : 0,
       serverConnections: globalThis.Array.isArray(object?.serverConnections)
@@ -249,8 +249,8 @@ export const MemberReply = {
     if (message.rainbowSprites !== "") {
       obj.rainbowSprites = message.rainbowSprites;
     }
-    if (message.discordId !== 0) {
-      obj.discordId = Math.round(message.discordId);
+    if (!message.discordId.isZero()) {
+      obj.discordId = (message.discordId || Long.ZERO).toString();
     }
     if (message.username !== "") {
       obj.username = message.username;
@@ -488,12 +488,12 @@ export const IdentifyMemberByLoginRequest = {
 };
 
 function createBaseIdentifyMemberByDiscordIdRequest(): IdentifyMemberByDiscordIdRequest {
-  return { id: 0 };
+  return { id: Long.ZERO };
 }
 
 export const IdentifyMemberByDiscordIdRequest = {
   encode(message: IdentifyMemberByDiscordIdRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.id !== 0) {
+    if (!message.id.isZero()) {
       writer.uint32(8).int64(message.id);
     }
     return writer;
@@ -511,7 +511,7 @@ export const IdentifyMemberByDiscordIdRequest = {
             break;
           }
 
-          message.id = longToNumber(reader.int64() as Long);
+          message.id = reader.int64() as Long;
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -523,13 +523,13 @@ export const IdentifyMemberByDiscordIdRequest = {
   },
 
   fromJSON(object: any): IdentifyMemberByDiscordIdRequest {
-    return { id: isSet(object.id) ? globalThis.Number(object.id) : 0 };
+    return { id: isSet(object.id) ? Long.fromValue(object.id) : Long.ZERO };
   },
 
   toJSON(message: IdentifyMemberByDiscordIdRequest): unknown {
     const obj: any = {};
-    if (message.id !== 0) {
-      obj.id = Math.round(message.id);
+    if (!message.id.isZero()) {
+      obj.id = (message.id || Long.ZERO).toString();
     }
     return obj;
   },
@@ -648,7 +648,7 @@ export const ModifyServerConnectionRequest = {
 };
 
 function createBaseUpdateDiscordIdRequest(): UpdateDiscordIdRequest {
-  return { login: 0, discordId: 0 };
+  return { login: 0, discordId: Long.ZERO };
 }
 
 export const UpdateDiscordIdRequest = {
@@ -656,7 +656,7 @@ export const UpdateDiscordIdRequest = {
     if (message.login !== 0) {
       writer.uint32(8).int32(message.login);
     }
-    if (message.discordId !== 0) {
+    if (!message.discordId.isZero()) {
       writer.uint32(16).int64(message.discordId);
     }
     return writer;
@@ -681,7 +681,7 @@ export const UpdateDiscordIdRequest = {
             break;
           }
 
-          message.discordId = longToNumber(reader.int64() as Long);
+          message.discordId = reader.int64() as Long;
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -695,7 +695,7 @@ export const UpdateDiscordIdRequest = {
   fromJSON(object: any): UpdateDiscordIdRequest {
     return {
       login: isSet(object.login) ? globalThis.Number(object.login) : 0,
-      discordId: isSet(object.discordId) ? globalThis.Number(object.discordId) : 0,
+      discordId: isSet(object.discordId) ? Long.fromValue(object.discordId) : Long.ZERO,
     };
   },
 
@@ -704,8 +704,8 @@ export const UpdateDiscordIdRequest = {
     if (message.login !== 0) {
       obj.login = Math.round(message.login);
     }
-    if (message.discordId !== 0) {
-      obj.discordId = Math.round(message.discordId);
+    if (!message.discordId.isZero()) {
+      obj.discordId = (message.discordId || Long.ZERO).toString();
     }
     return obj;
   },
@@ -874,13 +874,6 @@ export interface MembersClient<CallOptionsExt = {}> {
     request: ModifyServerConnectionRequest,
     options?: CallOptions & CallOptionsExt,
   ): Promise<Empty>;
-}
-
-function longToNumber(long: Long): number {
-  if (long.gt(globalThis.Number.MAX_SAFE_INTEGER)) {
-    throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
-  }
-  return long.toNumber();
 }
 
 if (_m0.util.Long !== Long) {
