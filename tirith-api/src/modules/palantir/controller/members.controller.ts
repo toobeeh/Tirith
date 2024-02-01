@@ -13,7 +13,7 @@ import { MemberSearchDto } from '../dto/memberSearch.dto';
 import { member } from 'palantir-db/dist/src/types';
 import { ApiSecurityNotes } from 'src/decorators/apiSecurityNote.decorator';
 import { LoginTokenParamDto, StringIdParamDto } from '../dto/params.dto';
-import { IMembersService } from '../services/members.service.interface';
+import { IMembersService } from '../../../services/interfaces/members.service.interface';
 
 @ApiSecurityNotes()
 @RequiredRole(AuthRoles.Moderator)

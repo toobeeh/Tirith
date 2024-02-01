@@ -1,11 +1,11 @@
 import { Inject, Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
-import { GrpcBaseService } from "./grpc-base.abstract";
+import { GrpcBaseService } from "./grpc-base";
 import { MemberReply, MemberSearchReply, MembersDefinition } from "../proto-compiled/members";
-import { IMembersService } from "src/modules/palantir/services/members.service.interface";
+import { IMembersService } from "src/services/interfaces/members.service.interface";
 import { MemberDto, AccessTokenDto } from "src/modules/palantir/dto/member.dto";
 import { MemberSearchDto } from "src/modules/palantir/dto/memberSearch.dto";
-import { IGuildsService } from "src/modules/palantir/services/guilds.service.interface";
+import { IGuildsService } from "src/services/interfaces/guilds.service.interface";
 import { Long } from "@grpc/proto-loader";
 
 @Injectable()
@@ -38,6 +38,12 @@ export class GrpcMembersService extends GrpcBaseService<MembersDefinition> imple
         }
     }
 
+    async createMember(discordId: string, username: string, connectToTypo: boolean): Promise<MemberDto> {
+        const member = await this.grpcClient.createNewMember({ discordId: Long.fromString(discordId), username, connectToTypoServer: connectToTypo });
+        const mappedMember = await this.mapMemberDto(member);
+        return mappedMember;
+    }
+
     async wildcardSearch(query: string): Promise<MemberSearchDto[]> {
         const members = await this.collectFromMappedAsyncIterable(this.grpcClient.searchMember({ query }), item => this.mapMemberSearchDto(item));
         return members;
@@ -45,6 +51,12 @@ export class GrpcMembersService extends GrpcBaseService<MembersDefinition> imple
 
     async getByLogin(login: number): Promise<MemberDto> {
         const member = await this.grpcClient.getMemberByLogin({ login });
+        const mappedMember = await this.mapMemberDto(member);
+        return mappedMember;
+    }
+
+    async getByAccessToken(accessToken: string): Promise<MemberDto> {
+        const member = await this.grpcClient.getMemberByAccessToken({ accessToken });
         const mappedMember = await this.mapMemberDto(member);
         return mappedMember;
     }

@@ -3,11 +3,11 @@ https://docs.nestjs.com/providers#services
 */
 
 import { Injectable } from '@nestjs/common';
-import { IScenesService } from '../../palantir/services/scenes.service.interface';
+import { IScenesService } from '../../../services/interfaces/scenes.service.interface';
 import { SceneDto } from '../../palantir/dto/scenes.dto';
 import { ConfigService } from '@nestjs/config';
 import { ScenesDefinition } from '../proto-compiled/scenes';
-import { GrpcBaseService } from './grpc-base.abstract';
+import { GrpcBaseService } from './grpc-base';
 
 @Injectable()
 export class GrpcScenesService extends GrpcBaseService<ScenesDefinition> implements IScenesService {

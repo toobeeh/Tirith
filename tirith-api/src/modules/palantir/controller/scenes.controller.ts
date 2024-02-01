@@ -7,7 +7,7 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { SceneDto } from '../dto/scenes.dto';
 import { ApiSecurityNotes } from 'src/decorators/apiSecurityNote.decorator';
 import { NumberIdParamDto } from '../dto/params.dto';
-import { IScenesService } from '../services/scenes.service.interface';
+import { IScenesService } from '../../../services/interfaces/scenes.service.interface';
 
 @ApiSecurityNotes()
 @Controller("scenes")

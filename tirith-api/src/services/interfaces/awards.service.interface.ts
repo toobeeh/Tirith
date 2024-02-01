@@ -1,4 +1,4 @@
-import { AwardDto } from "../dto/awards.dto";
+import { AwardDto } from "../../modules/palantir/dto/awards.dto";
 
 export const IAwardsService = Symbol("IAwardsService");
 

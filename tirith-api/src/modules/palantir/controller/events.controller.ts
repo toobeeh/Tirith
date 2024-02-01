@@ -7,7 +7,7 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { EventDropDto, EventDto } from '../dto/events.dto';
 import { ApiSecurityNotes } from 'src/decorators/apiSecurityNote.decorator';
 import { NumberIdParamDto } from '../dto/params.dto';
-import { IEventsService } from '../services/events.service.interface';
+import { IEventsService } from '../../../services/interfaces/events.service.interface';
 
 @ApiSecurityNotes()
 @Controller("events")

@@ -1,8 +1,8 @@
-import { IThemesService } from "src/modules/palantir/services/themes.service.interface";
+import { IThemesService } from "src/services/interfaces/themes.service.interface";
 import { ThemeDataReply, ThemeListingReply, ThemeShareReply, ThemesDefinition } from "../proto-compiled/themes";
 import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
-import { GrpcBaseService } from "./grpc-base.abstract";
+import { GrpcBaseService } from "./grpc-base";
 import { ThemeListingDto, ThemeDto, ThemeShareDto } from "src/modules/palantir/dto/themes.dto";
 import { plainToInstance } from "class-transformer";
 

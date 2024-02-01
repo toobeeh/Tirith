@@ -7,6 +7,7 @@ import { Reflector } from '@nestjs/core';
 import { member } from 'palantir-db/dist/src/types';
 import { Observable } from 'rxjs';
 import { AuthRoles, getRequiredRole, getResourceOwner } from 'src/decorators/roles.decorator';
+import { MemberDto } from 'src/modules/palantir/dto/member.dto';
 import { AuthentificationService } from 'src/services/authentification.service';
 
 /**
@@ -31,17 +32,17 @@ export class RoleGuard implements CanActivate {
     if (requiredRole === AuthRoles.None) return true;
 
     /* get user from request, requires member guard in order before */
-    const user: member = context.switchToHttp().getRequest().user;
+    const member: MemberDto = context.switchToHttp().getRequest().user;
 
     /* if no user present, reject */
-    if (!user) return false;
+    if (!member) return false;
 
     /* check if user accesses its own resource */
     const resourceOwner = getResourceOwner(context, this.reflector);
-    if (user.member.UserLogin === resourceOwner?.toString()) return true;
+    if (member.userLogin === resourceOwner?.toString()) return true;
 
     /* get user flags and check if they match the required role */
-    const flags = this.auth.parseFlags(user.flags);
+    const flags = this.auth.parseFlags(member.flags);
     return requiredRole === AuthRoles.Administrator ? flags.admin :
       requiredRole === AuthRoles.Moderator ? flags.moderator || flags.moderator : true;
   }

@@ -1,5 +1,5 @@
-import { AccessTokenDto, MemberDto } from "../dto/member.dto";
-import { MemberSearchDto } from "../dto/memberSearch.dto";
+import { AccessTokenDto, MemberDto } from "../../modules/palantir/dto/member.dto";
+import { MemberSearchDto } from "../../modules/palantir/dto/memberSearch.dto";
 
 export const IMembersService = Symbol("IMembersService");
 
@@ -20,6 +20,13 @@ export interface IMembersService {
     getByLogin(login: number): Promise<MemberDto>;
 
     /**
+     * Gets a member by acccess token
+     * @param login the member access token
+     * @returns the found member
+     */
+    getByAccessToken(token: string): Promise<MemberDto>;
+
+    /**
      * Gets a member by discord id
      * @param id the linked discord account id
      * @returns the found member
@@ -27,12 +34,21 @@ export interface IMembersService {
     getByDiscordID(id: string): Promise<MemberDto>;
 
     /**
-     * Udpates the linked discord account of a member
+     * Updates the linked discord account of a member
      * @param login the member login
      * @param newID the new member discord id
      * @returns the updated member
      */
     updateDiscordID(login: number, newID: string): Promise<MemberDto>;
+
+    /**
+     * Creates a new palantir member
+     * @param discordId the linked discord id
+     * @param username the current discord username
+     * @param connectToTypo whether to add the typo server to the initial connections
+     * @returns the updated member
+     */
+    createMember(discordId: string, username: string, connectToTypo: boolean): Promise<MemberDto>;
 
     /**
      * Udpates the linked discord account of a member

@@ -1,4 +1,4 @@
-import { ThemeDto, ThemeListingDto, ThemeShareDto } from "../dto/themes.dto";
+import { ThemeDto, ThemeListingDto, ThemeShareDto } from "../../modules/palantir/dto/themes.dto";
 
 export const IThemesService = Symbol("IThemesService");
 

@@ -2,7 +2,7 @@
 https://docs.nestjs.com/controllers#controllers
 */
 
-import { Body, Controller, Get, HttpException, HttpStatus, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, HttpException, HttpStatus, Inject, Post, Query } from '@nestjs/common';
 import { PalantirdbService } from 'src/services/palantirdb.service';
 import { DiscordOauthService } from 'src/modules/auth/service/discord-oauth.service';
 import { RegistrationRequest, TokenResponse } from '../dto/registration.dto';
@@ -10,13 +10,14 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { ApiSecurityNotes } from 'src/decorators/apiSecurityNote.decorator';
 import { Throttle } from '@nestjs/throttler';
 import { getThrottleForDefinition } from 'src/guards/trottleConfigs';
+import { IMembersService } from 'src/services/interfaces/members.service.interface';
 
 @ApiSecurityNotes()
 @Throttle(getThrottleForDefinition("throttleTenPerTenMinutes"))
 @Controller("auth")
 @ApiTags("auth")
 export class AuthController {
-    constructor(private db: PalantirdbService, private discordOauth: DiscordOauthService) { }
+    constructor(@Inject(IMembersService) private membersService: IMembersService, private discordOauth: DiscordOauthService) { }
 
     /**
      * Get the access token for a discord user
@@ -34,8 +35,9 @@ export class AuthController {
         const oauthAccessToken = await this.discordOauth.getAccessToken(code);
         const user = await this.discordOauth.getUser(oauthAccessToken);
         try {
-            const accessToken = await this.db.database.getAccessToken(user.id);
-            return { ...accessToken.result, userId: user.id, userName: user.username };
+            const palantirUser = await this.membersService.getByDiscordID(user.id);
+            const palantirAccessToken = await this.membersService.getAccessToken(Number(palantirUser.userLogin));
+            return { accessToken: palantirAccessToken.Token, userId: user.id, userName: user.username };
         }
         catch {
             throw new HttpException("No user exists for this discord id", HttpStatus.NOT_FOUND);
@@ -55,22 +57,20 @@ export class AuthController {
         /* check if code present */
         if (code === null || code === undefined || code.length === 0) throw new HttpException("No auth code present", HttpStatus.BAD_REQUEST);
 
-        console.log(typeof connectTypo, connectTypo);
-
         const oauthAccessToken = await this.discordOauth.getAccessToken(code);
         const user = await this.discordOauth.getUser(oauthAccessToken);
 
         /* check if user exists and if so, return existing access token*/
         try {
-            const accessToken = await this.db.database.getAccessToken(user.id);
-            return { ...accessToken.result, userId: user.id, userName: user.username };
+            const palantirUser = await this.membersService.getByDiscordID(user.id);
+            const palantirAccessToken = await this.membersService.getAccessToken(Number(palantirUser.userLogin));
+            return { accessToken: palantirAccessToken.Token, userId: user.id, userName: user.username };
         }
         catch { }
 
-        const newUser = await this.db.database.createMember(user.id, user.username, connectTypo);
-        if (newUser.success === false) throw new HttpException("Could not create user", HttpStatus.INTERNAL_SERVER_ERROR);
-        const accessToken = await this.db.database.getAccessToken(user.id);
+        const newUser = await this.membersService.createMember(user.id, user.username, connectTypo);
+        const accessToken = await this.membersService.getAccessToken(Number(newUser.userLogin));
 
-        return { ...accessToken.result, userId: user.id, userName: user.username };
+        return { accessToken: accessToken.Token, userId: user.id, userName: user.username };
     }
 }

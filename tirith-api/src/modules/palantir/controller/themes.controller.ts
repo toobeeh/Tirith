@@ -13,7 +13,7 @@ import { RoleGuard } from 'src/guards/role.guard';
 import { Throttle } from '@nestjs/throttler';
 import { StringIdParamDto } from '../dto/params.dto';
 import { getThrottleForDefinition } from 'src/guards/trottleConfigs';
-import { IThemesService } from '../services/themes.service.interface';
+import { IThemesService } from '../../../services/interfaces/themes.service.interface';
 
 @ApiSecurityNotes()
 @Controller("themes")

@@ -1,5 +1,5 @@
-import { GuildInviteDto } from "../dto/guilds.dto";
-import { GuildDto } from "../dto/member.dto";
+import { GuildInviteDto } from "../../modules/palantir/dto/guilds.dto";
+import { GuildDto } from "../../modules/palantir/dto/member.dto";
 
 export const IGuildsService = Symbol("IGuildsService");
 

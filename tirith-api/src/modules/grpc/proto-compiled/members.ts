@@ -43,6 +43,11 @@ export interface IdentifyMemberByLoginRequest {
 }
 
 /** Request used to target a distinct member by id */
+export interface IdentifyMemberByAccessTokenRequest {
+  accessToken: string;
+}
+
+/** Request used to target a distinct member by id */
 export interface IdentifyMemberByDiscordIdRequest {
   id: Long;
 }
@@ -62,6 +67,13 @@ export interface ModifyServerConnectionRequest {
 export interface UpdateDiscordIdRequest {
   login: number;
   discordId: Long;
+}
+
+/** Request containing member data to use as base for a new palantir member */
+export interface CreateNewMemberRequest {
+  discordId: Long;
+  username: string;
+  connectToTypoServer: boolean;
 }
 
 function createBaseMemberReply(): MemberReply {
@@ -487,6 +499,54 @@ export const IdentifyMemberByLoginRequest = {
   },
 };
 
+function createBaseIdentifyMemberByAccessTokenRequest(): IdentifyMemberByAccessTokenRequest {
+  return { accessToken: "" };
+}
+
+export const IdentifyMemberByAccessTokenRequest = {
+  encode(message: IdentifyMemberByAccessTokenRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.accessToken !== "") {
+      writer.uint32(10).string(message.accessToken);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): IdentifyMemberByAccessTokenRequest {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseIdentifyMemberByAccessTokenRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.accessToken = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): IdentifyMemberByAccessTokenRequest {
+    return { accessToken: isSet(object.accessToken) ? globalThis.String(object.accessToken) : "" };
+  },
+
+  toJSON(message: IdentifyMemberByAccessTokenRequest): unknown {
+    const obj: any = {};
+    if (message.accessToken !== "") {
+      obj.accessToken = message.accessToken;
+    }
+    return obj;
+  },
+};
+
 function createBaseIdentifyMemberByDiscordIdRequest(): IdentifyMemberByDiscordIdRequest {
   return { id: Long.ZERO };
 }
@@ -711,16 +771,111 @@ export const UpdateDiscordIdRequest = {
   },
 };
 
+function createBaseCreateNewMemberRequest(): CreateNewMemberRequest {
+  return { discordId: Long.ZERO, username: "", connectToTypoServer: false };
+}
+
+export const CreateNewMemberRequest = {
+  encode(message: CreateNewMemberRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (!message.discordId.isZero()) {
+      writer.uint32(8).int64(message.discordId);
+    }
+    if (message.username !== "") {
+      writer.uint32(18).string(message.username);
+    }
+    if (message.connectToTypoServer === true) {
+      writer.uint32(24).bool(message.connectToTypoServer);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): CreateNewMemberRequest {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseCreateNewMemberRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.discordId = reader.int64() as Long;
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.username = reader.string();
+          continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.connectToTypoServer = reader.bool();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): CreateNewMemberRequest {
+    return {
+      discordId: isSet(object.discordId) ? Long.fromValue(object.discordId) : Long.ZERO,
+      username: isSet(object.username) ? globalThis.String(object.username) : "",
+      connectToTypoServer: isSet(object.connectToTypoServer) ? globalThis.Boolean(object.connectToTypoServer) : false,
+    };
+  },
+
+  toJSON(message: CreateNewMemberRequest): unknown {
+    const obj: any = {};
+    if (!message.discordId.isZero()) {
+      obj.discordId = (message.discordId || Long.ZERO).toString();
+    }
+    if (message.username !== "") {
+      obj.username = message.username;
+    }
+    if (message.connectToTypoServer === true) {
+      obj.connectToTypoServer = message.connectToTypoServer;
+    }
+    return obj;
+  },
+};
+
 /** Service definition for member resource access */
 export type MembersDefinition = typeof MembersDefinition;
 export const MembersDefinition = {
   name: "Members",
   fullName: "members.Members",
   methods: {
+    createNewMember: {
+      name: "CreateNewMember",
+      requestType: CreateNewMemberRequest,
+      requestStream: false,
+      responseType: MemberReply,
+      responseStream: false,
+      options: {},
+    },
     /** Gets a member by its login */
     getMemberByLogin: {
       name: "GetMemberByLogin",
       requestType: IdentifyMemberByLoginRequest,
+      requestStream: false,
+      responseType: MemberReply,
+      responseStream: false,
+      options: {},
+    },
+    /** Gets a member by its access token */
+    getMemberByAccessToken: {
+      name: "GetMemberByAccessToken",
+      requestType: IdentifyMemberByAccessTokenRequest,
       requestStream: false,
       responseType: MemberReply,
       responseStream: false,
@@ -802,8 +957,14 @@ export const MembersDefinition = {
 } as const;
 
 export interface MembersServiceImplementation<CallContextExt = {}> {
+  createNewMember(request: CreateNewMemberRequest, context: CallContext & CallContextExt): Promise<MemberReply>;
   /** Gets a member by its login */
   getMemberByLogin(request: IdentifyMemberByLoginRequest, context: CallContext & CallContextExt): Promise<MemberReply>;
+  /** Gets a member by its access token */
+  getMemberByAccessToken(
+    request: IdentifyMemberByAccessTokenRequest,
+    context: CallContext & CallContextExt,
+  ): Promise<MemberReply>;
   /** Gets a member by its connected discord account id */
   getMemberByDiscordId(
     request: IdentifyMemberByDiscordIdRequest,
@@ -841,8 +1002,14 @@ export interface MembersServiceImplementation<CallContextExt = {}> {
 }
 
 export interface MembersClient<CallOptionsExt = {}> {
+  createNewMember(request: CreateNewMemberRequest, options?: CallOptions & CallOptionsExt): Promise<MemberReply>;
   /** Gets a member by its login */
   getMemberByLogin(request: IdentifyMemberByLoginRequest, options?: CallOptions & CallOptionsExt): Promise<MemberReply>;
+  /** Gets a member by its access token */
+  getMemberByAccessToken(
+    request: IdentifyMemberByAccessTokenRequest,
+    options?: CallOptions & CallOptionsExt,
+  ): Promise<MemberReply>;
   /** Gets a member by its connected discord account id */
   getMemberByDiscordId(
     request: IdentifyMemberByDiscordIdRequest,

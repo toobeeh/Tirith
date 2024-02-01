@@ -1,4 +1,4 @@
-import { EventDropDto, EventDto } from "../dto/events.dto";
+import { EventDropDto, EventDto } from "../../modules/palantir/dto/events.dto";
 
 export const IEventsService = Symbol("IEventsService");
 

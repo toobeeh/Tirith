@@ -1,4 +1,4 @@
-import { SceneDto } from "../dto/scenes.dto";
+import { SceneDto } from "../../modules/palantir/dto/scenes.dto";
 
 export const IScenesService = Symbol("IScenesService");
 

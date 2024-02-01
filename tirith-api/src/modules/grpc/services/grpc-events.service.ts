@@ -1,8 +1,8 @@
-import { IEventsService } from "src/modules/palantir/services/events.service.interface";
+import { IEventsService } from "src/services/interfaces/events.service.interface";
 import { EventDropReply, EventReply, EventsDefinition } from "../proto-compiled/events";
 import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
-import { GrpcBaseService } from "./grpc-base.abstract";
+import { GrpcBaseService } from "./grpc-base";
 import { EventDto, EventDropDto } from "src/modules/palantir/dto/events.dto";
 import { DtoCache } from "src/utils/dtoCache";
 

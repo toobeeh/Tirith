@@ -1,5 +1,5 @@
-import { DropDto } from "../dto/drops.dto";
-import { LobbiesResponseDto } from "../dto/lobbies.dto";
+import { DropDto } from "../../modules/palantir/dto/drops.dto";
+import { LobbiesResponseDto } from "../../modules/palantir/dto/lobbies.dto";
 
 export const ILobbiesService = Symbol("ILobbiesService");
 

@@ -13,7 +13,7 @@ import { ApiSecurityNotes } from 'src/decorators/apiSecurityNote.decorator';
 import { StringTokenParamDto } from '../dto/params.dto';
 import { Throttle } from '@nestjs/throttler';
 import { getThrottleForDefinition } from 'src/guards/trottleConfigs';
-import { ILobbiesService } from '../services/lobbies.service.interface';
+import { ILobbiesService } from '../../../services/interfaces/lobbies.service.interface';
 
 @ApiSecurityNotes()
 @Controller("lobbies")

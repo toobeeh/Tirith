@@ -1,8 +1,8 @@
 import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
-import { GrpcBaseService } from "./grpc-base.abstract";
+import { GrpcBaseService } from "./grpc-base";
 import { GuildReply, GuildsDefinition } from "../proto-compiled/guilds";
-import { IGuildsService } from "src/modules/palantir/services/guilds.service.interface";
+import { IGuildsService } from "src/services/interfaces/guilds.service.interface";
 import { GuildInviteDto } from "src/modules/palantir/dto/guilds.dto";
 import { GuildDto } from "src/modules/palantir/dto/member.dto";
 import { DiscordApiService } from "src/services/discord-api.service";

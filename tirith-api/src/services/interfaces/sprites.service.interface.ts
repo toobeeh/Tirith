@@ -1,4 +1,4 @@
-import { SpriteDto } from "../dto/sprites.dto";
+import { SpriteDto } from "../../modules/palantir/dto/sprites.dto";
 
 export const ISpritesService = Symbol("ISpritesService");
 

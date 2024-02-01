@@ -6,7 +6,7 @@ import { Controller, Get, Inject } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AwardDto } from '../dto/awards.dto';
 import { ApiSecurityNotes } from 'src/decorators/apiSecurityNote.decorator';
-import { IAwardsService } from '../services/awards.service.interface';
+import { IAwardsService } from '../../../services/interfaces/awards.service.interface';
 
 @ApiSecurityNotes()
 @Controller("awards")

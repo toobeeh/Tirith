@@ -1,8 +1,8 @@
 import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
-import { GrpcBaseService } from "./grpc-base.abstract";
+import { GrpcBaseService } from "./grpc-base";
 import { DropLogReply, LobbiesDefinition, LobbyReply, PalantirLobbyDetails, PalantirLobbyPlayer, SkribblLobbyDetails, SkribblLobbyPlayer } from "../proto-compiled/lobbies";
-import { ILobbiesService } from "src/modules/palantir/services/lobbies.service.interface";
+import { ILobbiesService } from "src/services/interfaces/lobbies.service.interface";
 import { DropDto } from "src/modules/palantir/dto/drops.dto";
 import { LobbiesResponseDto, LobbyDetailsDto, LobbyPlayerDto, PalantirLobbyDto, PalantirLobbyPlayerDto } from "src/modules/palantir/dto/lobbies.dto";
 

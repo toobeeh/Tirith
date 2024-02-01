@@ -7,7 +7,7 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { ApiSecurityNotes } from 'src/decorators/apiSecurityNote.decorator';
 import { GuildInviteDto } from '../dto/guilds.dto';
 import { NumberTokenParamDto } from '../dto/params.dto';
-import { IGuildsService } from '../services/guilds.service.interface';
+import { IGuildsService } from '../../../services/interfaces/guilds.service.interface';
 
 @ApiSecurityNotes()
 @Controller("guilds")

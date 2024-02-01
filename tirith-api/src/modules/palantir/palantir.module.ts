@@ -34,8 +34,8 @@ import { GrpcModule } from '../grpc/grpc.module';
         ThemesController
     ],
     providers: [
-        AuthentificationService,
         DiscordApiService,
+        AuthentificationService,
         {
             provide: APP_INTERCEPTOR,
             useClass: ResponseReshapeInterceptor,
