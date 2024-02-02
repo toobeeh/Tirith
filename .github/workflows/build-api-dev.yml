@@ -3,7 +3,7 @@ name: build-api-dev
 on:
   push:
     branches:
-      - feature-grpc
+      - develop
 
 env:
   IMAGE_NAME: tirith-api
