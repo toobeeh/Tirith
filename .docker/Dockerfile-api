@@ -3,8 +3,8 @@ FROM node:16-slim as node-builder
 WORKDIR /app/
 
 # default env values for domain name and oauth details
-ARG DB_DOMAIN_NAME="db.domain.tld"
-ENV DB_DOMAIN_NAME "${DB_DOMAIN_NAME}"
+ARG GRPC_CHANNEL="channel.domain.tld:port"
+ENV GRPC_CHANNEL "${GRPC_CHANNEL}"
 
 ARG DISCORD_OAUTH_CLIENT_ID="123"
 ENV DISCORD_OAUTH_CLIENT_ID "${DISCORD_OAUTH_CLIENT_ID}"
@@ -34,11 +34,6 @@ RUN echo "Installing npm modules..." && \
 # build and link palantir lib
 RUN echo "installing tsc..." && \
     npm install -g typescript
-RUN echo "building lib..." && \
-    cd ./palantir-db && \
-    tsc
-RUN echo "linking lib..." && \
-    npm link palantir-db -w tirith-api
 
 # install over idk
 RUN echo "Installing npm modules..." && \

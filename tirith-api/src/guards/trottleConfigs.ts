@@ -11,8 +11,8 @@ interface throttleConfig {
  * Use for requests that alter metrics which are noremaly seldom used.
  */
 const throttleFivePerFiveHours: throttleConfig = {
-    limit: 10,
-    ttl: minutes(60) * 24,
+    limit: 5,
+    ttl: minutes(60) * 5,
     description: "Requests that alter metrics which are seldom used in normal usage"
 };
 
@@ -96,7 +96,7 @@ export const getThrottleOfControllerOrEndpoint = (target: any) => {
     const key_limit = "THROTTLER:LIMIT";
 
     const names: string[] = (Reflect.getMetadataKeys(target).filter(k => (k as string).startsWith(key_ttl))).map(name => name.replace(key_ttl, ""));
-    if (names.length == 0) return [throttles.default];
+    if (names.length == 0) return [getThrottleDefinition()];
 
     const throttleMatches = names.map(name => ({
         name,

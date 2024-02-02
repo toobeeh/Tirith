@@ -12,7 +12,8 @@
         "test": "npm run test --workspace=tirith-api && npm run test --workspace=client",
         "test:ci": "concurrently --max-processes=1 --raw --success=all \"npm run test:ci --workspace=tirith-api\" ",
         "ng": "npx --workspace=tirith-frontend ng",
-        "nest": "npx --workspace=tirith-api nest"
+        "nest": "npx --workspace=tirith-api nest",
+        "generate:protos": "npx protoc --plugin=protoc-gen-ts_proto=\".\\node_modules\\.bin\\protoc-gen-ts_proto.cmd\" --ts_proto_out=./tirith-api/src/modules/grpc/proto-compiled --ts_proto_opt=\"forceLong=long,outputPartialMethods=false,outputServices=nice-grpc,outputServices=generic-definitions,useExactTypes=true\" --proto_path=\"C:/Users/User/RiderProjects/Valmar/Valmar/Protos\" C:/Users/User/RiderProjects/Valmar/Valmar/Protos/*.proto"
     },
     "devDependencies": {
         "concurrently": "^7.6.0",
@@ -26,6 +27,8 @@
         "palantir-db"
     ],
     "dependencies": {
-        "palantir-db": "^1.0.7"
+        "nice-grpc": "^2.1.7",
+        "palantir-db": "^1.0.7",
+        "ts-proto": "^1.165.2"
     }
 }

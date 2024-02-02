@@ -28,13 +28,14 @@ export const ApiSecurityNotes = (): ClassDecorator => {
             const existingMetadata = Reflect.getMetadata('swagger/apiOperation', method.target) || {};
 
             const endpointThrottles = getThrottleOfControllerOrEndpoint(method.target) ?? [];
+
             controllerThrottles.forEach(t => {
                 if (!endpointThrottles.some(rt => t.name == rt.name)) endpointThrottles.push(t);
             });
 
             if (!methodRole && endpointThrottles.length == 0) return;
 
-            console.log(method.target, endpointThrottles, controllerThrottles);
+            //console.log(method.target, endpointThrottles, controllerThrottles);
 
             let description = "";
 

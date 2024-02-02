@@ -2,27 +2,17 @@
 https://docs.nestjs.com/providers#services
 */
 
-import { Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import PalantirDatabase from 'palantir-db';
+import { Inject, Injectable } from '@nestjs/common';
+import { IMembersService } from './interfaces/members.service.interface';
 
 @Injectable()
 export class AuthentificationService {
 
-    private db: PalantirDatabase;
-
-    constructor(private config: ConfigService) {
-        this.db = new PalantirDatabase();
-        const host = config.get("DB_HOST");
-        const user = config.get("DB_USER");
-        const pw = config.get("DB_PASSWORD");
-        this.db.open(user, pw, host);
-    }
+    constructor(@Inject(IMembersService) private service: IMembersService) { }
 
     async authenticate(token: string) {
         try {
-            const login = await this.db.getLoginFromAccessToken(token, true);
-            const member = await this.db.getUserByLogin(login.result.login);
+            const member = await this.service.getByAccessToken(token);
             return member;
         }
         catch {

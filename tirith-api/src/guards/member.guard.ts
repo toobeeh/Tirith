@@ -8,6 +8,9 @@ import { AuthentificationService } from 'src/services/authentification.service';
 /**
  * A guard that adds an user obejct to the request.
  * Requests without valid BEARER token are rejected.
+ * Enable this on the controller to require auth token for all endpoints,
+ * or on endpoints for finer granulation.
+ * When combined with RoleGuard, this guard needs to execute first!
  */
 @Injectable()
 export class MemberGuard implements CanActivate {
@@ -24,14 +27,14 @@ export class MemberGuard implements CanActivate {
     if (!token) throw new HttpException("No auth token present", HttpStatus.UNAUTHORIZED);
 
     /* try to get user from token and reject otherwise */
-    const user = await this.auth.authenticate(token);
-    if (!user) throw new HttpException("No authorized user present", HttpStatus.UNAUTHORIZED);
+    const member = await this.auth.authenticate(token);
+    if (!member) throw new HttpException("No authorized user present", HttpStatus.UNAUTHORIZED);
 
     /* define user on request for passport handling */
     Object.defineProperty(request, "user", {
       enumerable: true,
       writable: false,
-      value: user.result,
+      value: member,
     });
     return true;
   }
