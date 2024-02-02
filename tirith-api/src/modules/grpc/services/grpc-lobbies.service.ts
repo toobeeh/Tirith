@@ -43,7 +43,7 @@ export class GrpcLobbiesService extends GrpcBaseService<LobbiesDefinition> imple
 
     mapPalantirLobbyPlayerDto(reply: PalantirLobbyPlayer): PalantirLobbyPlayerDto {
         return {
-            ...reply,
+            ...reply, // d
             login: reply.login.toString()
         };
     }
