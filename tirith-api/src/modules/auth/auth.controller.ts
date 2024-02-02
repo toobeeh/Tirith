@@ -12,7 +12,7 @@ import { Throttle } from '@nestjs/throttler';
 import { getThrottleForDefinition } from 'src/guards/trottleConfigs';
 
 @ApiSecurityNotes()
-/* @Throttle(getThrottleForDefinition("throttleTenPerTenMinutes")) */
+@Throttle(getThrottleForDefinition("throttleTenPerTenMinutes"))
 @Controller("auth")
 @ApiTags("auth")
 export class AuthController {
