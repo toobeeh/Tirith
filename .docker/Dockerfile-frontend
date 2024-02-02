@@ -28,7 +28,7 @@ RUN echo "Building app...\n" && \
 
 FROM node:16-slim
 
-WORKDIR /app/
+WORKDIR /app/tirith-frontend
 
 # Copy from build
 COPY --from=node-builder /app/tirith-frontend/dist /app/tirith-frontend/dist
