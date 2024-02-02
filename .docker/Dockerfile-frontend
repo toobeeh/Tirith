@@ -28,11 +28,13 @@ RUN echo "Building app...\n" && \
 
 FROM node:16-slim
 
+WORKDIR /app/
+
 # Copy from build
 COPY --from=node-builder /app/tirith-frontend/dist /app/tirith-frontend/dist
 
 # Copy to cwd node (???)
-RUN cp -r /app/tirith-frontend/dist /app/dist
+# RUN cp -r /app/tirith-frontend/dist /app/dist
 
 # Copy the entrypoint script
 COPY .docker/entrypoint-frontend.sh /entrypoint.sh
