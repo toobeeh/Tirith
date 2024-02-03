@@ -82,7 +82,7 @@ export class GrpcMembersService extends GrpcBaseService<MembersDefinition> imple
     }
 
     async connectMemberToGuild(login: number, guildToken: number): Promise<void> {
-        await this.grpcClient.removeMemberServerConnection({ login, serverToken: guildToken });
+        await this.grpcClient.addMemberServerConnection({ login, serverToken: guildToken });
     }
 
     async getAccessToken(login: number): Promise<AccessTokenDto> {

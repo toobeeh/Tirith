@@ -30,7 +30,6 @@
     "isbot": "^4.0.0",
     "ngx-color": "^8.0.3",
     "ngx-json-viewer": "^3.2.1",
-    "palantir-db": "^1.0.6",
     "rxjs": "~7.8.0",
     "sass": "^1.62.1",
     "tslib": "^2.3.0",
