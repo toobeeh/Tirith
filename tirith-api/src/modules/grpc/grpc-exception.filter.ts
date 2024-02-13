@@ -11,7 +11,7 @@ import {
 } from '@nestjs/common';
 import { ClientError, Status } from 'nice-grpc';
 
-@Catch()
+@Catch(ClientError)
 export class GrpcExceptionsFilter implements ExceptionFilter {
   catch(exception: ClientError, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
