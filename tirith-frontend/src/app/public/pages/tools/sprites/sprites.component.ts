@@ -66,6 +66,7 @@ export class SpritesComponent {
     if (sprite.artist) tags.push(sprite.artist);
     if (sprite.eventDrop) tags.push(sprite.eventDrop.event.name);
     if (sprite.eventDrop) tags.push(sprite.eventDrop.name);
+    if (sprite.eventDrop) tags.push("event");
     if (!sprite.eventDrop && sprite.id < 1000) tags.push("regular");
     if (sprite.id >= 1000) tags.push("unreleased");
     if (sprite.isSpecial) tags.push("special");
