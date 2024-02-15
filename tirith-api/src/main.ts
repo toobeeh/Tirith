@@ -3,11 +3,13 @@ import { AppModule } from './app.module';
 import { SwaggerModule, DocumentBuilder, SwaggerCustomOptions } from '@nestjs/swagger';
 import { swaggerEnableDiscordLogin } from './swaggerEnableDiscord';
 import { ValidationPipe } from '@nestjs/common';
+import {NestExpressApplication} from "@nestjs/platform-express";
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
   app.enableCors();
   app.useGlobalPipes(new ValidationPipe());
+  app.set('trust proxy', 1);
 
   const config = new DocumentBuilder()
     .setTitle('Skribbl Typo API')

@@ -6,10 +6,11 @@ import { ConfigModule } from '@nestjs/config';
 import config from './config/production.config';
 import configDev from './config/development.config';
 import { AuthModule } from './modules/auth/auth.module';
-import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
+import { ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
 import { getThrottleDefinition } from './guards/trottleConfigs';
 import { GrpcModule } from './modules/grpc/grpc.module';
+import {ThrottlerBehindProxyGuard} from "./guards/throttlerBehindProxy.guard";
 
 const ENV = process.env.NODE_ENV;
 console.log(`Starting in environment ${ENV}`);
@@ -32,7 +33,7 @@ console.log(`Starting in environment ${ENV}`);
   ],
   providers: [{
     provide: APP_GUARD,
-    useClass: ThrottlerGuard
+    useClass: ThrottlerBehindProxyGuard
   },
   ],
 })
