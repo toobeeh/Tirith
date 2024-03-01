@@ -18,6 +18,8 @@ export interface MemberReply {
   username: string;
   login: number;
   serverConnections: number[];
+  leagueDropValue: number;
+  leagueDropCount: number;
 }
 
 /** Reply containing the accesstoken of a member */
@@ -88,6 +90,8 @@ function createBaseMemberReply(): MemberReply {
     username: "",
     login: 0,
     serverConnections: [],
+    leagueDropValue: 0,
+    leagueDropCount: 0,
   };
 }
 
@@ -125,6 +129,12 @@ export const MemberReply = {
       writer.int32(v);
     }
     writer.ldelim();
+    if (message.leagueDropValue !== 0) {
+      writer.uint32(88).int32(message.leagueDropValue);
+    }
+    if (message.leagueDropCount !== 0) {
+      writer.uint32(96).int32(message.leagueDropCount);
+    }
     return writer;
   },
 
@@ -215,6 +225,20 @@ export const MemberReply = {
           }
 
           break;
+        case 11:
+          if (tag !== 88) {
+            break;
+          }
+
+          message.leagueDropValue = reader.int32();
+          continue;
+        case 12:
+          if (tag !== 96) {
+            break;
+          }
+
+          message.leagueDropCount = reader.int32();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -238,6 +262,8 @@ export const MemberReply = {
       serverConnections: globalThis.Array.isArray(object?.serverConnections)
         ? object.serverConnections.map((e: any) => globalThis.Number(e))
         : [],
+      leagueDropValue: isSet(object.leagueDropValue) ? globalThis.Number(object.leagueDropValue) : 0,
+      leagueDropCount: isSet(object.leagueDropCount) ? globalThis.Number(object.leagueDropCount) : 0,
     };
   },
 
@@ -272,6 +298,12 @@ export const MemberReply = {
     }
     if (message.serverConnections?.length) {
       obj.serverConnections = message.serverConnections.map((e) => Math.round(e));
+    }
+    if (message.leagueDropValue !== 0) {
+      obj.leagueDropValue = Math.round(message.leagueDropValue);
+    }
+    if (message.leagueDropCount !== 0) {
+      obj.leagueDropCount = Math.round(message.leagueDropCount);
     }
     return obj;
   },
