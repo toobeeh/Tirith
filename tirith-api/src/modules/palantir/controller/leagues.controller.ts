@@ -27,7 +27,7 @@ export class LeaguesController {
     constructor(@Inject(ILeaguesService) private service: ILeaguesService) { }
 
     @Get("member/:login")
-    @RequiredRole(AuthRoles.Member)
+    @RequiredRole(AuthRoles.Moderator)
     @ApiOperation({ summary: "Get the ranking of a single member of the current league season" })
     @ApiResponse({ status: 200, type: LeagueSeasonMemberEvaluationDto, description: "Ranking stats for a single member" })
     async evaluateMemberCurrentLeagueSeason(@Param() login: LoginTokenParamDto): Promise<LeagueSeasonMemberEvaluationDto> {
@@ -35,7 +35,7 @@ export class LeaguesController {
     }
 
     @Get(":year/:month/member/:login")
-    @RequiredRole(AuthRoles.Administrator)
+    @RequiredRole(AuthRoles.Moderator)
     @ResourceOwner("login")
     @ApiOperation({ summary: "Get the ranking of a single member of the specified league season" })
     @ApiResponse({ status: 200, type: LeagueSeasonMemberEvaluationDto, description: "Ranking stats for a single member" })
