@@ -23,6 +23,10 @@ import { IMembersService } from '../../services/interfaces/members.service.inter
 import { GrpcMembersService } from './services/grpc-members.service';
 import { DiscordApiService } from 'src/services/discord-api.service';
 import { HttpModule } from '@nestjs/axios';
+import {IAdminService} from "../../services/interfaces/admin.service.interface";
+import {GrpcAdminService} from "./services/grpc-admin.service";
+import {ILeaguesService} from "../../services/interfaces/leagues.service.interface";
+import {GrpcLeaguesService} from "./services/grpc-leagues.service";
 
 const services: Provider[] = [
     { provide: IScenesService, useClass: GrpcScenesService },
@@ -32,7 +36,9 @@ const services: Provider[] = [
     { provide: IAwardsService, useClass: GrpcAwardsService },
     { provide: IGuildsService, useClass: GrpcGuildsService },
     { provide: ILobbiesService, useClass: GrpcLobbiesService },
-    { provide: IMembersService, useClass: GrpcMembersService }
+    { provide: IMembersService, useClass: GrpcMembersService },
+    { provide: IAdminService, useClass: GrpcAdminService },
+    { provide: ILeaguesService, useClass: GrpcLeaguesService }
 ]
 
 @Module({

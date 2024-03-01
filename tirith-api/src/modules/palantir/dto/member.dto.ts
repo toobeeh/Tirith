@@ -8,6 +8,12 @@ export class MemberDto {
     @XApiProperty({ description: "The member's regular drops" })
     drops: number;
 
+    @XApiProperty({ description: "The bubble value of all caught league drops" })
+    leagueDropValue: number;
+
+    @XApiProperty({ description: "The count of all caught league drops" })
+    leagueDropCount: number;
+
     @XApiProperty({ description: "The member's sprite inventory" })
     sprites: string;
 

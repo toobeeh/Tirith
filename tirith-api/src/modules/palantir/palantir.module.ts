@@ -17,6 +17,8 @@ import { HttpModule } from '@nestjs/axios';
 import { GuildsController } from './controller/guilds.controller';
 import { ThemesController } from './controller/themes.controller';
 import { GrpcModule } from '../grpc/grpc.module';
+import {AdminController} from "./controller/admin.controller";
+import {LeaguesController} from "./controller/leagues.controller";
 
 @Module({
     imports: [
@@ -31,7 +33,9 @@ import { GrpcModule } from '../grpc/grpc.module';
         SpritesController,
         EventsController,
         GuildsController,
-        ThemesController
+        ThemesController,
+        AdminController,
+        LeaguesController
     ],
     providers: [
         DiscordApiService,

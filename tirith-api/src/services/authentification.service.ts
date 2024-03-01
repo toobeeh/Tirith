@@ -2,8 +2,9 @@
 https://docs.nestjs.com/providers#services
 */
 
-import { Inject, Injectable } from '@nestjs/common';
+import {Inject, Injectable, NotFoundException} from '@nestjs/common';
 import { IMembersService } from './interfaces/members.service.interface';
+import {ClientError, Status} from "nice-grpc";
 
 @Injectable()
 export class AuthentificationService {
@@ -15,8 +16,9 @@ export class AuthentificationService {
             const member = await this.service.getByAccessToken(token);
             return member;
         }
-        catch {
-            return undefined;
+        catch (e) {
+            if(e instanceof ClientError && e.code == Status.NOT_FOUND) return undefined;
+            throw e;
         }
     }
 

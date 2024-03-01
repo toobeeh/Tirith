@@ -28,7 +28,7 @@ export class MemberGuard implements CanActivate {
 
     /* try to get user from token and reject otherwise */
     const member = await this.auth.authenticate(token);
-    if (!member) throw new HttpException("No authorized user present", HttpStatus.UNAUTHORIZED);
+    if (!member) throw new HttpException("Could not authenticate user with access token", HttpStatus.UNAUTHORIZED);
 
     /* define user on request for passport handling */
     Object.defineProperty(request, "user", {

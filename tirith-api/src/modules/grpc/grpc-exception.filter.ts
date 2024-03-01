@@ -38,6 +38,8 @@ export class GrpcExceptionsFilter implements ExceptionFilter {
     switch (code) {
       case Status.UNAUTHENTICATED:
         return buildHttp(HttpStatus.UNAUTHORIZED);
+      case Status.UNAVAILABLE:
+        return buildHttp(HttpStatus.SERVICE_UNAVAILABLE);
       case Status.PERMISSION_DENIED:
         return buildHttp(HttpStatus.FORBIDDEN);
       case Status.INVALID_ARGUMENT:
