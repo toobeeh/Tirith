@@ -2,14 +2,17 @@
 https://docs.nestjs.com/controllers#controllers
 */
 
-import {Controller, Get, Inject, Patch} from '@nestjs/common';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { AwardDto } from '../dto/awards.dto';
-import { ApiSecurityNotes } from 'src/decorators/apiSecurityNote.decorator';
-import { IAwardsService } from '../../../services/interfaces/awards.service.interface';
+import {Controller, Inject, Patch, UseGuards} from '@nestjs/common';
+import {ApiOperation, ApiTags} from '@nestjs/swagger';
+import {ApiSecurityNotes} from 'src/decorators/apiSecurityNote.decorator';
 import {IAdminService} from "../../../services/interfaces/admin.service.interface";
+import {RoleGuard} from "../../../guards/role.guard";
+import {MemberGuard} from "../../../guards/member.guard";
+import {AuthRoles, RequiredRole} from "../../../decorators/roles.decorator";
 
 @ApiSecurityNotes()
+@UseGuards(MemberGuard, RoleGuard)
+@RequiredRole(AuthRoles.Administrator)
 @Controller("admin")
 @ApiTags("admin")
 export class AdminController {
