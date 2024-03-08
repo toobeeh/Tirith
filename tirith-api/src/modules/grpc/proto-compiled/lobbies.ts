@@ -3,7 +3,7 @@ import type { CallContext, CallOptions } from "nice-grpc-common";
 import Long = require("long");
 import * as _m0 from "protobufjs/minimal";
 import { Empty } from "./google/protobuf/empty";
-import { Int32Value } from "./google/protobuf/wrappers";
+import { Int32Value, StringValue } from "./google/protobuf/wrappers";
 
 export const protobufPackage = "lobbies";
 
@@ -58,6 +58,12 @@ export interface DropLogReply {
   validFrom: string;
   eventDropId: number | undefined;
   leagueTime: number | undefined;
+}
+
+export interface OnlineMemberReply {
+  login: number;
+  bubbles: number;
+  patronEmoji: string | undefined;
 }
 
 function createBasePalantirLobbyDetails(): PalantirLobbyDetails {
@@ -687,6 +693,84 @@ export const DropLogReply = {
   },
 };
 
+function createBaseOnlineMemberReply(): OnlineMemberReply {
+  return { login: 0, bubbles: 0, patronEmoji: undefined };
+}
+
+export const OnlineMemberReply = {
+  encode(message: OnlineMemberReply, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.login !== 0) {
+      writer.uint32(8).int32(message.login);
+    }
+    if (message.bubbles !== 0) {
+      writer.uint32(16).int32(message.bubbles);
+    }
+    if (message.patronEmoji !== undefined) {
+      StringValue.encode({ value: message.patronEmoji! }, writer.uint32(26).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): OnlineMemberReply {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseOnlineMemberReply();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.login = reader.int32();
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.bubbles = reader.int32();
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.patronEmoji = StringValue.decode(reader, reader.uint32()).value;
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): OnlineMemberReply {
+    return {
+      login: isSet(object.login) ? globalThis.Number(object.login) : 0,
+      bubbles: isSet(object.bubbles) ? globalThis.Number(object.bubbles) : 0,
+      patronEmoji: isSet(object.patronEmoji) ? String(object.patronEmoji) : undefined,
+    };
+  },
+
+  toJSON(message: OnlineMemberReply): unknown {
+    const obj: any = {};
+    if (message.login !== 0) {
+      obj.login = Math.round(message.login);
+    }
+    if (message.bubbles !== 0) {
+      obj.bubbles = Math.round(message.bubbles);
+    }
+    if (message.patronEmoji !== undefined) {
+      obj.patronEmoji = message.patronEmoji;
+    }
+    return obj;
+  },
+};
+
 /** Service definition for award resource access */
 export type LobbiesDefinition = typeof LobbiesDefinition;
 export const LobbiesDefinition = {
@@ -711,6 +795,15 @@ export const LobbiesDefinition = {
       responseStream: true,
       options: {},
     },
+    /** Gets all currently playing member's details */
+    getOnlinePlayers: {
+      name: "GetOnlinePlayers",
+      requestType: Empty,
+      requestStream: false,
+      responseType: OnlineMemberReply,
+      responseStream: true,
+      options: {},
+    },
   },
 } as const;
 
@@ -722,6 +815,11 @@ export interface LobbiesServiceImplementation<CallContextExt = {}> {
     request: GetLobbyDropClaimsRequest,
     context: CallContext & CallContextExt,
   ): ServerStreamingMethodResult<DropLogReply>;
+  /** Gets all currently playing member's details */
+  getOnlinePlayers(
+    request: Empty,
+    context: CallContext & CallContextExt,
+  ): ServerStreamingMethodResult<OnlineMemberReply>;
 }
 
 export interface LobbiesClient<CallOptionsExt = {}> {
@@ -732,6 +830,8 @@ export interface LobbiesClient<CallOptionsExt = {}> {
     request: GetLobbyDropClaimsRequest,
     options?: CallOptions & CallOptionsExt,
   ): AsyncIterable<DropLogReply>;
+  /** Gets all currently playing member's details */
+  getOnlinePlayers(request: Empty, options?: CallOptions & CallOptionsExt): AsyncIterable<OnlineMemberReply>;
 }
 
 if (_m0.util.Long !== Long) {

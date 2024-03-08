@@ -341,6 +341,15 @@ export const EventsDefinition = {
       responseStream: true,
       options: {},
     },
+    /** Gets the currently active event */
+    getCurrentEvent: {
+      name: "GetCurrentEvent",
+      requestType: Empty,
+      requestStream: false,
+      responseType: EventReply,
+      responseStream: false,
+      options: {},
+    },
     /** Gets an event by its id */
     getEventById: {
       name: "GetEventById",
@@ -383,6 +392,8 @@ export const EventsDefinition = {
 export interface EventsServiceImplementation<CallContextExt = {}> {
   /** Gets all events */
   getAllEvents(request: Empty, context: CallContext & CallContextExt): ServerStreamingMethodResult<EventReply>;
+  /** Gets the currently active event */
+  getCurrentEvent(request: Empty, context: CallContext & CallContextExt): Promise<EventReply>;
   /** Gets an event by its id */
   getEventById(request: GetEventRequest, context: CallContext & CallContextExt): Promise<EventReply>;
   /** Gets all eventdrops */
@@ -399,6 +410,8 @@ export interface EventsServiceImplementation<CallContextExt = {}> {
 export interface EventsClient<CallOptionsExt = {}> {
   /** Gets all events */
   getAllEvents(request: Empty, options?: CallOptions & CallOptionsExt): AsyncIterable<EventReply>;
+  /** Gets the currently active event */
+  getCurrentEvent(request: Empty, options?: CallOptions & CallOptionsExt): Promise<EventReply>;
   /** Gets an event by its id */
   getEventById(request: GetEventRequest, options?: CallOptions & CallOptionsExt): Promise<EventReply>;
   /** Gets all eventdrops */
