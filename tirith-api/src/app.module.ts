@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import {MiddlewareConsumer, Module, NestModule, RequestMethod} from '@nestjs/common';
 import { AppController } from './app.controller';
 import { PalantirModule } from './modules/palantir/palantir.module';
 import { ConfigModule } from '@nestjs/config';
@@ -11,6 +11,7 @@ import { APP_GUARD } from '@nestjs/core';
 import { getThrottleDefinition } from './guards/trottleConfigs';
 import { GrpcModule } from './modules/grpc/grpc.module';
 import {ThrottlerBehindProxyGuard} from "./guards/throttlerBehindProxy.guard";
+import {LoggerMiddleware} from "./middlewares/logger.middleware";
 
 const ENV = process.env.NODE_ENV;
 console.log(`Starting in environment ${ENV}`);
@@ -37,4 +38,9 @@ console.log(`Starting in environment ${ENV}`);
   },
   ],
 })
-export class AppModule { }
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+  consumer
+      .apply(LoggerMiddleware)
+      .forRoutes({ path: '*', method: RequestMethod.ALL });
+} }
