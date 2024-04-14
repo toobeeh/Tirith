@@ -42,7 +42,7 @@ console.log(`Starting in environment ${ENV}`);
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
-        .apply(CfTunnelOriginMiddleware, LoggerMiddleware)
+        .apply(CfTunnelOriginMiddleware)
         .forRoutes({ path: '*', method: RequestMethod.ALL });
   }
 }
