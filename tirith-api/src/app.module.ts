@@ -12,6 +12,7 @@ import { getThrottleDefinition } from './guards/trottleConfigs';
 import { GrpcModule } from './modules/grpc/grpc.module';
 import {ThrottlerBehindProxyGuard} from "./guards/throttlerBehindProxy.guard";
 import {LoggerMiddleware} from "./middlewares/logger.middleware";
+import {CfTunnelOriginMiddleware} from "./middlewares/cf-tunnel-origin.middleware";
 
 const ENV = process.env.NODE_ENV;
 console.log(`Starting in environment ${ENV}`);
@@ -40,7 +41,8 @@ console.log(`Starting in environment ${ENV}`);
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-  consumer
-      .apply(LoggerMiddleware)
-      .forRoutes({ path: '*', method: RequestMethod.ALL });
-} }
+    consumer
+        .apply(CfTunnelOriginMiddleware, LoggerMiddleware)
+        .forRoutes({ path: '*', method: RequestMethod.ALL });
+  }
+}
