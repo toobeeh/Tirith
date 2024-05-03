@@ -157,7 +157,7 @@ export class CardBuilderComponent {
     const colors = this.getCurrentColorConfig();
     const tag = this.imgur?.imgurTag ?? "-";
 
-    return `>customcard ${colors.headerColor.slice(0, -2)} ${colors.lightText} ${colors.darkText} ${tag} ${colors.bgOpacity} ${colors.headerOpacity}`
+    return `>card customize ${colors.headerColor.slice(0, -2)} ${colors.lightText} ${colors.darkText} ${tag} ${colors.bgOpacity} ${colors.headerOpacity}`
   }
 
   /* HELPERS FOR PROCESSING BACKGROUND */
