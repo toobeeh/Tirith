@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - master
+    paths:
+      - '.github/workflows/build-api.yml'
+      - 'tirith-api/**'
 
 env:
   IMAGE_NAME: tirith-api

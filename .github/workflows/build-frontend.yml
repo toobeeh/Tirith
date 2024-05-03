@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - master
+    paths:
+      - '.github/workflows/build-frontend.yml'
+      - 'tirith-frontend/**'
 
 env:
   IMAGE_NAME: tirith-frontend
