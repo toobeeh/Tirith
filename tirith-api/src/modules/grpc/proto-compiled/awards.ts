@@ -5,13 +5,60 @@ import { Empty } from "./google/protobuf/empty";
 
 export const protobufPackage = "awards";
 
+export enum AwardRarityMessage {
+  Common = 0,
+  Special = 1,
+  Epic = 2,
+  Legendary = 3,
+  UNRECOGNIZED = -1,
+}
+
+export function awardRarityMessageFromJSON(object: any): AwardRarityMessage {
+  switch (object) {
+    case 0:
+    case "Common":
+      return AwardRarityMessage.Common;
+    case 1:
+    case "Special":
+      return AwardRarityMessage.Special;
+    case 2:
+    case "Epic":
+      return AwardRarityMessage.Epic;
+    case 3:
+    case "Legendary":
+      return AwardRarityMessage.Legendary;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return AwardRarityMessage.UNRECOGNIZED;
+  }
+}
+
+export function awardRarityMessageToJSON(object: AwardRarityMessage): string {
+  switch (object) {
+    case AwardRarityMessage.Common:
+      return "Common";
+    case AwardRarityMessage.Special:
+      return "Special";
+    case AwardRarityMessage.Epic:
+      return "Epic";
+    case AwardRarityMessage.Legendary:
+      return "Legendary";
+    case AwardRarityMessage.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
 /** Response containing a award's properties. */
 export interface AwardReply {
   name: string;
   url: string;
   id: number;
   description: string;
-  rarity: number;
+  /** @deprecated */
+  rarityNum: number;
+  rarity: AwardRarityMessage;
 }
 
 /** Request containing a award id */
@@ -20,7 +67,7 @@ export interface GetAwardRequest {
 }
 
 function createBaseAwardReply(): AwardReply {
-  return { name: "", url: "", id: 0, description: "", rarity: 0 };
+  return { name: "", url: "", id: 0, description: "", rarityNum: 0, rarity: 0 };
 }
 
 export const AwardReply = {
@@ -37,8 +84,11 @@ export const AwardReply = {
     if (message.description !== "") {
       writer.uint32(34).string(message.description);
     }
+    if (message.rarityNum !== 0) {
+      writer.uint32(40).int32(message.rarityNum);
+    }
     if (message.rarity !== 0) {
-      writer.uint32(40).int32(message.rarity);
+      writer.uint32(48).int32(message.rarity);
     }
     return writer;
   },
@@ -83,7 +133,14 @@ export const AwardReply = {
             break;
           }
 
-          message.rarity = reader.int32();
+          message.rarityNum = reader.int32();
+          continue;
+        case 6:
+          if (tag !== 48) {
+            break;
+          }
+
+          message.rarity = reader.int32() as any;
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -100,7 +157,8 @@ export const AwardReply = {
       url: isSet(object.url) ? globalThis.String(object.url) : "",
       id: isSet(object.id) ? globalThis.Number(object.id) : 0,
       description: isSet(object.description) ? globalThis.String(object.description) : "",
-      rarity: isSet(object.rarity) ? globalThis.Number(object.rarity) : 0,
+      rarityNum: isSet(object.rarityNum) ? globalThis.Number(object.rarityNum) : 0,
+      rarity: isSet(object.rarity) ? awardRarityMessageFromJSON(object.rarity) : 0,
     };
   },
 
@@ -118,8 +176,11 @@ export const AwardReply = {
     if (message.description !== "") {
       obj.description = message.description;
     }
+    if (message.rarityNum !== 0) {
+      obj.rarityNum = Math.round(message.rarityNum);
+    }
     if (message.rarity !== 0) {
-      obj.rarity = Math.round(message.rarity);
+      obj.rarity = awardRarityMessageToJSON(message.rarity);
     }
     return obj;
   },

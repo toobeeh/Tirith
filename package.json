@@ -13,7 +13,7 @@
         "test:ci": "concurrently --max-processes=1 --raw --success=all \"npm run test:ci --workspace=tirith-api\" ",
         "ng": "npx --workspace=tirith-frontend ng",
         "nest": "npx --workspace=tirith-api nest",
-        "generate:protos": "npx protoc --plugin=protoc-gen-ts_proto=\".\\node_modules\\.bin\\protoc-gen-ts_proto.cmd\" --ts_proto_out=./tirith-api/src/modules/grpc/proto-compiled --ts_proto_opt=\"forceLong=long,outputPartialMethods=false,outputServices=nice-grpc,outputServices=generic-definitions,useExactTypes=true\" --proto_path=\"C:/Users/tobeh/repos/Valmar/Protos\" C:/Users/tobeh/repos/Valmar/Protos/*.proto"
+        "generate:protos": "npx protoc --plugin=protoc-gen-ts_proto=\".\\node_modules\\.bin\\protoc-gen-ts_proto.cmd\" --ts_proto_out=./tirith-api/src/modules/grpc/proto-compiled --ts_proto_opt=\"forceLong=long,outputPartialMethods=false,outputServices=nice-grpc,outputServices=generic-definitions,useExactTypes=true\" --proto_path=\"C:/Users/tobeh/repos/Valmar/tobeh.Valmar.Server/Protos\" C:/Users/tobeh/repos/Valmar/tobeh.Valmar.Server/Protos/*.proto"
     },
     "devDependencies": {
         "concurrently": "^7.6.0",

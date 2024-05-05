@@ -3,8 +3,91 @@ import type { CallContext, CallOptions } from "nice-grpc-common";
 import Long = require("long");
 import * as _m0 from "protobufjs/minimal";
 import { Empty } from "./google/protobuf/empty";
+import { Timestamp } from "./google/protobuf/timestamp";
+import { StringValue } from "./google/protobuf/wrappers";
 
 export const protobufPackage = "members";
+
+export enum MemberFlagMessage {
+  Admin = 0,
+  Moderator = 1,
+  Patron = 2,
+  Patronizer = 3,
+  Booster = 4,
+  DropBan = 5,
+  PermaBan = 6,
+  Beta = 7,
+  BubbleFarming = 8,
+  UnlimitedCloud = 9,
+  UNRECOGNIZED = -1,
+}
+
+export function memberFlagMessageFromJSON(object: any): MemberFlagMessage {
+  switch (object) {
+    case 0:
+    case "Admin":
+      return MemberFlagMessage.Admin;
+    case 1:
+    case "Moderator":
+      return MemberFlagMessage.Moderator;
+    case 2:
+    case "Patron":
+      return MemberFlagMessage.Patron;
+    case 3:
+    case "Patronizer":
+      return MemberFlagMessage.Patronizer;
+    case 4:
+    case "Booster":
+      return MemberFlagMessage.Booster;
+    case 5:
+    case "DropBan":
+      return MemberFlagMessage.DropBan;
+    case 6:
+    case "PermaBan":
+      return MemberFlagMessage.PermaBan;
+    case 7:
+    case "Beta":
+      return MemberFlagMessage.Beta;
+    case 8:
+    case "BubbleFarming":
+      return MemberFlagMessage.BubbleFarming;
+    case 9:
+    case "UnlimitedCloud":
+      return MemberFlagMessage.UnlimitedCloud;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return MemberFlagMessage.UNRECOGNIZED;
+  }
+}
+
+export function memberFlagMessageToJSON(object: MemberFlagMessage): string {
+  switch (object) {
+    case MemberFlagMessage.Admin:
+      return "Admin";
+    case MemberFlagMessage.Moderator:
+      return "Moderator";
+    case MemberFlagMessage.Patron:
+      return "Patron";
+    case MemberFlagMessage.Patronizer:
+      return "Patronizer";
+    case MemberFlagMessage.Booster:
+      return "Booster";
+    case MemberFlagMessage.DropBan:
+      return "DropBan";
+    case MemberFlagMessage.PermaBan:
+      return "PermaBan";
+    case MemberFlagMessage.Beta:
+      return "Beta";
+    case MemberFlagMessage.BubbleFarming:
+      return "BubbleFarming";
+    case MemberFlagMessage.UnlimitedCloud:
+      return "UnlimitedCloud";
+    case MemberFlagMessage.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
 
 /** Response containing a member's properties. */
 export interface MemberReply {
@@ -18,6 +101,10 @@ export interface MemberReply {
   username: string;
   login: number;
   serverConnections: number[];
+  mappedFlags: MemberFlagMessage[];
+  nextAwardPackDate: Date | undefined;
+  patronEmoji: string | undefined;
+  nextPatronizeDate: Date | undefined;
 }
 
 /** Reply containing the accesstoken of a member */
@@ -40,6 +127,10 @@ export interface MemberSearchReply {
 /** Request used to target a distinct member by id */
 export interface IdentifyMemberByLoginRequest {
   login: number;
+}
+
+export interface GetMembersByLoginMessage {
+  logins: number[];
 }
 
 /** Request used to target a distinct member by id */
@@ -88,6 +179,10 @@ function createBaseMemberReply(): MemberReply {
     username: "",
     login: 0,
     serverConnections: [],
+    mappedFlags: [],
+    nextAwardPackDate: undefined,
+    patronEmoji: undefined,
+    nextPatronizeDate: undefined,
   };
 }
 
@@ -97,7 +192,7 @@ export const MemberReply = {
       writer.uint32(8).int32(message.bubbles);
     }
     if (message.drops !== 0) {
-      writer.uint32(16).int32(message.drops);
+      writer.uint32(17).double(message.drops);
     }
     if (message.sprites !== "") {
       writer.uint32(26).string(message.sprites);
@@ -125,6 +220,20 @@ export const MemberReply = {
       writer.int32(v);
     }
     writer.ldelim();
+    writer.uint32(90).fork();
+    for (const v of message.mappedFlags) {
+      writer.int32(v);
+    }
+    writer.ldelim();
+    if (message.nextAwardPackDate !== undefined) {
+      Timestamp.encode(toTimestamp(message.nextAwardPackDate), writer.uint32(98).fork()).ldelim();
+    }
+    if (message.patronEmoji !== undefined) {
+      StringValue.encode({ value: message.patronEmoji! }, writer.uint32(106).fork()).ldelim();
+    }
+    if (message.nextPatronizeDate !== undefined) {
+      Timestamp.encode(toTimestamp(message.nextPatronizeDate), writer.uint32(114).fork()).ldelim();
+    }
     return writer;
   },
 
@@ -143,11 +252,11 @@ export const MemberReply = {
           message.bubbles = reader.int32();
           continue;
         case 2:
-          if (tag !== 16) {
+          if (tag !== 17) {
             break;
           }
 
-          message.drops = reader.int32();
+          message.drops = reader.double();
           continue;
         case 3:
           if (tag !== 26) {
@@ -215,6 +324,44 @@ export const MemberReply = {
           }
 
           break;
+        case 11:
+          if (tag === 88) {
+            message.mappedFlags.push(reader.int32() as any);
+
+            continue;
+          }
+
+          if (tag === 90) {
+            const end2 = reader.uint32() + reader.pos;
+            while (reader.pos < end2) {
+              message.mappedFlags.push(reader.int32() as any);
+            }
+
+            continue;
+          }
+
+          break;
+        case 12:
+          if (tag !== 98) {
+            break;
+          }
+
+          message.nextAwardPackDate = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
+        case 13:
+          if (tag !== 106) {
+            break;
+          }
+
+          message.patronEmoji = StringValue.decode(reader, reader.uint32()).value;
+          continue;
+        case 14:
+          if (tag !== 114) {
+            break;
+          }
+
+          message.nextPatronizeDate = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -238,6 +385,12 @@ export const MemberReply = {
       serverConnections: globalThis.Array.isArray(object?.serverConnections)
         ? object.serverConnections.map((e: any) => globalThis.Number(e))
         : [],
+      mappedFlags: globalThis.Array.isArray(object?.mappedFlags)
+        ? object.mappedFlags.map((e: any) => memberFlagMessageFromJSON(e))
+        : [],
+      nextAwardPackDate: isSet(object.nextAwardPackDate) ? fromJsonTimestamp(object.nextAwardPackDate) : undefined,
+      patronEmoji: isSet(object.patronEmoji) ? String(object.patronEmoji) : undefined,
+      nextPatronizeDate: isSet(object.nextPatronizeDate) ? fromJsonTimestamp(object.nextPatronizeDate) : undefined,
     };
   },
 
@@ -247,7 +400,7 @@ export const MemberReply = {
       obj.bubbles = Math.round(message.bubbles);
     }
     if (message.drops !== 0) {
-      obj.drops = Math.round(message.drops);
+      obj.drops = message.drops;
     }
     if (message.sprites !== "") {
       obj.sprites = message.sprites;
@@ -272,6 +425,18 @@ export const MemberReply = {
     }
     if (message.serverConnections?.length) {
       obj.serverConnections = message.serverConnections.map((e) => Math.round(e));
+    }
+    if (message.mappedFlags?.length) {
+      obj.mappedFlags = message.mappedFlags.map((e) => memberFlagMessageToJSON(e));
+    }
+    if (message.nextAwardPackDate !== undefined) {
+      obj.nextAwardPackDate = message.nextAwardPackDate.toISOString();
+    }
+    if (message.patronEmoji !== undefined) {
+      obj.patronEmoji = message.patronEmoji;
+    }
+    if (message.nextPatronizeDate !== undefined) {
+      obj.nextPatronizeDate = message.nextPatronizeDate.toISOString();
     }
     return obj;
   },
@@ -494,6 +659,68 @@ export const IdentifyMemberByLoginRequest = {
     const obj: any = {};
     if (message.login !== 0) {
       obj.login = Math.round(message.login);
+    }
+    return obj;
+  },
+};
+
+function createBaseGetMembersByLoginMessage(): GetMembersByLoginMessage {
+  return { logins: [] };
+}
+
+export const GetMembersByLoginMessage = {
+  encode(message: GetMembersByLoginMessage, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    writer.uint32(10).fork();
+    for (const v of message.logins) {
+      writer.int32(v);
+    }
+    writer.ldelim();
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetMembersByLoginMessage {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetMembersByLoginMessage();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag === 8) {
+            message.logins.push(reader.int32());
+
+            continue;
+          }
+
+          if (tag === 10) {
+            const end2 = reader.uint32() + reader.pos;
+            while (reader.pos < end2) {
+              message.logins.push(reader.int32());
+            }
+
+            continue;
+          }
+
+          break;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetMembersByLoginMessage {
+    return {
+      logins: globalThis.Array.isArray(object?.logins) ? object.logins.map((e: any) => globalThis.Number(e)) : [],
+    };
+  },
+
+  toJSON(message: GetMembersByLoginMessage): unknown {
+    const obj: any = {};
+    if (message.logins?.length) {
+      obj.logins = message.logins.map((e) => Math.round(e));
     }
     return obj;
   },
@@ -872,6 +1099,15 @@ export const MembersDefinition = {
       responseStream: false,
       options: {},
     },
+    /** Gets many members by login */
+    getMembersByLogin: {
+      name: "GetMembersByLogin",
+      requestType: GetMembersByLoginMessage,
+      requestStream: false,
+      responseType: MemberReply,
+      responseStream: true,
+      options: {},
+    },
     /** Gets a member by its access token */
     getMemberByAccessToken: {
       name: "GetMemberByAccessToken",
@@ -969,6 +1205,11 @@ export interface MembersServiceImplementation<CallContextExt = {}> {
   createNewMember(request: CreateNewMemberRequest, context: CallContext & CallContextExt): Promise<MemberReply>;
   /** Gets a member by its login */
   getMemberByLogin(request: IdentifyMemberByLoginRequest, context: CallContext & CallContextExt): Promise<MemberReply>;
+  /** Gets many members by login */
+  getMembersByLogin(
+    request: GetMembersByLoginMessage,
+    context: CallContext & CallContextExt,
+  ): ServerStreamingMethodResult<MemberReply>;
   /** Gets a member by its access token */
   getMemberByAccessToken(
     request: IdentifyMemberByAccessTokenRequest,
@@ -1019,6 +1260,11 @@ export interface MembersClient<CallOptionsExt = {}> {
   createNewMember(request: CreateNewMemberRequest, options?: CallOptions & CallOptionsExt): Promise<MemberReply>;
   /** Gets a member by its login */
   getMemberByLogin(request: IdentifyMemberByLoginRequest, options?: CallOptions & CallOptionsExt): Promise<MemberReply>;
+  /** Gets many members by login */
+  getMembersByLogin(
+    request: GetMembersByLoginMessage,
+    options?: CallOptions & CallOptionsExt,
+  ): AsyncIterable<MemberReply>;
   /** Gets a member by its access token */
   getMemberByAccessToken(
     request: IdentifyMemberByAccessTokenRequest,
@@ -1060,6 +1306,32 @@ export interface MembersClient<CallOptionsExt = {}> {
     request: ModifyServerConnectionRequest,
     options?: CallOptions & CallOptionsExt,
   ): Promise<Empty>;
+}
+
+function toTimestamp(date: Date): Timestamp {
+  const seconds = numberToLong(date.getTime() / 1_000);
+  const nanos = (date.getTime() % 1_000) * 1_000_000;
+  return { seconds, nanos };
+}
+
+function fromTimestamp(t: Timestamp): Date {
+  let millis = (t.seconds.toNumber() || 0) * 1_000;
+  millis += (t.nanos || 0) / 1_000_000;
+  return new globalThis.Date(millis);
+}
+
+function fromJsonTimestamp(o: any): Date {
+  if (o instanceof globalThis.Date) {
+    return o;
+  } else if (typeof o === "string") {
+    return new globalThis.Date(o);
+  } else {
+    return fromTimestamp(Timestamp.fromJSON(o));
+  }
+}
+
+function numberToLong(number: number) {
+  return Long.fromNumber(number);
 }
 
 if (_m0.util.Long !== Long) {

@@ -23,6 +23,23 @@ export interface GetSceneRequest {
   id: number;
 }
 
+/** Response containing the ranking of a scene */
+export interface SceneRankingReply {
+  id: number;
+  activeUsers: number;
+  totalBought: number;
+  rank: number;
+}
+
+export interface EventSceneReply {
+  scene: SceneReply | undefined;
+  price: number;
+}
+
+export interface GetEventSceneRequest {
+  eventId: number;
+}
+
 function createBaseSceneReply(): SceneReply {
   return {
     name: "",
@@ -228,6 +245,210 @@ export const GetSceneRequest = {
   },
 };
 
+function createBaseSceneRankingReply(): SceneRankingReply {
+  return { id: 0, activeUsers: 0, totalBought: 0, rank: 0 };
+}
+
+export const SceneRankingReply = {
+  encode(message: SceneRankingReply, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.id !== 0) {
+      writer.uint32(8).int32(message.id);
+    }
+    if (message.activeUsers !== 0) {
+      writer.uint32(16).int32(message.activeUsers);
+    }
+    if (message.totalBought !== 0) {
+      writer.uint32(24).int32(message.totalBought);
+    }
+    if (message.rank !== 0) {
+      writer.uint32(32).int32(message.rank);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): SceneRankingReply {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSceneRankingReply();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.id = reader.int32();
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.activeUsers = reader.int32();
+          continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.totalBought = reader.int32();
+          continue;
+        case 4:
+          if (tag !== 32) {
+            break;
+          }
+
+          message.rank = reader.int32();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SceneRankingReply {
+    return {
+      id: isSet(object.id) ? globalThis.Number(object.id) : 0,
+      activeUsers: isSet(object.activeUsers) ? globalThis.Number(object.activeUsers) : 0,
+      totalBought: isSet(object.totalBought) ? globalThis.Number(object.totalBought) : 0,
+      rank: isSet(object.rank) ? globalThis.Number(object.rank) : 0,
+    };
+  },
+
+  toJSON(message: SceneRankingReply): unknown {
+    const obj: any = {};
+    if (message.id !== 0) {
+      obj.id = Math.round(message.id);
+    }
+    if (message.activeUsers !== 0) {
+      obj.activeUsers = Math.round(message.activeUsers);
+    }
+    if (message.totalBought !== 0) {
+      obj.totalBought = Math.round(message.totalBought);
+    }
+    if (message.rank !== 0) {
+      obj.rank = Math.round(message.rank);
+    }
+    return obj;
+  },
+};
+
+function createBaseEventSceneReply(): EventSceneReply {
+  return { scene: undefined, price: 0 };
+}
+
+export const EventSceneReply = {
+  encode(message: EventSceneReply, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.scene !== undefined) {
+      SceneReply.encode(message.scene, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.price !== 0) {
+      writer.uint32(16).int32(message.price);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): EventSceneReply {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseEventSceneReply();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.scene = SceneReply.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.price = reader.int32();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): EventSceneReply {
+    return {
+      scene: isSet(object.scene) ? SceneReply.fromJSON(object.scene) : undefined,
+      price: isSet(object.price) ? globalThis.Number(object.price) : 0,
+    };
+  },
+
+  toJSON(message: EventSceneReply): unknown {
+    const obj: any = {};
+    if (message.scene !== undefined) {
+      obj.scene = SceneReply.toJSON(message.scene);
+    }
+    if (message.price !== 0) {
+      obj.price = Math.round(message.price);
+    }
+    return obj;
+  },
+};
+
+function createBaseGetEventSceneRequest(): GetEventSceneRequest {
+  return { eventId: 0 };
+}
+
+export const GetEventSceneRequest = {
+  encode(message: GetEventSceneRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.eventId !== 0) {
+      writer.uint32(8).int32(message.eventId);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetEventSceneRequest {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetEventSceneRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.eventId = reader.int32();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetEventSceneRequest {
+    return { eventId: isSet(object.eventId) ? globalThis.Number(object.eventId) : 0 };
+  },
+
+  toJSON(message: GetEventSceneRequest): unknown {
+    const obj: any = {};
+    if (message.eventId !== 0) {
+      obj.eventId = Math.round(message.eventId);
+    }
+    return obj;
+  },
+};
+
 /** Service definition for scene resource access */
 export type ScenesDefinition = typeof ScenesDefinition;
 export const ScenesDefinition = {
@@ -252,6 +473,24 @@ export const ScenesDefinition = {
       responseStream: false,
       options: {},
     },
+    /** Gets the ranking of all scenes */
+    getSceneRanking: {
+      name: "GetSceneRanking",
+      requestType: Empty,
+      requestStream: false,
+      responseType: SceneRankingReply,
+      responseStream: true,
+      options: {},
+    },
+    /** Gets the price and scene of an event */
+    getEventScene: {
+      name: "GetEventScene",
+      requestType: GetEventSceneRequest,
+      requestStream: false,
+      responseType: EventSceneReply,
+      responseStream: false,
+      options: {},
+    },
   },
 } as const;
 
@@ -260,6 +499,13 @@ export interface ScenesServiceImplementation<CallContextExt = {}> {
   getAllScenes(request: Empty, context: CallContext & CallContextExt): ServerStreamingMethodResult<SceneReply>;
   /** Gets a scene by its id */
   getSceneById(request: GetSceneRequest, context: CallContext & CallContextExt): Promise<SceneReply>;
+  /** Gets the ranking of all scenes */
+  getSceneRanking(
+    request: Empty,
+    context: CallContext & CallContextExt,
+  ): ServerStreamingMethodResult<SceneRankingReply>;
+  /** Gets the price and scene of an event */
+  getEventScene(request: GetEventSceneRequest, context: CallContext & CallContextExt): Promise<EventSceneReply>;
 }
 
 export interface ScenesClient<CallOptionsExt = {}> {
@@ -267,6 +513,10 @@ export interface ScenesClient<CallOptionsExt = {}> {
   getAllScenes(request: Empty, options?: CallOptions & CallOptionsExt): AsyncIterable<SceneReply>;
   /** Gets a scene by its id */
   getSceneById(request: GetSceneRequest, options?: CallOptions & CallOptionsExt): Promise<SceneReply>;
+  /** Gets the ranking of all scenes */
+  getSceneRanking(request: Empty, options?: CallOptions & CallOptionsExt): AsyncIterable<SceneRankingReply>;
+  /** Gets the price and scene of an event */
+  getEventScene(request: GetEventSceneRequest, options?: CallOptions & CallOptionsExt): Promise<EventSceneReply>;
 }
 
 function isSet(value: any): boolean {

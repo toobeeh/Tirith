@@ -20,6 +20,11 @@ export interface GetGuildRequest {
   observeToken: number;
 }
 
+/** Request containing a guild discord ID */
+export interface GetGuildByIdMessage {
+  discordId: Long;
+}
+
 function createBaseGuildReply(): GuildReply {
   return {
     guildId: Long.ZERO,
@@ -195,6 +200,54 @@ export const GetGuildRequest = {
   },
 };
 
+function createBaseGetGuildByIdMessage(): GetGuildByIdMessage {
+  return { discordId: Long.ZERO };
+}
+
+export const GetGuildByIdMessage = {
+  encode(message: GetGuildByIdMessage, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (!message.discordId.isZero()) {
+      writer.uint32(8).int64(message.discordId);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetGuildByIdMessage {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetGuildByIdMessage();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.discordId = reader.int64() as Long;
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetGuildByIdMessage {
+    return { discordId: isSet(object.discordId) ? Long.fromValue(object.discordId) : Long.ZERO };
+  },
+
+  toJSON(message: GetGuildByIdMessage): unknown {
+    const obj: any = {};
+    if (!message.discordId.isZero()) {
+      obj.discordId = (message.discordId || Long.ZERO).toString();
+    }
+    return obj;
+  },
+};
+
 /** Service definition for guilds resource access */
 export type GuildsDefinition = typeof GuildsDefinition;
 export const GuildsDefinition = {
@@ -210,17 +263,30 @@ export const GuildsDefinition = {
       responseStream: false,
       options: {},
     },
+    /** Gets a guild by its discord ID */
+    getGuildByDiscordId: {
+      name: "GetGuildByDiscordId",
+      requestType: GetGuildByIdMessage,
+      requestStream: false,
+      responseType: GuildReply,
+      responseStream: false,
+      options: {},
+    },
   },
 } as const;
 
 export interface GuildsServiceImplementation<CallContextExt = {}> {
   /** Gets a guild by its observe token */
   getGuildByToken(request: GetGuildRequest, context: CallContext & CallContextExt): Promise<GuildReply>;
+  /** Gets a guild by its discord ID */
+  getGuildByDiscordId(request: GetGuildByIdMessage, context: CallContext & CallContextExt): Promise<GuildReply>;
 }
 
 export interface GuildsClient<CallOptionsExt = {}> {
   /** Gets a guild by its observe token */
   getGuildByToken(request: GetGuildRequest, options?: CallOptions & CallOptionsExt): Promise<GuildReply>;
+  /** Gets a guild by its discord ID */
+  getGuildByDiscordId(request: GetGuildByIdMessage, options?: CallOptions & CallOptionsExt): Promise<GuildReply>;
 }
 
 if (_m0.util.Long !== Long) {

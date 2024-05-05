@@ -19,7 +19,7 @@ export class GrpcEventsService extends GrpcBaseService<EventsDefinition> impleme
         return {
             ...reply,
             eventLength: reply.length,
-            eventStart: reply.start
+            eventStart: reply.startDate.toString()
         };
     }
 

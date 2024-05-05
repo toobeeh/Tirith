@@ -16,11 +16,20 @@ export interface SpriteReply {
   isSpecial: boolean;
   eventDropId: number | undefined;
   artist: string | undefined;
+  isReleased: boolean;
 }
 
 /** Request containing a sprite id */
 export interface GetSpriteRequest {
   id: number;
+}
+
+/** Response containing the ranking of a sprite */
+export interface SpriteRankingReply {
+  id: number;
+  activeUsers: number;
+  totalBought: number;
+  rank: number;
 }
 
 function createBaseSpriteReply(): SpriteReply {
@@ -33,6 +42,7 @@ function createBaseSpriteReply(): SpriteReply {
     isSpecial: false,
     eventDropId: undefined,
     artist: undefined,
+    isReleased: false,
   };
 }
 
@@ -61,6 +71,9 @@ export const SpriteReply = {
     }
     if (message.artist !== undefined) {
       StringValue.encode({ value: message.artist! }, writer.uint32(66).fork()).ldelim();
+    }
+    if (message.isReleased === true) {
+      writer.uint32(72).bool(message.isReleased);
     }
     return writer;
   },
@@ -128,6 +141,13 @@ export const SpriteReply = {
 
           message.artist = StringValue.decode(reader, reader.uint32()).value;
           continue;
+        case 9:
+          if (tag !== 72) {
+            break;
+          }
+
+          message.isReleased = reader.bool();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -147,6 +167,7 @@ export const SpriteReply = {
       isSpecial: isSet(object.isSpecial) ? globalThis.Boolean(object.isSpecial) : false,
       eventDropId: isSet(object.eventDropId) ? Number(object.eventDropId) : undefined,
       artist: isSet(object.artist) ? String(object.artist) : undefined,
+      isReleased: isSet(object.isReleased) ? globalThis.Boolean(object.isReleased) : false,
     };
   },
 
@@ -175,6 +196,9 @@ export const SpriteReply = {
     }
     if (message.artist !== undefined) {
       obj.artist = message.artist;
+    }
+    if (message.isReleased === true) {
+      obj.isReleased = message.isReleased;
     }
     return obj;
   },
@@ -228,6 +252,98 @@ export const GetSpriteRequest = {
   },
 };
 
+function createBaseSpriteRankingReply(): SpriteRankingReply {
+  return { id: 0, activeUsers: 0, totalBought: 0, rank: 0 };
+}
+
+export const SpriteRankingReply = {
+  encode(message: SpriteRankingReply, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.id !== 0) {
+      writer.uint32(8).int32(message.id);
+    }
+    if (message.activeUsers !== 0) {
+      writer.uint32(16).int32(message.activeUsers);
+    }
+    if (message.totalBought !== 0) {
+      writer.uint32(24).int32(message.totalBought);
+    }
+    if (message.rank !== 0) {
+      writer.uint32(32).int32(message.rank);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): SpriteRankingReply {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSpriteRankingReply();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.id = reader.int32();
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.activeUsers = reader.int32();
+          continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.totalBought = reader.int32();
+          continue;
+        case 4:
+          if (tag !== 32) {
+            break;
+          }
+
+          message.rank = reader.int32();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SpriteRankingReply {
+    return {
+      id: isSet(object.id) ? globalThis.Number(object.id) : 0,
+      activeUsers: isSet(object.activeUsers) ? globalThis.Number(object.activeUsers) : 0,
+      totalBought: isSet(object.totalBought) ? globalThis.Number(object.totalBought) : 0,
+      rank: isSet(object.rank) ? globalThis.Number(object.rank) : 0,
+    };
+  },
+
+  toJSON(message: SpriteRankingReply): unknown {
+    const obj: any = {};
+    if (message.id !== 0) {
+      obj.id = Math.round(message.id);
+    }
+    if (message.activeUsers !== 0) {
+      obj.activeUsers = Math.round(message.activeUsers);
+    }
+    if (message.totalBought !== 0) {
+      obj.totalBought = Math.round(message.totalBought);
+    }
+    if (message.rank !== 0) {
+      obj.rank = Math.round(message.rank);
+    }
+    return obj;
+  },
+};
+
 /** Service definition for sprite resource access */
 export type SpritesDefinition = typeof SpritesDefinition;
 export const SpritesDefinition = {
@@ -252,6 +368,15 @@ export const SpritesDefinition = {
       responseStream: false,
       options: {},
     },
+    /** Gets the ranking of all sprites */
+    getSpriteRanking: {
+      name: "GetSpriteRanking",
+      requestType: Empty,
+      requestStream: false,
+      responseType: SpriteRankingReply,
+      responseStream: true,
+      options: {},
+    },
   },
 } as const;
 
@@ -260,6 +385,11 @@ export interface SpritesServiceImplementation<CallContextExt = {}> {
   getAllSprites(request: Empty, context: CallContext & CallContextExt): ServerStreamingMethodResult<SpriteReply>;
   /** Gets a sprite by its id */
   getSpriteById(request: GetSpriteRequest, context: CallContext & CallContextExt): Promise<SpriteReply>;
+  /** Gets the ranking of all sprites */
+  getSpriteRanking(
+    request: Empty,
+    context: CallContext & CallContextExt,
+  ): ServerStreamingMethodResult<SpriteRankingReply>;
 }
 
 export interface SpritesClient<CallOptionsExt = {}> {
@@ -267,6 +397,8 @@ export interface SpritesClient<CallOptionsExt = {}> {
   getAllSprites(request: Empty, options?: CallOptions & CallOptionsExt): AsyncIterable<SpriteReply>;
   /** Gets a sprite by its id */
   getSpriteById(request: GetSpriteRequest, options?: CallOptions & CallOptionsExt): Promise<SpriteReply>;
+  /** Gets the ranking of all sprites */
+  getSpriteRanking(request: Empty, options?: CallOptions & CallOptionsExt): AsyncIterable<SpriteRankingReply>;
 }
 
 function isSet(value: any): boolean {

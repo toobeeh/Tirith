@@ -2,6 +2,8 @@
 import type { CallContext, CallOptions } from "nice-grpc-common";
 import * as _m0 from "protobufjs/minimal";
 import { Empty } from "./google/protobuf/empty";
+import { Timestamp } from "./google/protobuf/timestamp";
+import Long = require("long");
 
 export const protobufPackage = "events";
 
@@ -9,9 +11,11 @@ export const protobufPackage = "events";
 export interface EventReply {
   name: string;
   id: number;
-  start: string;
   description: string;
   length: number;
+  progressive: boolean;
+  startDate: Date | undefined;
+  endDate: Date | undefined;
 }
 
 /** A palantir event drop */
@@ -20,6 +24,8 @@ export interface EventDropReply {
   id: number;
   url: string;
   eventId: number;
+  releaseStart: Date | undefined;
+  releaseEnd: Date | undefined;
 }
 
 /** Request containing an event id */
@@ -33,7 +39,7 @@ export interface GetEventDropRequest {
 }
 
 function createBaseEventReply(): EventReply {
-  return { name: "", id: 0, start: "", description: "", length: 0 };
+  return { name: "", id: 0, description: "", length: 0, progressive: false, startDate: undefined, endDate: undefined };
 }
 
 export const EventReply = {
@@ -44,14 +50,20 @@ export const EventReply = {
     if (message.id !== 0) {
       writer.uint32(16).int32(message.id);
     }
-    if (message.start !== "") {
-      writer.uint32(26).string(message.start);
-    }
     if (message.description !== "") {
       writer.uint32(34).string(message.description);
     }
     if (message.length !== 0) {
       writer.uint32(40).int32(message.length);
+    }
+    if (message.progressive === true) {
+      writer.uint32(48).bool(message.progressive);
+    }
+    if (message.startDate !== undefined) {
+      Timestamp.encode(toTimestamp(message.startDate), writer.uint32(58).fork()).ldelim();
+    }
+    if (message.endDate !== undefined) {
+      Timestamp.encode(toTimestamp(message.endDate), writer.uint32(66).fork()).ldelim();
     }
     return writer;
   },
@@ -77,13 +89,6 @@ export const EventReply = {
 
           message.id = reader.int32();
           continue;
-        case 3:
-          if (tag !== 26) {
-            break;
-          }
-
-          message.start = reader.string();
-          continue;
         case 4:
           if (tag !== 34) {
             break;
@@ -98,6 +103,27 @@ export const EventReply = {
 
           message.length = reader.int32();
           continue;
+        case 6:
+          if (tag !== 48) {
+            break;
+          }
+
+          message.progressive = reader.bool();
+          continue;
+        case 7:
+          if (tag !== 58) {
+            break;
+          }
+
+          message.startDate = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
+        case 8:
+          if (tag !== 66) {
+            break;
+          }
+
+          message.endDate = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -111,9 +137,11 @@ export const EventReply = {
     return {
       name: isSet(object.name) ? globalThis.String(object.name) : "",
       id: isSet(object.id) ? globalThis.Number(object.id) : 0,
-      start: isSet(object.start) ? globalThis.String(object.start) : "",
       description: isSet(object.description) ? globalThis.String(object.description) : "",
       length: isSet(object.length) ? globalThis.Number(object.length) : 0,
+      progressive: isSet(object.progressive) ? globalThis.Boolean(object.progressive) : false,
+      startDate: isSet(object.startDate) ? fromJsonTimestamp(object.startDate) : undefined,
+      endDate: isSet(object.endDate) ? fromJsonTimestamp(object.endDate) : undefined,
     };
   },
 
@@ -125,21 +153,27 @@ export const EventReply = {
     if (message.id !== 0) {
       obj.id = Math.round(message.id);
     }
-    if (message.start !== "") {
-      obj.start = message.start;
-    }
     if (message.description !== "") {
       obj.description = message.description;
     }
     if (message.length !== 0) {
       obj.length = Math.round(message.length);
     }
+    if (message.progressive === true) {
+      obj.progressive = message.progressive;
+    }
+    if (message.startDate !== undefined) {
+      obj.startDate = message.startDate.toISOString();
+    }
+    if (message.endDate !== undefined) {
+      obj.endDate = message.endDate.toISOString();
+    }
     return obj;
   },
 };
 
 function createBaseEventDropReply(): EventDropReply {
-  return { name: "", id: 0, url: "", eventId: 0 };
+  return { name: "", id: 0, url: "", eventId: 0, releaseStart: undefined, releaseEnd: undefined };
 }
 
 export const EventDropReply = {
@@ -155,6 +189,12 @@ export const EventDropReply = {
     }
     if (message.eventId !== 0) {
       writer.uint32(32).int32(message.eventId);
+    }
+    if (message.releaseStart !== undefined) {
+      Timestamp.encode(toTimestamp(message.releaseStart), writer.uint32(58).fork()).ldelim();
+    }
+    if (message.releaseEnd !== undefined) {
+      Timestamp.encode(toTimestamp(message.releaseEnd), writer.uint32(66).fork()).ldelim();
     }
     return writer;
   },
@@ -194,6 +234,20 @@ export const EventDropReply = {
 
           message.eventId = reader.int32();
           continue;
+        case 7:
+          if (tag !== 58) {
+            break;
+          }
+
+          message.releaseStart = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
+        case 8:
+          if (tag !== 66) {
+            break;
+          }
+
+          message.releaseEnd = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -209,6 +263,8 @@ export const EventDropReply = {
       id: isSet(object.id) ? globalThis.Number(object.id) : 0,
       url: isSet(object.url) ? globalThis.String(object.url) : "",
       eventId: isSet(object.eventId) ? globalThis.Number(object.eventId) : 0,
+      releaseStart: isSet(object.releaseStart) ? fromJsonTimestamp(object.releaseStart) : undefined,
+      releaseEnd: isSet(object.releaseEnd) ? fromJsonTimestamp(object.releaseEnd) : undefined,
     };
   },
 
@@ -225,6 +281,12 @@ export const EventDropReply = {
     }
     if (message.eventId !== 0) {
       obj.eventId = Math.round(message.eventId);
+    }
+    if (message.releaseStart !== undefined) {
+      obj.releaseStart = message.releaseStart.toISOString();
+    }
+    if (message.releaseEnd !== undefined) {
+      obj.releaseEnd = message.releaseEnd.toISOString();
     }
     return obj;
   },
@@ -386,6 +448,15 @@ export const EventsDefinition = {
       responseStream: true,
       options: {},
     },
+    /** gets the release slots of an progressive event */
+    getEventReleaseSlots: {
+      name: "GetEventReleaseSlots",
+      requestType: GetEventRequest,
+      requestStream: false,
+      responseType: Timestamp,
+      responseStream: true,
+      options: {},
+    },
   },
 } as const;
 
@@ -405,6 +476,11 @@ export interface EventsServiceImplementation<CallContextExt = {}> {
     request: GetEventRequest,
     context: CallContext & CallContextExt,
   ): ServerStreamingMethodResult<EventDropReply>;
+  /** gets the release slots of an progressive event */
+  getEventReleaseSlots(
+    request: GetEventRequest,
+    context: CallContext & CallContextExt,
+  ): ServerStreamingMethodResult<Timestamp>;
 }
 
 export interface EventsClient<CallOptionsExt = {}> {
@@ -420,6 +496,39 @@ export interface EventsClient<CallOptionsExt = {}> {
   getEventDropById(request: GetEventDropRequest, options?: CallOptions & CallOptionsExt): Promise<EventDropReply>;
   /** Gets all eventdrops of an event */
   getEventDropsOfEvent(request: GetEventRequest, options?: CallOptions & CallOptionsExt): AsyncIterable<EventDropReply>;
+  /** gets the release slots of an progressive event */
+  getEventReleaseSlots(request: GetEventRequest, options?: CallOptions & CallOptionsExt): AsyncIterable<Timestamp>;
+}
+
+function toTimestamp(date: Date): Timestamp {
+  const seconds = numberToLong(date.getTime() / 1_000);
+  const nanos = (date.getTime() % 1_000) * 1_000_000;
+  return { seconds, nanos };
+}
+
+function fromTimestamp(t: Timestamp): Date {
+  let millis = (t.seconds.toNumber() || 0) * 1_000;
+  millis += (t.nanos || 0) / 1_000_000;
+  return new globalThis.Date(millis);
+}
+
+function fromJsonTimestamp(o: any): Date {
+  if (o instanceof globalThis.Date) {
+    return o;
+  } else if (typeof o === "string") {
+    return new globalThis.Date(o);
+  } else {
+    return fromTimestamp(Timestamp.fromJSON(o));
+  }
+}
+
+function numberToLong(number: number) {
+  return Long.fromNumber(number);
+}
+
+if (_m0.util.Long !== Long) {
+  _m0.util.Long = Long as any;
+  _m0.configure();
 }
 
 function isSet(value: any): boolean {

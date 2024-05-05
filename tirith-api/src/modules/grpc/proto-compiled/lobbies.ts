@@ -4,6 +4,7 @@ import Long = require("long");
 import * as _m0 from "protobufjs/minimal";
 import { Empty } from "./google/protobuf/empty";
 import { Int32Value, StringValue } from "./google/protobuf/wrappers";
+import { SpriteSlotConfigurationReply } from "./inventory";
 
 export const protobufPackage = "lobbies";
 
@@ -60,10 +61,18 @@ export interface DropLogReply {
   leagueTime: number | undefined;
 }
 
+export interface JoinedLobbyMessage {
+  lobbyPlayerId: number;
+  lobby: PalantirLobbyDetails | undefined;
+}
+
 export interface OnlineMemberReply {
   login: number;
   bubbles: number;
   patronEmoji: string | undefined;
+  joinedLobbies: JoinedLobbyMessage[];
+  spriteSlots: SpriteSlotConfigurationReply[];
+  sceneId: number | undefined;
 }
 
 function createBasePalantirLobbyDetails(): PalantirLobbyDetails {
@@ -693,8 +702,72 @@ export const DropLogReply = {
   },
 };
 
+function createBaseJoinedLobbyMessage(): JoinedLobbyMessage {
+  return { lobbyPlayerId: 0, lobby: undefined };
+}
+
+export const JoinedLobbyMessage = {
+  encode(message: JoinedLobbyMessage, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.lobbyPlayerId !== 0) {
+      writer.uint32(8).int32(message.lobbyPlayerId);
+    }
+    if (message.lobby !== undefined) {
+      PalantirLobbyDetails.encode(message.lobby, writer.uint32(18).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): JoinedLobbyMessage {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseJoinedLobbyMessage();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.lobbyPlayerId = reader.int32();
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.lobby = PalantirLobbyDetails.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): JoinedLobbyMessage {
+    return {
+      lobbyPlayerId: isSet(object.lobbyPlayerId) ? globalThis.Number(object.lobbyPlayerId) : 0,
+      lobby: isSet(object.lobby) ? PalantirLobbyDetails.fromJSON(object.lobby) : undefined,
+    };
+  },
+
+  toJSON(message: JoinedLobbyMessage): unknown {
+    const obj: any = {};
+    if (message.lobbyPlayerId !== 0) {
+      obj.lobbyPlayerId = Math.round(message.lobbyPlayerId);
+    }
+    if (message.lobby !== undefined) {
+      obj.lobby = PalantirLobbyDetails.toJSON(message.lobby);
+    }
+    return obj;
+  },
+};
+
 function createBaseOnlineMemberReply(): OnlineMemberReply {
-  return { login: 0, bubbles: 0, patronEmoji: undefined };
+  return { login: 0, bubbles: 0, patronEmoji: undefined, joinedLobbies: [], spriteSlots: [], sceneId: undefined };
 }
 
 export const OnlineMemberReply = {
@@ -707,6 +780,15 @@ export const OnlineMemberReply = {
     }
     if (message.patronEmoji !== undefined) {
       StringValue.encode({ value: message.patronEmoji! }, writer.uint32(26).fork()).ldelim();
+    }
+    for (const v of message.joinedLobbies) {
+      JoinedLobbyMessage.encode(v!, writer.uint32(34).fork()).ldelim();
+    }
+    for (const v of message.spriteSlots) {
+      SpriteSlotConfigurationReply.encode(v!, writer.uint32(42).fork()).ldelim();
+    }
+    if (message.sceneId !== undefined) {
+      Int32Value.encode({ value: message.sceneId! }, writer.uint32(50).fork()).ldelim();
     }
     return writer;
   },
@@ -739,6 +821,27 @@ export const OnlineMemberReply = {
 
           message.patronEmoji = StringValue.decode(reader, reader.uint32()).value;
           continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.joinedLobbies.push(JoinedLobbyMessage.decode(reader, reader.uint32()));
+          continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.spriteSlots.push(SpriteSlotConfigurationReply.decode(reader, reader.uint32()));
+          continue;
+        case 6:
+          if (tag !== 50) {
+            break;
+          }
+
+          message.sceneId = Int32Value.decode(reader, reader.uint32()).value;
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -753,6 +856,13 @@ export const OnlineMemberReply = {
       login: isSet(object.login) ? globalThis.Number(object.login) : 0,
       bubbles: isSet(object.bubbles) ? globalThis.Number(object.bubbles) : 0,
       patronEmoji: isSet(object.patronEmoji) ? String(object.patronEmoji) : undefined,
+      joinedLobbies: globalThis.Array.isArray(object?.joinedLobbies)
+        ? object.joinedLobbies.map((e: any) => JoinedLobbyMessage.fromJSON(e))
+        : [],
+      spriteSlots: globalThis.Array.isArray(object?.spriteSlots)
+        ? object.spriteSlots.map((e: any) => SpriteSlotConfigurationReply.fromJSON(e))
+        : [],
+      sceneId: isSet(object.sceneId) ? Number(object.sceneId) : undefined,
     };
   },
 
@@ -766,6 +876,15 @@ export const OnlineMemberReply = {
     }
     if (message.patronEmoji !== undefined) {
       obj.patronEmoji = message.patronEmoji;
+    }
+    if (message.joinedLobbies?.length) {
+      obj.joinedLobbies = message.joinedLobbies.map((e) => JoinedLobbyMessage.toJSON(e));
+    }
+    if (message.spriteSlots?.length) {
+      obj.spriteSlots = message.spriteSlots.map((e) => SpriteSlotConfigurationReply.toJSON(e));
+    }
+    if (message.sceneId !== undefined) {
+      obj.sceneId = message.sceneId;
     }
     return obj;
   },

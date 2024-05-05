@@ -1,7 +1,9 @@
 /* eslint-disable */
 import type { CallContext, CallOptions } from "nice-grpc-common";
+import Long = require("long");
 import * as _m0 from "protobufjs/minimal";
 import { Empty } from "./google/protobuf/empty";
+import { Timestamp } from "./google/protobuf/timestamp";
 
 export const protobufPackage = "leagues";
 
@@ -14,6 +16,8 @@ export interface LeagueSeasonEvaluationReply {
   timeRanking: LeagueAverageTimeRankingReply[];
   weightRanking: LeagueAverageWeightRankingReply[];
   streakRanking: LeagueStreakRankingReply[];
+  seasonStart: Date | undefined;
+  seasonEnd: Date | undefined;
 }
 
 /** Response containing own league evaluation. */
@@ -26,32 +30,39 @@ export interface LeagueSeasonMemberEvaluationReply {
   currentStreak: number;
   averageTime: number;
   averageWeight: number;
+  seasonStart: Date | undefined;
+  seasonEnd: Date | undefined;
 }
 
 export interface LeagueScoreRankingReply {
   name: string;
   score: number;
+  userId: Long;
 }
 
 export interface LeagueCountRankingReply {
   name: string;
   caughtDrops: number;
+  userId: Long;
 }
 
 export interface LeagueAverageTimeRankingReply {
   name: string;
   averageTime: number;
+  userId: Long;
 }
 
 export interface LeagueAverageWeightRankingReply {
   name: string;
   averageWeight: number;
+  userId: Long;
 }
 
 export interface LeagueStreakRankingReply {
   name: string;
   maxStreak: number;
   currentStreak: number;
+  userId: Long;
 }
 
 /** Request containing a month and year for a league season */
@@ -81,6 +92,8 @@ function createBaseLeagueSeasonEvaluationReply(): LeagueSeasonEvaluationReply {
     timeRanking: [],
     weightRanking: [],
     streakRanking: [],
+    seasonStart: undefined,
+    seasonEnd: undefined,
   };
 }
 
@@ -106,6 +119,12 @@ export const LeagueSeasonEvaluationReply = {
     }
     for (const v of message.streakRanking) {
       LeagueStreakRankingReply.encode(v!, writer.uint32(58).fork()).ldelim();
+    }
+    if (message.seasonStart !== undefined) {
+      Timestamp.encode(toTimestamp(message.seasonStart), writer.uint32(66).fork()).ldelim();
+    }
+    if (message.seasonEnd !== undefined) {
+      Timestamp.encode(toTimestamp(message.seasonEnd), writer.uint32(74).fork()).ldelim();
     }
     return writer;
   },
@@ -166,6 +185,20 @@ export const LeagueSeasonEvaluationReply = {
 
           message.streakRanking.push(LeagueStreakRankingReply.decode(reader, reader.uint32()));
           continue;
+        case 8:
+          if (tag !== 66) {
+            break;
+          }
+
+          message.seasonStart = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
+        case 9:
+          if (tag !== 74) {
+            break;
+          }
+
+          message.seasonEnd = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -194,6 +227,8 @@ export const LeagueSeasonEvaluationReply = {
       streakRanking: globalThis.Array.isArray(object?.streakRanking)
         ? object.streakRanking.map((e: any) => LeagueStreakRankingReply.fromJSON(e))
         : [],
+      seasonStart: isSet(object.seasonStart) ? fromJsonTimestamp(object.seasonStart) : undefined,
+      seasonEnd: isSet(object.seasonEnd) ? fromJsonTimestamp(object.seasonEnd) : undefined,
     };
   },
 
@@ -220,12 +255,29 @@ export const LeagueSeasonEvaluationReply = {
     if (message.streakRanking?.length) {
       obj.streakRanking = message.streakRanking.map((e) => LeagueStreakRankingReply.toJSON(e));
     }
+    if (message.seasonStart !== undefined) {
+      obj.seasonStart = message.seasonStart.toISOString();
+    }
+    if (message.seasonEnd !== undefined) {
+      obj.seasonEnd = message.seasonEnd.toISOString();
+    }
     return obj;
   },
 };
 
 function createBaseLeagueSeasonMemberEvaluationReply(): LeagueSeasonMemberEvaluationReply {
-  return { year: 0, month: 0, score: 0, count: 0, maxStreak: 0, currentStreak: 0, averageTime: 0, averageWeight: 0 };
+  return {
+    year: 0,
+    month: 0,
+    score: 0,
+    count: 0,
+    maxStreak: 0,
+    currentStreak: 0,
+    averageTime: 0,
+    averageWeight: 0,
+    seasonStart: undefined,
+    seasonEnd: undefined,
+  };
 }
 
 export const LeagueSeasonMemberEvaluationReply = {
@@ -253,6 +305,12 @@ export const LeagueSeasonMemberEvaluationReply = {
     }
     if (message.averageWeight !== 0) {
       writer.uint32(73).double(message.averageWeight);
+    }
+    if (message.seasonStart !== undefined) {
+      Timestamp.encode(toTimestamp(message.seasonStart), writer.uint32(82).fork()).ldelim();
+    }
+    if (message.seasonEnd !== undefined) {
+      Timestamp.encode(toTimestamp(message.seasonEnd), writer.uint32(90).fork()).ldelim();
     }
     return writer;
   },
@@ -320,6 +378,20 @@ export const LeagueSeasonMemberEvaluationReply = {
 
           message.averageWeight = reader.double();
           continue;
+        case 10:
+          if (tag !== 82) {
+            break;
+          }
+
+          message.seasonStart = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
+        case 11:
+          if (tag !== 90) {
+            break;
+          }
+
+          message.seasonEnd = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -339,6 +411,8 @@ export const LeagueSeasonMemberEvaluationReply = {
       currentStreak: isSet(object.currentStreak) ? globalThis.Number(object.currentStreak) : 0,
       averageTime: isSet(object.averageTime) ? globalThis.Number(object.averageTime) : 0,
       averageWeight: isSet(object.averageWeight) ? globalThis.Number(object.averageWeight) : 0,
+      seasonStart: isSet(object.seasonStart) ? fromJsonTimestamp(object.seasonStart) : undefined,
+      seasonEnd: isSet(object.seasonEnd) ? fromJsonTimestamp(object.seasonEnd) : undefined,
     };
   },
 
@@ -368,12 +442,18 @@ export const LeagueSeasonMemberEvaluationReply = {
     if (message.averageWeight !== 0) {
       obj.averageWeight = message.averageWeight;
     }
+    if (message.seasonStart !== undefined) {
+      obj.seasonStart = message.seasonStart.toISOString();
+    }
+    if (message.seasonEnd !== undefined) {
+      obj.seasonEnd = message.seasonEnd.toISOString();
+    }
     return obj;
   },
 };
 
 function createBaseLeagueScoreRankingReply(): LeagueScoreRankingReply {
-  return { name: "", score: 0 };
+  return { name: "", score: 0, userId: Long.ZERO };
 }
 
 export const LeagueScoreRankingReply = {
@@ -383,6 +463,9 @@ export const LeagueScoreRankingReply = {
     }
     if (message.score !== 0) {
       writer.uint32(17).double(message.score);
+    }
+    if (!message.userId.isZero()) {
+      writer.uint32(24).int64(message.userId);
     }
     return writer;
   },
@@ -408,6 +491,13 @@ export const LeagueScoreRankingReply = {
 
           message.score = reader.double();
           continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.userId = reader.int64() as Long;
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -421,6 +511,7 @@ export const LeagueScoreRankingReply = {
     return {
       name: isSet(object.name) ? globalThis.String(object.name) : "",
       score: isSet(object.score) ? globalThis.Number(object.score) : 0,
+      userId: isSet(object.userId) ? Long.fromValue(object.userId) : Long.ZERO,
     };
   },
 
@@ -432,12 +523,15 @@ export const LeagueScoreRankingReply = {
     if (message.score !== 0) {
       obj.score = message.score;
     }
+    if (!message.userId.isZero()) {
+      obj.userId = (message.userId || Long.ZERO).toString();
+    }
     return obj;
   },
 };
 
 function createBaseLeagueCountRankingReply(): LeagueCountRankingReply {
-  return { name: "", caughtDrops: 0 };
+  return { name: "", caughtDrops: 0, userId: Long.ZERO };
 }
 
 export const LeagueCountRankingReply = {
@@ -447,6 +541,9 @@ export const LeagueCountRankingReply = {
     }
     if (message.caughtDrops !== 0) {
       writer.uint32(16).int32(message.caughtDrops);
+    }
+    if (!message.userId.isZero()) {
+      writer.uint32(24).int64(message.userId);
     }
     return writer;
   },
@@ -472,6 +569,13 @@ export const LeagueCountRankingReply = {
 
           message.caughtDrops = reader.int32();
           continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.userId = reader.int64() as Long;
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -485,6 +589,7 @@ export const LeagueCountRankingReply = {
     return {
       name: isSet(object.name) ? globalThis.String(object.name) : "",
       caughtDrops: isSet(object.caughtDrops) ? globalThis.Number(object.caughtDrops) : 0,
+      userId: isSet(object.userId) ? Long.fromValue(object.userId) : Long.ZERO,
     };
   },
 
@@ -496,12 +601,15 @@ export const LeagueCountRankingReply = {
     if (message.caughtDrops !== 0) {
       obj.caughtDrops = Math.round(message.caughtDrops);
     }
+    if (!message.userId.isZero()) {
+      obj.userId = (message.userId || Long.ZERO).toString();
+    }
     return obj;
   },
 };
 
 function createBaseLeagueAverageTimeRankingReply(): LeagueAverageTimeRankingReply {
-  return { name: "", averageTime: 0 };
+  return { name: "", averageTime: 0, userId: Long.ZERO };
 }
 
 export const LeagueAverageTimeRankingReply = {
@@ -511,6 +619,9 @@ export const LeagueAverageTimeRankingReply = {
     }
     if (message.averageTime !== 0) {
       writer.uint32(17).double(message.averageTime);
+    }
+    if (!message.userId.isZero()) {
+      writer.uint32(24).int64(message.userId);
     }
     return writer;
   },
@@ -536,6 +647,13 @@ export const LeagueAverageTimeRankingReply = {
 
           message.averageTime = reader.double();
           continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.userId = reader.int64() as Long;
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -549,6 +667,7 @@ export const LeagueAverageTimeRankingReply = {
     return {
       name: isSet(object.name) ? globalThis.String(object.name) : "",
       averageTime: isSet(object.averageTime) ? globalThis.Number(object.averageTime) : 0,
+      userId: isSet(object.userId) ? Long.fromValue(object.userId) : Long.ZERO,
     };
   },
 
@@ -560,12 +679,15 @@ export const LeagueAverageTimeRankingReply = {
     if (message.averageTime !== 0) {
       obj.averageTime = message.averageTime;
     }
+    if (!message.userId.isZero()) {
+      obj.userId = (message.userId || Long.ZERO).toString();
+    }
     return obj;
   },
 };
 
 function createBaseLeagueAverageWeightRankingReply(): LeagueAverageWeightRankingReply {
-  return { name: "", averageWeight: 0 };
+  return { name: "", averageWeight: 0, userId: Long.ZERO };
 }
 
 export const LeagueAverageWeightRankingReply = {
@@ -575,6 +697,9 @@ export const LeagueAverageWeightRankingReply = {
     }
     if (message.averageWeight !== 0) {
       writer.uint32(17).double(message.averageWeight);
+    }
+    if (!message.userId.isZero()) {
+      writer.uint32(24).int64(message.userId);
     }
     return writer;
   },
@@ -600,6 +725,13 @@ export const LeagueAverageWeightRankingReply = {
 
           message.averageWeight = reader.double();
           continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.userId = reader.int64() as Long;
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -613,6 +745,7 @@ export const LeagueAverageWeightRankingReply = {
     return {
       name: isSet(object.name) ? globalThis.String(object.name) : "",
       averageWeight: isSet(object.averageWeight) ? globalThis.Number(object.averageWeight) : 0,
+      userId: isSet(object.userId) ? Long.fromValue(object.userId) : Long.ZERO,
     };
   },
 
@@ -624,12 +757,15 @@ export const LeagueAverageWeightRankingReply = {
     if (message.averageWeight !== 0) {
       obj.averageWeight = message.averageWeight;
     }
+    if (!message.userId.isZero()) {
+      obj.userId = (message.userId || Long.ZERO).toString();
+    }
     return obj;
   },
 };
 
 function createBaseLeagueStreakRankingReply(): LeagueStreakRankingReply {
-  return { name: "", maxStreak: 0, currentStreak: 0 };
+  return { name: "", maxStreak: 0, currentStreak: 0, userId: Long.ZERO };
 }
 
 export const LeagueStreakRankingReply = {
@@ -642,6 +778,9 @@ export const LeagueStreakRankingReply = {
     }
     if (message.currentStreak !== 0) {
       writer.uint32(24).int32(message.currentStreak);
+    }
+    if (!message.userId.isZero()) {
+      writer.uint32(32).int64(message.userId);
     }
     return writer;
   },
@@ -674,6 +813,13 @@ export const LeagueStreakRankingReply = {
 
           message.currentStreak = reader.int32();
           continue;
+        case 4:
+          if (tag !== 32) {
+            break;
+          }
+
+          message.userId = reader.int64() as Long;
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -688,6 +834,7 @@ export const LeagueStreakRankingReply = {
       name: isSet(object.name) ? globalThis.String(object.name) : "",
       maxStreak: isSet(object.maxStreak) ? globalThis.Number(object.maxStreak) : 0,
       currentStreak: isSet(object.currentStreak) ? globalThis.Number(object.currentStreak) : 0,
+      userId: isSet(object.userId) ? Long.fromValue(object.userId) : Long.ZERO,
     };
   },
 
@@ -701,6 +848,9 @@ export const LeagueStreakRankingReply = {
     }
     if (message.currentStreak !== 0) {
       obj.currentStreak = Math.round(message.currentStreak);
+    }
+    if (!message.userId.isZero()) {
+      obj.userId = (message.userId || Long.ZERO).toString();
     }
     return obj;
   },
@@ -985,6 +1135,37 @@ export interface LeaguesClient<CallOptionsExt = {}> {
     request: EvaluateMemberSeasonRequest,
     options?: CallOptions & CallOptionsExt,
   ): Promise<LeagueSeasonMemberEvaluationReply>;
+}
+
+function toTimestamp(date: Date): Timestamp {
+  const seconds = numberToLong(date.getTime() / 1_000);
+  const nanos = (date.getTime() % 1_000) * 1_000_000;
+  return { seconds, nanos };
+}
+
+function fromTimestamp(t: Timestamp): Date {
+  let millis = (t.seconds.toNumber() || 0) * 1_000;
+  millis += (t.nanos || 0) / 1_000_000;
+  return new globalThis.Date(millis);
+}
+
+function fromJsonTimestamp(o: any): Date {
+  if (o instanceof globalThis.Date) {
+    return o;
+  } else if (typeof o === "string") {
+    return new globalThis.Date(o);
+  } else {
+    return fromTimestamp(Timestamp.fromJSON(o));
+  }
+}
+
+function numberToLong(number: number) {
+  return Long.fromNumber(number);
+}
+
+if (_m0.util.Long !== Long) {
+  _m0.util.Long = Long as any;
+  _m0.configure();
 }
 
 function isSet(value: any): boolean {
