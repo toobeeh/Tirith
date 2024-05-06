@@ -22,10 +22,10 @@ export class HelpComponent {
       link: "discord"
     },
     {
-      name: "Palantir Setup",
+      name: "Palantir Bot Help",
       color: "rgb(220 252 231)",
       image: "url(https://tobeh.host/scenes/sceneEmerald_Dust.gif)",
-      link: "palantir"
+      link: "new-palantir"
     },
     {
       name: "Extension Settings",

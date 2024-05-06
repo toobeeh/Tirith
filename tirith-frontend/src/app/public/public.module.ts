@@ -23,6 +23,7 @@ import { WorkshopComponent } from './pages/tools/workshop/workshop.component';
 import { InviteComponent } from './pages/invite/invite.component';
 import { SettingsComponent } from './pages/help/settings/settings.component';
 import { BrowserModule } from '@angular/platform-browser';
+import {NewPalantirComponent} from "./pages/help/new-palantir/new-palantir.component";
 
 
 @NgModule({
@@ -41,7 +42,8 @@ import { BrowserModule } from '@angular/platform-browser';
     SpritesComponent,
     WorkshopComponent,
     InviteComponent,
-    SettingsComponent
+    SettingsComponent,
+    NewPalantirComponent
   ],
   imports: [
     BrowserModule,
