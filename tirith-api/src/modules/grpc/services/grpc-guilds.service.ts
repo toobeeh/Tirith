@@ -5,7 +5,7 @@ import { GuildReply, GuildsDefinition } from "../proto-compiled/guilds";
 import { IGuildsService } from "src/services/interfaces/guilds.service.interface";
 import { GuildInviteDto } from "src/modules/palantir/dto/guilds.dto";
 import { GuildDto } from "src/modules/palantir/dto/member.dto";
-import { DiscordApiService } from "src/services/discord-api.service";
+import {DiscordApiGuildDto, DiscordApiService} from "src/services/discord-api.service";
 import { map } from "rxjs";
 
 @Injectable()
@@ -16,11 +16,18 @@ export class GrpcGuildsService extends GrpcBaseService<GuildsDefinition> impleme
     }
 
     async mapGuildInviteDto(reply: GuildReply): Promise<GuildInviteDto> {
-        const discordGuild = await this.discordApiService.getGuild(reply.guildId.toString()).pipe(map(data => data.data)).toPromise();
+        let discordGuild: DiscordApiGuildDto | undefined;
+        try {
+
+             discordGuild = await this.discordApiService.getGuild(reply.guildId.toString()).pipe(map(data => data.data)).toPromise();
+        }
+        catch {
+            discordGuild = undefined;
+        }
 
         return {
             name: reply.name,
-            iconUrl: `https://cdn.discordapp.com/icons/${discordGuild.id}/${discordGuild.icon}.png`,
+            iconUrl: `https://cdn.discordapp.com/icons/${discordGuild?.id ?? "not-on-server"}/${discordGuild?.icon ?? "not-on-server"}.png`,
             connectedMembers: reply.connectedMemberCount,
             token: reply.invite
         }
