@@ -11,18 +11,14 @@
  */
 
 
-export interface GuildDto { 
+export interface LeagueCountRanking { 
     /**
-     * The guild\'s ID
+     * The palantir username of the participant
      */
-    GuildID: string;
+    name: string;
     /**
-     * The guild\'s Palantir token
+     * Amount of league drops collected
      */
-    Invite: number;
-    /**
-     * The guild\'s name
-     */
-    GuildName: string;
+    caughtDrops: number;
 }
 

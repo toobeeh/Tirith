@@ -2,22 +2,22 @@
 import type { CallContext, CallOptions } from "nice-grpc-common";
 import Long = require("long");
 import * as _m0 from "protobufjs/minimal";
+import { Empty } from "./google/protobuf/empty";
+import { Int64Value } from "./google/protobuf/wrappers";
 
 export const protobufPackage = "guilds";
 
 /** Response containing a guild's properties. */
 export interface GuildReply {
   guildId: Long;
-  channelId: Long;
-  messageId: Long;
-  observeToken: number;
+  invite: number;
   name: string;
   connectedMemberCount: number;
 }
 
 /** Request containing a guild observe token */
 export interface GetGuildRequest {
-  observeToken: number;
+  invite: number;
 }
 
 /** Request containing a guild discord ID */
@@ -25,15 +25,20 @@ export interface GetGuildByIdMessage {
   discordId: Long;
 }
 
+export interface GetGuildOptionsByIdMessage {
+  guildId: Long;
+}
+
+export interface GuildOptionsMessage {
+  guildId: Long;
+  channelId: Long | undefined;
+  name: string;
+  invite: number;
+  prefix: string;
+}
+
 function createBaseGuildReply(): GuildReply {
-  return {
-    guildId: Long.ZERO,
-    channelId: Long.ZERO,
-    messageId: Long.ZERO,
-    observeToken: 0,
-    name: "",
-    connectedMemberCount: 0,
-  };
+  return { guildId: Long.ZERO, invite: 0, name: "", connectedMemberCount: 0 };
 }
 
 export const GuildReply = {
@@ -41,14 +46,8 @@ export const GuildReply = {
     if (!message.guildId.isZero()) {
       writer.uint32(8).int64(message.guildId);
     }
-    if (!message.channelId.isZero()) {
-      writer.uint32(16).int64(message.channelId);
-    }
-    if (!message.messageId.isZero()) {
-      writer.uint32(24).int64(message.messageId);
-    }
-    if (message.observeToken !== 0) {
-      writer.uint32(32).int32(message.observeToken);
+    if (message.invite !== 0) {
+      writer.uint32(32).int32(message.invite);
     }
     if (message.name !== "") {
       writer.uint32(42).string(message.name);
@@ -73,26 +72,12 @@ export const GuildReply = {
 
           message.guildId = reader.int64() as Long;
           continue;
-        case 2:
-          if (tag !== 16) {
-            break;
-          }
-
-          message.channelId = reader.int64() as Long;
-          continue;
-        case 3:
-          if (tag !== 24) {
-            break;
-          }
-
-          message.messageId = reader.int64() as Long;
-          continue;
         case 4:
           if (tag !== 32) {
             break;
           }
 
-          message.observeToken = reader.int32();
+          message.invite = reader.int32();
           continue;
         case 5:
           if (tag !== 42) {
@@ -120,9 +105,7 @@ export const GuildReply = {
   fromJSON(object: any): GuildReply {
     return {
       guildId: isSet(object.guildId) ? Long.fromValue(object.guildId) : Long.ZERO,
-      channelId: isSet(object.channelId) ? Long.fromValue(object.channelId) : Long.ZERO,
-      messageId: isSet(object.messageId) ? Long.fromValue(object.messageId) : Long.ZERO,
-      observeToken: isSet(object.observeToken) ? globalThis.Number(object.observeToken) : 0,
+      invite: isSet(object.invite) ? globalThis.Number(object.invite) : 0,
       name: isSet(object.name) ? globalThis.String(object.name) : "",
       connectedMemberCount: isSet(object.connectedMemberCount) ? globalThis.Number(object.connectedMemberCount) : 0,
     };
@@ -133,14 +116,8 @@ export const GuildReply = {
     if (!message.guildId.isZero()) {
       obj.guildId = (message.guildId || Long.ZERO).toString();
     }
-    if (!message.channelId.isZero()) {
-      obj.channelId = (message.channelId || Long.ZERO).toString();
-    }
-    if (!message.messageId.isZero()) {
-      obj.messageId = (message.messageId || Long.ZERO).toString();
-    }
-    if (message.observeToken !== 0) {
-      obj.observeToken = Math.round(message.observeToken);
+    if (message.invite !== 0) {
+      obj.invite = Math.round(message.invite);
     }
     if (message.name !== "") {
       obj.name = message.name;
@@ -153,13 +130,13 @@ export const GuildReply = {
 };
 
 function createBaseGetGuildRequest(): GetGuildRequest {
-  return { observeToken: 0 };
+  return { invite: 0 };
 }
 
 export const GetGuildRequest = {
   encode(message: GetGuildRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.observeToken !== 0) {
-      writer.uint32(8).int32(message.observeToken);
+    if (message.invite !== 0) {
+      writer.uint32(8).int32(message.invite);
     }
     return writer;
   },
@@ -176,7 +153,7 @@ export const GetGuildRequest = {
             break;
           }
 
-          message.observeToken = reader.int32();
+          message.invite = reader.int32();
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -188,13 +165,13 @@ export const GetGuildRequest = {
   },
 
   fromJSON(object: any): GetGuildRequest {
-    return { observeToken: isSet(object.observeToken) ? globalThis.Number(object.observeToken) : 0 };
+    return { invite: isSet(object.invite) ? globalThis.Number(object.invite) : 0 };
   },
 
   toJSON(message: GetGuildRequest): unknown {
     const obj: any = {};
-    if (message.observeToken !== 0) {
-      obj.observeToken = Math.round(message.observeToken);
+    if (message.invite !== 0) {
+      obj.invite = Math.round(message.invite);
     }
     return obj;
   },
@@ -248,6 +225,160 @@ export const GetGuildByIdMessage = {
   },
 };
 
+function createBaseGetGuildOptionsByIdMessage(): GetGuildOptionsByIdMessage {
+  return { guildId: Long.ZERO };
+}
+
+export const GetGuildOptionsByIdMessage = {
+  encode(message: GetGuildOptionsByIdMessage, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (!message.guildId.isZero()) {
+      writer.uint32(8).int64(message.guildId);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetGuildOptionsByIdMessage {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetGuildOptionsByIdMessage();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.guildId = reader.int64() as Long;
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetGuildOptionsByIdMessage {
+    return { guildId: isSet(object.guildId) ? Long.fromValue(object.guildId) : Long.ZERO };
+  },
+
+  toJSON(message: GetGuildOptionsByIdMessage): unknown {
+    const obj: any = {};
+    if (!message.guildId.isZero()) {
+      obj.guildId = (message.guildId || Long.ZERO).toString();
+    }
+    return obj;
+  },
+};
+
+function createBaseGuildOptionsMessage(): GuildOptionsMessage {
+  return { guildId: Long.ZERO, channelId: undefined, name: "", invite: 0, prefix: "" };
+}
+
+export const GuildOptionsMessage = {
+  encode(message: GuildOptionsMessage, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (!message.guildId.isZero()) {
+      writer.uint32(8).int64(message.guildId);
+    }
+    if (message.channelId !== undefined) {
+      Int64Value.encode({ value: message.channelId! }, writer.uint32(18).fork()).ldelim();
+    }
+    if (message.name !== "") {
+      writer.uint32(26).string(message.name);
+    }
+    if (message.invite !== 0) {
+      writer.uint32(32).int32(message.invite);
+    }
+    if (message.prefix !== "") {
+      writer.uint32(42).string(message.prefix);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): GuildOptionsMessage {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGuildOptionsMessage();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.guildId = reader.int64() as Long;
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.channelId = Int64Value.decode(reader, reader.uint32()).value;
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.name = reader.string();
+          continue;
+        case 4:
+          if (tag !== 32) {
+            break;
+          }
+
+          message.invite = reader.int32();
+          continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.prefix = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GuildOptionsMessage {
+    return {
+      guildId: isSet(object.guildId) ? Long.fromValue(object.guildId) : Long.ZERO,
+      channelId: isSet(object.channelId) ? Long.fromValue(object.channelId) : undefined,
+      name: isSet(object.name) ? globalThis.String(object.name) : "",
+      invite: isSet(object.invite) ? globalThis.Number(object.invite) : 0,
+      prefix: isSet(object.prefix) ? globalThis.String(object.prefix) : "",
+    };
+  },
+
+  toJSON(message: GuildOptionsMessage): unknown {
+    const obj: any = {};
+    if (!message.guildId.isZero()) {
+      obj.guildId = (message.guildId || Long.ZERO).toString();
+    }
+    if (message.channelId !== undefined) {
+      obj.channelId = message.channelId;
+    }
+    if (message.name !== "") {
+      obj.name = message.name;
+    }
+    if (message.invite !== 0) {
+      obj.invite = Math.round(message.invite);
+    }
+    if (message.prefix !== "") {
+      obj.prefix = message.prefix;
+    }
+    return obj;
+  },
+};
+
 /** Service definition for guilds resource access */
 export type GuildsDefinition = typeof GuildsDefinition;
 export const GuildsDefinition = {
@@ -255,8 +386,8 @@ export const GuildsDefinition = {
   fullName: "guilds.Guilds",
   methods: {
     /** Gets a guild by its observe token */
-    getGuildByToken: {
-      name: "GetGuildByToken",
+    getGuildByInvite: {
+      name: "GetGuildByInvite",
       requestType: GetGuildRequest,
       requestStream: false,
       responseType: GuildReply,
@@ -264,11 +395,27 @@ export const GuildsDefinition = {
       options: {},
     },
     /** Gets a guild by its discord ID */
-    getGuildByDiscordId: {
-      name: "GetGuildByDiscordId",
+    getGuildById: {
+      name: "GetGuildById",
       requestType: GetGuildByIdMessage,
       requestStream: false,
       responseType: GuildReply,
+      responseStream: false,
+      options: {},
+    },
+    getGuildOptionsById: {
+      name: "GetGuildOptionsById",
+      requestType: GetGuildOptionsByIdMessage,
+      requestStream: false,
+      responseType: GuildOptionsMessage,
+      responseStream: false,
+      options: {},
+    },
+    setGuildOptions: {
+      name: "SetGuildOptions",
+      requestType: GuildOptionsMessage,
+      requestStream: false,
+      responseType: Empty,
       responseStream: false,
       options: {},
     },
@@ -277,16 +424,26 @@ export const GuildsDefinition = {
 
 export interface GuildsServiceImplementation<CallContextExt = {}> {
   /** Gets a guild by its observe token */
-  getGuildByToken(request: GetGuildRequest, context: CallContext & CallContextExt): Promise<GuildReply>;
+  getGuildByInvite(request: GetGuildRequest, context: CallContext & CallContextExt): Promise<GuildReply>;
   /** Gets a guild by its discord ID */
-  getGuildByDiscordId(request: GetGuildByIdMessage, context: CallContext & CallContextExt): Promise<GuildReply>;
+  getGuildById(request: GetGuildByIdMessage, context: CallContext & CallContextExt): Promise<GuildReply>;
+  getGuildOptionsById(
+    request: GetGuildOptionsByIdMessage,
+    context: CallContext & CallContextExt,
+  ): Promise<GuildOptionsMessage>;
+  setGuildOptions(request: GuildOptionsMessage, context: CallContext & CallContextExt): Promise<Empty>;
 }
 
 export interface GuildsClient<CallOptionsExt = {}> {
   /** Gets a guild by its observe token */
-  getGuildByToken(request: GetGuildRequest, options?: CallOptions & CallOptionsExt): Promise<GuildReply>;
+  getGuildByInvite(request: GetGuildRequest, options?: CallOptions & CallOptionsExt): Promise<GuildReply>;
   /** Gets a guild by its discord ID */
-  getGuildByDiscordId(request: GetGuildByIdMessage, options?: CallOptions & CallOptionsExt): Promise<GuildReply>;
+  getGuildById(request: GetGuildByIdMessage, options?: CallOptions & CallOptionsExt): Promise<GuildReply>;
+  getGuildOptionsById(
+    request: GetGuildOptionsByIdMessage,
+    options?: CallOptions & CallOptionsExt,
+  ): Promise<GuildOptionsMessage>;
+  setGuildOptions(request: GuildOptionsMessage, options?: CallOptions & CallOptionsExt): Promise<Empty>;
 }
 
 if (_m0.util.Long !== Long) {

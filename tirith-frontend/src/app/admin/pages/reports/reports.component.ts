@@ -10,6 +10,6 @@ export class ReportsComponent {
   reports$;
 
   constructor(private service: LobbiesService) {
-    this.reports$ = service.getAllReports();
+    this.reports$ = service.inspectAllLobbies();
   }
 }

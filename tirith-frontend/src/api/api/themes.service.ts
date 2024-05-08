@@ -19,8 +19,6 @@ import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 // @ts-ignore
-import { SpriteDto } from '../model/spriteDto';
-// @ts-ignore
 import { ThemeDto } from '../model/themeDto';
 // @ts-ignore
 import { ThemeListingDto } from '../model/themeListingDto';
@@ -103,7 +101,7 @@ export class ThemesService {
 
     /**
      * Get all published themes
-     *   Required Role: None  Rate limit: 10 (Limit) / 60000 (TTL)
+     *   Required Role: None  Rate limit default: 10 Requests / 60000 ms TTL
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -158,7 +156,7 @@ export class ThemesService {
 
     /**
      * Get a theme by ID
-     *   Required Role: None  Rate limit: 10 (Limit) / 60000 (TTL)
+     *   Required Role: None  Rate limit default: 10 Requests / 60000 ms TTL
      * @param id Id parameter
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
@@ -217,15 +215,15 @@ export class ThemesService {
 
     /**
      * Publish a theme to the public theme list
-     *   Required Role: Moderator  Rate limit: 10 (Limit) / 60000 (TTL)
+     *   Required Role: Moderator  Rate limit default: 10 Requests / 60000 ms TTL
      * @param id Id parameter
      * @param themePublishRequestDto 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public publishTheme(id: string, themePublishRequestDto: ThemePublishRequestDto, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<SpriteDto>;
-    public publishTheme(id: string, themePublishRequestDto: ThemePublishRequestDto, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<SpriteDto>>;
-    public publishTheme(id: string, themePublishRequestDto: ThemePublishRequestDto, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<SpriteDto>>;
+    public publishTheme(id: string, themePublishRequestDto: ThemePublishRequestDto, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<ThemeShareDto>;
+    public publishTheme(id: string, themePublishRequestDto: ThemePublishRequestDto, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<ThemeShareDto>>;
+    public publishTheme(id: string, themePublishRequestDto: ThemePublishRequestDto, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<ThemeShareDto>>;
     public publishTheme(id: string, themePublishRequestDto: ThemePublishRequestDto, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling publishTheme.');
@@ -282,7 +280,7 @@ export class ThemesService {
         }
 
         let localVarPath = `/themes/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}/public`;
-        return this.httpClient.request<SpriteDto>('post', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<ThemeShareDto>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 body: themePublishRequestDto,
@@ -297,7 +295,7 @@ export class ThemesService {
 
     /**
      * Share a theme to be used by others
-     *   Required Role: None  Rate limit: 10 (Limit) / 60000 (TTL)
+     *   Required Role: None  Rate limit default: 10 Requests / 60000 ms TTL
      * @param themeDto 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
@@ -366,15 +364,15 @@ export class ThemesService {
 
     /**
      * Update the theme content from the provided new share and increment version
-     *   Required Role: Moderator  Rate limit: 10 (Limit) / 60000 (TTL)
+     *   Required Role: Moderator  Rate limit default: 10 Requests / 60000 ms TTL
      * @param id Id parameter
      * @param themeUpdateRequestDto 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public updateTheme(id: string, themeUpdateRequestDto: ThemeUpdateRequestDto, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<SpriteDto>;
-    public updateTheme(id: string, themeUpdateRequestDto: ThemeUpdateRequestDto, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<SpriteDto>>;
-    public updateTheme(id: string, themeUpdateRequestDto: ThemeUpdateRequestDto, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<SpriteDto>>;
+    public updateTheme(id: string, themeUpdateRequestDto: ThemeUpdateRequestDto, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<ThemeShareDto>;
+    public updateTheme(id: string, themeUpdateRequestDto: ThemeUpdateRequestDto, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<ThemeShareDto>>;
+    public updateTheme(id: string, themeUpdateRequestDto: ThemeUpdateRequestDto, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<ThemeShareDto>>;
     public updateTheme(id: string, themeUpdateRequestDto: ThemeUpdateRequestDto, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling updateTheme.');
@@ -431,7 +429,7 @@ export class ThemesService {
         }
 
         let localVarPath = `/themes/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}/public`;
-        return this.httpClient.request<SpriteDto>('patch', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<ThemeShareDto>('patch', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 body: themeUpdateRequestDto,
@@ -446,7 +444,7 @@ export class ThemesService {
 
     /**
      * Get a theme by ID and increment use counter
-     *   Required Role: None  Rate limit: 10 (Limit) / 86400000 (TTL)
+     *   Required Role: None  Rate limit default: 5 Requests / 18000000 ms TTL
      * @param id Id parameter
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.

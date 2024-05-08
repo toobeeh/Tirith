@@ -30,6 +30,7 @@ export interface PalantirLobbyPlayer {
   name: string;
   login: number;
   username: string;
+  lobbyPlayerId: number | undefined;
 }
 
 /** Container for a skribbl lobby player, containing skribbl relevant details */
@@ -276,7 +277,7 @@ export const SkribblLobbyDetails = {
 };
 
 function createBasePalantirLobbyPlayer(): PalantirLobbyPlayer {
-  return { name: "", login: 0, username: "" };
+  return { name: "", login: 0, username: "", lobbyPlayerId: undefined };
 }
 
 export const PalantirLobbyPlayer = {
@@ -289,6 +290,9 @@ export const PalantirLobbyPlayer = {
     }
     if (message.username !== "") {
       writer.uint32(26).string(message.username);
+    }
+    if (message.lobbyPlayerId !== undefined) {
+      Int32Value.encode({ value: message.lobbyPlayerId! }, writer.uint32(34).fork()).ldelim();
     }
     return writer;
   },
@@ -321,6 +325,13 @@ export const PalantirLobbyPlayer = {
 
           message.username = reader.string();
           continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.lobbyPlayerId = Int32Value.decode(reader, reader.uint32()).value;
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -335,6 +346,7 @@ export const PalantirLobbyPlayer = {
       name: isSet(object.name) ? globalThis.String(object.name) : "",
       login: isSet(object.login) ? globalThis.Number(object.login) : 0,
       username: isSet(object.username) ? globalThis.String(object.username) : "",
+      lobbyPlayerId: isSet(object.lobbyPlayerId) ? Number(object.lobbyPlayerId) : undefined,
     };
   },
 
@@ -348,6 +360,9 @@ export const PalantirLobbyPlayer = {
     }
     if (message.username !== "") {
       obj.username = message.username;
+    }
+    if (message.lobbyPlayerId !== undefined) {
+      obj.lobbyPlayerId = message.lobbyPlayerId;
     }
     return obj;
   },
@@ -890,13 +905,13 @@ export const OnlineMemberReply = {
   },
 };
 
-/** Service definition for award resource access */
+/** Service definition for lobby resource access */
 export type LobbiesDefinition = typeof LobbiesDefinition;
 export const LobbiesDefinition = {
   name: "Lobbies",
   fullName: "lobbies.Lobbies",
   methods: {
-    /** Gets all awards */
+    /** Gets all current lobbies */
     getCurrentLobbies: {
       name: "GetCurrentLobbies",
       requestType: Empty,
@@ -905,7 +920,7 @@ export const LobbiesDefinition = {
       responseStream: true,
       options: {},
     },
-    /** Gets an award by its id */
+    /** Gets all drop  claims that have happened in a lobby */
     getLobbyDropClaims: {
       name: "GetLobbyDropClaims",
       requestType: GetLobbyDropClaimsRequest,
@@ -927,9 +942,9 @@ export const LobbiesDefinition = {
 } as const;
 
 export interface LobbiesServiceImplementation<CallContextExt = {}> {
-  /** Gets all awards */
+  /** Gets all current lobbies */
   getCurrentLobbies(request: Empty, context: CallContext & CallContextExt): ServerStreamingMethodResult<LobbyReply>;
-  /** Gets an award by its id */
+  /** Gets all drop  claims that have happened in a lobby */
   getLobbyDropClaims(
     request: GetLobbyDropClaimsRequest,
     context: CallContext & CallContextExt,
@@ -942,9 +957,9 @@ export interface LobbiesServiceImplementation<CallContextExt = {}> {
 }
 
 export interface LobbiesClient<CallOptionsExt = {}> {
-  /** Gets all awards */
+  /** Gets all current lobbies */
   getCurrentLobbies(request: Empty, options?: CallOptions & CallOptionsExt): AsyncIterable<LobbyReply>;
-  /** Gets an award by its id */
+  /** Gets all drop  claims that have happened in a lobby */
   getLobbyDropClaims(
     request: GetLobbyDropClaimsRequest,
     options?: CallOptions & CallOptionsExt,

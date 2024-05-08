@@ -1,13 +1,14 @@
 .gitignore
 README.md
 api.module.ts
+api/admin.service.ts
 api/api.ts
 api/auth.service.ts
 api/awards.service.ts
 api/default.service.ts
-api/drops.service.ts
 api/events.service.ts
 api/guilds.service.ts
+api/leagues.service.ts
 api/lobbies.service.ts
 api/members.service.ts
 api/scenes.service.ts
@@ -24,6 +25,13 @@ model/eventDropDto.ts
 model/eventDto.ts
 model/guildDto.ts
 model/guildInviteDto.ts
+model/leagueAverageTimeRanking.ts
+model/leagueAverageWeightRanking.ts
+model/leagueCountRanking.ts
+model/leagueScoreRanking.ts
+model/leagueSeasonEvaluationDto.ts
+model/leagueSeasonMemberEvaluationDto.ts
+model/leagueStreakRanking.ts
 model/lobbiesResponseDto.ts
 model/lobbyDetailsDto.ts
 model/lobbyPlayerDto.ts
@@ -33,7 +41,6 @@ model/models.ts
 model/palantirLobbyDto.ts
 model/palantirLobbyPlayerDto.ts
 model/registrationRequest.ts
-model/reportsResponseDto.ts
 model/sceneDto.ts
 model/spriteDto.ts
 model/themeDto.ts
@@ -44,6 +51,5 @@ model/themeShareDto.ts
 model/themeUpdateRequestDto.ts
 model/tokenResponse.ts
 model/updateDiscordID.ts
-model/webhookDto.ts
 param.ts
 variables.ts

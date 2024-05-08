@@ -93,7 +93,7 @@ export class SpritesService {
 
     /**
      * Get all sprites
-     *   Required Role: None  Rate limit: 10 (Limit) / 60000 (TTL)
+     *   Required Role: None  Rate limit default: 10 Requests / 60000 ms TTL
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -148,7 +148,7 @@ export class SpritesService {
 
     /**
      * Get a sprite by ID
-     *   Required Role: None  Rate limit: 10 (Limit) / 60000 (TTL)
+     *   Required Role: None  Rate limit default: 10 Requests / 60000 ms TTL
      * @param id Id parameter
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.

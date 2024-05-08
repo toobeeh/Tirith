@@ -25,6 +25,10 @@ export interface SceneDto {
      * Scene url
      */
     url: string;
+    /**
+     * Scene exclusiveness flag, cant be bought regulary or as event scene
+     */
+    exclusive: boolean;
     event?: EventDto;
     /**
      * Primary text color

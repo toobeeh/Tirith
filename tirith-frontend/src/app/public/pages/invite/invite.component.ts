@@ -59,7 +59,7 @@ export class InviteComponent implements OnInit {
   }
 
   userHasJoined(invite: GuildInviteDto, user: MemberDto) {
-    return user.guilds.some(g => g.ObserveToken == invite.token);
+    return user.guilds.some(g => g.Invite == invite.token);
   }
 
   connect(invite: GuildInviteDto, user: MemberDto) {

@@ -59,7 +59,7 @@
       <ol>
         <li class="py-1 flex gap-5 items-center group" *ngFor="let server of profile.user.guilds">
           <div class="font-semibold grow">{{server.GuildName}}</div>
-          <small>https://typo.rip/i?invite={{server.ObserveToken}}</small>
+          <small>https://typo.rip/i?invite={{server.Invite}}</small>
           <div (click)="removeGuild(profile.user.userLogin, server)"
             class="text-red-500 opacity-50 desktop:opacity-0 font-semibold group-hover:opacity-100 cursor-pointer select-none justify-self-end">
             Remove</div>

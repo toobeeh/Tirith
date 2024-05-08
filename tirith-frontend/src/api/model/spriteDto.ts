@@ -37,7 +37,7 @@ export interface SpriteDto {
     /**
      * Flag for special sprite
      */
-    isSpecial?: boolean;
+    isSpecial: boolean;
     /**
      * Sprite artist name
      */

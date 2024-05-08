@@ -22,29 +22,26 @@ export class GrpcGuildsService extends GrpcBaseService<GuildsDefinition> impleme
             name: reply.name,
             iconUrl: `https://cdn.discordapp.com/icons/${discordGuild.id}/${discordGuild.icon}.png`,
             connectedMembers: reply.connectedMemberCount,
-            token: reply.observeToken
+            token: reply.invite
         }
     }
 
     mapGuildDto(reply: GuildReply): GuildDto {
         return {
             GuildName: reply.name,
-            ObserveToken: reply.observeToken,
-            GuildID: reply.guildId.toString(),
-            ChannelID: reply.channelId.toString(),
-            MessageID: reply.messageId.toString(),
-            Webhooks: [] // TODO this should be deprecated
+            Invite: reply.invite,
+            GuildID: reply.guildId.toString()
         }
     }
 
-    async getGuildPreview(token: number): Promise<GuildInviteDto> {
-        const guild = await this.grpcClient.getGuildByToken({ observeToken: token });
+    async getGuildPreview(invite: number): Promise<GuildInviteDto> {
+        const guild = await this.grpcClient.getGuildByInvite({ invite: invite });
         const mappedGuild = await this.mapGuildInviteDto(guild);
         return mappedGuild;
     }
 
-    async getGuildConnectionDetails(token: number): Promise<GuildDto> {
-        const guild = await this.grpcClient.getGuildByToken({ observeToken: token });
+    async getGuildConnectionDetails(invite: number): Promise<GuildDto> {
+        const guild = await this.grpcClient.getGuildByInvite({ invite: invite });
         const mappedGuild = this.mapGuildDto(guild);
         return mappedGuild;
     }

@@ -11,18 +11,14 @@
  */
 
 
-export interface GuildDto { 
+export interface LeagueAverageTimeRanking { 
     /**
-     * The guild\'s ID
+     * The palantir username of the participant
      */
-    GuildID: string;
+    name: string;
     /**
-     * The guild\'s Palantir token
+     * The average catch response time of all caught league drops
      */
-    Invite: number;
-    /**
-     * The guild\'s name
-     */
-    GuildName: string;
+    averageTime: number;
 }
 

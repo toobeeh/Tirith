@@ -47,20 +47,11 @@ export class GuildDto {
     @XApiProperty({ description: "The guild's ID" })
     GuildID: string;
 
-    @XApiProperty({ description: "The guild's Palantir message channel ID" })
-    ChannelID: string;
-
-    @XApiProperty({ description: "The guild's Palantir message ID" })
-    MessageID: string;
-
     @XApiProperty({ description: "The guild's Palantir token" })
-    ObserveToken: number;
+    Invite: number;
 
     @XApiProperty({ description: "The guild's name" })
     GuildName: string;
-
-    @XApiProperty({ description: "The guild's post webhooks", type: () => WebhookDto, isArray: true })
-    Webhooks: WebhookDto[];
 }
 
 export class WebhookDto {

@@ -3,7 +3,7 @@ import type { CallContext, CallOptions } from "nice-grpc-common";
 import Long = require("long");
 import * as _m0 from "protobufjs/minimal";
 import { Timestamp } from "./google/protobuf/timestamp";
-import { Int32Value } from "./google/protobuf/wrappers";
+import { Int64Value } from "./google/protobuf/wrappers";
 
 export const protobufPackage = "stats";
 
@@ -107,7 +107,7 @@ export interface BubbleTimespanRangeReply {
 }
 
 export interface GetLeaderboardMessage {
-  guildToken: number | undefined;
+  guildId: Long | undefined;
   mode: LeaderboardMode;
 }
 
@@ -475,13 +475,13 @@ export const BubbleTimespanRangeReply = {
 };
 
 function createBaseGetLeaderboardMessage(): GetLeaderboardMessage {
-  return { guildToken: undefined, mode: 0 };
+  return { guildId: undefined, mode: 0 };
 }
 
 export const GetLeaderboardMessage = {
   encode(message: GetLeaderboardMessage, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.guildToken !== undefined) {
-      Int32Value.encode({ value: message.guildToken! }, writer.uint32(10).fork()).ldelim();
+    if (message.guildId !== undefined) {
+      Int64Value.encode({ value: message.guildId! }, writer.uint32(10).fork()).ldelim();
     }
     if (message.mode !== 0) {
       writer.uint32(16).int32(message.mode);
@@ -501,7 +501,7 @@ export const GetLeaderboardMessage = {
             break;
           }
 
-          message.guildToken = Int32Value.decode(reader, reader.uint32()).value;
+          message.guildId = Int64Value.decode(reader, reader.uint32()).value;
           continue;
         case 2:
           if (tag !== 16) {
@@ -521,15 +521,15 @@ export const GetLeaderboardMessage = {
 
   fromJSON(object: any): GetLeaderboardMessage {
     return {
-      guildToken: isSet(object.guildToken) ? Number(object.guildToken) : undefined,
+      guildId: isSet(object.guildId) ? Long.fromValue(object.guildId) : undefined,
       mode: isSet(object.mode) ? leaderboardModeFromJSON(object.mode) : 0,
     };
   },
 
   toJSON(message: GetLeaderboardMessage): unknown {
     const obj: any = {};
-    if (message.guildToken !== undefined) {
-      obj.guildToken = message.guildToken;
+    if (message.guildId !== undefined) {
+      obj.guildId = message.guildId;
     }
     if (message.mode !== 0) {
       obj.mode = leaderboardModeToJSON(message.mode);

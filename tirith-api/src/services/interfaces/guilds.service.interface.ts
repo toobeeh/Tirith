@@ -8,11 +8,11 @@ export interface IGuildsService {
     /**
      * Get the preview data to display a server connection invite
      */
-    getGuildPreview(token: number): Promise<GuildInviteDto>;
+    getGuildPreview(invite: number): Promise<GuildInviteDto>;
 
 
     /**
      * Get the preview data to display a server connection invite
      */
-    getGuildConnectionDetails(token: number): Promise<GuildDto>;
+    getGuildConnectionDetails(invite: number): Promise<GuildDto>;
 }

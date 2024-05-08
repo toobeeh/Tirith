@@ -80,13 +80,9 @@ export class ProfileComponent {
     return inv.filter(s => s.inv?.active).sort((a, b) => a.inv!.active - b.inv!.active).map(s => s.dto.url);
   }
 
-  public hasWebhooks(guild: GuildDto) {
-    return guild.Webhooks?.length > 0;
-  }
-
   public removeGuild(login: string, guild: GuildDto) {
     const toastToken = this.toastService.show({ message: { title: `Disconnecting from ${guild.GuildName}..` }, durationMs: 'cancel' });
-    this.memberService.removeConnectedGuild(Number(login), guild.ObserveToken).subscribe({
+    this.memberService.removeConnectedGuild(Number(login), guild.Invite).subscribe({
       next: () => {
         this.toastService.cancelMessage(toastToken);
         this.user$ = this.loadUser(true);
