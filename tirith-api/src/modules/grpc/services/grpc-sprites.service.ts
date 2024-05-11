@@ -2,7 +2,7 @@
 https://docs.nestjs.com/providers#services
 */
 
-import { Inject, Injectable } from '@nestjs/common';
+import {ForbiddenException, Inject, Injectable} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { ISpritesService } from 'src/services/interfaces/sprites.service.interface';
 import { SpriteReply, SpritesDefinition } from '../proto-compiled/sprites';
@@ -35,7 +35,8 @@ export class GrpcSpritesService extends GrpcBaseService<SpritesDefinition> imple
     }
 
     async getAllSprites(): Promise<SpriteDto[]> {
-        const sprites = await this.collectFromAsyncIterable(this.grpcClient.getAllSprites({}));
+        const sprites = (await this.collectFromAsyncIterable(this.grpcClient.getAllSprites({})))
+            .filter(sprite => sprite.isReleased);
         return Promise.all(
             sprites.map(t => this.spriteReplyToDto(t))
         );
@@ -43,6 +44,8 @@ export class GrpcSpritesService extends GrpcBaseService<SpritesDefinition> imple
 
     async getSprite(id: number): Promise<SpriteDto> {
         const sprite = await this.grpcClient.getSpriteById({ id });
+        if(!sprite.isReleased) throw new ForbiddenException("Sprite not released");
+
         return this.spriteReplyToDto(sprite);
     }
 }
