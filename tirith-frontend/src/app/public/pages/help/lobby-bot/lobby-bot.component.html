@@ -10,7 +10,7 @@
       When you have a discord server, you can set it up as a <b>typo server home.</b><br>
       This allows other people on your discord server to connect to this server - no one else can connect, so it's private!<br><br>
       The <b>Palantir Lobby Bot will check frequently</b> who of your server members (with a typo account) are online on skribbl.<br>
-      If someone is online, <b>it shows their lobby with stats and the invite link</b> in a discord channel. <br>
+      If someone is online, <b>it shows their lobby with stats and the lobby link</b> in a discord channel. <br>
       Everyone on the server can quickly join using the lobby link, or with shortcut buttons directly on skribbl.io!<br><br>
       Additionally, you can also see a leaderboard of all connected people, or set up a discord channel to post images directly from skribbl.
     </div>
@@ -19,9 +19,9 @@
   <div>
     <h2>Set Up Server Home</h2>
     <div class="card">
-      To use a server as server home, a typo member with an <b>active patreon subscription</b> has to choose the server as server home.<br>
+      To use a server as server home, a typo member with an <b>active patreon subscription</b> has to support the server.<br>
       This can be done with the command <b>/patron home</b> anywhere on the server.<br>
-      Members can change their server home once a week.<br>
+      Members can select their server home once a week, so think twice before supporting a server!<br>
       It is possible that more than one member supports a server as server home, but it won't bring additional perks.<br><br>
 
       As soon as the server is supported by a patreon subscriber, a server admin can <b>invite the Palantir Lobbies Bot</b>.<br>
@@ -40,7 +40,7 @@
       When the setup is completed, you can do a few more things to customize your typo server home.<br><br>
       The Lobby Bot supports the same commands as the public Palantir bot, but for this one you can choose a custom Prefix.<br>
       To set a prefix, a server admin can use the command <b>/server prefix &lt;prefix></b><br><br>
-      You can also add an Image Post channel - this will be added soon.
+      You can also add an Image Post channel with the command <b>/imagepost add &lt;#channel> &lt;name></b>.
     </div>
   </div>
 
@@ -65,7 +65,10 @@
     <h2>Image Post Channel</h2>
     <div class="card">
       When a server admin has set up an Image Post channel on the server, connected members can quickly send images from skribbl to a server channel.<br><br>
-      To send an image, you can then click the letter-icon on skribbl and choose the name of the channel where you want the image to be posted.
+      To send an image, you can then click the letter-icon on skribbl and choose the name of the channel where you want the image to be posted.<br><br>
+      Server admins can add an image post channel with the command <b>/imagepost add &lt;#channel> &lt;name></b>. <br>
+      The channel option sets the server channel where posted images will appear, and the name option sets the name which users will see on skribbl.<br>
+      You can see all image post channels of the server with <b>/imagepost list</b> or remove one with <b>/imagepost remove &lt;name></b>.
     </div>
   </div>
 
