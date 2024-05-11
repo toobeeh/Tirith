@@ -22,15 +22,21 @@ export class HelpComponent {
       link: "discord"
     },
     {
-      name: "Palantir Bot Help",
+      name: "Command Help",
       color: "rgb(220 252 231)",
       image: "url(https://tobeh.host/scenes/sceneEmerald_Dust.gif)",
       link: "new-palantir"
     },
     {
-      name: "Extension Settings",
+      name: "Typo Server Home",
       color: "rgb(251 207 232)",
       image: "url(https://tobeh.host/scenes/scenePortal.gif)",
+      link: "lobby-bot"
+    },
+    {
+      name: "Extension Settings",
+      color: "rgb(219 234 254)",
+      image: "url(https://tobeh.host/scenes/sceneSpace.gif)",
       link: "settings"
     },
   ]

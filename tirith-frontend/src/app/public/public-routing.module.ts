@@ -5,7 +5,6 @@ import { LandingComponent } from './pages/landing/landing.component';
 import { FeaturesComponent } from './pages/help/features/features.component';
 import { PrivacyComponent } from './pages/help/privacy/privacy.component';
 import { DiscordComponent } from './pages/help/discord/discord.component';
-import { PalantirComponent } from './pages/help/palantir/palantir.component';
 import { HelpComponent } from './pages/help/help.component';
 import { NavContentGuard } from '../shared/guards/nav-content.guard';
 import { ToolsComponent } from './pages/tools/tools.component';
@@ -17,12 +16,13 @@ import { WorkshopComponent } from './pages/tools/workshop/workshop.component';
 import { InviteComponent } from './pages/invite/invite.component';
 import { SettingsComponent } from './pages/help/settings/settings.component';
 import {NewPalantirComponent} from "./pages/help/new-palantir/new-palantir.component";
+import {LobbyBotComponent} from "./pages/help/lobby-bot/lobby-bot.component";
 
 const helpNavigationData = {
   navigation: [
     ["Help", "help", "route"],
     ["Discord Features", "help/discord", "route"],
-    ["Command Help", "help/palantir", "route"],
+    ["Command Help", "help/new-palantir", "route"],
     ["Features", "help/features", "route"],
     ["Settings", "help/settings", "route"],
   ]
@@ -68,14 +68,14 @@ const routes: Routes = [
     data: helpNavigationData
   },
   {
-    path: 'help/palantir',
-    component: PalantirComponent,
+    path: 'help/new-palantir',
+    component: NewPalantirComponent,
     pathMatch: "full",
     data: helpNavigationData
   },
   {
-    path: 'help/new-palantir',
-    component: NewPalantirComponent,
+    path: 'help/lobby-bot',
+    component: LobbyBotComponent,
     pathMatch: "full",
     data: helpNavigationData
   },

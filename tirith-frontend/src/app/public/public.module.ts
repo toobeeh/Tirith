@@ -7,7 +7,6 @@ import { LandingComponent } from './pages/landing/landing.component';
 import { FeaturesComponent } from './pages/help/features/features.component';
 import { PrivacyComponent } from './pages/help/privacy/privacy.component';
 import { DiscordComponent } from './pages/help/discord/discord.component';
-import { PalantirComponent } from './pages/help/palantir/palantir.component';
 import { HelpComponent } from './pages/help/help.component';
 import { ToolsComponent } from './pages/tools/tools.component';
 import { RainbowPreviewComponent } from './pages/tools/rainbow-preview/rainbow-preview.component';
@@ -24,6 +23,7 @@ import { InviteComponent } from './pages/invite/invite.component';
 import { SettingsComponent } from './pages/help/settings/settings.component';
 import { BrowserModule } from '@angular/platform-browser';
 import {NewPalantirComponent} from "./pages/help/new-palantir/new-palantir.component";
+import {LobbyBotComponent} from "./pages/help/lobby-bot/lobby-bot.component";
 
 
 @NgModule({
@@ -33,7 +33,7 @@ import {NewPalantirComponent} from "./pages/help/new-palantir/new-palantir.compo
     FeaturesComponent,
     PrivacyComponent,
     DiscordComponent,
-    PalantirComponent,
+    LobbyBotComponent,
     HelpComponent,
     ToolsComponent,
     RainbowPreviewComponent,
