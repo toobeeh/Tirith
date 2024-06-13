@@ -39,6 +39,12 @@ export class HelpComponent {
       image: "url(https://tobeh.host/scenes/sceneSpace.gif)",
       link: "settings"
     },
+    {
+      name: "Rules & Fair Play",
+      color: "rgb(220 252 231)",
+      image: "url(https://tobeh.host/scenes/sceneEmerald_Dust.gif)",
+      link: "rules"
+    },
   ]
 
 }

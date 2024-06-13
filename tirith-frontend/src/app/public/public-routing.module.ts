@@ -17,6 +17,8 @@ import { InviteComponent } from './pages/invite/invite.component';
 import { SettingsComponent } from './pages/help/settings/settings.component';
 import {NewPalantirComponent} from "./pages/help/new-palantir/new-palantir.component";
 import {LobbyBotComponent} from "./pages/help/lobby-bot/lobby-bot.component";
+import {PalantirTosComponent} from "./pages/help/palantir-tos/palantir-tos.component";
+import {RulesComponent} from "./pages/help/rules/rules.component";
 
 const helpNavigationData = {
   navigation: [
@@ -124,6 +126,14 @@ const routes: Routes = [
   {
     path: 'privacy',
     component: PrivacyComponent
+  },
+  {
+    path: 'help/rules',
+    component: RulesComponent
+  },
+  {
+    path: 'palantir-tos',
+    component: PalantirTosComponent
   },
   {
     path: 'invite/:token',

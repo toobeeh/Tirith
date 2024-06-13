@@ -24,6 +24,8 @@ import { SettingsComponent } from './pages/help/settings/settings.component';
 import { BrowserModule } from '@angular/platform-browser';
 import {NewPalantirComponent} from "./pages/help/new-palantir/new-palantir.component";
 import {LobbyBotComponent} from "./pages/help/lobby-bot/lobby-bot.component";
+import {PalantirTosComponent} from "./pages/help/palantir-tos/palantir-tos.component";
+import {RulesComponent} from "./pages/help/rules/rules.component";
 
 
 @NgModule({
@@ -43,7 +45,9 @@ import {LobbyBotComponent} from "./pages/help/lobby-bot/lobby-bot.component";
     WorkshopComponent,
     InviteComponent,
     SettingsComponent,
-    NewPalantirComponent
+    NewPalantirComponent,
+    PalantirTosComponent,
+    RulesComponent
   ],
   imports: [
     BrowserModule,

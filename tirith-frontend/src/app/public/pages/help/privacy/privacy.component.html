@@ -5,15 +5,15 @@
 <h2>Introduction</h2>
 <br>
 <div>
-  Typo and Palantir ONLY collect data if you create a Palantir account and connect it to the Typo extension.<br />
-  When you create a account by messaging the bot >login , you accept to this data privacy statement.<br />
+  Typo and Palantir only collect data if you have create a Palantir account and connect it to the Typo extension.<br />
+  When you create an account, you agree to the data usage described in this data privacy statement.<br />
   The only purpose of the collected data is to make the Palantir features work and create a personal skribbl image
   gallery (Typo cloud).<br />
-  Your data is stored on a private server and is ONLY accessible to you and the Typo developer, tobeh.<br />
+  Your data is only accessible to you and the Typo developer.<br />
   Your data will not be shared with anyone else.<br /><br />
-  Every data exchange between the Typo extension and the Palantir server is encrypted with SSL or WSS.
-  To request your data / get support about Typo, data privacy or anything related join the Typo Discord
-  server.<br />
+  Every data exchange between the Typo extension and the Palantir server is encrypted with TLS.
+  To request your data or get support about Typo, data privacy or anything related join the Typo Discord
+  server and submit your request there.<br />
 </div>
 
 <br>
@@ -33,39 +33,42 @@
   As soon as you create a Palantir account, following data is immediately saved:
   <ul>
     <li>Your Discord ID to identify you on Discord</li>
-    <li>Your new login number</li>
+    <li>A new random Palantir account ID</li>
     <li>Your current Discord username</li>
-  </ul><br><br>
-  As soon as the Palantir bot is initialized by an admin, the server's properties are saved:
+  </ul><br>
+  As soon as a Patron selects a server as server home for the Palantir Lobby Bot:
   <ul>
     <li>The server's name</li>
     <li>The server's ID</li>
-    <li>The Palantir message and channel ID</li>
-    <li>The new server token</li>
-    <li>As soon as added, a webhook ID and name</li>
-  </ul><br><br>
-  By connecting the bot to typo and start collecting bubbles and buying sprites, following data is collected:
+  </ul><br>
+  As soon as an Admin starts Palantir Lobbies on a server:
+  <ul>
+    <li>The Palantir Lobby channel ID</li>
+    <li>A new random server ID</li>
+    <li>If specified, a webhook URL and name</li>
+  </ul><br>
+  When you play on skribbl.io and have your Palantir account connected, following data is collected:
   <ul>
     <li>Your bubbles (daily count for statistics)</li>
     <li>Your bought sprites, scenes and all customizations (colors, profiles)</li>
     <li>Your caught drops</li>
-  </ul><br><br>
+  </ul><br>
   By subscribing on patreon, being banned or gaining extra permissions, following data is additionally saved:
   <ul>
     <li>Your flags (permissions)</li>
     <li>Your patron emoji</li>
     <li>Your patronized member ID</li>
-  </ul><br><br>
-</div>
+  </ul><br>
+  If you connect to a Typo Server Home, data is added to your account:
+  <ul>
+    <li>The server's random ID</li>
+  </ul>
+</div><br><br>
 
 <h2>Data collected by the Typo browser extension</h2>
 <br>
 <div>
-  ONLY if you have connected your Palantir account to the Typo extension, following data is collected.<br />
-  If you add a server by its server token, data is added to your account:
-  <ul>
-    <li>The server's properties as above listed</li>
-  </ul><br><br>
+  If you have connected your Palantir account to the Typo extension, following data is collected.<br />
   If you enable the Discord bot status, following data is stored temporary to display your lobby:
   <ul>
     <li><b>The lobby's properties: Player names, scores, current drawer, ranking, language, link, mode and
@@ -73,11 +76,11 @@
     <li>Your current status (searching, waiting, playing)</li>
     <li>A random session ID</li>
     <li><b>Your login name</b></li>
-  </ul><br><br>
+  </ul><br>
   If you catch a drop:
   <ul>
-    <li>The drop ID along with your login is saved to detect suspicious drop catcher bot actions</li>
-  </ul><br><br>
+    <li>The drop ID along with your palantir ID and catch statistics is saved to detect suspicious drop catcher bot actions</li>
+  </ul><br>
   Every drawing during a game is saved to the Typo gallery cloud:
   <ul>
     <li><b>The drawing (as base64 data url)</b></li>
