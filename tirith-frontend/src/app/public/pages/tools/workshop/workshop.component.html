@@ -30,7 +30,7 @@
       <li>No duplicate sprites just for other colors / details. Each sprite should have its own idea behind.</li>
       <li>Don't make oversized sprites. The sprite should be mostly in the avatar area.</li>
       <li>No flashy / annoying animations.</li>
-      <li>Sprites and the Avatar are GIF animations - the frame delay looks best with 0.2s or 0.25s each frame.</li>
+      <li>Sprites and the Avatar are GIF animations - the frame delay is 0.2s for each frame.</li>
       <li>
         GIFs dont support semi-transparent pixels. Means: Use a transparent background and only solid colors.<br />
         Warning: Standard brushes have semi-transparent pixels, use a pixel brush!
@@ -58,9 +58,9 @@
         frame.</li>
       <li>You will notice the avatar moved slightly - adjust the sprite so it fits on BOTH avatar frames.</li>
       <li>This can be tricky on sprites which depend on the avatar outlines - see the Angel sample sprite.</li>
-      <li>As soon as you finished details, shadows and outlines, copy the sprite layer.</li>
-      <li>You now have two layers - each is a frame. Since the sprite should have a slight movement, you'll have to edit
-        one of the frames.</li>
+      <li>As soon as you finished details, shadows and outlines, use the first layer as a template, create a new layer and trace the first layer with a 1px brush.</li>
+      <li>Now you have outlines on another thinner layer. Since the Sprites should have a slight movement, you'll have to thicken the outlines and edit the second frame so it has a slight movement. When the animation looks good, add details to the second frame.</li>
+      <li>Use every aspect of movement and not only bigger/smaller, left/right, etc - be creative, and animate parts of the sprites differently.</li>
       <li>
         Simple "moving" effects can be achieved by transforming the layer - wider, higher, bigger - and editing the
         shadows slightly. <br />
