@@ -8,6 +8,19 @@ import { SpriteSlotConfigurationReply } from "./inventory";
 
 export const protobufPackage = "lobbies";
 
+export interface SetGuildLobbyLinksMessage {
+  guildId: Long;
+  links: GuildLobbyLinkMessage[];
+}
+
+export interface GuildLobbyLinkMessage {
+  guildId: Long;
+  login: number;
+  link: string;
+  slotAvailable: boolean;
+  username: string;
+}
+
 /** Container for palantir lobby details, containing palantir relevant details */
 export interface PalantirLobbyDetails {
   description: string;
@@ -74,7 +87,180 @@ export interface OnlineMemberReply {
   joinedLobbies: JoinedLobbyMessage[];
   spriteSlots: SpriteSlotConfigurationReply[];
   sceneId: number | undefined;
+  sceneShift: number | undefined;
 }
+
+function createBaseSetGuildLobbyLinksMessage(): SetGuildLobbyLinksMessage {
+  return { guildId: Long.ZERO, links: [] };
+}
+
+export const SetGuildLobbyLinksMessage = {
+  encode(message: SetGuildLobbyLinksMessage, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (!message.guildId.isZero()) {
+      writer.uint32(8).int64(message.guildId);
+    }
+    for (const v of message.links) {
+      GuildLobbyLinkMessage.encode(v!, writer.uint32(18).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): SetGuildLobbyLinksMessage {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSetGuildLobbyLinksMessage();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.guildId = reader.int64() as Long;
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.links.push(GuildLobbyLinkMessage.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SetGuildLobbyLinksMessage {
+    return {
+      guildId: isSet(object.guildId) ? Long.fromValue(object.guildId) : Long.ZERO,
+      links: globalThis.Array.isArray(object?.links)
+        ? object.links.map((e: any) => GuildLobbyLinkMessage.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: SetGuildLobbyLinksMessage): unknown {
+    const obj: any = {};
+    if (!message.guildId.isZero()) {
+      obj.guildId = (message.guildId || Long.ZERO).toString();
+    }
+    if (message.links?.length) {
+      obj.links = message.links.map((e) => GuildLobbyLinkMessage.toJSON(e));
+    }
+    return obj;
+  },
+};
+
+function createBaseGuildLobbyLinkMessage(): GuildLobbyLinkMessage {
+  return { guildId: Long.ZERO, login: 0, link: "", slotAvailable: false, username: "" };
+}
+
+export const GuildLobbyLinkMessage = {
+  encode(message: GuildLobbyLinkMessage, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (!message.guildId.isZero()) {
+      writer.uint32(8).int64(message.guildId);
+    }
+    if (message.login !== 0) {
+      writer.uint32(16).int32(message.login);
+    }
+    if (message.link !== "") {
+      writer.uint32(26).string(message.link);
+    }
+    if (message.slotAvailable === true) {
+      writer.uint32(32).bool(message.slotAvailable);
+    }
+    if (message.username !== "") {
+      writer.uint32(42).string(message.username);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): GuildLobbyLinkMessage {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGuildLobbyLinkMessage();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.guildId = reader.int64() as Long;
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.login = reader.int32();
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.link = reader.string();
+          continue;
+        case 4:
+          if (tag !== 32) {
+            break;
+          }
+
+          message.slotAvailable = reader.bool();
+          continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.username = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GuildLobbyLinkMessage {
+    return {
+      guildId: isSet(object.guildId) ? Long.fromValue(object.guildId) : Long.ZERO,
+      login: isSet(object.login) ? globalThis.Number(object.login) : 0,
+      link: isSet(object.link) ? globalThis.String(object.link) : "",
+      slotAvailable: isSet(object.slotAvailable) ? globalThis.Boolean(object.slotAvailable) : false,
+      username: isSet(object.username) ? globalThis.String(object.username) : "",
+    };
+  },
+
+  toJSON(message: GuildLobbyLinkMessage): unknown {
+    const obj: any = {};
+    if (!message.guildId.isZero()) {
+      obj.guildId = (message.guildId || Long.ZERO).toString();
+    }
+    if (message.login !== 0) {
+      obj.login = Math.round(message.login);
+    }
+    if (message.link !== "") {
+      obj.link = message.link;
+    }
+    if (message.slotAvailable === true) {
+      obj.slotAvailable = message.slotAvailable;
+    }
+    if (message.username !== "") {
+      obj.username = message.username;
+    }
+    return obj;
+  },
+};
 
 function createBasePalantirLobbyDetails(): PalantirLobbyDetails {
   return { description: "", key: "", id: "", restriction: "" };
@@ -782,7 +968,15 @@ export const JoinedLobbyMessage = {
 };
 
 function createBaseOnlineMemberReply(): OnlineMemberReply {
-  return { login: 0, bubbles: 0, patronEmoji: undefined, joinedLobbies: [], spriteSlots: [], sceneId: undefined };
+  return {
+    login: 0,
+    bubbles: 0,
+    patronEmoji: undefined,
+    joinedLobbies: [],
+    spriteSlots: [],
+    sceneId: undefined,
+    sceneShift: undefined,
+  };
 }
 
 export const OnlineMemberReply = {
@@ -804,6 +998,9 @@ export const OnlineMemberReply = {
     }
     if (message.sceneId !== undefined) {
       Int32Value.encode({ value: message.sceneId! }, writer.uint32(50).fork()).ldelim();
+    }
+    if (message.sceneShift !== undefined) {
+      Int32Value.encode({ value: message.sceneShift! }, writer.uint32(58).fork()).ldelim();
     }
     return writer;
   },
@@ -857,6 +1054,13 @@ export const OnlineMemberReply = {
 
           message.sceneId = Int32Value.decode(reader, reader.uint32()).value;
           continue;
+        case 7:
+          if (tag !== 58) {
+            break;
+          }
+
+          message.sceneShift = Int32Value.decode(reader, reader.uint32()).value;
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -878,6 +1082,7 @@ export const OnlineMemberReply = {
         ? object.spriteSlots.map((e: any) => SpriteSlotConfigurationReply.fromJSON(e))
         : [],
       sceneId: isSet(object.sceneId) ? Number(object.sceneId) : undefined,
+      sceneShift: isSet(object.sceneShift) ? Number(object.sceneShift) : undefined,
     };
   },
 
@@ -900,6 +1105,9 @@ export const OnlineMemberReply = {
     }
     if (message.sceneId !== undefined) {
       obj.sceneId = message.sceneId;
+    }
+    if (message.sceneShift !== undefined) {
+      obj.sceneShift = message.sceneShift;
     }
     return obj;
   },
@@ -938,6 +1146,22 @@ export const LobbiesDefinition = {
       responseStream: true,
       options: {},
     },
+    setGuildLobbyLinks: {
+      name: "SetGuildLobbyLinks",
+      requestType: SetGuildLobbyLinksMessage,
+      requestStream: false,
+      responseType: Empty,
+      responseStream: false,
+      options: {},
+    },
+    getLobbyLinks: {
+      name: "GetLobbyLinks",
+      requestType: Empty,
+      requestStream: false,
+      responseType: GuildLobbyLinkMessage,
+      responseStream: true,
+      options: {},
+    },
   },
 } as const;
 
@@ -954,6 +1178,11 @@ export interface LobbiesServiceImplementation<CallContextExt = {}> {
     request: Empty,
     context: CallContext & CallContextExt,
   ): ServerStreamingMethodResult<OnlineMemberReply>;
+  setGuildLobbyLinks(request: SetGuildLobbyLinksMessage, context: CallContext & CallContextExt): Promise<Empty>;
+  getLobbyLinks(
+    request: Empty,
+    context: CallContext & CallContextExt,
+  ): ServerStreamingMethodResult<GuildLobbyLinkMessage>;
 }
 
 export interface LobbiesClient<CallOptionsExt = {}> {
@@ -966,6 +1195,8 @@ export interface LobbiesClient<CallOptionsExt = {}> {
   ): AsyncIterable<DropLogReply>;
   /** Gets all currently playing member's details */
   getOnlinePlayers(request: Empty, options?: CallOptions & CallOptionsExt): AsyncIterable<OnlineMemberReply>;
+  setGuildLobbyLinks(request: SetGuildLobbyLinksMessage, options?: CallOptions & CallOptionsExt): Promise<Empty>;
+  getLobbyLinks(request: Empty, options?: CallOptions & CallOptionsExt): AsyncIterable<GuildLobbyLinkMessage>;
 }
 
 if (_m0.util.Long !== Long) {

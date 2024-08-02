@@ -26,4 +26,7 @@ export class SpriteDto {
 
     @XApiProperty({ description: "Sprite artist name", required: false })
     artist?: string;
+
+    @XApiProperty({ description: "Flags where at least one must be fulfilled to buy the sprite", required: true })
+    requiredFlags: string[];
 }

@@ -7,10 +7,11 @@
   <input type="button" [value]="orderDirectionCaption" (click)="toggleOrderDirection()">
 </div>
 <br>
+
+<ng-container *ngIf="sprites$ | async as sprites; else loading">
+  <h3>{{sprites.length}} sprites found</h3>
 <br>
 <div class="flex flex-wrap gap-12 justify-center">
-
-  <ng-container *ngIf="sprites$ | async as sprites; else loading">
     <div *ngFor="let sprite of sprites" class="sprite">
       <div tabindex="0" class="thumbnail" style="background-image: url({{sprite.url}})"> </div>
       <div class="card">
@@ -28,10 +29,10 @@
         <h3> {{sprite.tags.join(" ")}} </h3>
       </div>
     </div>
-  </ng-container>
-
-  <ng-template #loading>
-    <h3>Loading sprites...</h3>
-  </ng-template>
 
 </div>
+</ng-container>
+
+<ng-template #loading>
+  <h3>Loading sprites...</h3>
+</ng-template>

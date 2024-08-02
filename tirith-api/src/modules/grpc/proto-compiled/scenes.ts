@@ -18,6 +18,13 @@ export interface SceneReply {
   eventId: number | undefined;
 }
 
+/** Response containing a scene theme's properties. */
+export interface SceneThemeReply {
+  name: string;
+  sceneId: number;
+  shift: number;
+}
+
 /** Request containing a scene id */
 export interface GetSceneRequest {
   id: number;
@@ -192,6 +199,84 @@ export const SceneReply = {
     }
     if (message.eventId !== undefined) {
       obj.eventId = message.eventId;
+    }
+    return obj;
+  },
+};
+
+function createBaseSceneThemeReply(): SceneThemeReply {
+  return { name: "", sceneId: 0, shift: 0 };
+}
+
+export const SceneThemeReply = {
+  encode(message: SceneThemeReply, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.name !== "") {
+      writer.uint32(10).string(message.name);
+    }
+    if (message.sceneId !== 0) {
+      writer.uint32(16).int32(message.sceneId);
+    }
+    if (message.shift !== 0) {
+      writer.uint32(24).int32(message.shift);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): SceneThemeReply {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSceneThemeReply();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.name = reader.string();
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.sceneId = reader.int32();
+          continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.shift = reader.int32();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SceneThemeReply {
+    return {
+      name: isSet(object.name) ? globalThis.String(object.name) : "",
+      sceneId: isSet(object.sceneId) ? globalThis.Number(object.sceneId) : 0,
+      shift: isSet(object.shift) ? globalThis.Number(object.shift) : 0,
+    };
+  },
+
+  toJSON(message: SceneThemeReply): unknown {
+    const obj: any = {};
+    if (message.name !== "") {
+      obj.name = message.name;
+    }
+    if (message.sceneId !== 0) {
+      obj.sceneId = Math.round(message.sceneId);
+    }
+    if (message.shift !== 0) {
+      obj.shift = Math.round(message.shift);
     }
     return obj;
   },
@@ -464,6 +549,24 @@ export const ScenesDefinition = {
       responseStream: true,
       options: {},
     },
+    /** Gets all scene themes */
+    getAllSceneThemes: {
+      name: "GetAllSceneThemes",
+      requestType: Empty,
+      requestStream: false,
+      responseType: SceneThemeReply,
+      responseStream: true,
+      options: {},
+    },
+    /** Gets all themes of a scene */
+    getThemesOfScene: {
+      name: "GetThemesOfScene",
+      requestType: GetSceneRequest,
+      requestStream: false,
+      responseType: SceneThemeReply,
+      responseStream: true,
+      options: {},
+    },
     /** Gets a scene by its id */
     getSceneById: {
       name: "GetSceneById",
@@ -497,6 +600,16 @@ export const ScenesDefinition = {
 export interface ScenesServiceImplementation<CallContextExt = {}> {
   /** Gets all scenes */
   getAllScenes(request: Empty, context: CallContext & CallContextExt): ServerStreamingMethodResult<SceneReply>;
+  /** Gets all scene themes */
+  getAllSceneThemes(
+    request: Empty,
+    context: CallContext & CallContextExt,
+  ): ServerStreamingMethodResult<SceneThemeReply>;
+  /** Gets all themes of a scene */
+  getThemesOfScene(
+    request: GetSceneRequest,
+    context: CallContext & CallContextExt,
+  ): ServerStreamingMethodResult<SceneThemeReply>;
   /** Gets a scene by its id */
   getSceneById(request: GetSceneRequest, context: CallContext & CallContextExt): Promise<SceneReply>;
   /** Gets the ranking of all scenes */
@@ -511,6 +624,10 @@ export interface ScenesServiceImplementation<CallContextExt = {}> {
 export interface ScenesClient<CallOptionsExt = {}> {
   /** Gets all scenes */
   getAllScenes(request: Empty, options?: CallOptions & CallOptionsExt): AsyncIterable<SceneReply>;
+  /** Gets all scene themes */
+  getAllSceneThemes(request: Empty, options?: CallOptions & CallOptionsExt): AsyncIterable<SceneThemeReply>;
+  /** Gets all themes of a scene */
+  getThemesOfScene(request: GetSceneRequest, options?: CallOptions & CallOptionsExt): AsyncIterable<SceneThemeReply>;
   /** Gets a scene by its id */
   getSceneById(request: GetSceneRequest, options?: CallOptions & CallOptionsExt): Promise<SceneReply>;
   /** Gets the ranking of all scenes */

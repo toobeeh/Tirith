@@ -206,19 +206,27 @@ export interface GetSceneInventoryRequest {
   login: number;
 }
 
+export interface SceneInventoryItemReply {
+  sceneId: number;
+  sceneShift: number | undefined;
+}
+
 export interface SceneInventoryReply {
   activeId: number | undefined;
-  sceneIds: number[];
+  activeShift: number | undefined;
+  scenes: SceneInventoryItemReply[];
 }
 
 export interface BuySceneRequest {
   login: number;
   sceneId: number;
+  sceneShift: number | undefined;
 }
 
 export interface UseSceneRequest {
   login: number;
   sceneId: number | undefined;
+  sceneShift: number | undefined;
 }
 
 export interface ScenePriceRequest {
@@ -2691,8 +2699,72 @@ export const GetSceneInventoryRequest = {
   },
 };
 
+function createBaseSceneInventoryItemReply(): SceneInventoryItemReply {
+  return { sceneId: 0, sceneShift: undefined };
+}
+
+export const SceneInventoryItemReply = {
+  encode(message: SceneInventoryItemReply, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.sceneId !== 0) {
+      writer.uint32(8).int32(message.sceneId);
+    }
+    if (message.sceneShift !== undefined) {
+      Int32Value.encode({ value: message.sceneShift! }, writer.uint32(18).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): SceneInventoryItemReply {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSceneInventoryItemReply();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.sceneId = reader.int32();
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.sceneShift = Int32Value.decode(reader, reader.uint32()).value;
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SceneInventoryItemReply {
+    return {
+      sceneId: isSet(object.sceneId) ? globalThis.Number(object.sceneId) : 0,
+      sceneShift: isSet(object.sceneShift) ? Number(object.sceneShift) : undefined,
+    };
+  },
+
+  toJSON(message: SceneInventoryItemReply): unknown {
+    const obj: any = {};
+    if (message.sceneId !== 0) {
+      obj.sceneId = Math.round(message.sceneId);
+    }
+    if (message.sceneShift !== undefined) {
+      obj.sceneShift = message.sceneShift;
+    }
+    return obj;
+  },
+};
+
 function createBaseSceneInventoryReply(): SceneInventoryReply {
-  return { activeId: undefined, sceneIds: [] };
+  return { activeId: undefined, activeShift: undefined, scenes: [] };
 }
 
 export const SceneInventoryReply = {
@@ -2700,11 +2772,12 @@ export const SceneInventoryReply = {
     if (message.activeId !== undefined) {
       Int32Value.encode({ value: message.activeId! }, writer.uint32(10).fork()).ldelim();
     }
-    writer.uint32(18).fork();
-    for (const v of message.sceneIds) {
-      writer.int32(v);
+    if (message.activeShift !== undefined) {
+      Int32Value.encode({ value: message.activeShift! }, writer.uint32(26).fork()).ldelim();
     }
-    writer.ldelim();
+    for (const v of message.scenes) {
+      SceneInventoryItemReply.encode(v!, writer.uint32(18).fork()).ldelim();
+    }
     return writer;
   },
 
@@ -2722,23 +2795,20 @@ export const SceneInventoryReply = {
 
           message.activeId = Int32Value.decode(reader, reader.uint32()).value;
           continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.activeShift = Int32Value.decode(reader, reader.uint32()).value;
+          continue;
         case 2:
-          if (tag === 16) {
-            message.sceneIds.push(reader.int32());
-
-            continue;
+          if (tag !== 18) {
+            break;
           }
 
-          if (tag === 18) {
-            const end2 = reader.uint32() + reader.pos;
-            while (reader.pos < end2) {
-              message.sceneIds.push(reader.int32());
-            }
-
-            continue;
-          }
-
-          break;
+          message.scenes.push(SceneInventoryItemReply.decode(reader, reader.uint32()));
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -2751,7 +2821,10 @@ export const SceneInventoryReply = {
   fromJSON(object: any): SceneInventoryReply {
     return {
       activeId: isSet(object.activeId) ? Number(object.activeId) : undefined,
-      sceneIds: globalThis.Array.isArray(object?.sceneIds) ? object.sceneIds.map((e: any) => globalThis.Number(e)) : [],
+      activeShift: isSet(object.activeShift) ? Number(object.activeShift) : undefined,
+      scenes: globalThis.Array.isArray(object?.scenes)
+        ? object.scenes.map((e: any) => SceneInventoryItemReply.fromJSON(e))
+        : [],
     };
   },
 
@@ -2760,15 +2833,18 @@ export const SceneInventoryReply = {
     if (message.activeId !== undefined) {
       obj.activeId = message.activeId;
     }
-    if (message.sceneIds?.length) {
-      obj.sceneIds = message.sceneIds.map((e) => Math.round(e));
+    if (message.activeShift !== undefined) {
+      obj.activeShift = message.activeShift;
+    }
+    if (message.scenes?.length) {
+      obj.scenes = message.scenes.map((e) => SceneInventoryItemReply.toJSON(e));
     }
     return obj;
   },
 };
 
 function createBaseBuySceneRequest(): BuySceneRequest {
-  return { login: 0, sceneId: 0 };
+  return { login: 0, sceneId: 0, sceneShift: undefined };
 }
 
 export const BuySceneRequest = {
@@ -2778,6 +2854,9 @@ export const BuySceneRequest = {
     }
     if (message.sceneId !== 0) {
       writer.uint32(16).int32(message.sceneId);
+    }
+    if (message.sceneShift !== undefined) {
+      Int32Value.encode({ value: message.sceneShift! }, writer.uint32(26).fork()).ldelim();
     }
     return writer;
   },
@@ -2803,6 +2882,13 @@ export const BuySceneRequest = {
 
           message.sceneId = reader.int32();
           continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.sceneShift = Int32Value.decode(reader, reader.uint32()).value;
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -2816,6 +2902,7 @@ export const BuySceneRequest = {
     return {
       login: isSet(object.login) ? globalThis.Number(object.login) : 0,
       sceneId: isSet(object.sceneId) ? globalThis.Number(object.sceneId) : 0,
+      sceneShift: isSet(object.sceneShift) ? Number(object.sceneShift) : undefined,
     };
   },
 
@@ -2827,12 +2914,15 @@ export const BuySceneRequest = {
     if (message.sceneId !== 0) {
       obj.sceneId = Math.round(message.sceneId);
     }
+    if (message.sceneShift !== undefined) {
+      obj.sceneShift = message.sceneShift;
+    }
     return obj;
   },
 };
 
 function createBaseUseSceneRequest(): UseSceneRequest {
-  return { login: 0, sceneId: undefined };
+  return { login: 0, sceneId: undefined, sceneShift: undefined };
 }
 
 export const UseSceneRequest = {
@@ -2842,6 +2932,9 @@ export const UseSceneRequest = {
     }
     if (message.sceneId !== undefined) {
       Int32Value.encode({ value: message.sceneId! }, writer.uint32(18).fork()).ldelim();
+    }
+    if (message.sceneShift !== undefined) {
+      Int32Value.encode({ value: message.sceneShift! }, writer.uint32(26).fork()).ldelim();
     }
     return writer;
   },
@@ -2867,6 +2960,13 @@ export const UseSceneRequest = {
 
           message.sceneId = Int32Value.decode(reader, reader.uint32()).value;
           continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.sceneShift = Int32Value.decode(reader, reader.uint32()).value;
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -2880,6 +2980,7 @@ export const UseSceneRequest = {
     return {
       login: isSet(object.login) ? globalThis.Number(object.login) : 0,
       sceneId: isSet(object.sceneId) ? Number(object.sceneId) : undefined,
+      sceneShift: isSet(object.sceneShift) ? Number(object.sceneShift) : undefined,
     };
   },
 
@@ -2890,6 +2991,9 @@ export const UseSceneRequest = {
     }
     if (message.sceneId !== undefined) {
       obj.sceneId = message.sceneId;
+    }
+    if (message.sceneShift !== undefined) {
+      obj.sceneShift = message.sceneShift;
     }
     return obj;
   },

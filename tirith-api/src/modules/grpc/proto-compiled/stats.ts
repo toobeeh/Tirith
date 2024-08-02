@@ -10,6 +10,7 @@ export const protobufPackage = "stats";
 export enum LeaderboardMode {
   BUBBLES = 0,
   DROPS = 1,
+  AWARDS = 2,
   UNRECOGNIZED = -1,
 }
 
@@ -21,6 +22,9 @@ export function leaderboardModeFromJSON(object: any): LeaderboardMode {
     case 1:
     case "DROPS":
       return LeaderboardMode.DROPS;
+    case 2:
+    case "AWARDS":
+      return LeaderboardMode.AWARDS;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -34,6 +38,8 @@ export function leaderboardModeToJSON(object: LeaderboardMode): string {
       return "BUBBLES";
     case LeaderboardMode.DROPS:
       return "DROPS";
+    case LeaderboardMode.AWARDS:
+      return "AWARDS";
     case LeaderboardMode.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
@@ -122,6 +128,7 @@ export interface LeaderboardRankMessage {
   username: string;
   bubbles: number;
   drops: number;
+  awardScore: number;
 }
 
 function createBaseGetBubbleProgressMessage(): GetBubbleProgressMessage {
@@ -591,7 +598,7 @@ export const LeaderboardMessage = {
 };
 
 function createBaseLeaderboardRankMessage(): LeaderboardRankMessage {
-  return { rank: 0, login: 0, discordId: Long.ZERO, username: "", bubbles: 0, drops: 0 };
+  return { rank: 0, login: 0, discordId: Long.ZERO, username: "", bubbles: 0, drops: 0, awardScore: 0 };
 }
 
 export const LeaderboardRankMessage = {
@@ -613,6 +620,9 @@ export const LeaderboardRankMessage = {
     }
     if (message.drops !== 0) {
       writer.uint32(48).int32(message.drops);
+    }
+    if (message.awardScore !== 0) {
+      writer.uint32(56).int32(message.awardScore);
     }
     return writer;
   },
@@ -666,6 +676,13 @@ export const LeaderboardRankMessage = {
 
           message.drops = reader.int32();
           continue;
+        case 7:
+          if (tag !== 56) {
+            break;
+          }
+
+          message.awardScore = reader.int32();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -683,6 +700,7 @@ export const LeaderboardRankMessage = {
       username: isSet(object.username) ? globalThis.String(object.username) : "",
       bubbles: isSet(object.bubbles) ? globalThis.Number(object.bubbles) : 0,
       drops: isSet(object.drops) ? globalThis.Number(object.drops) : 0,
+      awardScore: isSet(object.awardScore) ? globalThis.Number(object.awardScore) : 0,
     };
   },
 
@@ -705,6 +723,9 @@ export const LeaderboardRankMessage = {
     }
     if (message.drops !== 0) {
       obj.drops = Math.round(message.drops);
+    }
+    if (message.awardScore !== 0) {
+      obj.awardScore = Math.round(message.awardScore);
     }
     return obj;
   },

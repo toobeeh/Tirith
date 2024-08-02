@@ -3,6 +3,7 @@ import type { CallContext, CallOptions } from "nice-grpc-common";
 import * as _m0 from "protobufjs/minimal";
 import { Empty } from "./google/protobuf/empty";
 import { Int32Value, StringValue } from "./google/protobuf/wrappers";
+import { MemberFlagMessage, memberFlagMessageFromJSON, memberFlagMessageToJSON } from "./members";
 
 export const protobufPackage = "sprites";
 
@@ -17,6 +18,7 @@ export interface SpriteReply {
   eventDropId: number | undefined;
   artist: string | undefined;
   isReleased: boolean;
+  requiredFlags: MemberFlagMessage[];
 }
 
 /** Request containing a sprite id */
@@ -32,6 +34,15 @@ export interface SpriteRankingReply {
   rank: number;
 }
 
+export interface AddSpriteMessage {
+  name: string;
+  url: string;
+  cost: number;
+  isRainbow: boolean;
+  eventDropId: number | undefined;
+  artist: string | undefined;
+}
+
 function createBaseSpriteReply(): SpriteReply {
   return {
     name: "",
@@ -43,6 +54,7 @@ function createBaseSpriteReply(): SpriteReply {
     eventDropId: undefined,
     artist: undefined,
     isReleased: false,
+    requiredFlags: [],
   };
 }
 
@@ -75,6 +87,11 @@ export const SpriteReply = {
     if (message.isReleased === true) {
       writer.uint32(72).bool(message.isReleased);
     }
+    writer.uint32(90).fork();
+    for (const v of message.requiredFlags) {
+      writer.int32(v);
+    }
+    writer.ldelim();
     return writer;
   },
 
@@ -148,6 +165,23 @@ export const SpriteReply = {
 
           message.isReleased = reader.bool();
           continue;
+        case 11:
+          if (tag === 88) {
+            message.requiredFlags.push(reader.int32() as any);
+
+            continue;
+          }
+
+          if (tag === 90) {
+            const end2 = reader.uint32() + reader.pos;
+            while (reader.pos < end2) {
+              message.requiredFlags.push(reader.int32() as any);
+            }
+
+            continue;
+          }
+
+          break;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -168,6 +202,9 @@ export const SpriteReply = {
       eventDropId: isSet(object.eventDropId) ? Number(object.eventDropId) : undefined,
       artist: isSet(object.artist) ? String(object.artist) : undefined,
       isReleased: isSet(object.isReleased) ? globalThis.Boolean(object.isReleased) : false,
+      requiredFlags: globalThis.Array.isArray(object?.requiredFlags)
+        ? object.requiredFlags.map((e: any) => memberFlagMessageFromJSON(e))
+        : [],
     };
   },
 
@@ -199,6 +236,9 @@ export const SpriteReply = {
     }
     if (message.isReleased === true) {
       obj.isReleased = message.isReleased;
+    }
+    if (message.requiredFlags?.length) {
+      obj.requiredFlags = message.requiredFlags.map((e) => memberFlagMessageToJSON(e));
     }
     return obj;
   },
@@ -344,6 +384,126 @@ export const SpriteRankingReply = {
   },
 };
 
+function createBaseAddSpriteMessage(): AddSpriteMessage {
+  return { name: "", url: "", cost: 0, isRainbow: false, eventDropId: undefined, artist: undefined };
+}
+
+export const AddSpriteMessage = {
+  encode(message: AddSpriteMessage, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.name !== "") {
+      writer.uint32(10).string(message.name);
+    }
+    if (message.url !== "") {
+      writer.uint32(18).string(message.url);
+    }
+    if (message.cost !== 0) {
+      writer.uint32(24).int32(message.cost);
+    }
+    if (message.isRainbow === true) {
+      writer.uint32(32).bool(message.isRainbow);
+    }
+    if (message.eventDropId !== undefined) {
+      Int32Value.encode({ value: message.eventDropId! }, writer.uint32(50).fork()).ldelim();
+    }
+    if (message.artist !== undefined) {
+      StringValue.encode({ value: message.artist! }, writer.uint32(58).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): AddSpriteMessage {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseAddSpriteMessage();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.name = reader.string();
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.url = reader.string();
+          continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.cost = reader.int32();
+          continue;
+        case 4:
+          if (tag !== 32) {
+            break;
+          }
+
+          message.isRainbow = reader.bool();
+          continue;
+        case 6:
+          if (tag !== 50) {
+            break;
+          }
+
+          message.eventDropId = Int32Value.decode(reader, reader.uint32()).value;
+          continue;
+        case 7:
+          if (tag !== 58) {
+            break;
+          }
+
+          message.artist = StringValue.decode(reader, reader.uint32()).value;
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): AddSpriteMessage {
+    return {
+      name: isSet(object.name) ? globalThis.String(object.name) : "",
+      url: isSet(object.url) ? globalThis.String(object.url) : "",
+      cost: isSet(object.cost) ? globalThis.Number(object.cost) : 0,
+      isRainbow: isSet(object.isRainbow) ? globalThis.Boolean(object.isRainbow) : false,
+      eventDropId: isSet(object.eventDropId) ? Number(object.eventDropId) : undefined,
+      artist: isSet(object.artist) ? String(object.artist) : undefined,
+    };
+  },
+
+  toJSON(message: AddSpriteMessage): unknown {
+    const obj: any = {};
+    if (message.name !== "") {
+      obj.name = message.name;
+    }
+    if (message.url !== "") {
+      obj.url = message.url;
+    }
+    if (message.cost !== 0) {
+      obj.cost = Math.round(message.cost);
+    }
+    if (message.isRainbow === true) {
+      obj.isRainbow = message.isRainbow;
+    }
+    if (message.eventDropId !== undefined) {
+      obj.eventDropId = message.eventDropId;
+    }
+    if (message.artist !== undefined) {
+      obj.artist = message.artist;
+    }
+    return obj;
+  },
+};
+
 /** Service definition for sprite resource access */
 export type SpritesDefinition = typeof SpritesDefinition;
 export const SpritesDefinition = {
@@ -377,6 +537,15 @@ export const SpritesDefinition = {
       responseStream: true,
       options: {},
     },
+    /** Adds a new sprite */
+    addSprite: {
+      name: "AddSprite",
+      requestType: AddSpriteMessage,
+      requestStream: false,
+      responseType: SpriteReply,
+      responseStream: false,
+      options: {},
+    },
   },
 } as const;
 
@@ -390,6 +559,8 @@ export interface SpritesServiceImplementation<CallContextExt = {}> {
     request: Empty,
     context: CallContext & CallContextExt,
   ): ServerStreamingMethodResult<SpriteRankingReply>;
+  /** Adds a new sprite */
+  addSprite(request: AddSpriteMessage, context: CallContext & CallContextExt): Promise<SpriteReply>;
 }
 
 export interface SpritesClient<CallOptionsExt = {}> {
@@ -399,6 +570,8 @@ export interface SpritesClient<CallOptionsExt = {}> {
   getSpriteById(request: GetSpriteRequest, options?: CallOptions & CallOptionsExt): Promise<SpriteReply>;
   /** Gets the ranking of all sprites */
   getSpriteRanking(request: Empty, options?: CallOptions & CallOptionsExt): AsyncIterable<SpriteRankingReply>;
+  /** Adds a new sprite */
+  addSprite(request: AddSpriteMessage, options?: CallOptions & CallOptionsExt): Promise<SpriteReply>;
 }
 
 function isSet(value: any): boolean {

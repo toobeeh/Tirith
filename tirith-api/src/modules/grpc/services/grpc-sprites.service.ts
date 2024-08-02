@@ -11,6 +11,7 @@ import { SpriteDto } from 'src/modules/palantir/dto/sprites.dto';
 import { DtoCache } from 'src/utils/dtoCache';
 import { EventDropDto } from 'src/modules/palantir/dto/events.dto';
 import { IEventsService } from 'src/services/interfaces/events.service.interface';
+import {memberFlagMessageToJSON} from "../proto-compiled/members";
 
 @Injectable()
 export class GrpcSpritesService extends GrpcBaseService<SpritesDefinition> implements ISpritesService {
@@ -30,7 +31,8 @@ export class GrpcSpritesService extends GrpcBaseService<SpritesDefinition> imple
         return {
             ...reply,
             isRainbowAllowed: reply.isRainbow,
-            eventDrop
+            eventDrop,
+            requiredFlags: reply.requiredFlags.map(flag => memberFlagMessageToJSON(flag))
         };
     }
 

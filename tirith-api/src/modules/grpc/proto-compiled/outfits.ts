@@ -17,6 +17,7 @@ export interface OutfitMessage {
   name: string;
   spriteSlotConfiguration: SpriteSlotConfigurationReply[];
   sceneId: number | undefined;
+  sceneShift: number | undefined;
 }
 
 export interface SaveOutfitRequest {
@@ -88,7 +89,7 @@ export const GetOutfitsRequest = {
 };
 
 function createBaseOutfitMessage(): OutfitMessage {
-  return { name: "", spriteSlotConfiguration: [], sceneId: undefined };
+  return { name: "", spriteSlotConfiguration: [], sceneId: undefined, sceneShift: undefined };
 }
 
 export const OutfitMessage = {
@@ -101,6 +102,9 @@ export const OutfitMessage = {
     }
     if (message.sceneId !== undefined) {
       Int32Value.encode({ value: message.sceneId! }, writer.uint32(26).fork()).ldelim();
+    }
+    if (message.sceneShift !== undefined) {
+      Int32Value.encode({ value: message.sceneShift! }, writer.uint32(34).fork()).ldelim();
     }
     return writer;
   },
@@ -133,6 +137,13 @@ export const OutfitMessage = {
 
           message.sceneId = Int32Value.decode(reader, reader.uint32()).value;
           continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.sceneShift = Int32Value.decode(reader, reader.uint32()).value;
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -149,6 +160,7 @@ export const OutfitMessage = {
         ? object.spriteSlotConfiguration.map((e: any) => SpriteSlotConfigurationReply.fromJSON(e))
         : [],
       sceneId: isSet(object.sceneId) ? Number(object.sceneId) : undefined,
+      sceneShift: isSet(object.sceneShift) ? Number(object.sceneShift) : undefined,
     };
   },
 
@@ -162,6 +174,9 @@ export const OutfitMessage = {
     }
     if (message.sceneId !== undefined) {
       obj.sceneId = message.sceneId;
+    }
+    if (message.sceneShift !== undefined) {
+      obj.sceneShift = message.sceneShift;
     }
     return obj;
   },

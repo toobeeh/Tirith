@@ -12,6 +12,7 @@ export enum OnlineItemType {
   Scene = 2,
   Award = 3,
   Rewardee = 5,
+  SceneTheme = 6,
   UNRECOGNIZED = -1,
 }
 
@@ -32,6 +33,9 @@ export function onlineItemTypeFromJSON(object: any): OnlineItemType {
     case 5:
     case "Rewardee":
       return OnlineItemType.Rewardee;
+    case 6:
+    case "SceneTheme":
+      return OnlineItemType.SceneTheme;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -51,6 +55,8 @@ export function onlineItemTypeToJSON(object: OnlineItemType): string {
       return "Award";
     case OnlineItemType.Rewardee:
       return "Rewardee";
+    case OnlineItemType.SceneTheme:
+      return "SceneTheme";
     case OnlineItemType.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";

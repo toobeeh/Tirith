@@ -42,5 +42,9 @@ export interface SpriteDto {
      * Sprite artist name
      */
     artist?: string;
+    /**
+     * Flags where at least one must be fulfilled to buy the sprite
+     */
+    requiredFlags: Array<string>;
 }
 

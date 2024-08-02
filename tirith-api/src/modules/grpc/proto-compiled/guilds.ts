@@ -4,8 +4,35 @@ import Long = require("long");
 import * as _m0 from "protobufjs/minimal";
 import { Empty } from "./google/protobuf/empty";
 import { Int64Value } from "./google/protobuf/wrappers";
+import { MemberReply } from "./members";
 
 export const protobufPackage = "guilds";
+
+export interface GetGuildSupportersMessage {
+  guildId: Long;
+}
+
+export interface GuildWebhookMessage {
+  url: string;
+  name: string;
+}
+
+export interface GetGuildWebhooksMessage {
+  guildId: Long;
+}
+
+/** Request containing a webhook URL */
+export interface AddGuildWebhookMessage {
+  guildId: Long;
+  url: string;
+  name: string;
+}
+
+/** Request containing a webhook URL */
+export interface RemoveGuildWebhookMessage {
+  guildId: Long;
+  name: string;
+}
 
 /** Response containing a guild's properties. */
 export interface GuildReply {
@@ -13,6 +40,7 @@ export interface GuildReply {
   invite: number;
   name: string;
   connectedMemberCount: number;
+  supporters: number[];
 }
 
 /** Request containing a guild observe token */
@@ -37,8 +65,310 @@ export interface GuildOptionsMessage {
   prefix: string;
 }
 
+function createBaseGetGuildSupportersMessage(): GetGuildSupportersMessage {
+  return { guildId: Long.ZERO };
+}
+
+export const GetGuildSupportersMessage = {
+  encode(message: GetGuildSupportersMessage, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (!message.guildId.isZero()) {
+      writer.uint32(8).int64(message.guildId);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetGuildSupportersMessage {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetGuildSupportersMessage();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.guildId = reader.int64() as Long;
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetGuildSupportersMessage {
+    return { guildId: isSet(object.guildId) ? Long.fromValue(object.guildId) : Long.ZERO };
+  },
+
+  toJSON(message: GetGuildSupportersMessage): unknown {
+    const obj: any = {};
+    if (!message.guildId.isZero()) {
+      obj.guildId = (message.guildId || Long.ZERO).toString();
+    }
+    return obj;
+  },
+};
+
+function createBaseGuildWebhookMessage(): GuildWebhookMessage {
+  return { url: "", name: "" };
+}
+
+export const GuildWebhookMessage = {
+  encode(message: GuildWebhookMessage, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.url !== "") {
+      writer.uint32(10).string(message.url);
+    }
+    if (message.name !== "") {
+      writer.uint32(18).string(message.name);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): GuildWebhookMessage {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGuildWebhookMessage();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.url = reader.string();
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.name = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GuildWebhookMessage {
+    return {
+      url: isSet(object.url) ? globalThis.String(object.url) : "",
+      name: isSet(object.name) ? globalThis.String(object.name) : "",
+    };
+  },
+
+  toJSON(message: GuildWebhookMessage): unknown {
+    const obj: any = {};
+    if (message.url !== "") {
+      obj.url = message.url;
+    }
+    if (message.name !== "") {
+      obj.name = message.name;
+    }
+    return obj;
+  },
+};
+
+function createBaseGetGuildWebhooksMessage(): GetGuildWebhooksMessage {
+  return { guildId: Long.ZERO };
+}
+
+export const GetGuildWebhooksMessage = {
+  encode(message: GetGuildWebhooksMessage, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (!message.guildId.isZero()) {
+      writer.uint32(8).int64(message.guildId);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetGuildWebhooksMessage {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetGuildWebhooksMessage();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.guildId = reader.int64() as Long;
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetGuildWebhooksMessage {
+    return { guildId: isSet(object.guildId) ? Long.fromValue(object.guildId) : Long.ZERO };
+  },
+
+  toJSON(message: GetGuildWebhooksMessage): unknown {
+    const obj: any = {};
+    if (!message.guildId.isZero()) {
+      obj.guildId = (message.guildId || Long.ZERO).toString();
+    }
+    return obj;
+  },
+};
+
+function createBaseAddGuildWebhookMessage(): AddGuildWebhookMessage {
+  return { guildId: Long.ZERO, url: "", name: "" };
+}
+
+export const AddGuildWebhookMessage = {
+  encode(message: AddGuildWebhookMessage, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (!message.guildId.isZero()) {
+      writer.uint32(8).int64(message.guildId);
+    }
+    if (message.url !== "") {
+      writer.uint32(18).string(message.url);
+    }
+    if (message.name !== "") {
+      writer.uint32(26).string(message.name);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): AddGuildWebhookMessage {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseAddGuildWebhookMessage();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.guildId = reader.int64() as Long;
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.url = reader.string();
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.name = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): AddGuildWebhookMessage {
+    return {
+      guildId: isSet(object.guildId) ? Long.fromValue(object.guildId) : Long.ZERO,
+      url: isSet(object.url) ? globalThis.String(object.url) : "",
+      name: isSet(object.name) ? globalThis.String(object.name) : "",
+    };
+  },
+
+  toJSON(message: AddGuildWebhookMessage): unknown {
+    const obj: any = {};
+    if (!message.guildId.isZero()) {
+      obj.guildId = (message.guildId || Long.ZERO).toString();
+    }
+    if (message.url !== "") {
+      obj.url = message.url;
+    }
+    if (message.name !== "") {
+      obj.name = message.name;
+    }
+    return obj;
+  },
+};
+
+function createBaseRemoveGuildWebhookMessage(): RemoveGuildWebhookMessage {
+  return { guildId: Long.ZERO, name: "" };
+}
+
+export const RemoveGuildWebhookMessage = {
+  encode(message: RemoveGuildWebhookMessage, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (!message.guildId.isZero()) {
+      writer.uint32(8).int64(message.guildId);
+    }
+    if (message.name !== "") {
+      writer.uint32(26).string(message.name);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): RemoveGuildWebhookMessage {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseRemoveGuildWebhookMessage();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.guildId = reader.int64() as Long;
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.name = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): RemoveGuildWebhookMessage {
+    return {
+      guildId: isSet(object.guildId) ? Long.fromValue(object.guildId) : Long.ZERO,
+      name: isSet(object.name) ? globalThis.String(object.name) : "",
+    };
+  },
+
+  toJSON(message: RemoveGuildWebhookMessage): unknown {
+    const obj: any = {};
+    if (!message.guildId.isZero()) {
+      obj.guildId = (message.guildId || Long.ZERO).toString();
+    }
+    if (message.name !== "") {
+      obj.name = message.name;
+    }
+    return obj;
+  },
+};
+
 function createBaseGuildReply(): GuildReply {
-  return { guildId: Long.ZERO, invite: 0, name: "", connectedMemberCount: 0 };
+  return { guildId: Long.ZERO, invite: 0, name: "", connectedMemberCount: 0, supporters: [] };
 }
 
 export const GuildReply = {
@@ -55,6 +385,11 @@ export const GuildReply = {
     if (message.connectedMemberCount !== 0) {
       writer.uint32(48).int32(message.connectedMemberCount);
     }
+    writer.uint32(58).fork();
+    for (const v of message.supporters) {
+      writer.int32(v);
+    }
+    writer.ldelim();
     return writer;
   },
 
@@ -93,6 +428,23 @@ export const GuildReply = {
 
           message.connectedMemberCount = reader.int32();
           continue;
+        case 7:
+          if (tag === 56) {
+            message.supporters.push(reader.int32());
+
+            continue;
+          }
+
+          if (tag === 58) {
+            const end2 = reader.uint32() + reader.pos;
+            while (reader.pos < end2) {
+              message.supporters.push(reader.int32());
+            }
+
+            continue;
+          }
+
+          break;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -108,6 +460,9 @@ export const GuildReply = {
       invite: isSet(object.invite) ? globalThis.Number(object.invite) : 0,
       name: isSet(object.name) ? globalThis.String(object.name) : "",
       connectedMemberCount: isSet(object.connectedMemberCount) ? globalThis.Number(object.connectedMemberCount) : 0,
+      supporters: globalThis.Array.isArray(object?.supporters)
+        ? object.supporters.map((e: any) => globalThis.Number(e))
+        : [],
     };
   },
 
@@ -124,6 +479,9 @@ export const GuildReply = {
     }
     if (message.connectedMemberCount !== 0) {
       obj.connectedMemberCount = Math.round(message.connectedMemberCount);
+    }
+    if (message.supporters?.length) {
+      obj.supporters = message.supporters.map((e) => Math.round(e));
     }
     return obj;
   },
@@ -419,6 +777,38 @@ export const GuildsDefinition = {
       responseStream: false,
       options: {},
     },
+    addGuildWebhook: {
+      name: "AddGuildWebhook",
+      requestType: AddGuildWebhookMessage,
+      requestStream: false,
+      responseType: Empty,
+      responseStream: false,
+      options: {},
+    },
+    removeGuildWebhook: {
+      name: "RemoveGuildWebhook",
+      requestType: RemoveGuildWebhookMessage,
+      requestStream: false,
+      responseType: Empty,
+      responseStream: false,
+      options: {},
+    },
+    getGuildWebhooks: {
+      name: "GetGuildWebhooks",
+      requestType: GetGuildWebhooksMessage,
+      requestStream: false,
+      responseType: GuildWebhookMessage,
+      responseStream: true,
+      options: {},
+    },
+    getGuildSupporters: {
+      name: "GetGuildSupporters",
+      requestType: GetGuildSupportersMessage,
+      requestStream: false,
+      responseType: MemberReply,
+      responseStream: true,
+      options: {},
+    },
   },
 } as const;
 
@@ -432,6 +822,16 @@ export interface GuildsServiceImplementation<CallContextExt = {}> {
     context: CallContext & CallContextExt,
   ): Promise<GuildOptionsMessage>;
   setGuildOptions(request: GuildOptionsMessage, context: CallContext & CallContextExt): Promise<Empty>;
+  addGuildWebhook(request: AddGuildWebhookMessage, context: CallContext & CallContextExt): Promise<Empty>;
+  removeGuildWebhook(request: RemoveGuildWebhookMessage, context: CallContext & CallContextExt): Promise<Empty>;
+  getGuildWebhooks(
+    request: GetGuildWebhooksMessage,
+    context: CallContext & CallContextExt,
+  ): ServerStreamingMethodResult<GuildWebhookMessage>;
+  getGuildSupporters(
+    request: GetGuildSupportersMessage,
+    context: CallContext & CallContextExt,
+  ): ServerStreamingMethodResult<MemberReply>;
 }
 
 export interface GuildsClient<CallOptionsExt = {}> {
@@ -444,6 +844,16 @@ export interface GuildsClient<CallOptionsExt = {}> {
     options?: CallOptions & CallOptionsExt,
   ): Promise<GuildOptionsMessage>;
   setGuildOptions(request: GuildOptionsMessage, options?: CallOptions & CallOptionsExt): Promise<Empty>;
+  addGuildWebhook(request: AddGuildWebhookMessage, options?: CallOptions & CallOptionsExt): Promise<Empty>;
+  removeGuildWebhook(request: RemoveGuildWebhookMessage, options?: CallOptions & CallOptionsExt): Promise<Empty>;
+  getGuildWebhooks(
+    request: GetGuildWebhooksMessage,
+    options?: CallOptions & CallOptionsExt,
+  ): AsyncIterable<GuildWebhookMessage>;
+  getGuildSupporters(
+    request: GetGuildSupportersMessage,
+    options?: CallOptions & CallOptionsExt,
+  ): AsyncIterable<MemberReply>;
 }
 
 if (_m0.util.Long !== Long) {
@@ -454,3 +864,5 @@ if (_m0.util.Long !== Long) {
 function isSet(value: any): boolean {
   return value !== null && value !== undefined;
 }
+
+export type ServerStreamingMethodResult<Response> = { [Symbol.asyncIterator](): AsyncIterator<Response, void> };

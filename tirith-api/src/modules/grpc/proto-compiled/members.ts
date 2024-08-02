@@ -19,6 +19,7 @@ export enum MemberFlagMessage {
   Beta = 7,
   BubbleFarming = 8,
   UnlimitedCloud = 9,
+  ContentModerator = 10,
   UNRECOGNIZED = -1,
 }
 
@@ -54,6 +55,9 @@ export function memberFlagMessageFromJSON(object: any): MemberFlagMessage {
     case 9:
     case "UnlimitedCloud":
       return MemberFlagMessage.UnlimitedCloud;
+    case 10:
+    case "ContentModerator":
+      return MemberFlagMessage.ContentModerator;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -83,6 +87,8 @@ export function memberFlagMessageToJSON(object: MemberFlagMessage): string {
       return "BubbleFarming";
     case MemberFlagMessage.UnlimitedCloud:
       return "UnlimitedCloud";
+    case MemberFlagMessage.ContentModerator:
+      return "ContentModerator";
     case MemberFlagMessage.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
@@ -105,6 +111,7 @@ export interface MemberReply {
   nextAwardPackDate: Date | undefined;
   patronEmoji: string | undefined;
   nextPatronizeDate: Date | undefined;
+  nextHomeChooseDate: Date | undefined;
 }
 
 /** Reply containing the accesstoken of a member */
@@ -183,6 +190,7 @@ function createBaseMemberReply(): MemberReply {
     nextAwardPackDate: undefined,
     patronEmoji: undefined,
     nextPatronizeDate: undefined,
+    nextHomeChooseDate: undefined,
   };
 }
 
@@ -233,6 +241,9 @@ export const MemberReply = {
     }
     if (message.nextPatronizeDate !== undefined) {
       Timestamp.encode(toTimestamp(message.nextPatronizeDate), writer.uint32(114).fork()).ldelim();
+    }
+    if (message.nextHomeChooseDate !== undefined) {
+      Timestamp.encode(toTimestamp(message.nextHomeChooseDate), writer.uint32(122).fork()).ldelim();
     }
     return writer;
   },
@@ -362,6 +373,13 @@ export const MemberReply = {
 
           message.nextPatronizeDate = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
           continue;
+        case 15:
+          if (tag !== 122) {
+            break;
+          }
+
+          message.nextHomeChooseDate = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -391,6 +409,7 @@ export const MemberReply = {
       nextAwardPackDate: isSet(object.nextAwardPackDate) ? fromJsonTimestamp(object.nextAwardPackDate) : undefined,
       patronEmoji: isSet(object.patronEmoji) ? String(object.patronEmoji) : undefined,
       nextPatronizeDate: isSet(object.nextPatronizeDate) ? fromJsonTimestamp(object.nextPatronizeDate) : undefined,
+      nextHomeChooseDate: isSet(object.nextHomeChooseDate) ? fromJsonTimestamp(object.nextHomeChooseDate) : undefined,
     };
   },
 
@@ -437,6 +456,9 @@ export const MemberReply = {
     }
     if (message.nextPatronizeDate !== undefined) {
       obj.nextPatronizeDate = message.nextPatronizeDate.toISOString();
+    }
+    if (message.nextHomeChooseDate !== undefined) {
+      obj.nextHomeChooseDate = message.nextHomeChooseDate.toISOString();
     }
     return obj;
   },
