@@ -19,6 +19,7 @@ import {NewPalantirComponent} from "./pages/help/new-palantir/new-palantir.compo
 import {LobbyBotComponent} from "./pages/help/lobby-bot/lobby-bot.component";
 import {PalantirTosComponent} from "./pages/help/palantir-tos/palantir-tos.component";
 import {RulesComponent} from "./pages/help/rules/rules.component";
+import {DiscordRolesComponent} from "./pages/help/discord-roles/discord-roles.component";
 
 const helpNavigationData = {
   navigation: [
@@ -66,6 +67,12 @@ const routes: Routes = [
   {
     path: 'help/discord',
     component: DiscordComponent,
+    pathMatch: "full",
+    data: helpNavigationData
+  },
+  {
+    path: 'help/discord-roles',
+    component: DiscordRolesComponent,
     pathMatch: "full",
     data: helpNavigationData
   },
