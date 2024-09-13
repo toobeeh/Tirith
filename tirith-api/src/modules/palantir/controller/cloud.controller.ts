@@ -2,13 +2,13 @@
 https://docs.nestjs.com/controllers#controllers
 */
 
-import {Body, Controller, Get, HttpCode, Inject, Param, Post} from '@nestjs/common';
+import {Body, Controller, HttpCode, Inject, Param, Post} from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { ApiSecurityNotes } from 'src/decorators/apiSecurityNote.decorator';
 import {ICloudService} from "../../../services/interfaces/cloud.service.interface";
 import {CloudImageDto} from "../dto/cloud.dto";
 import {CloudSearchDto} from "../dto/cloudSearch.dto";
-import {ResourceOwner} from "../../../decorators/roles.decorator";
+import {AuthRoles, RequiredRole, ResourceOwner} from "../../../decorators/roles.decorator";
 import {LoginTokenParamDto} from "../dto/params.dto";
 
 @ApiSecurityNotes()
@@ -20,6 +20,7 @@ export class CloudController {
 
     @Post(":login/search")
     @HttpCode(200)
+    @RequiredRole(AuthRoles.Member)
     @ResourceOwner("login")
     @ApiOperation({ summary: "Search for cloud images" })
     @ApiResponse({ status: 200, type: CloudImageDto, isArray: true, description: "All matching images of the current user's cloud" })
