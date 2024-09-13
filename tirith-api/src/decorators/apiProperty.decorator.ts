@@ -1,6 +1,15 @@
 import { ApiProperty, ApiPropertyOptions } from "@nestjs/swagger";
 import { Expose, Transform, Type } from "class-transformer";
-import { IsBoolean, IsDefined, IsNumber, IsString, ValidateNested, isBoolean, isBooleanString } from "class-validator";
+import {
+    IsBoolean,
+    IsDefined,
+    IsNumber,
+    IsString,
+    ValidateNested,
+    isBoolean,
+    isBooleanString,
+    IsOptional
+} from "class-validator";
 
 /**
  * interface that enforces a function as type to comply both swagger and classtransformer
@@ -34,6 +43,7 @@ export const XApiProperty = (options?: strictTypeOptions, expose = true): Proper
         const propertyType = Reflect.getMetadata("design:type", target, key);
 
         if (options.required !== false) defaultTypeValidators.push(IsDefined());
+        else defaultTypeValidators.push(IsOptional())
 
         if (propertyType === String) {
             defaultTypeValidators.push(IsString());

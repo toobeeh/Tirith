@@ -24,7 +24,6 @@ export class ResponseReshapeInterceptor implements NestInterceptor {
           const status = context.switchToHttp().getResponse<Response>().statusCode;
           const swaggerResponseData = this.reflector.get("swagger/apiResponse", context.getHandler())?.[status];
           if (swaggerResponseData === undefined) {
-            console.log("asd");
             console.warn("Returning unprocessed data for ", context.getHandler());
             return data;
           }

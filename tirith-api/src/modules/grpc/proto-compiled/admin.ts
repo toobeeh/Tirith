@@ -75,6 +75,10 @@ export interface SetOnlineItemsRequest {
   items: OnlineItemMessage[];
 }
 
+export interface TemporaryPatronMessage {
+  login: number;
+}
+
 export interface OnlineItemMessage {
   itemType: OnlineItemType;
   slot: number;
@@ -237,6 +241,54 @@ export const SetOnlineItemsRequest = {
     const obj: any = {};
     if (message.items?.length) {
       obj.items = message.items.map((e) => OnlineItemMessage.toJSON(e));
+    }
+    return obj;
+  },
+};
+
+function createBaseTemporaryPatronMessage(): TemporaryPatronMessage {
+  return { login: 0 };
+}
+
+export const TemporaryPatronMessage = {
+  encode(message: TemporaryPatronMessage, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.login !== 0) {
+      writer.uint32(8).int32(message.login);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): TemporaryPatronMessage {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseTemporaryPatronMessage();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.login = reader.int32();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): TemporaryPatronMessage {
+    return { login: isSet(object.login) ? globalThis.Number(object.login) : 0 };
+  },
+
+  toJSON(message: TemporaryPatronMessage): unknown {
+    const obj: any = {};
+    if (message.login !== 0) {
+      obj.login = Math.round(message.login);
     }
     return obj;
   },
@@ -436,6 +488,15 @@ export const AdminDefinition = {
       responseStream: false,
       options: {},
     },
+    /** Get all temporary patrons */
+    getTemporaryPatrons: {
+      name: "GetTemporaryPatrons",
+      requestType: Empty,
+      requestStream: false,
+      responseType: TemporaryPatronMessage,
+      responseStream: true,
+      options: {},
+    },
     /** Fetch current member bubble count and save as bubble traces */
     createBubbleTraces: {
       name: "CreateBubbleTraces",
@@ -480,6 +541,11 @@ export interface AdminServiceImplementation<CallContextExt = {}> {
   reevaluateDropChunks(request: Empty, context: CallContext & CallContextExt): Promise<Empty>;
   /** Update the flags of members */
   updateMemberFlags(request: UpdateMemberFlagsRequest, context: CallContext & CallContextExt): Promise<Empty>;
+  /** Get all temporary patrons */
+  getTemporaryPatrons(
+    request: Empty,
+    context: CallContext & CallContextExt,
+  ): ServerStreamingMethodResult<TemporaryPatronMessage>;
   /** Fetch current member bubble count and save as bubble traces */
   createBubbleTraces(request: Empty, context: CallContext & CallContextExt): Promise<Empty>;
   /** Clear volatile data from tables, like sprites, lobbies and online status */
@@ -495,6 +561,8 @@ export interface AdminClient<CallOptionsExt = {}> {
   reevaluateDropChunks(request: Empty, options?: CallOptions & CallOptionsExt): Promise<Empty>;
   /** Update the flags of members */
   updateMemberFlags(request: UpdateMemberFlagsRequest, options?: CallOptions & CallOptionsExt): Promise<Empty>;
+  /** Get all temporary patrons */
+  getTemporaryPatrons(request: Empty, options?: CallOptions & CallOptionsExt): AsyncIterable<TemporaryPatronMessage>;
   /** Fetch current member bubble count and save as bubble traces */
   createBubbleTraces(request: Empty, options?: CallOptions & CallOptionsExt): Promise<Empty>;
   /** Clear volatile data from tables, like sprites, lobbies and online status */
@@ -516,3 +584,5 @@ if (_m0.util.Long !== Long) {
 function isSet(value: any): boolean {
   return value !== null && value !== undefined;
 }
+
+export type ServerStreamingMethodResult<Response> = { [Symbol.asyncIterator](): AsyncIterator<Response, void> };

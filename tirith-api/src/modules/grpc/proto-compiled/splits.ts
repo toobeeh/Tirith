@@ -46,6 +46,12 @@ export interface SplitReply {
   value: number;
 }
 
+export interface CreateSplitMessage {
+  name: string;
+  description: string;
+  value: number;
+}
+
 /** A split reward of a member */
 export interface SplitRewardReply {
   rewardeeLogin: number;
@@ -527,6 +533,84 @@ export const SplitReply = {
     }
     if (message.creationDate !== undefined) {
       obj.creationDate = message.creationDate.toISOString();
+    }
+    if (message.value !== 0) {
+      obj.value = Math.round(message.value);
+    }
+    return obj;
+  },
+};
+
+function createBaseCreateSplitMessage(): CreateSplitMessage {
+  return { name: "", description: "", value: 0 };
+}
+
+export const CreateSplitMessage = {
+  encode(message: CreateSplitMessage, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.name !== "") {
+      writer.uint32(10).string(message.name);
+    }
+    if (message.description !== "") {
+      writer.uint32(18).string(message.description);
+    }
+    if (message.value !== 0) {
+      writer.uint32(24).int32(message.value);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): CreateSplitMessage {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseCreateSplitMessage();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.name = reader.string();
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.description = reader.string();
+          continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.value = reader.int32();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): CreateSplitMessage {
+    return {
+      name: isSet(object.name) ? globalThis.String(object.name) : "",
+      description: isSet(object.description) ? globalThis.String(object.description) : "",
+      value: isSet(object.value) ? globalThis.Number(object.value) : 0,
+    };
+  },
+
+  toJSON(message: CreateSplitMessage): unknown {
+    const obj: any = {};
+    if (message.name !== "") {
+      obj.name = message.name;
+    }
+    if (message.description !== "") {
+      obj.description = message.description;
     }
     if (message.value !== 0) {
       obj.value = Math.round(message.value);
@@ -1293,6 +1377,15 @@ export const SplitsDefinition = {
       responseStream: false,
       options: {},
     },
+    /** create a new split reward */
+    createSplitReward: {
+      name: "CreateSplitReward",
+      requestType: CreateSplitMessage,
+      requestStream: false,
+      responseType: SplitReply,
+      responseStream: false,
+      options: {},
+    },
     /** Get information of the cost of a dropboost */
     getBoostCostInformation: {
       name: "GetBoostCostInformation",
@@ -1362,6 +1455,8 @@ export interface SplitsServiceImplementation<CallContextExt = {}> {
   ): ServerStreamingMethodResult<SplitRewardReply>;
   /** Reward a member with a split */
   rewardSplit(request: RewardSplitRequest, context: CallContext & CallContextExt): Promise<Empty>;
+  /** create a new split reward */
+  createSplitReward(request: CreateSplitMessage, context: CallContext & CallContextExt): Promise<SplitReply>;
   /** Get information of the cost of a dropboost */
   getBoostCostInformation(request: Empty, context: CallContext & CallContextExt): Promise<BoostCostInformationReply>;
   /** Gets all active dropboosts */
@@ -1397,6 +1492,8 @@ export interface SplitsClient<CallOptionsExt = {}> {
   ): AsyncIterable<SplitRewardReply>;
   /** Reward a member with a split */
   rewardSplit(request: RewardSplitRequest, options?: CallOptions & CallOptionsExt): Promise<Empty>;
+  /** create a new split reward */
+  createSplitReward(request: CreateSplitMessage, options?: CallOptions & CallOptionsExt): Promise<SplitReply>;
   /** Get information of the cost of a dropboost */
   getBoostCostInformation(request: Empty, options?: CallOptions & CallOptionsExt): Promise<BoostCostInformationReply>;
   /** Gets all active dropboosts */

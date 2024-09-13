@@ -27,6 +27,8 @@ import {IAdminService} from "../../services/interfaces/admin.service.interface";
 import {GrpcAdminService} from "./services/grpc-admin.service";
 import {ILeaguesService} from "../../services/interfaces/leagues.service.interface";
 import {GrpcLeaguesService} from "./services/grpc-leagues.service";
+import {ICloudService} from "../../services/interfaces/cloud.service.interface";
+import {GrpcCloudService} from "./services/grpc-cloud.service";
 
 const services: Provider[] = [
     { provide: IScenesService, useClass: GrpcScenesService },
@@ -38,7 +40,8 @@ const services: Provider[] = [
     { provide: ILobbiesService, useClass: GrpcLobbiesService },
     { provide: IMembersService, useClass: GrpcMembersService },
     { provide: IAdminService, useClass: GrpcAdminService },
-    { provide: ILeaguesService, useClass: GrpcLeaguesService }
+    { provide: ILeaguesService, useClass: GrpcLeaguesService },
+    { provide: ICloudService, useClass: GrpcCloudService }
 ]
 
 @Module({

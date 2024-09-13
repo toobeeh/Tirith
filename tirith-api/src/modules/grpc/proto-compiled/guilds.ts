@@ -3,7 +3,7 @@ import type { CallContext, CallOptions } from "nice-grpc-common";
 import Long = require("long");
 import * as _m0 from "protobufjs/minimal";
 import { Empty } from "./google/protobuf/empty";
-import { Int64Value } from "./google/protobuf/wrappers";
+import { Int64Value, StringValue } from "./google/protobuf/wrappers";
 import { MemberReply } from "./members";
 
 export const protobufPackage = "guilds";
@@ -63,6 +63,7 @@ export interface GuildOptionsMessage {
   name: string;
   invite: number;
   prefix: string;
+  botName: string | undefined;
 }
 
 function createBaseGetGuildSupportersMessage(): GetGuildSupportersMessage {
@@ -632,7 +633,7 @@ export const GetGuildOptionsByIdMessage = {
 };
 
 function createBaseGuildOptionsMessage(): GuildOptionsMessage {
-  return { guildId: Long.ZERO, channelId: undefined, name: "", invite: 0, prefix: "" };
+  return { guildId: Long.ZERO, channelId: undefined, name: "", invite: 0, prefix: "", botName: undefined };
 }
 
 export const GuildOptionsMessage = {
@@ -651,6 +652,9 @@ export const GuildOptionsMessage = {
     }
     if (message.prefix !== "") {
       writer.uint32(42).string(message.prefix);
+    }
+    if (message.botName !== undefined) {
+      StringValue.encode({ value: message.botName! }, writer.uint32(50).fork()).ldelim();
     }
     return writer;
   },
@@ -697,6 +701,13 @@ export const GuildOptionsMessage = {
 
           message.prefix = reader.string();
           continue;
+        case 6:
+          if (tag !== 50) {
+            break;
+          }
+
+          message.botName = StringValue.decode(reader, reader.uint32()).value;
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -713,6 +724,7 @@ export const GuildOptionsMessage = {
       name: isSet(object.name) ? globalThis.String(object.name) : "",
       invite: isSet(object.invite) ? globalThis.Number(object.invite) : 0,
       prefix: isSet(object.prefix) ? globalThis.String(object.prefix) : "",
+      botName: isSet(object.botName) ? String(object.botName) : undefined,
     };
   },
 
@@ -732,6 +744,9 @@ export const GuildOptionsMessage = {
     }
     if (message.prefix !== "") {
       obj.prefix = message.prefix;
+    }
+    if (message.botName !== undefined) {
+      obj.botName = message.botName;
     }
     return obj;
   },
