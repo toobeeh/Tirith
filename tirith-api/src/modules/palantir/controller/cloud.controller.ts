@@ -12,6 +12,8 @@ import {AuthRoles, RequiredRole, ResourceOwner} from "../../../decorators/roles.
 import {LoginTokenParamDto} from "../dto/params.dto";
 import {MemberGuard} from "../../../guards/member.guard";
 import {RoleGuard} from "../../../guards/role.guard";
+import {Throttle} from "@nestjs/throttler";
+import {getThrottleForDefinition} from "../../../guards/trottleConfigs";
 
 @ApiSecurityNotes()
 @Controller("cloud")
@@ -23,6 +25,7 @@ export class CloudController {
 
     @Post(":login/search")
     @HttpCode(200)
+    @Throttle(getThrottleForDefinition("throttleThirtyPerMinute"))
     @RequiredRole(AuthRoles.Member)
     @ResourceOwner("login")
     @ApiOperation({ summary: "Search for cloud images" })
