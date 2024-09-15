@@ -6,4 +6,6 @@ export const IObjectStorageService = Symbol("IObjectStorageService");
 export interface IObjectStorageService {
 
     saveImageToCloud(ownerLogin: number, userFolder: string, imageId: Long, creationDate: Date, data: CloudUploadDto): Promise<void>;
+
+    removeImagesFromCloud(userFolder: string, ids: Long[]): Promise<void>;
 }

@@ -46,8 +46,11 @@ export class CloudController {
     @ResourceOwner("login")
     @ApiOperation({ summary: "Delete a image by id from the cloud" })
     @ApiResponse({ status: 204, type: CloudImageDto, description: "The image with specified ID has been deleted" })
-    deleteImageFromUserCloud(@Param() loginParam: LoginTokenParamDto, @Param() idParam: StringIdParamDto): Promise<void> {
-        return this.cloudService.removeImageFromCloud(loginParam.login, [Long.fromString(idParam.id)]);
+    async deleteImageFromUserCloud(@Req() request: Request, @Param() loginParam: LoginTokenParamDto, @Param() idParam: StringIdParamDto): Promise<void> {
+        const member = (request as any).user as MemberDto
+
+        await this.cloudService.removeImageFromCloud(loginParam.login, [Long.fromString(idParam.id)]);
+        await this.objectStorageService.removeImagesFromCloud(member.discordID, [Long.fromString(idParam.id)]);
     }
 
     @Post(":login/search")
@@ -68,10 +71,12 @@ export class CloudController {
     @ResourceOwner("login")
     @ApiOperation({ summary: "Delete multiple images from the user's cloud" })
     @ApiResponse({ status: 200 })
-    async bulkDeleteFromUserCloud(@Param() params: LoginTokenParamDto, @Body() body: CloudDeleteDto): Promise<void> {
+    async bulkDeleteFromUserCloud(@Req() request: Request, @Param() params: LoginTokenParamDto, @Body() body: CloudDeleteDto): Promise<void> {
 
+        const member = (request as any).user as MemberDto
         const ids = body.ids.map(id => Long.fromString(id));
         await this.cloudService.removeImageFromCloud(params.login, ids);
+        await this.objectStorageService.removeImagesFromCloud(member.discordID, ids);
         return;
     }
 
@@ -83,7 +88,7 @@ export class CloudController {
     @ApiResponse({ status: 201 })
     async uploadToUserCloud(@Req() request: Request, @Param() params: LoginTokenParamDto, @Body() image: CloudUploadDto): Promise<void> {
 
-        const member = (request as any).user as MemberDto
+        const member = (request as any).user as MemberDto;
         const creationDate = new Date();
         const imageId = await this.cloudService.saveImageToCloud(image, params.login, creationDate);
         try {

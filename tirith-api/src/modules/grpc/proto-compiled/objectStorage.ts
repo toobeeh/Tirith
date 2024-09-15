@@ -20,7 +20,8 @@ export interface SaveImageToCloudMessage {
 }
 
 export interface DeleteImagesFromCloudMessage {
-  imageIdentifications: CloudImageIdentificationMessage[];
+  userFolder: string;
+  imageIds: Long[];
 }
 
 function createBaseCloudImageIdentificationMessage(): CloudImageIdentificationMessage {
@@ -189,14 +190,19 @@ export const SaveImageToCloudMessage = {
 };
 
 function createBaseDeleteImagesFromCloudMessage(): DeleteImagesFromCloudMessage {
-  return { imageIdentifications: [] };
+  return { userFolder: "", imageIds: [] };
 }
 
 export const DeleteImagesFromCloudMessage = {
   encode(message: DeleteImagesFromCloudMessage, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    for (const v of message.imageIdentifications) {
-      CloudImageIdentificationMessage.encode(v!, writer.uint32(10).fork()).ldelim();
+    if (message.userFolder !== "") {
+      writer.uint32(10).string(message.userFolder);
     }
+    writer.uint32(18).fork();
+    for (const v of message.imageIds) {
+      writer.int64(v);
+    }
+    writer.ldelim();
     return writer;
   },
 
@@ -212,8 +218,25 @@ export const DeleteImagesFromCloudMessage = {
             break;
           }
 
-          message.imageIdentifications.push(CloudImageIdentificationMessage.decode(reader, reader.uint32()));
+          message.userFolder = reader.string();
           continue;
+        case 2:
+          if (tag === 16) {
+            message.imageIds.push(reader.int64() as Long);
+
+            continue;
+          }
+
+          if (tag === 18) {
+            const end2 = reader.uint32() + reader.pos;
+            while (reader.pos < end2) {
+              message.imageIds.push(reader.int64() as Long);
+            }
+
+            continue;
+          }
+
+          break;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -225,16 +248,18 @@ export const DeleteImagesFromCloudMessage = {
 
   fromJSON(object: any): DeleteImagesFromCloudMessage {
     return {
-      imageIdentifications: globalThis.Array.isArray(object?.imageIdentifications)
-        ? object.imageIdentifications.map((e: any) => CloudImageIdentificationMessage.fromJSON(e))
-        : [],
+      userFolder: isSet(object.userFolder) ? globalThis.String(object.userFolder) : "",
+      imageIds: globalThis.Array.isArray(object?.imageIds) ? object.imageIds.map((e: any) => Long.fromValue(e)) : [],
     };
   },
 
   toJSON(message: DeleteImagesFromCloudMessage): unknown {
     const obj: any = {};
-    if (message.imageIdentifications?.length) {
-      obj.imageIdentifications = message.imageIdentifications.map((e) => CloudImageIdentificationMessage.toJSON(e));
+    if (message.userFolder !== "") {
+      obj.userFolder = message.userFolder;
+    }
+    if (message.imageIds?.length) {
+      obj.imageIds = message.imageIds.map((e) => (e || Long.ZERO).toString());
     }
     return obj;
   },
@@ -254,10 +279,10 @@ export const ObjectStorageDefinition = {
       responseStream: false,
       options: {},
     },
-    /** Delete an image from the cloud */
-    deleteImageFromCloud: {
-      name: "DeleteImageFromCloud",
-      requestType: CloudImageIdentificationMessage,
+    /** Delete images from the cloud */
+    deleteImagesFromCloud: {
+      name: "DeleteImagesFromCloud",
+      requestType: DeleteImagesFromCloudMessage,
       requestStream: false,
       responseType: Empty,
       responseStream: false,
@@ -272,8 +297,8 @@ export interface ObjectStorageServiceImplementation<CallContextExt = {}> {
     request: AsyncIterable<SaveImageToCloudMessage>,
     context: CallContext & CallContextExt,
   ): Promise<Empty>;
-  /** Delete an image from the cloud */
-  deleteImageFromCloud(request: CloudImageIdentificationMessage, context: CallContext & CallContextExt): Promise<Empty>;
+  /** Delete images from the cloud */
+  deleteImagesFromCloud(request: DeleteImagesFromCloudMessage, context: CallContext & CallContextExt): Promise<Empty>;
 }
 
 export interface ObjectStorageClient<CallOptionsExt = {}> {
@@ -282,11 +307,8 @@ export interface ObjectStorageClient<CallOptionsExt = {}> {
     request: AsyncIterable<SaveImageToCloudMessage>,
     options?: CallOptions & CallOptionsExt,
   ): Promise<Empty>;
-  /** Delete an image from the cloud */
-  deleteImageFromCloud(
-    request: CloudImageIdentificationMessage,
-    options?: CallOptions & CallOptionsExt,
-  ): Promise<Empty>;
+  /** Delete images from the cloud */
+  deleteImagesFromCloud(request: DeleteImagesFromCloudMessage, options?: CallOptions & CallOptionsExt): Promise<Empty>;
 }
 
 if (_m0.util.Long !== Long) {

@@ -32,6 +32,10 @@ export class GrpcObjectStorageService extends GrpcBaseService<ObjectStorageDefin
         await this.grpcClient.saveImageToCloud(asyncIteratorFromArray(messages));
     }
 
+    async removeImagesFromCloud(userFolder: string, ids: Long[]): Promise<void> {
+        await this.grpcClient.deleteImagesFromCloud({userFolder, imageIds: ids});
+    }
+
     private createCloudUploadMessages(
         imageBytes: Uint8Array,
         commandsBytes: Uint8Array,
