@@ -2,6 +2,7 @@
 import type { CallContext, CallOptions } from "nice-grpc-common";
 import Long = require("long");
 import * as _m0 from "protobufjs/minimal";
+import { Empty } from "./google/protobuf/empty";
 import { BoolValue, Int64Value, StringValue } from "./google/protobuf/wrappers";
 
 export const protobufPackage = "cloud";
@@ -34,6 +35,21 @@ export interface CloudTagMessage {
   createdAt: Long;
   createdInPrivateLobby: boolean;
   isOwn: boolean;
+  ownerLogin: number;
+}
+
+export interface CloudImageIdMessage {
+  id: Long;
+}
+
+export interface GetCloudTagsByIdMessage {
+  id: Long;
+  ownerLogin: number;
+}
+
+export interface DeleteCloudTagsMessage {
+  ownerLogin: number;
+  ids: Long[];
 }
 
 function createBaseSearchCloudMessage(): SearchCloudMessage {
@@ -332,7 +348,15 @@ export const CloudImageMessage = {
 };
 
 function createBaseCloudTagMessage(): CloudTagMessage {
-  return { title: "", author: "", language: "", createdAt: Long.ZERO, createdInPrivateLobby: false, isOwn: false };
+  return {
+    title: "",
+    author: "",
+    language: "",
+    createdAt: Long.ZERO,
+    createdInPrivateLobby: false,
+    isOwn: false,
+    ownerLogin: 0,
+  };
 }
 
 export const CloudTagMessage = {
@@ -354,6 +378,9 @@ export const CloudTagMessage = {
     }
     if (message.isOwn === true) {
       writer.uint32(48).bool(message.isOwn);
+    }
+    if (message.ownerLogin !== 0) {
+      writer.uint32(56).int32(message.ownerLogin);
     }
     return writer;
   },
@@ -407,6 +434,13 @@ export const CloudTagMessage = {
 
           message.isOwn = reader.bool();
           continue;
+        case 7:
+          if (tag !== 56) {
+            break;
+          }
+
+          message.ownerLogin = reader.int32();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -426,6 +460,7 @@ export const CloudTagMessage = {
         ? globalThis.Boolean(object.createdInPrivateLobby)
         : false,
       isOwn: isSet(object.isOwn) ? globalThis.Boolean(object.isOwn) : false,
+      ownerLogin: isSet(object.ownerLogin) ? globalThis.Number(object.ownerLogin) : 0,
     };
   },
 
@@ -449,6 +484,197 @@ export const CloudTagMessage = {
     if (message.isOwn === true) {
       obj.isOwn = message.isOwn;
     }
+    if (message.ownerLogin !== 0) {
+      obj.ownerLogin = Math.round(message.ownerLogin);
+    }
+    return obj;
+  },
+};
+
+function createBaseCloudImageIdMessage(): CloudImageIdMessage {
+  return { id: Long.ZERO };
+}
+
+export const CloudImageIdMessage = {
+  encode(message: CloudImageIdMessage, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (!message.id.isZero()) {
+      writer.uint32(8).int64(message.id);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): CloudImageIdMessage {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseCloudImageIdMessage();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.id = reader.int64() as Long;
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): CloudImageIdMessage {
+    return { id: isSet(object.id) ? Long.fromValue(object.id) : Long.ZERO };
+  },
+
+  toJSON(message: CloudImageIdMessage): unknown {
+    const obj: any = {};
+    if (!message.id.isZero()) {
+      obj.id = (message.id || Long.ZERO).toString();
+    }
+    return obj;
+  },
+};
+
+function createBaseGetCloudTagsByIdMessage(): GetCloudTagsByIdMessage {
+  return { id: Long.ZERO, ownerLogin: 0 };
+}
+
+export const GetCloudTagsByIdMessage = {
+  encode(message: GetCloudTagsByIdMessage, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (!message.id.isZero()) {
+      writer.uint32(8).int64(message.id);
+    }
+    if (message.ownerLogin !== 0) {
+      writer.uint32(16).int32(message.ownerLogin);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetCloudTagsByIdMessage {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetCloudTagsByIdMessage();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.id = reader.int64() as Long;
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.ownerLogin = reader.int32();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetCloudTagsByIdMessage {
+    return {
+      id: isSet(object.id) ? Long.fromValue(object.id) : Long.ZERO,
+      ownerLogin: isSet(object.ownerLogin) ? globalThis.Number(object.ownerLogin) : 0,
+    };
+  },
+
+  toJSON(message: GetCloudTagsByIdMessage): unknown {
+    const obj: any = {};
+    if (!message.id.isZero()) {
+      obj.id = (message.id || Long.ZERO).toString();
+    }
+    if (message.ownerLogin !== 0) {
+      obj.ownerLogin = Math.round(message.ownerLogin);
+    }
+    return obj;
+  },
+};
+
+function createBaseDeleteCloudTagsMessage(): DeleteCloudTagsMessage {
+  return { ownerLogin: 0, ids: [] };
+}
+
+export const DeleteCloudTagsMessage = {
+  encode(message: DeleteCloudTagsMessage, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.ownerLogin !== 0) {
+      writer.uint32(8).int32(message.ownerLogin);
+    }
+    writer.uint32(18).fork();
+    for (const v of message.ids) {
+      writer.int64(v);
+    }
+    writer.ldelim();
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): DeleteCloudTagsMessage {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseDeleteCloudTagsMessage();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.ownerLogin = reader.int32();
+          continue;
+        case 2:
+          if (tag === 16) {
+            message.ids.push(reader.int64() as Long);
+
+            continue;
+          }
+
+          if (tag === 18) {
+            const end2 = reader.uint32() + reader.pos;
+            while (reader.pos < end2) {
+              message.ids.push(reader.int64() as Long);
+            }
+
+            continue;
+          }
+
+          break;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): DeleteCloudTagsMessage {
+    return {
+      ownerLogin: isSet(object.ownerLogin) ? globalThis.Number(object.ownerLogin) : 0,
+      ids: globalThis.Array.isArray(object?.ids) ? object.ids.map((e: any) => Long.fromValue(e)) : [],
+    };
+  },
+
+  toJSON(message: DeleteCloudTagsMessage): unknown {
+    const obj: any = {};
+    if (message.ownerLogin !== 0) {
+      obj.ownerLogin = Math.round(message.ownerLogin);
+    }
+    if (message.ids?.length) {
+      obj.ids = message.ids.map((e) => (e || Long.ZERO).toString());
+    }
     return obj;
   },
 };
@@ -467,6 +693,30 @@ export const CloudDefinition = {
       responseStream: true,
       options: {},
     },
+    saveCloudTags: {
+      name: "SaveCloudTags",
+      requestType: CloudTagMessage,
+      requestStream: false,
+      responseType: CloudImageIdMessage,
+      responseStream: false,
+      options: {},
+    },
+    getCloudTagsById: {
+      name: "GetCloudTagsById",
+      requestType: GetCloudTagsByIdMessage,
+      requestStream: false,
+      responseType: CloudImageMessage,
+      responseStream: false,
+      options: {},
+    },
+    deleteCloudTags: {
+      name: "DeleteCloudTags",
+      requestType: DeleteCloudTagsMessage,
+      requestStream: false,
+      responseType: Empty,
+      responseStream: false,
+      options: {},
+    },
   },
 } as const;
 
@@ -475,10 +725,19 @@ export interface CloudServiceImplementation<CallContextExt = {}> {
     request: SearchCloudMessage,
     context: CallContext & CallContextExt,
   ): ServerStreamingMethodResult<CloudImageMessage>;
+  saveCloudTags(request: CloudTagMessage, context: CallContext & CallContextExt): Promise<CloudImageIdMessage>;
+  getCloudTagsById(request: GetCloudTagsByIdMessage, context: CallContext & CallContextExt): Promise<CloudImageMessage>;
+  deleteCloudTags(request: DeleteCloudTagsMessage, context: CallContext & CallContextExt): Promise<Empty>;
 }
 
 export interface CloudClient<CallOptionsExt = {}> {
   searchCloud(request: SearchCloudMessage, options?: CallOptions & CallOptionsExt): AsyncIterable<CloudImageMessage>;
+  saveCloudTags(request: CloudTagMessage, options?: CallOptions & CallOptionsExt): Promise<CloudImageIdMessage>;
+  getCloudTagsById(
+    request: GetCloudTagsByIdMessage,
+    options?: CallOptions & CallOptionsExt,
+  ): Promise<CloudImageMessage>;
+  deleteCloudTags(request: DeleteCloudTagsMessage, options?: CallOptions & CallOptionsExt): Promise<Empty>;
 }
 
 if (_m0.util.Long !== Long) {

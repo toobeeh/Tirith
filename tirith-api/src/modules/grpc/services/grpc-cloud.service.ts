@@ -6,6 +6,7 @@ import {ICloudService} from "../../../services/interfaces/cloud.service.interfac
 import {CloudImageDto} from "../../palantir/dto/cloud.dto";
 import {CloudSearchDto} from "../../palantir/dto/cloudSearch.dto";
 import {Long} from "@grpc/proto-loader";
+import {CloudUploadDto} from "../../palantir/dto/cloudUpload.dto";
 
 @Injectable()
 export class GrpcCloudService extends GrpcBaseService<CloudDefinition> implements ICloudService {
@@ -45,5 +46,28 @@ export class GrpcCloudService extends GrpcBaseService<CloudDefinition> implement
         const search = this.cloudSearchDtoToMessage(login, filter);
         const results = await this.collectFromAsyncIterable(this.grpcClient.searchCloud(search));
         return results.map(t => this.cloudMessageToDto(t));
+    }
+
+    async removeImageFromCloud(ownerLogin: number, ids: Long[]): Promise<void> {
+        await this.grpcClient.deleteCloudTags({ids, ownerLogin});
+    }
+
+    async getImageFromCloud(ownerLogin: number, id: Long): Promise<CloudImageDto> {
+        const response = await this.grpcClient.getCloudTagsById({id, ownerLogin});
+        return this.cloudMessageToDto(response);
+    }
+
+    async saveImageToCloud(data: CloudUploadDto, ownerLogin: number, creationDate: Date): Promise<Long> {
+        const response = await this.grpcClient.saveCloudTags({
+            title: data.name,
+            author: data.author,
+            isOwn: data.isOwn,
+            createdInPrivateLobby: data.inPrivate,
+            createdAt: Long.fromValue(creationDate.getTime()),
+            ownerLogin,
+            language: data.language
+        });
+
+        return response.id;
     }
 }

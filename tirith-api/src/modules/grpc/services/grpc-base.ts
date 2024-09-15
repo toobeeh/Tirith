@@ -6,8 +6,8 @@ export abstract class GrpcBaseService<TService extends CompatServiceDefinition> 
 
     protected readonly grpcClient: Client<TService>;
 
-    constructor(definitionClass: TService, config: ConfigService) {
-        const channelUrl = config.getOrThrow("GRPC_VALMAR_CHANNEL");
+    constructor(definitionClass: TService, config: ConfigService, configChannelKey = "GRPC_VALMAR_CHANNEL") {
+        const channelUrl = config.getOrThrow(configChannelKey);
         const channel = createChannel(channelUrl);
         this.grpcClient = createClient(definitionClass, channel);
     }
