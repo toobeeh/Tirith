@@ -5,6 +5,7 @@ WORKDIR /app/
 # default env values for domain name and oauth details
 ARG GRPC_CHANNEL="channel.domain.tld:port"
 ENV GRPC_CHANNEL "${GRPC_CHANNEL}"
+ARG CONTENT_GRPC_CHANNEL="channel.domain.tld:port"
 ENV CONTENT_GRPC_CHANNEL "${CONTENT_GRPC_CHANNEL}"
 
 ARG DISCORD_OAUTH_CLIENT_ID="123"
