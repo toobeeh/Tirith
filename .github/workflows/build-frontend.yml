@@ -7,6 +7,8 @@ on:
     paths:
       - '.github/workflows/build-frontend.yml'
       - 'tirith-frontend/**'
+      - '.docker/Dockerfile-frontend'
+      - '.docker/entrypoint-frontend'
 
 env:
   IMAGE_NAME: tirith-frontend
