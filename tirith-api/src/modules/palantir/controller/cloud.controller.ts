@@ -89,8 +89,9 @@ export class CloudController {
         try {
             await this.objectStorageService.saveImageToCloud(Number(member.userLogin), member.discordID, imageId, creationDate, image);
         }
-        catch {
+        catch(e) {
             await this.cloudService.removeImageFromCloud(params.login, [imageId]);
+            console.error(e);
             throw new Error("Failed to upload image to cloud");
         }
 
