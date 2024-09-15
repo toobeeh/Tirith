@@ -8,7 +8,7 @@ on:
       - '.github/workflows/build-api.yml'
       - 'tirith-api/**'
       - '.docker/Dockerfile-api'
-      - '.docker/entrypoint-api'
+      - '.docker/entrypoint-api.sh'
 
 env:
   IMAGE_NAME: tirith-api

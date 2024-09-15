@@ -8,7 +8,7 @@ on:
       - '.github/workflows/build-frontend.yml'
       - 'tirith-frontend/**'
       - '.docker/Dockerfile-frontend'
-      - '.docker/entrypoint-frontend'
+      - '.docker/entrypoint-frontend.sh'
 
 env:
   IMAGE_NAME: tirith-frontend
