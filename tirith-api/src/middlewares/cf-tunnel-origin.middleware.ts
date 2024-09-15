@@ -1,4 +1,4 @@
-import { Injectable, NestMiddleware, RequestMethod } from '@nestjs/common';
+import { Injectable, NestMiddleware } from '@nestjs/common';
 import { Request, Response, NextFunction } from 'express';
 @Injectable()
 export class CfTunnelOriginMiddleware implements NestMiddleware {
@@ -8,7 +8,6 @@ export class CfTunnelOriginMiddleware implements NestMiddleware {
         const cfIpHeader = req.headers["cf-connecting-ip"];
         if(typeof cfIpHeader === "string") {
             req.headers["x-forwarded-for"] = cfIpHeader;
-            console.log("found cf ip " + cfIpHeader);
         }
 
         // Ends middleware function execution, hence allowing to move on
