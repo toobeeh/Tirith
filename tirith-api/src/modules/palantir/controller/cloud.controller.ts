@@ -9,7 +9,7 @@ import {
     Get,
     HttpCode,
     Inject,
-    Param,
+    Param, Patch,
     Post,
     Put,
     Req,
@@ -66,7 +66,7 @@ export class CloudController {
         await this.objectStorageService.removeImagesFromCloud(member.discordID, [Long.fromString(idParam.id)]);
     }
 
-    @Put(":login/:id/award/:token")
+    @Patch(":login/:id/award/:token")
     @Throttle(getThrottleForDefinition("throttleTenPerMinute"))
     @RequiredRole(AuthRoles.Member)
     @ResourceOwner("login")
