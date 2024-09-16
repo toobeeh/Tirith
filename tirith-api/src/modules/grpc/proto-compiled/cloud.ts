@@ -47,6 +47,12 @@ export interface GetCloudTagsByIdMessage {
   ownerLogin: number;
 }
 
+export interface LinkImageToAwardMessage {
+  id: Long;
+  ownerLogin: number;
+  awardInventoryId: number;
+}
+
 export interface DeleteCloudTagsMessage {
   ownerLogin: number;
   ids: Long[];
@@ -603,6 +609,84 @@ export const GetCloudTagsByIdMessage = {
   },
 };
 
+function createBaseLinkImageToAwardMessage(): LinkImageToAwardMessage {
+  return { id: Long.ZERO, ownerLogin: 0, awardInventoryId: 0 };
+}
+
+export const LinkImageToAwardMessage = {
+  encode(message: LinkImageToAwardMessage, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (!message.id.isZero()) {
+      writer.uint32(8).int64(message.id);
+    }
+    if (message.ownerLogin !== 0) {
+      writer.uint32(16).int32(message.ownerLogin);
+    }
+    if (message.awardInventoryId !== 0) {
+      writer.uint32(24).int32(message.awardInventoryId);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): LinkImageToAwardMessage {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseLinkImageToAwardMessage();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.id = reader.int64() as Long;
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.ownerLogin = reader.int32();
+          continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.awardInventoryId = reader.int32();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): LinkImageToAwardMessage {
+    return {
+      id: isSet(object.id) ? Long.fromValue(object.id) : Long.ZERO,
+      ownerLogin: isSet(object.ownerLogin) ? globalThis.Number(object.ownerLogin) : 0,
+      awardInventoryId: isSet(object.awardInventoryId) ? globalThis.Number(object.awardInventoryId) : 0,
+    };
+  },
+
+  toJSON(message: LinkImageToAwardMessage): unknown {
+    const obj: any = {};
+    if (!message.id.isZero()) {
+      obj.id = (message.id || Long.ZERO).toString();
+    }
+    if (message.ownerLogin !== 0) {
+      obj.ownerLogin = Math.round(message.ownerLogin);
+    }
+    if (message.awardInventoryId !== 0) {
+      obj.awardInventoryId = Math.round(message.awardInventoryId);
+    }
+    return obj;
+  },
+};
+
 function createBaseDeleteCloudTagsMessage(): DeleteCloudTagsMessage {
   return { ownerLogin: 0, ids: [] };
 }
@@ -717,6 +801,14 @@ export const CloudDefinition = {
       responseStream: false,
       options: {},
     },
+    linkImageToAward: {
+      name: "LinkImageToAward",
+      requestType: LinkImageToAwardMessage,
+      requestStream: false,
+      responseType: Empty,
+      responseStream: false,
+      options: {},
+    },
   },
 } as const;
 
@@ -728,6 +820,7 @@ export interface CloudServiceImplementation<CallContextExt = {}> {
   saveCloudTags(request: CloudTagMessage, context: CallContext & CallContextExt): Promise<CloudImageIdMessage>;
   getCloudTagsById(request: GetCloudTagsByIdMessage, context: CallContext & CallContextExt): Promise<CloudImageMessage>;
   deleteCloudTags(request: DeleteCloudTagsMessage, context: CallContext & CallContextExt): Promise<Empty>;
+  linkImageToAward(request: LinkImageToAwardMessage, context: CallContext & CallContextExt): Promise<Empty>;
 }
 
 export interface CloudClient<CallOptionsExt = {}> {
@@ -738,6 +831,7 @@ export interface CloudClient<CallOptionsExt = {}> {
     options?: CallOptions & CallOptionsExt,
   ): Promise<CloudImageMessage>;
   deleteCloudTags(request: DeleteCloudTagsMessage, options?: CallOptions & CallOptionsExt): Promise<Empty>;
+  linkImageToAward(request: LinkImageToAwardMessage, options?: CallOptions & CallOptionsExt): Promise<Empty>;
 }
 
 if (_m0.util.Long !== Long) {

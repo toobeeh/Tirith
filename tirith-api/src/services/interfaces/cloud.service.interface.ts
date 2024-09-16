@@ -14,4 +14,6 @@ export interface ICloudService {
     removeImageFromCloud(ownerLogin: number, ids: Long[]): Promise<void>;
 
     getImageFromCloud(ownerLogin: number, id: Long): Promise<CloudImageDto>;
+
+    linkImageToAward(ownerLogin: number, awardInventoryId: number, imageId: Long): Promise<void>;
 }

@@ -57,6 +57,10 @@ export class GrpcCloudService extends GrpcBaseService<CloudDefinition> implement
         return this.cloudMessageToDto(response);
     }
 
+    async linkImageToAward(ownerLogin: number, awardInventoryId: number, imageId: Long): Promise<void> {
+        await this.grpcClient.linkImageToAward({ownerLogin, awardInventoryId, id: imageId});
+    }
+
     async saveImageToCloud(data: CloudUploadDto, ownerLogin: number, creationDate: Date): Promise<Long> {
         const response = await this.grpcClient.saveCloudTags({
             title: data.name,
