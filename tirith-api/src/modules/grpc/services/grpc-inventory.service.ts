@@ -31,4 +31,9 @@ export class GrpcInventoryService extends GrpcBaseService<InventoryDefinition> i
             combo: slots.map(slot => ({spriteId: slot.spriteId, slotId: slot.slotId}))
         });
     }
+
+    async getSpriteSlotCount(login: number): Promise<number> {
+        const count = await this.grpcClient.getSpriteSlotCount({login});
+        return count.unlockedSlots;
+    }
 }

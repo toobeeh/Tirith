@@ -7,4 +7,6 @@ export interface IInventoryService {
     getSpriteInventory(login: number): Promise<SpriteInventoryDto[]>;
 
     setSpriteSlots(login: number, slots: SpriteSlotDto[], overwriteOther: boolean): Promise<void>;
+
+    getSpriteSlotCount(login: number): Promise<number>;
 }

@@ -26,3 +26,9 @@ export class SpriteInventoryDto {
     @XApiProperty({ description: "A rainbow sprite color shift" })
     colorShift?: number;
 }
+
+export class SpriteSlotCountDto {
+
+    @XApiProperty({ description: "The amount of unlocked srite slots" })
+    unlockedSlots: number;
+}
