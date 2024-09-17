@@ -42,7 +42,7 @@ export const ApiSecurityNotes = (): ClassDecorator => {
             /* build security information */
             if (methodRole) {
                 let rolesDesc = `Required Role: ${AuthRoles[methodRole]}`;
-                if (ownerOverride != null) rolesDesc += `\n\Role override if {${ownerOverride}} matches the client login.`;
+                if (ownerOverride != null) rolesDesc += `\n- \Role override if {${ownerOverride}} matches the client login.`;
                 description += "\n\n" + rolesDesc;
             }
 

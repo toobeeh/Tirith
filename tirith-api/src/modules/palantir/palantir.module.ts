@@ -20,6 +20,7 @@ import { GrpcModule } from '../grpc/grpc.module';
 import {AdminController} from "./controller/admin.controller";
 import {LeaguesController} from "./controller/leagues.controller";
 import {CloudController} from "./controller/cloud.controller";
+import {InventoryController} from "./controller/inventory.controller";
 
 @Module({
     imports: [
@@ -37,7 +38,8 @@ import {CloudController} from "./controller/cloud.controller";
         ThemesController,
         AdminController,
         LeaguesController,
-        CloudController
+        CloudController,
+        InventoryController
     ],
     providers: [
         DiscordApiService,

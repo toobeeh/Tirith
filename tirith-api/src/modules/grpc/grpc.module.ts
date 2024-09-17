@@ -31,6 +31,8 @@ import {ICloudService} from "../../services/interfaces/cloud.service.interface";
 import {GrpcCloudService} from "./services/grpc-cloud.service";
 import {IObjectStorageService} from "../../services/interfaces/object-storage.service.interface";
 import {GrpcObjectStorageService} from "./services/grpc-object-storage.service";
+import {IInventoryService} from "../../services/interfaces/inventory.service.interface";
+import {GrpcInventoryService} from "./services/grpc-inventory.service";
 
 const services: Provider[] = [
     { provide: IScenesService, useClass: GrpcScenesService },
@@ -44,6 +46,7 @@ const services: Provider[] = [
     { provide: IAdminService, useClass: GrpcAdminService },
     { provide: ILeaguesService, useClass: GrpcLeaguesService },
     { provide: ICloudService, useClass: GrpcCloudService },
+    { provide: IInventoryService, useClass: GrpcInventoryService },
     { provide: IObjectStorageService, useClass: GrpcObjectStorageService }
 ]
 
