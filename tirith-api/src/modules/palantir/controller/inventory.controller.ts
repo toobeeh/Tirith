@@ -13,14 +13,14 @@ import {SpriteComboDto, SpriteInventoryDto, SpriteSlotDto} from "../dto/inventor
 import {IInventoryService} from "../../../services/interfaces/inventory.service.interface";
 
 @ApiSecurityNotes()
-@Controller("inventory")
+@Controller("member")
 @ApiTags("inventory")
 @UseGuards(MemberGuard, RoleGuard)
 export class InventoryController {
 
     constructor(@Inject(IInventoryService) private inventoryService: IInventoryService) { }
 
-    @Patch("member/:login/inventory/sprites/combo")
+    @Patch(":login/inventory/sprites/combo")
     @RequiredRole(AuthRoles.Moderator)
     @ResourceOwner("login")
     @ApiOperation({ summary: "Set the sprite combo of a member" })
@@ -29,7 +29,7 @@ export class InventoryController {
         await this.inventoryService.setSpriteSlots(login.login, combo.slots, true);
     }
 
-    @Patch("member/:login/inventory/sprites/slot")
+    @Patch(":login/inventory/sprites/slot")
     @RequiredRole(AuthRoles.Moderator)
     @ResourceOwner("login")
     @ApiOperation({ summary: "Set a sprite slot of a member" })
@@ -38,7 +38,7 @@ export class InventoryController {
         await this.inventoryService.setSpriteSlots(login.login, [slot], false);
     }
 
-    @Get("member/:login/inventory/sprites")
+    @Get(":login/inventory/sprites")
     @RequiredRole(AuthRoles.Moderator)
     @ResourceOwner("login")
     @ApiOperation({ summary: "Get all sprites in the inventory of a member" })
