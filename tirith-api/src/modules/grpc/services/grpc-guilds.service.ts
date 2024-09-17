@@ -1,12 +1,13 @@
-import { Injectable } from "@nestjs/common";
-import { ConfigService } from "@nestjs/config";
-import { GrpcBaseService } from "./grpc-base";
-import { GuildReply, GuildsDefinition } from "../proto-compiled/guilds";
-import { IGuildsService } from "src/services/interfaces/guilds.service.interface";
-import { GuildInviteDto } from "src/modules/palantir/dto/guilds.dto";
-import { GuildDto } from "src/modules/palantir/dto/member.dto";
+import {Injectable} from "@nestjs/common";
+import {ConfigService} from "@nestjs/config";
+import {GrpcBaseService} from "./grpc-base";
+import {GuildReply, GuildsDefinition} from "../proto-compiled/guilds";
+import {IGuildsService} from "src/services/interfaces/guilds.service.interface";
+import {GuildInviteDto} from "src/modules/palantir/dto/guilds.dto";
+import {GuildDto, WebhookDto} from "src/modules/palantir/dto/member.dto";
 import {DiscordApiGuildDto, DiscordApiService} from "src/services/discord-api.service";
-import { map } from "rxjs";
+import {map} from "rxjs";
+import {Long} from "@grpc/proto-loader";
 
 @Injectable()
 export class GrpcGuildsService extends GrpcBaseService<GuildsDefinition> implements IGuildsService {
@@ -47,9 +48,18 @@ export class GrpcGuildsService extends GrpcBaseService<GuildsDefinition> impleme
         return mappedGuild;
     }
 
-    async getGuildConnectionDetails(invite: number): Promise<GuildDto> {
+    async getGuildByInvite(invite: number): Promise<GuildDto> {
         const guild = await this.grpcClient.getGuildByInvite({ invite: invite });
         const mappedGuild = this.mapGuildDto(guild);
         return mappedGuild;
+    }
+
+    async getGuildWebhooks(guild: GuildDto): Promise<WebhookDto[]> {
+        const webhooks = await this.collectFromAsyncIterable(this.grpcClient.getGuildWebhooks({guildId: Long.fromString(guild.GuildID)}));
+        return webhooks.map(hook => ({
+            Name: hook.name,
+            Guild: guild.GuildName,
+            URL: hook.url
+        }));
     }
 }

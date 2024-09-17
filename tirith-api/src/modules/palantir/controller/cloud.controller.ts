@@ -11,7 +11,6 @@ import {
     Inject,
     Param, Patch,
     Post,
-    Put,
     Req,
     Request,
     UseGuards

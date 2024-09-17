@@ -1,5 +1,5 @@
-import { GuildInviteDto } from "../../modules/palantir/dto/guilds.dto";
-import { GuildDto } from "../../modules/palantir/dto/member.dto";
+import {GuildInviteDto} from "../../modules/palantir/dto/guilds.dto";
+import {GuildDto, WebhookDto} from "../../modules/palantir/dto/member.dto";
 
 export const IGuildsService = Symbol("IGuildsService");
 
@@ -14,5 +14,7 @@ export interface IGuildsService {
     /**
      * Get the preview data to display a server connection invite
      */
-    getGuildConnectionDetails(invite: number): Promise<GuildDto>;
+    getGuildByInvite(invite: number): Promise<GuildDto>;
+
+    getGuildWebhooks(guild: GuildDto): Promise<WebhookDto[]>;
 }

@@ -2,7 +2,7 @@
 https://docs.nestjs.com/providers#services
 */
 
-import {Inject, Injectable, NotFoundException} from '@nestjs/common';
+import {Inject, Injectable} from '@nestjs/common';
 import { IMembersService } from './interfaces/members.service.interface';
 import {ClientError, Status} from "nice-grpc";
 
