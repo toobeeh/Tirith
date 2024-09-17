@@ -11,6 +11,8 @@ import {RoleGuard} from "../../../guards/role.guard";
 import {MemberGuard} from "../../../guards/member.guard";
 import {SpriteComboDto, SpriteInventoryDto, SpriteSlotDto} from "../dto/inventory.dto";
 import {IInventoryService} from "../../../services/interfaces/inventory.service.interface";
+import {Throttle} from "@nestjs/throttler";
+import {getThrottleForDefinition} from "../../../guards/trottleConfigs";
 
 @ApiSecurityNotes()
 @Controller("member")
@@ -21,6 +23,7 @@ export class InventoryController {
     constructor(@Inject(IInventoryService) private inventoryService: IInventoryService) { }
 
     @Patch(":login/inventory/sprites/combo")
+    @Throttle(getThrottleForDefinition("throttleThirtyPerMinute"))
     @RequiredRole(AuthRoles.Moderator)
     @ResourceOwner("login")
     @ApiOperation({ summary: "Set the sprite combo of a member" })
@@ -30,6 +33,7 @@ export class InventoryController {
     }
 
     @Patch(":login/inventory/sprites/slot")
+    @Throttle(getThrottleForDefinition("throttleThirtyPerMinute"))
     @RequiredRole(AuthRoles.Moderator)
     @ResourceOwner("login")
     @ApiOperation({ summary: "Set a sprite slot of a member" })
@@ -39,6 +43,7 @@ export class InventoryController {
     }
 
     @Get(":login/inventory/sprites")
+    @Throttle(getThrottleForDefinition("throttleThirtyPerMinute"))
     @RequiredRole(AuthRoles.Moderator)
     @ResourceOwner("login")
     @ApiOperation({ summary: "Get all sprites in the inventory of a member" })
