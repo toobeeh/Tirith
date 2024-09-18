@@ -5,7 +5,7 @@ export class SpriteSlotDto {
     @XApiProperty({ description: "A sprite slot number, starting at 1" })
     slotId: number;
 
-    @XApiProperty({ description: "The target sprite Id, undefined to use no sprite" })
+    @XApiProperty({ description: "The target sprite Id, undefined to use no sprite", required: false })
     spriteId?: number;
 }
 
@@ -17,13 +17,13 @@ export class SpriteComboDto {
 
 export class SpriteInventoryDto {
 
-    @XApiProperty({ description: "A sprite slot number, starting at 1, or undefined if sprite is not active" })
+    @XApiProperty({ description: "A sprite slot number, starting at 1, or undefined if sprite is not active", required: false })
     slot?: number;
 
     @XApiProperty({ description: "A sprite Id" })
     spriteId: number;
 
-    @XApiProperty({ description: "A rainbow sprite color shift" })
+    @XApiProperty({ description: "A rainbow sprite color shift", required: false })
     colorShift?: number;
 }
 
