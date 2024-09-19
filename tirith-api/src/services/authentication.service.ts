@@ -5,7 +5,19 @@ https://docs.nestjs.com/providers#services
 import {Inject, Injectable} from '@nestjs/common';
 import { IMembersService } from './interfaces/members.service.interface';
 import {ClientError, Status} from "nice-grpc";
-import {userFlags} from "tirith-frontend/src/app/shared/services/user-session.service";
+
+export interface userFlags {
+    bubbleFarming: boolean;
+    admin: boolean;
+    moderator: boolean;
+    contentModerator: boolean;
+    unlimitedCloud: boolean;
+    patron: boolean;
+    permaBan: boolean;
+    dropBan: boolean;
+    patronizer: boolean;
+    booster: boolean;
+}
 
 @Injectable()
 export class AuthenticationService {

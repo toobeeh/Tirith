@@ -7,8 +7,7 @@ import {Reflector} from '@nestjs/core';
 import {Observable} from 'rxjs';
 import {AuthRoles, getRequiredRoles, getResourceOwner} from 'src/decorators/roles.decorator';
 import {MemberDto} from 'src/modules/palantir/dto/member.dto';
-import {AuthenticationService} from 'src/services/authentication.service';
-import {userFlags} from "tirith-frontend/src/app/shared/services/user-session.service";
+import {AuthenticationService, userFlags} from 'src/services/authentication.service';
 
 /**
  * A guard that checks role requrirements and rejcets users that do not fulfill the requirement.
