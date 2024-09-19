@@ -5,9 +5,10 @@ https://docs.nestjs.com/providers#services
 import {Inject, Injectable} from '@nestjs/common';
 import { IMembersService } from './interfaces/members.service.interface';
 import {ClientError, Status} from "nice-grpc";
+import {userFlags} from "tirith-frontend/src/app/shared/services/user-session.service";
 
 @Injectable()
-export class AuthentificationService {
+export class AuthenticationService {
 
     constructor(@Inject(IMembersService) private service: IMembersService) { }
 
@@ -22,8 +23,8 @@ export class AuthentificationService {
         }
     }
 
-    parseFlags(flags: number) {
-        const flagArray = ("00000000" + (flags >>> 0).toString(2)).slice(-8).split("")
+    static parseFlags(flags: number): userFlags {
+        const flagArray = ("00000000" + (flags >>> 0).toString(2)).slice(-10).split("")
             .map(f => Number(f)).reverse();
 
         // parse array to interface
@@ -37,6 +38,7 @@ export class AuthentificationService {
             dropBan: flagArray[6] == 1,
             patronizer: flagArray[7] == 1,
             booster: flagArray[8] == 1,
+            contentModerator: flagArray[9] == 1,
         });
     }
 }
