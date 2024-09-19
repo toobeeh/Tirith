@@ -95,7 +95,7 @@ export class LobbiesService {
 
     /**
      * Get all drops caught in a lobby
-     *   Required Role: Moderator  Rate limit default: 10 Requests / 60000 ms TTL
+     *   Required Roles: Moderator  Rate limit default: 10 Requests / 60000 ms TTL
      * @param token Token parameter
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
@@ -161,7 +161,7 @@ export class LobbiesService {
 
     /**
      * Get all present lobbies
-     *   Required Role: Moderator  Rate limit default: 30 Requests / 60000 ms TTL
+     *   Required Roles: Moderator  Rate limit default: 30 Requests / 60000 ms TTL
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */

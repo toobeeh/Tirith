@@ -91,7 +91,7 @@ export class AdminService {
 
     /**
      * Re-evaluate the drop chunks cache; partitions the open chunk into new subchunks if big enough
-     *   Required Role: Administrator  Rate limit default: 10 Requests / 60000 ms TTL
+     *   Required Roles: Administrator  Rate limit default: 10 Requests / 60000 ms TTL
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */

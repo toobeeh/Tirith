@@ -34,13 +34,15 @@ const routes: Routes = [
     canActivateChild: [NavContentGuard],
     data: {
       requiredFlags: {
-        moderator: true
+        moderator: true,
+        contentModerator: true
       },
       navigation: [
         ["Home", "/", "route"],
         ["Admin Panel", "/admin", "route"],
         ["Lobbies", "/admin/lobbies", "route"],
-        ["Members", "/admin/members", "route"]
+        ["Members", "/admin/members", "route"],
+        ["Emojis", "/admin/emojis", "route"]
       ]
     }
   },

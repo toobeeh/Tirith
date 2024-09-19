@@ -1,16 +1,18 @@
 import { Injectable } from '@angular/core';
 import { Observable, map, of, switchMap, tap } from 'rxjs';
-import { MemberDto, MembersService } from 'src/api';
+import {MemberDto, MembersService} from "../../../api";
 
 export interface userFlags {
   bubbleFarming: boolean;
   admin: boolean;
   moderator: boolean;
+  contentModerator: boolean;
   unlimitedCloud: boolean;
   patron: boolean;
   permaBan: boolean;
   dropBan: boolean;
   patronizer: boolean;
+  booster: boolean;
 };
 
 @Injectable({
@@ -47,12 +49,12 @@ export class UserService {
     this._user = undefined;
   }
 
-  public parseFlags(flags: number): userFlags {
-    const flagArray = ("00000000" + (flags >>> 0).toString(2)).slice(-8).split("")
+  parseFlags(flags: number): userFlags {
+    const flagArray = ("00000000" + (flags >>> 0).toString(2)).slice(-10).split("")
       .map(f => Number(f)).reverse();
 
-    // parse to individual roles
-    return {
+    // parse array to interface
+    return ({
       bubbleFarming: flagArray[0] == 1,
       admin: flagArray[1] == 1,
       moderator: flagArray[2] == 1,
@@ -61,6 +63,8 @@ export class UserService {
       permaBan: flagArray[5] == 1,
       dropBan: flagArray[6] == 1,
       patronizer: flagArray[7] == 1,
-    };
+      booster: flagArray[8] == 1,
+      contentModerator: flagArray[9] == 1,
+    });
   }
 }

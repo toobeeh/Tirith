@@ -1,0 +1,34 @@
+<h1>Add Typo Emojis</h1>
+<br>
+<h3>Enter a name to search for static or animated emotes.</h3>
+<h3>Emotes will be fetched from external sources.</h3>
+<h3>Click a name to edit the name, click the emote to add it to typo, right-click to discard it from the results.</h3>
+<br><br>
+<div class="grid grid-cols-2 desktop:flex desktop:flex-row gap-7 justify-center items-center">
+  <h4 class="w-auto">Filter emojis: </h4>
+  <input [formControl]="filterInput" type="text" placeholder="Emoji Name">
+  <input [formControl]="limitInput" type="number" placeholder="Search limit">
+  <input type="button" value="Search Animated Emojis" (click)="loadAnimatedEmotes()">
+  <input type="button" value="Search Static Emojis" (click)="loadStaticEmotes()">
+</div>
+<br>
+
+<ng-container *ngIf="emotes$ !== undefined">
+  <ng-container *ngIf="emotes$ | async as emotes; else loading">
+    <h3 *ngIf="emotes.length == 0">No matching emojis found</h3>
+    <div class="flex flex-wrap gap-8 justify-center">
+      <div *ngFor="let emote of emotes" class="emote" (contextmenu)="removeEmote($event)">
+        <img src="{{emote.url}}" (click)="selectEmote(emote, $event)">
+        <span *ngIf="editEmote?.url !== emote.url" (click)="emoteEditClicked(emote)">{{emote.name}}</span>
+        <ng-container *ngIf="editEmote?.url === emote.url">
+          <input (click)="$event.stopPropagation()" type="text" [formControl]="nameInput">
+          <input type="button" (click)="renameEmote(emote, $event)" value="Done">
+        </ng-container>
+      </div>
+    </div>
+  </ng-container>
+
+  <ng-template #loading>
+    <h3>Loading emojis...</h3>
+  </ng-template>
+</ng-container>

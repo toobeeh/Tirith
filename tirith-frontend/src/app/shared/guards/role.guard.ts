@@ -27,11 +27,11 @@ export class RoleGuard implements CanActivate {
 
     const result = this.userService.getUser().pipe(
       map(user => this.userService.parseFlags(user.flags)),
-      map(flags => Object.entries(requiredFlags).every(entry => flags[entry[0] as keyof userFlags] === entry[1])),
+      map(flags => Object.entries(requiredFlags).some(entry => flags[entry[0] as keyof userFlags] === entry[1])),
       tap(result => {
         if (!result) this.toastService.show({ message: { title: "Unauthorized to access this page" }, durationMs: 1000 })
       }),
-      map(result => result ? result : this.router.createUrlTree(["/"])),
+      map(result => result ? result : false),
       catchError(() => of(this.router.createUrlTree(["/login"], { queryParams: { continue: encodeURI(url) } })))
     );
 

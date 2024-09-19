@@ -99,3 +99,15 @@ details[open] {
 .sprite img{width:100%;}
 .sprite h3 {font-size:0.8em; margin:0.3em;}
 .sprite h2 {font-size:1.3em; margin:0.3em;    word-break: break-word;}
+
+.emote {
+  @apply flex flex-row bg-gray-500 bg-opacity-10 items-center p-3 gap-3 rounded-lg cursor-pointer;
+
+  span {
+    @apply font-semibold;
+  }
+
+  img {
+    @apply h-8 aspect-square;
+  }
+}

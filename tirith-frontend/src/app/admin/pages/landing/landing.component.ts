@@ -17,13 +17,13 @@ export class LandingComponent {
       color: "rgb(219 234 254)",
       image: "url(https://tobeh.host/scenes/sceneSpace.gif)",
       link: "members"
-    }/* ,
+    } ,
     {
-      name: "Palantir Setup",
+      name: "Emoji Management",
       color: "rgb(220 252 231)",
       image: "url(https://tobeh.host/scenes/sceneEmerald_Dust.gif)",
-      link: "palantir"
-    } */
+      link: "emojis"
+    }
   ]
 
 }

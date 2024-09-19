@@ -7,7 +7,7 @@ import {
     Body,
     Controller,
     Delete,
-    Get,
+    Get, Header,
     Inject,
     Param,
     Post,
@@ -22,6 +22,8 @@ import {StringIdParamDto} from "../dto/params.dto";
 import {MemberGuard} from "../../../guards/member.guard";
 import {RoleGuard} from "../../../guards/role.guard";
 import {AuthRoles, RequiredRole} from "../../../decorators/roles.decorator";
+import {Throttle} from "@nestjs/throttler";
+import {getThrottleForDefinition} from "../../../guards/trottleConfigs";
 
 @ApiSecurityNotes()
 @Controller("emojis")
@@ -30,7 +32,17 @@ export class EmojisController {
 
     constructor(@Inject(IEmojisService) private service: IEmojisService) { }
 
+    @Get("/cache")
+    @Throttle(getThrottleForDefinition("throttleThirtyPerMinute"))
+    @ApiOperation({ summary: "Search all emojis with cache enabled" })
+    @Header('Cache-Control', 'max-age=3600')
+    @ApiResponse({ status: 200, type: EmojiDto, isArray: true, description: "All available emojis that match search criteria" })
+    getAllEmojisCached(@Query() search: EmojiSearchDto): Promise<EmojiDto[]> {
+        return this.service.searchSavedEmojis(search.query ?? "", search.limit, search.animated, search.statics);
+    }
+
     @Get()
+    @Throttle(getThrottleForDefinition("throttleThirtyPerMinute"))
     @ApiOperation({ summary: "Search all emojis" })
     @ApiResponse({ status: 200, type: EmojiDto, isArray: true, description: "All available emojis that match search criteria" })
     getAllEmojis(@Query() search: EmojiSearchDto): Promise<EmojiDto[]> {
@@ -38,6 +50,7 @@ export class EmojisController {
     }
 
     @Get("/discover")
+    @Throttle(getThrottleForDefinition("throttleThirtyPerMinute"))
     @UseGuards(MemberGuard, RoleGuard)
     @RequiredRole(AuthRoles.Moderator, AuthRoles.ContentModerator)
     @ApiOperation({ summary: "Search for new emojis that are not yet in the database" })
@@ -68,6 +81,7 @@ export class EmojisController {
     }
 
     @Post()
+    @Throttle(getThrottleForDefinition("throttleThirtyPerMinute"))
     @UseGuards(MemberGuard, RoleGuard)
     @RequiredRole(AuthRoles.Moderator, AuthRoles.ContentModerator)
     @ApiOperation({ summary: "Add a new emoji" })
