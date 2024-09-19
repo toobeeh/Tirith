@@ -9,6 +9,7 @@ import { Request } from 'express';
 export enum AuthRoles {
     Administrator = "Administrator",
     Moderator = "Moderator",
+    ContentModerator = "ContentModerator",
     Member = "Member",
     None = "None"
 }
@@ -19,8 +20,10 @@ export enum AuthRoles {
  * @param param the required role a member must have to access this resource
  * @returns a custom decorator
  */
-export const RequiredRole = (param: AuthRoles): MethodDecorator & ClassDecorator => {
+export const RequiredRole = (...param: AuthRoles[]): MethodDecorator & ClassDecorator => {
     return (target: any, key?: string | symbol, descriptor?: any) => {
+
+        if(param.length === 0) param = [AuthRoles.None];
 
         /* applied to controller */
         if (!key) {
@@ -34,7 +37,7 @@ export const RequiredRole = (param: AuthRoles): MethodDecorator & ClassDecorator
             /* apply to each endpoint */
             controllers.forEach(c => {
                 const desc = Object.getOwnPropertyDescriptor(target.prototype, c.prop);
-                RequiredRole(param)(target, c.prop, desc);
+                RequiredRole(...param)(target, c.prop, desc);
             });
         }
 
@@ -45,7 +48,7 @@ export const RequiredRole = (param: AuthRoles): MethodDecorator & ClassDecorator
             /* skip if already processsed - decorators apply first for methods */
             if (Reflect.hasMetadata("guardRequiredRole", target)) return;
 
-            if (param !== AuthRoles.None) ApiBearerAuth()(target)
+            if (!param.includes(AuthRoles.None)) ApiBearerAuth()(target)
             SetMetadata('guardRequiredRole', param)(target);
         }
     }
@@ -57,13 +60,13 @@ export const RequiredRole = (param: AuthRoles): MethodDecorator & ClassDecorator
  * @param reflector the reflextor isntance of the calling guard
  * @returns the required role according to the annotation of the method or class
  */
-export const getRequiredRole = (context: ExecutionContext, reflector: Reflector) => {
-    let role = reflector.get<AuthRoles>('guardRequiredRole', context.getHandler());
-    if (role === undefined) {
-        role = reflector.get<AuthRoles>('guardRequiredRole', context.getClass());
-        if (role === undefined) return AuthRoles.None;
+export const getRequiredRoles = (context: ExecutionContext, reflector: Reflector) => {
+    let roles = reflector.get<AuthRoles[]>('guardRequiredRole', context.getHandler());
+    if (roles === undefined) {
+        roles = reflector.get<AuthRoles[]>('guardRequiredRole', context.getClass());
+        if (roles === undefined) return [AuthRoles.None];
     }
-    return role;
+    return roles;
 }
 
 /**

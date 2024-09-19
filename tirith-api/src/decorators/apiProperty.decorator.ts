@@ -56,7 +56,6 @@ export const XApiProperty = (options?: strictTypeOptions, expose = true): Proper
 
         if (propertyType === Boolean) {
             defaultTypeValidators.push(Transform(({ value }) => {
-                console.log(isBoolean(value));
                 return isBoolean(value) ? value : (isBooleanString(value) ?value === "true" : null)
             })); // allow only strict boolean or boolean strings for query/path param
             defaultTypeValidators.push(IsBoolean());

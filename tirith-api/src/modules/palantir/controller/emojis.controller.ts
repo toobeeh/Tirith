@@ -12,11 +12,10 @@ import {
     Param,
     Post,
     Query,
-    UseGuards,
-    ValidationPipe
+    UseGuards
 } from '@nestjs/common';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { ApiSecurityNotes } from 'src/decorators/apiSecurityNote.decorator';
+import {ApiOperation, ApiResponse, ApiTags} from '@nestjs/swagger';
+import {ApiSecurityNotes} from 'src/decorators/apiSecurityNote.decorator';
 import {IEmojisService} from "../../../services/interfaces/emojis.service.interface";
 import {EmojiCandidateDto, EmojiDto, EmojiSearchDto, NameIdDto} from "../dto/emojis.dto";
 import {StringIdParamDto} from "../dto/params.dto";
@@ -40,7 +39,7 @@ export class EmojisController {
 
     @Get("/discover")
     @UseGuards(MemberGuard, RoleGuard)
-    @RequiredRole(AuthRoles.Moderator)
+    @RequiredRole(AuthRoles.Moderator, AuthRoles.ContentModerator)
     @ApiOperation({ summary: "Search for new emojis that are not yet in the database" })
     @ApiResponse({ status: 200, type: EmojiDto, isArray: true, description: "All available emojis from a foreign source that are not added yet and match search criteria" })
     getNewEmojis(@Query() search: EmojiSearchDto): Promise<EmojiDto[]> {
@@ -61,7 +60,7 @@ export class EmojisController {
 
     @Delete(":id")
     @UseGuards(MemberGuard, RoleGuard)
-    @RequiredRole(AuthRoles.Moderator)
+    @RequiredRole(AuthRoles.Moderator, AuthRoles.ContentModerator)
     @ApiOperation({ summary: "Delete a saved emoji  by name (id) and nameId" })
     @ApiResponse({ status: 204, description: "Emoji has been deleted" })
     deleteEmoji(@Param() idParam: StringIdParamDto, @Query() nameIdQuery: NameIdDto): Promise<void> {
@@ -70,7 +69,7 @@ export class EmojisController {
 
     @Post()
     @UseGuards(MemberGuard, RoleGuard)
-    @RequiredRole(AuthRoles.Moderator)
+    @RequiredRole(AuthRoles.Moderator, AuthRoles.ContentModerator)
     @ApiOperation({ summary: "Add a new emoji" })
     @ApiResponse({ status: 201, type: EmojiDto, description: "Emoji has been added" })
     addEmoji(@Body() emoji: EmojiCandidateDto): Promise<EmojiDto> {

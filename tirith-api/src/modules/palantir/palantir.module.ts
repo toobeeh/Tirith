@@ -1,4 +1,4 @@
-import { AuthentificationService } from 'src/services/authentification.service';
+import { AuthenticationService } from 'src/services/authentication.service';
 import { LobbiesController } from './controller/lobbies.controller';
 /*
 https://docs.nestjs.com/modules
@@ -45,7 +45,7 @@ import {EmojisController} from "./controller/emojis.controller";
     ],
     providers: [
         DiscordApiService,
-        AuthentificationService,
+        AuthenticationService,
         {
             provide: APP_INTERCEPTOR,
             useClass: ResponseReshapeInterceptor,

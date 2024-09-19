@@ -9,7 +9,7 @@ export const ApiSecurityNotes = (): ClassDecorator => {
     return (target: any) => {
 
         /* get role requirement for class */
-        const role = Reflect.getMetadata("guardRequiredRole", target) as AuthRoles ?? AuthRoles.None;
+        const role = Reflect.getMetadata("guardRequiredRole", target) as AuthRoles[] ?? [AuthRoles.None];
 
         /* get throttle for class */
         const controllerThrottles = getThrottleOfControllerOrEndpoint(target) ?? [];
@@ -23,7 +23,7 @@ export const ApiSecurityNotes = (): ClassDecorator => {
         methods.forEach(method => {
 
             /* get method specific security */
-            const methodRole = Reflect.getMetadata("guardRequiredRole", method.target) as AuthRoles ?? role;
+            const methodRoles = Reflect.getMetadata("guardRequiredRole", method.target) as AuthRoles[] ?? role;
             const ownerOverride = Reflect.getMetadata("guardResourceOwner", method.target) as string ?? null;
             const existingMetadata = Reflect.getMetadata('swagger/apiOperation', method.target) || {};
 
@@ -33,15 +33,16 @@ export const ApiSecurityNotes = (): ClassDecorator => {
                 if (!endpointThrottles.some(rt => t.name == rt.name)) endpointThrottles.push(t);
             });
 
-            if (!methodRole && endpointThrottles.length == 0) return;
+            if (!methodRoles && endpointThrottles.length == 0) return;
 
             //console.log(method.target, endpointThrottles, controllerThrottles);
 
             let description = "";
 
             /* build security information */
-            if (methodRole) {
-                let rolesDesc = `Required Role: ${AuthRoles[methodRole]}`;
+            if (methodRoles && methodRoles.length > 0) {
+                const roleNames = methodRoles.map(role => AuthRoles[role]).join(" | ");
+                let rolesDesc = `Required Roles: ${ roleNames }`;
                 if (ownerOverride != null) rolesDesc += `\n- \Role override if {${ownerOverride}} matches the client login.`;
                 description += "\n\n" + rolesDesc;
             }

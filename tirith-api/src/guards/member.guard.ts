@@ -3,7 +3,7 @@ https://docs.nestjs.com/guards#guards
 */
 import { Request } from 'express';
 import { Injectable, CanActivate, ExecutionContext, HttpException, HttpStatus } from '@nestjs/common';
-import { AuthentificationService } from 'src/services/authentification.service';
+import { AuthenticationService } from 'src/services/authentication.service';
 
 /**
  * A guard that adds an user obejct to the request.
@@ -15,7 +15,7 @@ import { AuthentificationService } from 'src/services/authentification.service';
 @Injectable()
 export class MemberGuard implements CanActivate {
 
-  constructor(private auth: AuthentificationService) { }
+  constructor(private auth: AuthenticationService) { }
 
   async canActivate(
     context: ExecutionContext,
