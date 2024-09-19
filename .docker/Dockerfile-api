@@ -2,27 +2,6 @@ FROM node:16-slim as node-builder
 
 WORKDIR /app/
 
-# default env values for domain name and oauth details
-ARG GRPC_CHANNEL="channel.domain.tld:port"
-ENV GRPC_CHANNEL "${GRPC_CHANNEL}"
-ARG CONTENT_GRPC_CHANNEL="channel.domain.tld:port"
-ENV CONTENT_GRPC_CHANNEL "${CONTENT_GRPC_CHANNEL}"
-
-ARG DISCORD_OAUTH_CLIENT_ID="123"
-ENV DISCORD_OAUTH_CLIENT_ID "${DISCORD_OAUTH_CLIENT_ID}"
-
-ARG DISCORD_OAUTH_CLIENT_SECRET="123abc"
-ENV DISCORD_OAUTH_CLIENT_SECRET "${DISCORD_OAUTH_CLIENT_SECRET}"
-
-ARG DISCORD_OAUTH_REDIRECT="abc.com/auth"
-ENV DISCORD_OAUTH_REDIRECT "${DISCORD_OAUTH_REDIRECT}"
-
-ARG DISCORD_API_TOKEN="123abcd"
-ENV DISCORD_API_TOKEN "${DISCORD_API_TOKEN}"
-
-ARG NODE_ENV="production"
-ENV NODE_ENV "${NODE_ENV}"
-
 # Copy files for app
 COPY . /app/
 
@@ -52,11 +31,6 @@ FROM node:16-slim as hoster
 
 COPY --from=node-builder /app /app
 
-# Copy the entrypoint script
-COPY .docker/entrypoint-api.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
-
 EXPOSE 3000
 
-ENTRYPOINT ["/entrypoint.sh"]
 CMD ["sh", "-c", "node /app/tirith-api/dist/main.js"]
