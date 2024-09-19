@@ -8,7 +8,7 @@ import {NestExpressApplication} from "@nestjs/platform-express";
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   app.enableCors();
-  app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalPipes(new ValidationPipe({transform: true, whitelist: true, forbidNonWhitelisted: true, transformOptions: {enableImplicitConversion: false}})); // for incoming request validation/transformation
   app.set('trust proxy', 1);
 
   const config = new DocumentBuilder()

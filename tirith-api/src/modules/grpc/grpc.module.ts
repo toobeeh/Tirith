@@ -33,6 +33,8 @@ import {IObjectStorageService} from "../../services/interfaces/object-storage.se
 import {GrpcObjectStorageService} from "./services/grpc-object-storage.service";
 import {IInventoryService} from "../../services/interfaces/inventory.service.interface";
 import {GrpcInventoryService} from "./services/grpc-inventory.service";
+import {IEmojisService} from "../../services/interfaces/emojis.service.interface";
+import {GrpcEmojisService} from "./services/grpc-emojis.service";
 
 const services: Provider[] = [
     { provide: IScenesService, useClass: GrpcScenesService },
@@ -47,7 +49,8 @@ const services: Provider[] = [
     { provide: ILeaguesService, useClass: GrpcLeaguesService },
     { provide: ICloudService, useClass: GrpcCloudService },
     { provide: IInventoryService, useClass: GrpcInventoryService },
-    { provide: IObjectStorageService, useClass: GrpcObjectStorageService }
+    { provide: IObjectStorageService, useClass: GrpcObjectStorageService },
+    { provide: IEmojisService, useClass: GrpcEmojisService }
 ]
 
 @Module({
