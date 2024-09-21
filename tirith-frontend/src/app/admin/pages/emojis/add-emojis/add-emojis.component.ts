@@ -26,10 +26,10 @@ export class AddEmojisComponent implements OnInit {
   ngOnInit(): void {  }
 
   loadAnimatedEmotes() {
-    if(this.limitInput.value !== null && this.limitInput.value > 100) {
+    if(this.limitInput.value !== null && this.limitInput.value > 1000) {
       this.notifications.show({message: {
           title: "Nerfed",
-          content: "You can't load more than 100 emotes at once"
+          content: "You can't load more than 1000 emotes at once"
         }});
       return;
     }
@@ -37,10 +37,10 @@ export class AddEmojisComponent implements OnInit {
   }
 
   loadStaticEmotes() {
-    if(this.limitInput.value !== null && this.limitInput.value > 100) {
+    if(this.limitInput.value !== null && this.limitInput.value > 1000) {
       this.notifications.show({message: {
           title: "Nerfed",
-          content: "You can't load more than 100 emotes at once"
+          content: "You can't load more than 1000 emotes at once"
         }});
       return;
     }

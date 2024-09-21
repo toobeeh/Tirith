@@ -57,7 +57,7 @@ export class EmojisController {
     @ApiResponse({ status: 200, type: EmojiDto, isArray: true, description: "All available emojis from a foreign source that are not added yet and match search criteria" })
     getNewEmojis(@Query() search: EmojiSearchDto): Promise<EmojiDto[]> {
 
-        if(search.limit > 100){
+        if(search.limit > 1000){
             throw new BadRequestException("Limit cannot be higher than 100");
         }
 
