@@ -32,7 +32,6 @@ import {map} from "rxjs";
 @ApiSecurityNotes()
 @Controller("guilds")
 @ApiTags("guilds")
-@UseGuards(MemberGuard, RoleGuard)
 export class GuildsController {
 
     constructor(
@@ -50,6 +49,7 @@ export class GuildsController {
     @Post(":token/imagepost/:id")
     @HttpCode(200)
     @Throttle(getThrottleForDefinition("throttleTenPerTenMinutes"))
+    @UseGuards(MemberGuard, RoleGuard)
     @RequiredRole(AuthRoles.Member)
     @ApiOperation({ summary: "Post an image to a guild channel" })
     @ApiResponse({ status: 200, description: "The image has been posted to the guild"})
