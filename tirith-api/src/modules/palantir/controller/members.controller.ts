@@ -11,7 +11,7 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AccessTokenDto, MemberDto } from '../dto/member.dto';
 import { MemberSearchDto } from '../dto/memberSearch.dto';
 import { ApiSecurityNotes } from 'src/decorators/apiSecurityNote.decorator';
-import { LoginTokenParamDto, StringIdParamDto } from '../dto/params.dto';
+import {LoginTokenParamDto, NumberTokenParamDto, StringIdParamDto, StringTokenParamDto} from '../dto/params.dto';
 import { IMembersService } from '../../../services/interfaces/members.service.interface';
 
 @ApiSecurityNotes()
@@ -73,16 +73,16 @@ export class MembersController {
     @ResourceOwner("login")
     @ApiOperation({ summary: "Delete a server from a member's connected guilds" })
     @ApiResponse({ status: 204 })
-    async removeConnectedGuild(@Param() params: LoginTokenParamDto, @Param('token') guildToken: number): Promise<void> {
-        return this.service.removeConnectedGuild(params.login, guildToken);
+    async removeConnectedGuild(@Param() params: LoginTokenParamDto, @Param() guildTokenParam: NumberTokenParamDto): Promise<void> {
+        return this.service.removeConnectedGuild(params.login, guildTokenParam.token);
     }
 
     @Patch(":login/guilds/:token")
     @ResourceOwner("login")
     @ApiOperation({ summary: "Connect a user to a guild with given server token" })
     @ApiResponse({ status: 204 })
-    async connectMemberToGuild(@Param() params: LoginTokenParamDto, @Param('token') guildToken: number): Promise<void> {
-        return this.service.connectMemberToGuild(params.login, guildToken);
+    async connectMemberToGuild(@Param() params: LoginTokenParamDto, @Param() guildTokenParam: NumberTokenParamDto): Promise<void> {
+        return this.service.connectMemberToGuild(params.login, guildTokenParam.token);
     }
 
     @Get("discord/:id")
