@@ -58,7 +58,7 @@ export class GrpcGuildsService extends GrpcBaseService<GuildsDefinition> impleme
         const webhooks = await this.collectFromAsyncIterable(this.grpcClient.getGuildWebhooks({guildId: Long.fromString(guild.GuildID)}));
         return webhooks.map(hook => ({
             Name: hook.name,
-            Guild: guild.GuildName,
+            Guild: guild,
             URL: hook.url
         }));
     }

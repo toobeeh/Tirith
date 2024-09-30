@@ -8,11 +8,14 @@ import { UpdateDiscordID } from '../dto/updateDiscord.dto';
 import { MemberGuard } from 'src/guards/member.guard';
 import { AuthRoles, RequiredRole, ResourceOwner } from 'src/decorators/roles.decorator';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { AccessTokenDto, MemberDto } from '../dto/member.dto';
+import {AccessTokenDto, MemberDto, MemberWebhookDto} from '../dto/member.dto';
 import { MemberSearchDto } from '../dto/memberSearch.dto';
 import { ApiSecurityNotes } from 'src/decorators/apiSecurityNote.decorator';
 import {LoginTokenParamDto, NumberTokenParamDto, StringIdParamDto, StringTokenParamDto} from '../dto/params.dto';
 import { IMembersService } from '../../../services/interfaces/members.service.interface';
+import {Throttle} from "@nestjs/throttler";
+import {getThrottleForDefinition} from "../../../guards/trottleConfigs";
+import {IGuildsService} from "../../../services/interfaces/guilds.service.interface";
 
 @ApiSecurityNotes()
 @RequiredRole(AuthRoles.Moderator)
@@ -21,7 +24,10 @@ import { IMembersService } from '../../../services/interfaces/members.service.in
 @ApiTags("members")
 export class MembersController {
 
-    constructor(@Inject(IMembersService) private service: IMembersService) { }
+    constructor(
+        @Inject(IMembersService) private service: IMembersService,
+        @Inject(IGuildsService) private guildService: IGuildsService
+    ) { }
 
     @Get("search")
     @ApiOperation({ summary: "Find members that contain a string" })
@@ -33,6 +39,7 @@ export class MembersController {
     @Get("me")
     @RequiredRole(AuthRoles.Member)
     @ApiOperation({ summary: "Get the currently authenticated member" })
+    @Throttle(getThrottleForDefinition("throttleThirtyPerMinute"))
     @ApiResponse({ status: 200, type: MemberDto, description: "The authenticated member" })
     async getAuthenticatedMember(@Req() request: Request): Promise<MemberDto> {
         const login = Number(((request as any).user as MemberDto).userLogin);
@@ -90,5 +97,18 @@ export class MembersController {
     @ApiResponse({ status: 200, type: MemberDto, description: "The member with specified discord id" })
     async getMemberByDiscordID(@Param() params: StringIdParamDto): Promise<MemberDto> {
         return this.service.getByDiscordID(params.id);
+    }
+
+    @Get(":login/webhooks")
+    @ResourceOwner("login")
+    @ApiOperation({ summary: "Get all webhooks of a member" })
+    @ApiResponse({ status: 200, type: MemberWebhookDto, isArray: true, description: "A list of webhooks from all connected guilds" })
+    async getMemberGuildWebhooks(@Param() params: LoginTokenParamDto): Promise<MemberWebhookDto[]> {
+        const member = await this.service.getByLogin(params.login);
+        const webhooks = await Promise.all(member.guilds.map(guild => this.guildService.getGuildWebhooks(guild)));
+        return webhooks.flat().map(webhook => ({
+            Guild: webhook.Guild,
+            Name: webhook.Name
+        }));
     }
 }

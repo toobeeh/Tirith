@@ -59,11 +59,20 @@ export class WebhookDto {
     @XApiProperty({ description: "The webhook name" })
     Name: string;
 
-    @XApiProperty({ description: "The webhook's guild name" })
-    Guild: string;
+    @XApiProperty({ description: "The webhook's guild", type: () => GuildDto })
+    Guild: GuildDto;
 
     @XApiProperty({ description: "The webhook URL" })
     URL: string;
+}
+
+export class MemberWebhookDto {
+
+    @XApiProperty({ description: "The webhook name" })
+    Name: string;
+
+    @XApiProperty({ description: "The webhook's guild", type: () => GuildDto })
+    Guild: GuildDto;
 }
 
 export class AccessTokenDto {
