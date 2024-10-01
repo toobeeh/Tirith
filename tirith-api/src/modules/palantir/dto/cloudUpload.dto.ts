@@ -17,7 +17,7 @@ export class CloudUploadDto {
     @XApiProperty({ description: "Lobby language where the image was created" })
     language: string;
 
-    @XApiProperty({ description: "Commands of the image for skribbl recreation", isArray: true, type: () => Object, validateNested: false })
+    @XApiProperty({ description: "Commands of the image for skribbl recreation", isArray: true, type: () => Object }, true, true)
     commands: any[];
 
     @XApiProperty({ description: "base64 representation of the image" })

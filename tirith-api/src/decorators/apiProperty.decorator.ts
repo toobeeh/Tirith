@@ -16,18 +16,18 @@ import {
  */
 interface strictTypeOptions extends ApiPropertyOptions {
     // eslint-disable-next-line @typescript-eslint/ban-types
-    type?: Function;
-    validateNested?: boolean
+    type?: Function
 }
 
 /**
- * Decorates an api property with swagger annotations and automatically adds 
+ * Decorates an api property with swagger annotations and automatically adds
  * class-transformer's expose and type annotations
  * @param options swagger api property properties
  * @param expose whether to expose this field
+ * @param skipValidateNested whether to force skip nested validation
  * @returns a factory function that combines the decorators
  */
-export const XApiProperty = (options?: strictTypeOptions, expose = true): PropertyDecorator => {
+export const XApiProperty = (options?: strictTypeOptions, expose = true, skipValidateNested = false): PropertyDecorator => {
 
     const swaggerMetadataDecorator = ApiProperty(options);
     const exposeDecorator = expose === true ? Expose() : undefined;
@@ -62,7 +62,7 @@ export const XApiProperty = (options?: strictTypeOptions, expose = true): Proper
             defaultTypeValidators.push(IsBoolean());
         }
 
-        if (options?.type && options?.validateNested !== false) defaultTypeValidators.push(ValidateNested())
+        if (options?.type && skipValidateNested !== false) defaultTypeValidators.push(ValidateNested())
 
         defaultTypeValidators.forEach(validatorAnnotation => validatorAnnotation(target, key));
     }
