@@ -70,7 +70,7 @@ export class CloudController {
     @RequiredRole(AuthRoles.Member)
     @ResourceOwner("login")
     @ApiOperation({ summary: "Link an image of the user to an award in their received inventory, which has no linked image yet" })
-    @ApiResponse({ status: 200, description: "The image with specified ID has been linked to the award" })
+    @ApiResponse({ status: 204, description: "The image with specified ID has been linked to the award" })
     async linkImageToAward(@Param() loginParam: LoginTokenParamDto, @Param() idParam: StringIdParamDto, @Param() awardIdParam: NumberTokenParamDto): Promise<void> {
         await this.cloudService.linkImageToAward(loginParam.login, awardIdParam.token, Long.fromString(idParam.id));
     }
@@ -88,12 +88,12 @@ export class CloudController {
     }
 
     @Post(":login/delete")
-    @HttpCode(200)
+    @HttpCode(204)
     @Throttle(getThrottleForDefinition("throttleThirtyPerMinute"))
     @RequiredRole(AuthRoles.Member)
     @ResourceOwner("login")
     @ApiOperation({ summary: "Delete multiple images from the user's cloud" })
-    @ApiResponse({ status: 200 })
+    @ApiResponse({ status: 204 })
     async bulkDeleteFromUserCloud(@Req() request: Request, @Param() params: LoginTokenParamDto, @Body() body: CloudDeleteDto): Promise<void> {
 
         const member = (request as any).user as MemberDto
