@@ -115,7 +115,7 @@ export class CloudController {
         const creationDate = new Date();
         const imageId = await this.cloudService.saveImageToCloud(image, params.login, creationDate);
         try {
-            await this.objectStorageService.saveImageToCloud(Number(member.userLogin), member.discordID, imageId, creationDate, image);
+            await this.objectStorageService.saveImageToCloud(Number(member.userLogin), member.userLogin, imageId, creationDate, image);
         }
         catch(e) {
             await this.cloudService.removeImageFromCloud(params.login, [imageId]);
