@@ -52,7 +52,7 @@ export class CloudController {
     }
 
     @Delete(":login/:id")
-    @HttpCode(200)
+    @HttpCode(204)
     @Throttle(getThrottleForDefinition("throttleThirtyPerMinute"))
     @RequiredRole(AuthRoles.Member)
     @ResourceOwner("login")
@@ -66,6 +66,7 @@ export class CloudController {
     }
 
     @Patch(":login/:id/award/:token")
+    @HttpCode(204)
     @Throttle(getThrottleForDefinition("throttleTenPerMinute"))
     @RequiredRole(AuthRoles.Member)
     @ResourceOwner("login")

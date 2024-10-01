@@ -4,12 +4,15 @@ import { SwaggerModule, DocumentBuilder, SwaggerCustomOptions } from '@nestjs/sw
 import { swaggerEnableDiscordLogin } from './swaggerEnableDiscord';
 import { ValidationPipe } from '@nestjs/common';
 import {NestExpressApplication} from "@nestjs/platform-express";
+import {json, urlencoded} from "express";
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   app.enableCors();
   app.useGlobalPipes(new ValidationPipe({transform: true, transformOptions: {enableImplicitConversion: false}})); // for incoming request validation/transformation
   app.set('trust proxy', 1);
+  app.use(json({limit: '20mb'}));
+  app.use(urlencoded({limit: '20mb', extended: true}));
 
   const config = new DocumentBuilder()
     .setTitle('Skribbl Typo API')
