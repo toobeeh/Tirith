@@ -17,6 +17,7 @@ import {
 interface strictTypeOptions extends ApiPropertyOptions {
     // eslint-disable-next-line @typescript-eslint/ban-types
     type?: Function;
+    validateNested?: boolean
 }
 
 /**
@@ -56,12 +57,12 @@ export const XApiProperty = (options?: strictTypeOptions, expose = true): Proper
 
         if (propertyType === Boolean) {
             defaultTypeValidators.push(Transform(({ value }) => {
-                return isBoolean(value) ? value : (isBooleanString(value) ?value === "true" : null)
+                return isBoolean(value) ? value : (isBooleanString(value) ? value === "true" : value === null ? null : undefined)
             })); // allow only strict boolean or boolean strings for query/path param
             defaultTypeValidators.push(IsBoolean());
         }
 
-        if (options?.type) defaultTypeValidators.push(ValidateNested())
+        if (options?.type && options?.validateNested !== false) defaultTypeValidators.push(ValidateNested())
 
         defaultTypeValidators.forEach(validatorAnnotation => validatorAnnotation(target, key));
     }

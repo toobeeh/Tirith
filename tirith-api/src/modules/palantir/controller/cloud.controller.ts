@@ -83,6 +83,7 @@ export class CloudController {
     @ApiOperation({ summary: "Search for cloud images" })
     @ApiResponse({ status: 200, type: CloudImageDto, isArray: true, description: "All matching images of the current user's cloud" })
     searchUserCloud(@Param() params: LoginTokenParamDto, @Body() filter: CloudSearchDto): Promise<CloudImageDto[]> {
+        console.log(JSON.stringify(filter));
         return this.cloudService.searchDrawings(params.login, filter);
     }
 
