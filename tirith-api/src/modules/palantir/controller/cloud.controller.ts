@@ -1,18 +1,18 @@
 /*
 https://docs.nestjs.com/controllers#controllers
 */
-
+import {Response } from "express";
 import {
     Body,
     Controller,
     Delete,
-    Get,
+    Get, Header,
     HttpCode,
     Inject,
     Param, Patch,
     Post,
     Req,
-    Request,
+    Request, Res,
     UseGuards
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
@@ -57,7 +57,7 @@ export class CloudController {
     @RequiredRole(AuthRoles.Member)
     @ResourceOwner("login")
     @ApiOperation({ summary: "Delete a image by id from the cloud" })
-    @ApiResponse({ status: 204, type: CloudImageDto, description: "The image with specified ID has been deleted" })
+    @ApiResponse({ status: 204, description: "The image with specified ID has been deleted" })
     async deleteImageFromUserCloud(@Req() request: Request, @Param() loginParam: LoginTokenParamDto, @Param() idParam: StringIdParamDto): Promise<void> {
         const member = (request as any).user as MemberDto
 
