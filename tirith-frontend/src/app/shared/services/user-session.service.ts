@@ -50,7 +50,7 @@ export class UserService {
   }
 
   parseFlags(flags: number): userFlags {
-    const flagArray = ("00000000" + (flags >>> 0).toString(2)).slice(-10).split("")
+    const flagArray = ("00000000" + (flags >>> 0).toString(2)).slice(-11).split("")
       .map(f => Number(f)).reverse();
 
     // parse array to interface
@@ -64,7 +64,7 @@ export class UserService {
       dropBan: flagArray[6] == 1,
       patronizer: flagArray[7] == 1,
       booster: flagArray[8] == 1,
-      contentModerator: flagArray[9] == 1,
+      contentModerator: flagArray[10] == 1,
     });
   }
 }
