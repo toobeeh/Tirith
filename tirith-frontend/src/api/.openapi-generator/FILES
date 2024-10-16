@@ -46,6 +46,7 @@ model/lobbyDetailsDto.ts
 model/lobbyPlayerDto.ts
 model/memberDto.ts
 model/memberSearchDto.ts
+model/memberWebhookDto.ts
 model/models.ts
 model/palantirLobbyDto.ts
 model/palantirLobbyPlayerDto.ts

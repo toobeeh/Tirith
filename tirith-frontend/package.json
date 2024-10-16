@@ -8,7 +8,7 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "start:dev": "ng serve -o",
-    "generate:api": "openapi-generator-cli generate -i http://api.typo.rip/openapi.json -g typescript-angular -o src/api/ -p=removeOperationIdPrefix=true",
+    "generate:api": "openapi-generator-cli generate -i https://api.typo.rip/openapi.json -g typescript-angular -o src/api/ -p=removeOperationIdPrefix=true",
     "dev:ssr": "ng run Tirith:serve-ssr",
     "serve:ssr": "node dist/Tirith/server/main.js",
     "build:ssr": "ng build && ng run Tirith:server",

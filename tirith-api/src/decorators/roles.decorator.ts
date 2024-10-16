@@ -2,17 +2,17 @@ import { ExecutionContext, SetMetadata } from "@nestjs/common";
 import { Reflector } from "@nestjs/core";
 import { ApiBearerAuth } from "@nestjs/swagger";
 import { Request } from 'express';
+import {MemberFlagDto} from "../modules/palantir/dto/member.dto";
+
+export enum MembershipEnum {
+    Member = "Member",
+    None = "None"
+}
 
 /**
  * Enum with possible authentification levels
  */
-export enum AuthRoles {
-    Administrator = "Administrator",
-    Moderator = "Moderator",
-    ContentModerator = "ContentModerator",
-    Member = "Member",
-    None = "None"
-}
+export type AuthRole = MemberFlagDto | MembershipEnum;
 
 /**
  * Set the required role for the authentification guard
@@ -20,10 +20,10 @@ export enum AuthRoles {
  * @param param the required role a member must have to access this resource
  * @returns a custom decorator
  */
-export const RequiredRole = (...param: AuthRoles[]): MethodDecorator & ClassDecorator => {
+export const RequiredRole = (...param: AuthRole[]): MethodDecorator & ClassDecorator => {
     return (target: any, key?: string | symbol, descriptor?: any) => {
 
-        if(param.length === 0) param = [AuthRoles.None];
+        if(param.length === 0) param = [MembershipEnum.None];
 
         /* applied to controller */
         if (!key) {
@@ -48,7 +48,7 @@ export const RequiredRole = (...param: AuthRoles[]): MethodDecorator & ClassDeco
             /* skip if already processsed - decorators apply first for methods */
             if (Reflect.hasMetadata("guardRequiredRole", target)) return;
 
-            if (!param.includes(AuthRoles.None)) ApiBearerAuth()(target)
+            if (!param.includes(MembershipEnum.None)) ApiBearerAuth()(target)
             SetMetadata('guardRequiredRole', param)(target);
         }
     }
@@ -60,11 +60,11 @@ export const RequiredRole = (...param: AuthRoles[]): MethodDecorator & ClassDeco
  * @param reflector the reflextor isntance of the calling guard
  * @returns the required role according to the annotation of the method or class
  */
-export const getRequiredRoles = (context: ExecutionContext, reflector: Reflector) => {
-    let roles = reflector.get<AuthRoles[]>('guardRequiredRole', context.getHandler());
+export const getRequiredRoles = (context: ExecutionContext, reflector: Reflector): AuthRole[] => {
+    let roles = reflector.get<AuthRole[]>('guardRequiredRole', context.getHandler());
     if (roles === undefined) {
-        roles = reflector.get<AuthRoles[]>('guardRequiredRole', context.getClass());
-        if (roles === undefined) return [AuthRoles.None];
+        roles = reflector.get<AuthRole[]>('guardRequiredRole', context.getClass());
+        if (roles === undefined) return [MembershipEnum.None];
     }
     return roles;
 }

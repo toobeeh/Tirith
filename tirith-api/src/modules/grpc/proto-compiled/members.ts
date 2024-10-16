@@ -20,6 +20,7 @@ export enum MemberFlagMessage {
   BubbleFarming = 8,
   UnlimitedCloud = 9,
   ContentModerator = 10,
+  EmojiManagement = 11,
   UNRECOGNIZED = -1,
 }
 
@@ -58,6 +59,9 @@ export function memberFlagMessageFromJSON(object: any): MemberFlagMessage {
     case 10:
     case "ContentModerator":
       return MemberFlagMessage.ContentModerator;
+    case 11:
+    case "EmojiManagement":
+      return MemberFlagMessage.EmojiManagement;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -89,6 +93,8 @@ export function memberFlagMessageToJSON(object: MemberFlagMessage): string {
       return "UnlimitedCloud";
     case MemberFlagMessage.ContentModerator:
       return "ContentModerator";
+    case MemberFlagMessage.EmojiManagement:
+      return "EmojiManagement";
     case MemberFlagMessage.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";

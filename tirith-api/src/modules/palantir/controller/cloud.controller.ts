@@ -1,26 +1,26 @@
 /*
 https://docs.nestjs.com/controllers#controllers
 */
-import {Response } from "express";
 import {
     Body,
     Controller,
     Delete,
-    Get, Header,
+    Get,
     HttpCode,
     Inject,
-    Param, Patch,
+    Param,
+    Patch,
     Post,
     Req,
-    Request, Res,
+    Request,
     UseGuards
 } from '@nestjs/common';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { ApiSecurityNotes } from 'src/decorators/apiSecurityNote.decorator';
+import {ApiOperation, ApiResponse, ApiTags} from '@nestjs/swagger';
+import {ApiSecurityNotes} from 'src/decorators/apiSecurityNote.decorator';
 import {ICloudService} from "../../../services/interfaces/cloud.service.interface";
 import {CloudImageDto} from "../dto/cloud.dto";
 import {CloudSearchDto} from "../dto/cloudSearch.dto";
-import {AuthRoles, RequiredRole, ResourceOwner} from "../../../decorators/roles.decorator";
+import {MembershipEnum, RequiredRole, ResourceOwner} from "../../../decorators/roles.decorator";
 import {LoginTokenParamDto, NumberTokenParamDto, StringIdParamDto} from "../dto/params.dto";
 import {MemberGuard} from "../../../guards/member.guard";
 import {RoleGuard} from "../../../guards/role.guard";
@@ -43,7 +43,7 @@ export class CloudController {
     @Get(":login/:id")
     @HttpCode(200)
     @Throttle(getThrottleForDefinition("throttleThirtyPerMinute"))
-    @RequiredRole(AuthRoles.Member)
+    @RequiredRole(MembershipEnum.Member)
     @ResourceOwner("login")
     @ApiOperation({ summary: "Get a image by id from the cloud" })
     @ApiResponse({ status: 200, type: CloudImageDto, description: "The image with specified ID" })
@@ -54,7 +54,7 @@ export class CloudController {
     @Delete(":login/:id")
     @HttpCode(204)
     @Throttle(getThrottleForDefinition("throttleThirtyPerMinute"))
-    @RequiredRole(AuthRoles.Member)
+    @RequiredRole(MembershipEnum.Member)
     @ResourceOwner("login")
     @ApiOperation({ summary: "Delete a image by id from the cloud" })
     @ApiResponse({ status: 204, description: "The image with specified ID has been deleted" })
@@ -68,7 +68,7 @@ export class CloudController {
     @Patch(":login/:id/award/:token")
     @HttpCode(204)
     @Throttle(getThrottleForDefinition("throttleTenPerMinute"))
-    @RequiredRole(AuthRoles.Member)
+    @RequiredRole(MembershipEnum.Member)
     @ResourceOwner("login")
     @ApiOperation({ summary: "Link an image of the user to an award in their received inventory, which has no linked image yet" })
     @ApiResponse({ status: 204, description: "The image with specified ID has been linked to the award" })
@@ -79,7 +79,7 @@ export class CloudController {
     @Post(":login/search")
     @HttpCode(200)
     @Throttle(getThrottleForDefinition("throttleThirtyPerMinute"))
-    @RequiredRole(AuthRoles.Member)
+    @RequiredRole(MembershipEnum.Member)
     @ResourceOwner("login")
     @ApiOperation({ summary: "Search for cloud images" })
     @ApiResponse({ status: 200, type: CloudImageDto, isArray: true, description: "All matching images of the current user's cloud" })
@@ -91,7 +91,7 @@ export class CloudController {
     @Post(":login/delete")
     @HttpCode(204)
     @Throttle(getThrottleForDefinition("throttleThirtyPerMinute"))
-    @RequiredRole(AuthRoles.Member)
+    @RequiredRole(MembershipEnum.Member)
     @ResourceOwner("login")
     @ApiOperation({ summary: "Delete multiple images from the user's cloud" })
     @ApiResponse({ status: 204 })
@@ -106,7 +106,7 @@ export class CloudController {
 
     @Post(":login")
     @Throttle(getThrottleForDefinition("throttleTenPerMinute"))
-    @RequiredRole(AuthRoles.Member)
+    @RequiredRole(MembershipEnum.Member)
     @ResourceOwner("login")
     @ApiOperation({ summary: "Upload a new image to the user's cloud" })
     @ApiResponse({ status: 201 })

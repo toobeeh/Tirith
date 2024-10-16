@@ -6,6 +6,8 @@ import { NavContentGuard } from './shared/guards/nav-content.guard';
 import { AuthRoutingModule } from './auth/auth-routing.module';
 import { UserRoutingModule } from './user/user-routing.module';
 import { RoleGuard } from './shared/guards/role.guard';
+import {MemberDto} from "../api";
+import MemberFlagsEnum = MemberDto.MemberFlagsEnum;
 
 const routes: Routes = [
 
@@ -33,10 +35,7 @@ const routes: Routes = [
     canActivate: [RoleGuard, NavContentGuard],
     canActivateChild: [NavContentGuard],
     data: {
-      requiredFlags: {
-        moderator: true,
-        contentModerator: true
-      },
+      requiredFlags: [MemberFlagsEnum.Moderator, MemberFlagsEnum.ContentModerator, MemberFlagsEnum.EmojiManagement],
       navigation: [
         ["Home", "/", "route"],
         ["Admin Panel", "/admin", "route"],

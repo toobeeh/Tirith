@@ -2,23 +2,23 @@
 https://docs.nestjs.com/controllers#controllers
 */
 
-import { Body, Controller, Delete, Get, Param, Patch, Query, Req, UseGuards, Request, Inject } from '@nestjs/common';
-import { RoleGuard } from 'src/guards/role.guard';
-import { UpdateDiscordID } from '../dto/updateDiscord.dto';
-import { MemberGuard } from 'src/guards/member.guard';
-import { AuthRoles, RequiredRole, ResourceOwner } from 'src/decorators/roles.decorator';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import {AccessTokenDto, MemberDto, MemberWebhookDto} from '../dto/member.dto';
-import { MemberSearchDto } from '../dto/memberSearch.dto';
-import { ApiSecurityNotes } from 'src/decorators/apiSecurityNote.decorator';
-import {LoginTokenParamDto, NumberTokenParamDto, StringIdParamDto, StringTokenParamDto} from '../dto/params.dto';
-import { IMembersService } from '../../../services/interfaces/members.service.interface';
+import {Body, Controller, Delete, Get, Inject, Param, Patch, Query, Req, Request, UseGuards} from '@nestjs/common';
+import {RoleGuard} from 'src/guards/role.guard';
+import {UpdateDiscordID} from '../dto/updateDiscord.dto';
+import {MemberGuard} from 'src/guards/member.guard';
+import {MembershipEnum, RequiredRole, ResourceOwner} from 'src/decorators/roles.decorator';
+import {ApiOperation, ApiResponse, ApiTags} from '@nestjs/swagger';
+import {AccessTokenDto, MemberDto, MemberFlagDto, MemberWebhookDto} from '../dto/member.dto';
+import {MemberSearchDto} from '../dto/memberSearch.dto';
+import {ApiSecurityNotes} from 'src/decorators/apiSecurityNote.decorator';
+import {LoginTokenParamDto, NumberTokenParamDto, StringIdParamDto} from '../dto/params.dto';
+import {IMembersService} from '../../../services/interfaces/members.service.interface';
 import {Throttle} from "@nestjs/throttler";
 import {getThrottleForDefinition} from "../../../guards/trottleConfigs";
 import {IGuildsService} from "../../../services/interfaces/guilds.service.interface";
 
 @ApiSecurityNotes()
-@RequiredRole(AuthRoles.Moderator)
+@RequiredRole(MemberFlagDto.Moderator)
 @UseGuards(MemberGuard, RoleGuard)
 @Controller("members")
 @ApiTags("members")
@@ -37,7 +37,7 @@ export class MembersController {
     }
 
     @Get("me")
-    @RequiredRole(AuthRoles.Member)
+    @RequiredRole(MembershipEnum.Member)
     @ApiOperation({ summary: "Get the currently authenticated member" })
     @Throttle(getThrottleForDefinition("throttleThirtyPerMinute"))
     @ApiResponse({ status: 200, type: MemberDto, description: "The authenticated member" })

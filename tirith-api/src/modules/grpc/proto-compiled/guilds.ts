@@ -41,6 +41,7 @@ export interface GuildReply {
   name: string;
   connectedMemberCount: number;
   supporters: number[];
+  botId: Long | undefined;
 }
 
 /** Request containing a guild observe token */
@@ -369,7 +370,7 @@ export const RemoveGuildWebhookMessage = {
 };
 
 function createBaseGuildReply(): GuildReply {
-  return { guildId: Long.ZERO, invite: 0, name: "", connectedMemberCount: 0, supporters: [] };
+  return { guildId: Long.ZERO, invite: 0, name: "", connectedMemberCount: 0, supporters: [], botId: undefined };
 }
 
 export const GuildReply = {
@@ -391,6 +392,9 @@ export const GuildReply = {
       writer.int32(v);
     }
     writer.ldelim();
+    if (message.botId !== undefined) {
+      Int64Value.encode({ value: message.botId! }, writer.uint32(66).fork()).ldelim();
+    }
     return writer;
   },
 
@@ -446,6 +450,13 @@ export const GuildReply = {
           }
 
           break;
+        case 8:
+          if (tag !== 66) {
+            break;
+          }
+
+          message.botId = Int64Value.decode(reader, reader.uint32()).value;
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -464,6 +475,7 @@ export const GuildReply = {
       supporters: globalThis.Array.isArray(object?.supporters)
         ? object.supporters.map((e: any) => globalThis.Number(e))
         : [],
+      botId: isSet(object.botId) ? Long.fromValue(object.botId) : undefined,
     };
   },
 
@@ -483,6 +495,9 @@ export const GuildReply = {
     }
     if (message.supporters?.length) {
       obj.supporters = message.supporters.map((e) => Math.round(e));
+    }
+    if (message.botId !== undefined) {
+      obj.botId = message.botId;
     }
     return obj;
   },

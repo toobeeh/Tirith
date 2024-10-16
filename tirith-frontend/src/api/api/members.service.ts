@@ -25,6 +25,8 @@ import { MemberDto } from '../model/memberDto';
 // @ts-ignore
 import { MemberSearchDto } from '../model/memberSearchDto';
 // @ts-ignore
+import { MemberWebhookDto } from '../model/memberWebhookDto';
+// @ts-ignore
 import { UpdateDiscordID } from '../model/updateDiscordID';
 
 // @ts-ignore
@@ -166,7 +168,7 @@ export class MembersService {
      * Connect a user to a guild with given server token
      *   Required Roles: Moderator - Role override if {login} matches the client login.  Rate limit default: 10 Requests / 60000 ms TTL
      * @param login Member Login parameter
-     * @param token 
+     * @param token Token parameter
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -306,7 +308,7 @@ export class MembersService {
 
     /**
      * Get the currently authenticated member
-     *   Required Roles: Member  Rate limit default: 10 Requests / 60000 ms TTL
+     *   Required Roles: Member  Rate limit default: 30 Requests / 60000 ms TTL
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -565,10 +567,76 @@ export class MembersService {
     }
 
     /**
+     * Get all webhooks of a member
+     *   Required Roles: Moderator - Role override if {login} matches the client login.  Rate limit default: 10 Requests / 60000 ms TTL
+     * @param login Member Login parameter
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getMemberGuildWebhooks(login: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<Array<MemberWebhookDto>>;
+    public getMemberGuildWebhooks(login: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<Array<MemberWebhookDto>>>;
+    public getMemberGuildWebhooks(login: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<Array<MemberWebhookDto>>>;
+    public getMemberGuildWebhooks(login: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+        if (login === null || login === undefined) {
+            throw new Error('Required parameter login was null or undefined when calling getMemberGuildWebhooks.');
+        }
+
+        let localVarHeaders = this.defaultHeaders;
+
+        let localVarCredential: string | undefined;
+        // authentication (bearer) required
+        localVarCredential = this.configuration.lookupCredential('bearer');
+        if (localVarCredential) {
+            localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
+        }
+
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'application/json'
+            ];
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
+        }
+
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/members/${this.configuration.encodeParam({name: "login", value: login, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: undefined})}/webhooks`;
+        return this.httpClient.request<Array<MemberWebhookDto>>('get', `${this.configuration.basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
+                responseType: <any>responseType_,
+                withCredentials: this.configuration.withCredentials,
+                headers: localVarHeaders,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
      * Delete a server from a member\&#39;s connected guilds
      *   Required Roles: Moderator - Role override if {login} matches the client login.  Rate limit default: 10 Requests / 60000 ms TTL
      * @param login Member Login parameter
-     * @param token 
+     * @param token Token parameter
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */

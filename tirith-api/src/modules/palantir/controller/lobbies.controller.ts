@@ -3,7 +3,7 @@ https://docs.nestjs.com/controllers#controllers
 */
 
 import { Controller, Get, Inject, Param, UseGuards } from '@nestjs/common';
-import { AuthRoles, RequiredRole } from 'src/decorators/roles.decorator';
+import { RequiredRole } from 'src/decorators/roles.decorator';
 import { RoleGuard } from 'src/guards/role.guard';
 import { MemberGuard } from 'src/guards/member.guard';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
@@ -14,11 +14,12 @@ import { StringTokenParamDto } from '../dto/params.dto';
 import { Throttle } from '@nestjs/throttler';
 import { getThrottleForDefinition } from 'src/guards/trottleConfigs';
 import { ILobbiesService } from '../../../services/interfaces/lobbies.service.interface';
+import {MemberFlagDto} from "../dto/member.dto";
 
 @ApiSecurityNotes()
 @Controller("lobbies")
 @ApiTags("lobbies")
-@RequiredRole(AuthRoles.Moderator)
+@RequiredRole(MemberFlagDto.Moderator)
 @UseGuards(MemberGuard, RoleGuard)
 @ApiBearerAuth()
 export class LobbiesController {

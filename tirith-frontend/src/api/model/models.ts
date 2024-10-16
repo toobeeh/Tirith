@@ -23,6 +23,7 @@ export * from './lobbyDetailsDto';
 export * from './lobbyPlayerDto';
 export * from './memberDto';
 export * from './memberSearchDto';
+export * from './memberWebhookDto';
 export * from './palantirLobbyDto';
 export * from './palantirLobbyPlayerDto';
 export * from './postImageDto';

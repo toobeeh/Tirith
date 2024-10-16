@@ -57,5 +57,27 @@ export interface MemberDto {
      * The raw database member result
      */
     rawMember: object;
+    /**
+     * Enum array containing the flags of the member
+     */
+    memberFlags: Array<MemberDto.MemberFlagsEnum>;
 }
+export namespace MemberDto {
+    export type MemberFlagsEnum = 'Admin' | 'Moderator' | 'Patron' | 'Patronizer' | 'Booster' | 'DropBan' | 'PermaBan' | 'Beta' | 'BubbleFarming' | 'UnlimitedCloud' | 'ContentModerator' | 'EmojiManagement';
+    export const MemberFlagsEnum = {
+        Admin: 'Admin' as MemberFlagsEnum,
+        Moderator: 'Moderator' as MemberFlagsEnum,
+        Patron: 'Patron' as MemberFlagsEnum,
+        Patronizer: 'Patronizer' as MemberFlagsEnum,
+        Booster: 'Booster' as MemberFlagsEnum,
+        DropBan: 'DropBan' as MemberFlagsEnum,
+        PermaBan: 'PermaBan' as MemberFlagsEnum,
+        Beta: 'Beta' as MemberFlagsEnum,
+        BubbleFarming: 'BubbleFarming' as MemberFlagsEnum,
+        UnlimitedCloud: 'UnlimitedCloud' as MemberFlagsEnum,
+        ContentModerator: 'ContentModerator' as MemberFlagsEnum,
+        EmojiManagement: 'EmojiManagement' as MemberFlagsEnum
+    };
+}
+
 

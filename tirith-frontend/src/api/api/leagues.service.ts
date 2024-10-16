@@ -95,7 +95,7 @@ export class LeaguesService {
 
     /**
      * Get the total ranking of the current league season
-     *   Required Roles: Member  Rate limit default: 10 Requests / 60000 ms TTL
+     *   Required Roles: Moderator  Rate limit default: 10 Requests / 60000 ms TTL
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -157,7 +157,7 @@ export class LeaguesService {
 
     /**
      * Get the total ranking of the a league season
-     *   Required Roles: Member  Rate limit default: 10 Requests / 60000 ms TTL
+     *   Required Roles: Moderator  Rate limit default: 10 Requests / 60000 ms TTL
      * @param year Season year parameter
      * @param month Season month parameter
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.

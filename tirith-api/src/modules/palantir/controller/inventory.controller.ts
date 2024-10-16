@@ -3,9 +3,9 @@ https://docs.nestjs.com/controllers#controllers
 */
 
 import {Body, Controller, Get, Inject, Param, Patch, UseGuards} from '@nestjs/common';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { ApiSecurityNotes } from 'src/decorators/apiSecurityNote.decorator';
-import {AuthRoles, RequiredRole, ResourceOwner} from "../../../decorators/roles.decorator";
+import {ApiOperation, ApiResponse, ApiTags} from '@nestjs/swagger';
+import {ApiSecurityNotes} from 'src/decorators/apiSecurityNote.decorator';
+import {RequiredRole, ResourceOwner} from "../../../decorators/roles.decorator";
 import {LoginTokenParamDto} from "../dto/params.dto";
 import {RoleGuard} from "../../../guards/role.guard";
 import {MemberGuard} from "../../../guards/member.guard";
@@ -13,6 +13,7 @@ import {SpriteComboDto, SpriteInventoryDto, SpriteSlotCountDto, SpriteSlotDto} f
 import {IInventoryService} from "../../../services/interfaces/inventory.service.interface";
 import {Throttle} from "@nestjs/throttler";
 import {getThrottleForDefinition} from "../../../guards/trottleConfigs";
+import {MemberFlagDto} from "../dto/member.dto";
 
 @ApiSecurityNotes()
 @Controller("member")
@@ -24,7 +25,7 @@ export class InventoryController {
 
     @Patch(":login/inventory/sprites/combo")
     @Throttle(getThrottleForDefinition("throttleThirtyPerMinute"))
-    @RequiredRole(AuthRoles.Moderator)
+    @RequiredRole(MemberFlagDto.Moderator)
     @ResourceOwner("login")
     @ApiOperation({ summary: "Set the sprite combo of a member" })
     @ApiResponse({ status: 200, description: "Combo has been successfully updated" })
@@ -34,7 +35,7 @@ export class InventoryController {
 
     @Patch(":login/inventory/sprites/slot")
     @Throttle(getThrottleForDefinition("throttleThirtyPerMinute"))
-    @RequiredRole(AuthRoles.Moderator)
+    @RequiredRole(MemberFlagDto.Moderator)
     @ResourceOwner("login")
     @ApiOperation({ summary: "Set a sprite slot of a member" })
     @ApiResponse({ status: 200, description: "Slot has been successfully updated" })
@@ -44,7 +45,7 @@ export class InventoryController {
 
     @Get(":login/inventory/sprites")
     @Throttle(getThrottleForDefinition("throttleThirtyPerMinute"))
-    @RequiredRole(AuthRoles.Moderator)
+    @RequiredRole(MemberFlagDto.Moderator)
     @ResourceOwner("login")
     @ApiOperation({ summary: "Get all sprites in the inventory of a member" })
     @ApiResponse({ status: 200, type: SpriteInventoryDto, isArray: true, description: "All sprites in the inventory, and the slot where they are activated" })
@@ -54,7 +55,7 @@ export class InventoryController {
 
     @Get(":login/inventory/sprites/slots")
     @Throttle(getThrottleForDefinition("throttleThirtyPerMinute"))
-    @RequiredRole(AuthRoles.Moderator)
+    @RequiredRole(MemberFlagDto.Moderator)
     @ResourceOwner("login")
     @ApiOperation({ summary: "Get the amount of unlocked sprite slots of a member" })
     @ApiResponse({ status: 200, description: "Amount of unlocked sprite slots", type: SpriteSlotCountDto })

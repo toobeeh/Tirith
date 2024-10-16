@@ -8,11 +8,12 @@ import {ApiSecurityNotes} from 'src/decorators/apiSecurityNote.decorator';
 import {IAdminService} from "../../../services/interfaces/admin.service.interface";
 import {RoleGuard} from "../../../guards/role.guard";
 import {MemberGuard} from "../../../guards/member.guard";
-import {AuthRoles, RequiredRole} from "../../../decorators/roles.decorator";
+import {RequiredRole} from "../../../decorators/roles.decorator";
+import {MemberFlagDto} from "../dto/member.dto";
 
 @ApiSecurityNotes()
 @UseGuards(MemberGuard, RoleGuard)
-@RequiredRole(AuthRoles.Administrator)
+@RequiredRole(MemberFlagDto.Admin)
 @Controller("admin")
 @ApiTags("admin")
 export class AdminController {

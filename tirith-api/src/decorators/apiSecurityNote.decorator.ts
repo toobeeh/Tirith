@@ -1,5 +1,6 @@
-import { getThrottleOfControllerOrEndpoint } from "src/guards/trottleConfigs";
-import { AuthRoles } from "./roles.decorator";
+import {getThrottleOfControllerOrEndpoint} from "src/guards/trottleConfigs";
+import {AuthRole, MembershipEnum} from "./roles.decorator";
+import {MemberFlagDto} from "../modules/palantir/dto/member.dto";
 
 /**
  * Adds security details for a controller to the swagger description.
@@ -9,7 +10,7 @@ export const ApiSecurityNotes = (): ClassDecorator => {
     return (target: any) => {
 
         /* get role requirement for class */
-        const role = Reflect.getMetadata("guardRequiredRole", target) as AuthRoles[] ?? [AuthRoles.None];
+        const role = Reflect.getMetadata("guardRequiredRole", target) as AuthRole[] ?? [MembershipEnum.None];
 
         /* get throttle for class */
         const controllerThrottles = getThrottleOfControllerOrEndpoint(target) ?? [];
@@ -23,7 +24,7 @@ export const ApiSecurityNotes = (): ClassDecorator => {
         methods.forEach(method => {
 
             /* get method specific security */
-            const methodRoles = Reflect.getMetadata("guardRequiredRole", method.target) as AuthRoles[] ?? role;
+            const methodRoles = Reflect.getMetadata("guardRequiredRole", method.target) as AuthRole[] ?? role;
             const ownerOverride = Reflect.getMetadata("guardResourceOwner", method.target) as string ?? null;
             const existingMetadata = Reflect.getMetadata('swagger/apiOperation', method.target) || {};
 
@@ -41,7 +42,7 @@ export const ApiSecurityNotes = (): ClassDecorator => {
 
             /* build security information */
             if (methodRoles && methodRoles.length > 0) {
-                const roleNames = methodRoles.map(role => AuthRoles[role]).join(" | ");
+                const roleNames = methodRoles.map(role => role).join(" | ");
                 let rolesDesc = `Required Roles: ${ roleNames }`;
                 if (ownerOverride != null) rolesDesc += `\n- \Role override if {${ownerOverride}} matches the client login.`;
                 description += "\n\n" + rolesDesc;

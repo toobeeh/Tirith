@@ -4,16 +4,16 @@ https://docs.nestjs.com/controllers#controllers
 
 import { Body, Controller, Get, Inject, Param, Patch, Post, UseGuards } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { SpriteDto } from '../dto/sprites.dto';
 import { ApiSecurityNotes } from 'src/decorators/apiSecurityNote.decorator';
 import { ThemeDto, ThemeListingDto, ThemePublishRequestDto, ThemeShareDto, ThemeUpdateRequestDto } from '../dto/themes.dto';
-import { RequiredRole, AuthRoles } from 'src/decorators/roles.decorator';
+import { RequiredRole } from 'src/decorators/roles.decorator';
 import { MemberGuard } from 'src/guards/member.guard';
 import { RoleGuard } from 'src/guards/role.guard';
 import { Throttle } from '@nestjs/throttler';
 import { StringIdParamDto } from '../dto/params.dto';
 import { getThrottleForDefinition } from 'src/guards/trottleConfigs';
 import { IThemesService } from '../../../services/interfaces/themes.service.interface';
+import {MemberFlagDto} from "../dto/member.dto";
 
 @ApiSecurityNotes()
 @Controller("themes")
@@ -53,7 +53,7 @@ export class ThemesController {
 
     @Post(":id/public")
     @UseGuards(MemberGuard, RoleGuard)
-    @RequiredRole(AuthRoles.Moderator)
+    @RequiredRole(MemberFlagDto.Moderator)
     @ApiOperation({ summary: "Publish a theme to the public theme list" })
     @ApiResponse({ status: 201, type: ThemeShareDto, description: "The newly created theme with id" })
     async publishTheme(@Param() params: StringIdParamDto, @Body() publish: ThemePublishRequestDto): Promise<ThemeShareDto> {
@@ -62,7 +62,7 @@ export class ThemesController {
 
     @Patch(":id/public")
     @UseGuards(MemberGuard, RoleGuard)
-    @RequiredRole(AuthRoles.Moderator)
+    @RequiredRole(MemberFlagDto.Moderator)
     @ApiOperation({ summary: "Update the theme content from the provided new share and increment version" })
     @ApiResponse({ status: 200, type: ThemeShareDto, description: "The newly created theme with id" })
     async updateTheme(@Param() params: StringIdParamDto, @Body() update: ThemeUpdateRequestDto): Promise<ThemeShareDto> {

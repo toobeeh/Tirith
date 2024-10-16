@@ -8,6 +8,8 @@ import { MemberComponent } from './pages/members/member/member.component';
 import {EmojisComponent} from "./pages/emojis/emojis.component";
 import {AddEmojisComponent} from "./pages/emojis/add-emojis/add-emojis.component";
 import {RoleGuard} from "../shared/guards/role.guard";
+import {MemberDto} from "../../api";
+import MemberFlagsEnum = MemberDto.MemberFlagsEnum;
 
 const routes: Routes = [
   {
@@ -20,37 +22,37 @@ const routes: Routes = [
   },
   {
     canActivate: [RoleGuard],
-    data: { requiredFlags: { moderator: true} },
+    data: { requiredFlags: [MemberFlagsEnum.Moderator] },
     path: 'reports', component: ReportsComponent,
     pathMatch: "full",
   },
   {
     canActivate: [RoleGuard],
-    data: { requiredFlags: { moderator: true} },
+    data: { requiredFlags: [MemberFlagsEnum.Moderator] },
     path: 'lobbies', component: LobbiesComponent,
     pathMatch: "full",
   },
   {
     canActivate: [RoleGuard],
-    data: { requiredFlags: { moderator: true} },
+    data: { requiredFlags: [MemberFlagsEnum.Moderator] },
     path: 'members', component: MembersComponent,
     pathMatch: "full",
   },
   {
     canActivate: [RoleGuard],
-    data: { requiredFlags: { moderator: true} },
+    data: { requiredFlags: [MemberFlagsEnum.Moderator] },
     path: 'members/:login', component: MemberComponent,
     pathMatch: "full",
   },
   {
     canActivate: [RoleGuard],
-    data: { requiredFlags: { moderator: true, contentModerator: true} },
+    data: { requiredFlags: [MemberFlagsEnum.Moderator, MemberFlagsEnum.ContentModerator, MemberFlagsEnum.EmojiManagement] },
     path: 'emojis', component: EmojisComponent,
     pathMatch: "full",
   },
   {
     canActivate: [RoleGuard],
-    data: { requiredFlags: { moderator: true, contentModerator: true} },
+    data: { requiredFlags: [MemberFlagsEnum.Moderator, MemberFlagsEnum.ContentModerator, MemberFlagsEnum.EmojiManagement] },
     path: 'emojis/add', component: AddEmojisComponent,
     pathMatch: "full",
   }

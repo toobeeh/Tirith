@@ -1,12 +1,12 @@
-import { Inject, Injectable } from "@nestjs/common";
-import { ConfigService } from "@nestjs/config";
-import { GrpcBaseService } from "./grpc-base";
-import { MemberReply, MemberSearchReply, MembersDefinition } from "../proto-compiled/members";
-import { IMembersService } from "src/services/interfaces/members.service.interface";
-import { MemberDto, AccessTokenDto } from "src/modules/palantir/dto/member.dto";
-import { MemberSearchDto } from "src/modules/palantir/dto/memberSearch.dto";
-import { IGuildsService } from "src/services/interfaces/guilds.service.interface";
-import { Long } from "@grpc/proto-loader";
+import {Inject, Injectable} from "@nestjs/common";
+import {ConfigService} from "@nestjs/config";
+import {GrpcBaseService} from "./grpc-base";
+import {MemberFlagMessage, MemberReply, MembersDefinition, MemberSearchReply} from "../proto-compiled/members";
+import {IMembersService} from "src/services/interfaces/members.service.interface";
+import {AccessTokenDto, MemberDto, MemberFlagDto} from "src/modules/palantir/dto/member.dto";
+import {MemberSearchDto} from "src/modules/palantir/dto/memberSearch.dto";
+import {IGuildsService} from "src/services/interfaces/guilds.service.interface";
+import {Long} from "@grpc/proto-loader";
 
 @Injectable()
 export class GrpcMembersService extends GrpcBaseService<MembersDefinition> implements IMembersService {
@@ -23,6 +23,24 @@ export class GrpcMembersService extends GrpcBaseService<MembersDefinition> imple
         };
     }
 
+    private mapFlag(flag: MemberFlagMessage): MemberFlagDto | undefined {
+        switch (flag) {
+            case MemberFlagMessage.Admin: return MemberFlagDto.Admin;
+            case MemberFlagMessage.Moderator: return MemberFlagDto.Moderator;
+            case MemberFlagMessage.Patron: return MemberFlagDto.Patron;
+            case MemberFlagMessage.Patronizer: return MemberFlagDto.Patronizer;
+            case MemberFlagMessage.Booster: return MemberFlagDto.Booster;
+            case MemberFlagMessage.DropBan: return MemberFlagDto.DropBan;
+            case MemberFlagMessage.PermaBan: return MemberFlagDto.PermaBan;
+            case MemberFlagMessage.Beta: return MemberFlagDto.Beta;
+            case MemberFlagMessage.BubbleFarming: return MemberFlagDto.BubbleFarming;
+            case MemberFlagMessage.UnlimitedCloud: return MemberFlagDto.UnlimitedCloud;
+            case MemberFlagMessage.ContentModerator: return MemberFlagDto.ContentModerator;
+            case MemberFlagMessage.EmojiManagement: return MemberFlagDto.EmojiManagement;
+            case MemberFlagMessage.UNRECOGNIZED: return undefined;
+        }
+    }
+
     private async mapMemberDto(reply: MemberReply): Promise<MemberDto> {
 
         const guilds = await Promise.all(reply.serverConnections.map(token => this.guildsService.getGuildByInvite(token)));
@@ -34,7 +52,8 @@ export class GrpcMembersService extends GrpcBaseService<MembersDefinition> imple
             userLogin: reply.login.toString(),
             userName: reply.username,
             guilds,
-            rawMember
+            rawMember,
+            memberFlags: reply.mappedFlags.map(flag => this.mapFlag(flag)).filter(flag => flag !== undefined)
         }
     }
 

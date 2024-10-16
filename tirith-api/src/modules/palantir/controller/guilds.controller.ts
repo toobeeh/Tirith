@@ -12,16 +12,17 @@ import {
     Param,
     Post,
     Req,
-    UnauthorizedException, UseGuards
+    UnauthorizedException,
+    UseGuards
 } from '@nestjs/common';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { ApiSecurityNotes } from 'src/decorators/apiSecurityNote.decorator';
-import { GuildInviteDto } from '../dto/guilds.dto';
+import {ApiOperation, ApiResponse, ApiTags} from '@nestjs/swagger';
+import {ApiSecurityNotes} from 'src/decorators/apiSecurityNote.decorator';
+import {GuildInviteDto} from '../dto/guilds.dto';
 import {NumberTokenParamDto, StringIdParamDto} from '../dto/params.dto';
-import { IGuildsService } from '../../../services/interfaces/guilds.service.interface';
+import {IGuildsService} from '../../../services/interfaces/guilds.service.interface';
 import {Throttle} from "@nestjs/throttler";
 import {getThrottleForDefinition} from "../../../guards/trottleConfigs";
-import {AuthRoles, RequiredRole} from "../../../decorators/roles.decorator";
+import {MembershipEnum, RequiredRole} from "../../../decorators/roles.decorator";
 import {MemberDto} from "../dto/member.dto";
 import {PostImageDto} from "../dto/postWebhook.dto";
 import {DiscordApiService} from "../../../services/discord-api.service";
@@ -50,7 +51,7 @@ export class GuildsController {
     @HttpCode(200)
     @Throttle(getThrottleForDefinition("throttleTenPerTenMinutes"))
     @UseGuards(MemberGuard, RoleGuard)
-    @RequiredRole(AuthRoles.Member)
+    @RequiredRole(MembershipEnum.Member)
     @ApiOperation({ summary: "Post an image to a guild channel" })
     @ApiResponse({ status: 200, description: "The image has been posted to the guild"})
     async postImageToGuild(@Req() request, @Param() guildTokenParams: NumberTokenParamDto, @Param() webhookNameParams: StringIdParamDto, @Body() webhookData: PostImageDto) {

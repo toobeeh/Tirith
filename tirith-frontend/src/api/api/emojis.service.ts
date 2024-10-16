@@ -95,7 +95,7 @@ export class EmojisService {
 
     /**
      * Add a new emoji
-     *   Required Roles: Moderator | ContentModerator  Rate limit default: 10 Requests / 60000 ms TTL
+     *   Required Roles: Admin | EmojiManagement | ContentModerator  Rate limit default: 30 Requests / 60000 ms TTL
      * @param emojiCandidateDto 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
@@ -171,7 +171,7 @@ export class EmojisService {
 
     /**
      * Delete a saved emoji  by name (id) and nameId
-     *   Required Roles: Moderator | ContentModerator  Rate limit default: 10 Requests / 60000 ms TTL
+     *   Required Roles: Admin | ContentModerator  Rate limit default: 10 Requests / 60000 ms TTL
      * @param id Id parameter
      * @param nameId Emoji name id appendix
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
@@ -244,7 +244,7 @@ export class EmojisService {
 
     /**
      * Search all emojis
-     *   Required Roles: None  Rate limit default: 10 Requests / 60000 ms TTL
+     *   Required Roles: None  Rate limit default: 30 Requests / 60000 ms TTL
      * @param limit Limit of results
      * @param animated Whether to include animated emojis
      * @param statics Whether to include static emojis
@@ -330,6 +330,93 @@ export class EmojisService {
     }
 
     /**
+     * Search all emojis with cache enabled
+     *   Required Roles: None  Rate limit default: 30 Requests / 60000 ms TTL
+     * @param limit Limit of results
+     * @param animated Whether to include animated emojis
+     * @param statics Whether to include static emojis
+     * @param query Search query
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getAllEmojisCached(limit: number, animated: boolean, statics: boolean, query?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<Array<EmojiDto>>;
+    public getAllEmojisCached(limit: number, animated: boolean, statics: boolean, query?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<Array<EmojiDto>>>;
+    public getAllEmojisCached(limit: number, animated: boolean, statics: boolean, query?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<Array<EmojiDto>>>;
+    public getAllEmojisCached(limit: number, animated: boolean, statics: boolean, query?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+        if (limit === null || limit === undefined) {
+            throw new Error('Required parameter limit was null or undefined when calling getAllEmojisCached.');
+        }
+        if (animated === null || animated === undefined) {
+            throw new Error('Required parameter animated was null or undefined when calling getAllEmojisCached.');
+        }
+        if (statics === null || statics === undefined) {
+            throw new Error('Required parameter statics was null or undefined when calling getAllEmojisCached.');
+        }
+
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+        if (query !== undefined && query !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>query, 'query');
+        }
+        if (limit !== undefined && limit !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>limit, 'limit');
+        }
+        if (animated !== undefined && animated !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>animated, 'animated');
+        }
+        if (statics !== undefined && statics !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>statics, 'statics');
+        }
+
+        let localVarHeaders = this.defaultHeaders;
+
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'application/json'
+            ];
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
+        }
+
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/emojis/cache`;
+        return this.httpClient.request<Array<EmojiDto>>('get', `${this.configuration.basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
+                params: localVarQueryParameters,
+                responseType: <any>responseType_,
+                withCredentials: this.configuration.withCredentials,
+                headers: localVarHeaders,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
      * Get a single saved emoji by name (id) and nameId
      *   Required Roles: None  Rate limit default: 10 Requests / 60000 ms TTL
      * @param id Id parameter
@@ -398,7 +485,7 @@ export class EmojisService {
 
     /**
      * Search for new emojis that are not yet in the database
-     *   Required Roles: Moderator | ContentModerator  Rate limit default: 10 Requests / 60000 ms TTL
+     *   Required Roles: Admin | EmojiManagement | ContentModerator  Rate limit default: 30 Requests / 60000 ms TTL
      * @param limit Limit of results
      * @param animated Whether to include animated emojis
      * @param statics Whether to include static emojis

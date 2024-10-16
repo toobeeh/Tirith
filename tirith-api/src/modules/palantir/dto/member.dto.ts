@@ -1,5 +1,18 @@
 import { XApiProperty } from "src/decorators/apiProperty.decorator";
-
+export enum MemberFlagDto {
+    Admin = "Admin",
+    Moderator = "Moderator",
+    Patron = "Patron",
+    Patronizer = "Patronizer",
+    Booster = "Booster",
+    DropBan = "DropBan",
+    PermaBan = "PermaBan",
+    Beta = "Beta",
+    BubbleFarming = "BubbleFarming",
+    UnlimitedCloud = "UnlimitedCloud",
+    ContentModerator = "ContentModerator",
+    EmojiManagement = "EmojiManagement",
+}
 export class MemberDto {
 
     @XApiProperty({ description: "The member's plain bubbles" })
@@ -40,6 +53,9 @@ export class MemberDto {
 
     @XApiProperty({ description: "The raw database member result" })
     rawMember: any
+
+    @XApiProperty({ description: "Enum array containing the flags of the member", enum: MemberFlagDto, isArray: true })
+    memberFlags: MemberFlagDto[];
 }
 
 export class GuildDto {

@@ -5,14 +5,14 @@ https://docs.nestjs.com/guards#guards
 import {CanActivate, ExecutionContext, Injectable} from '@nestjs/common';
 import {Reflector} from '@nestjs/core';
 import {Observable} from 'rxjs';
-import {AuthRoles, getRequiredRoles, getResourceOwner} from 'src/decorators/roles.decorator';
-import {MemberDto} from 'src/modules/palantir/dto/member.dto';
-import {AuthenticationService, userFlags} from 'src/services/authentication.service';
+import {AuthRole, getRequiredRoles, getResourceOwner, MembershipEnum} from 'src/decorators/roles.decorator';
+import {MemberDto, MemberFlagDto} from 'src/modules/palantir/dto/member.dto';
+import {AuthenticationService} from 'src/services/authentication.service';
 
 /**
  * A guard that checks role requrirements and rejcets users that do not fulfill the requirement.
  * Requires the user to be present in the request (via memberguard), else 
- * all requests that do not only requrie AuthRole.None are rejected.
+ * all requests that do not only require AuthRole.None are rejected.
  * Enable this on the controller to enable role checks for all endpoints.
  */
 @Injectable()
@@ -28,7 +28,7 @@ export class RoleGuard implements CanActivate {
     const requiredRoles = getRequiredRoles(context, this.reflector);
 
     /* if no role required, grant */
-    if (requiredRoles.includes(AuthRoles.None)) return true;
+    if (requiredRoles.includes(MembershipEnum.None)) return true;
 
     /* get user from request, requires member guard in order before */
     const member: MemberDto = context.switchToHttp().getRequest().user;
@@ -40,10 +40,7 @@ export class RoleGuard implements CanActivate {
     const resourceOwner = getResourceOwner(context, this.reflector);
     if (member.userLogin === resourceOwner?.toString()) return true;
 
-    /* get user flags and check if they match one of the required roles */
-    const flags = AuthenticationService.parseFlags(member.flags);
-
-    return requiredRoles.some(role => this.checkRole(role, flags));
+    return requiredRoles.some(role => this.checkRole(role, member.memberFlags));
   }
 
     /**
@@ -52,17 +49,14 @@ export class RoleGuard implements CanActivate {
      * @param flags the user flags
      * @returns true if the user has the required role
      */
-    private checkRole(role: AuthRoles, flags: userFlags): boolean {
+    private checkRole(role: AuthRole, flags: MemberFlagDto[]): boolean {
 
-      /*admin override all*/
-      if(flags.admin) return true;
+      /* member or none passes all */
+      if(role === MembershipEnum.None || role === MembershipEnum.Member) return true;
 
-      switch(role) {
-        case AuthRoles.Administrator: return flags.admin;
-        case AuthRoles.Moderator: return flags.moderator;
-        case AuthRoles.ContentModerator: return flags.contentModerator;
-        case AuthRoles.Member: return true;
-        default: return false;
-      }
+      /* admin override all */
+      if(flags.includes(MemberFlagDto.Admin)) return true;
+
+      return flags.includes(role);
     }
 }
