@@ -14,7 +14,7 @@ export class EmojisComponent implements OnInit {
   public emotes$?: Observable<EmojiDto[]>;
 
   public filterInput = new FormControl("");
-  public limitInput = new FormControl(100);
+  public limitInput = new FormControl(500);
 
   constructor(private emojiService: EmojisService) {
   }
@@ -24,7 +24,7 @@ export class EmojisComponent implements OnInit {
   }
 
   loadEmotes() {
-    this.emotes$ = this.emojiService.getAllEmojis(this.limitInput.value ?? 100, true, true, this.filterInput.value ?? "");
+    this.emotes$ = this.emojiService.getAllEmojis(this.limitInput.value ?? 10000, true, true, this.filterInput.value ?? "");
   }
 
   removeEmote(emoji: EmojiDto, event: MouseEvent) {

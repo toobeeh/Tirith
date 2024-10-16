@@ -6,7 +6,7 @@
 <div class="grid grid-cols-2 desktop:flex desktop:flex-row gap-7 justify-center items-center">
   <h4 class="w-auto">Filter emojis: </h4>
   <input [formControl]="filterInput" type="text" placeholder="Emoji Name">
-  <input [formControl]="filterInput" type="number" placeholder="Search limit">
+  <input [formControl]="limitInput" type="number" placeholder="Search limit">
   <input type="button" value="Search Emojis" (click)="loadEmotes()">
   <input type="button" value="Add new Emojis" routerLink="add">
 </div>
