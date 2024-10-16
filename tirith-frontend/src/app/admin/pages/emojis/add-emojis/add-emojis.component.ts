@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {Observable} from "rxjs";
+import {catchError, Observable} from "rxjs";
 import {EmojiDto, EmojisService} from "../../../../../api";
 import {FormControl} from "@angular/forms";
 import {ToastService} from "../../../../shared/services/toast.service";
@@ -33,7 +33,10 @@ export class AddEmojisComponent implements OnInit {
         }});
       return;
     }
-    this.emotes$ = this.emojiService.getNewEmojis(this.limitInput.value ?? 100, true, false, this.filterInput.value ?? "");
+    this.emotes$ = this.emojiService.getNewEmojis(this.limitInput.value ?? 100, true, false, this.filterInput.value ?? "").pipe(catchError(e => {
+      this.notifications.show({message: {title: "Failed to search animated emojis", content: e.status}, durationMs: 3000});
+      throw e;
+    }));
   }
 
   loadStaticEmotes() {
@@ -44,7 +47,10 @@ export class AddEmojisComponent implements OnInit {
         }});
       return;
     }
-    this.emotes$ = this.emojiService.getNewEmojis(this.limitInput.value ?? 100, false, true, this.filterInput.value ?? "");
+    this.emotes$ = this.emojiService.getNewEmojis(this.limitInput.value ?? 100, false, true, this.filterInput.value ?? "").pipe(catchError(e => {
+      this.notifications.show({message: {title: "Failed to search static emojis", content: e.status}, durationMs: 3000});
+      throw e;
+    }));
   }
 
   emoteEditClicked(emote: EmojiDto) {
@@ -59,9 +65,11 @@ export class AddEmojisComponent implements OnInit {
     event.preventDefault();
     event.stopPropagation();
 
-    this.emojiService.addEmoji(emote).subscribe(data => {
+    this.emojiService.addEmoji(emote).pipe(catchError(e => {
+      this.notifications.show({message: {title: "Failed to add emote", content: e.status}, durationMs: 3000});
+      throw e;
+    })).subscribe(data => {
       (event.target as HTMLElement).closest(".emote")?.remove();
-      console.log("added emote", data)
     });
   }
 
