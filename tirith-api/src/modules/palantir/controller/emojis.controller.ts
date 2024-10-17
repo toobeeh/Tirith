@@ -12,7 +12,7 @@ import {
     Inject,
     Param,
     Post,
-    Query,
+    Query, Req, Request,
     UseGuards
 } from '@nestjs/common';
 import {ApiOperation, ApiResponse, ApiTags} from '@nestjs/swagger';
@@ -25,7 +25,7 @@ import {RoleGuard} from "../../../guards/role.guard";
 import {RequiredRole} from "../../../decorators/roles.decorator";
 import {Throttle} from "@nestjs/throttler";
 import {getThrottleForDefinition} from "../../../guards/trottleConfigs";
-import {MemberFlagDto} from "../dto/member.dto";
+import {MemberDto, MemberFlagDto} from "../dto/member.dto";
 
 @ApiSecurityNotes()
 @Controller("emojis")
@@ -88,7 +88,9 @@ export class EmojisController {
     @RequiredRole(MemberFlagDto.Admin, MemberFlagDto.EmojiManagement, MemberFlagDto.ContentModerator)
     @ApiOperation({ summary: "Add a new emoji" })
     @ApiResponse({ status: 201, type: EmojiDto, description: "Emoji has been added" })
-    addEmoji(@Body() emoji: EmojiCandidateDto): Promise<EmojiDto> {
+    addEmoji(@Body() emoji: EmojiCandidateDto, @Req() request: Request): Promise<EmojiDto> {
+        const username = ((request as any).user as MemberDto).userName;
+        console.log(`${username} added emoji ${emoji.name}`);
         return this.service.saveEmoji(emoji);
     }
 }
