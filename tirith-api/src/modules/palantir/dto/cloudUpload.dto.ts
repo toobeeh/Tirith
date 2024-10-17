@@ -23,3 +23,9 @@ export class CloudUploadDto {
     @XApiProperty({ description: "base64 representation of the image" })
     imageBase64: string;
 }
+
+export class CloudUploadedDto {
+
+    @XApiProperty({ description: "ID of the uploaded image" })
+    id: string;
+}

@@ -26,7 +26,7 @@ import {MemberGuard} from "../../../guards/member.guard";
 import {RoleGuard} from "../../../guards/role.guard";
 import {Throttle} from "@nestjs/throttler";
 import {getThrottleForDefinition} from "../../../guards/trottleConfigs";
-import {CloudUploadDto} from "../dto/cloudUpload.dto";
+import {CloudUploadDto, CloudUploadedDto} from "../dto/cloudUpload.dto";
 import {IObjectStorageService} from "../../../services/interfaces/object-storage.service.interface";
 import {MemberDto} from "../dto/member.dto";
 import {CloudDeleteDto} from "../dto/cloudDelete.dto";
@@ -109,8 +109,8 @@ export class CloudController {
     @RequiredRole(MembershipEnum.Member)
     @ResourceOwner("login")
     @ApiOperation({ summary: "Upload a new image to the user's cloud" })
-    @ApiResponse({ status: 201 })
-    async uploadToUserCloud(@Req() request: Request, @Param() params: LoginTokenParamDto, @Body() image: CloudUploadDto): Promise<void> {
+    @ApiResponse({ status: 201, type: CloudUploadedDto, description: "The image has been uploaded" })
+    async uploadToUserCloud(@Req() request: Request, @Param() params: LoginTokenParamDto, @Body() image: CloudUploadDto): Promise<CloudUploadedDto> {
 
         const member = (request as any).user as MemberDto;
         const creationDate = new Date();
@@ -124,6 +124,8 @@ export class CloudController {
             throw new Error("Failed to upload image to cloud");
         }
 
-        return;
+        return {
+            id: imageId.toString()
+        };
     }
 }
