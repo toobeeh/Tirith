@@ -2,19 +2,20 @@
 https://docs.nestjs.com/controllers#controllers
 */
 
-import { Controller, Get, Inject, Param, UseGuards } from '@nestjs/common';
-import { RequiredRole } from 'src/decorators/roles.decorator';
-import { RoleGuard } from 'src/guards/role.guard';
-import { MemberGuard } from 'src/guards/member.guard';
-import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { LobbiesResponseDto } from '../dto/lobbies.dto';
-import { DropDto } from '../dto/drops.dto';
-import { ApiSecurityNotes } from 'src/decorators/apiSecurityNote.decorator';
-import { StringTokenParamDto } from '../dto/params.dto';
-import { Throttle } from '@nestjs/throttler';
-import { getThrottleForDefinition } from 'src/guards/trottleConfigs';
-import { ILobbiesService } from '../../../services/interfaces/lobbies.service.interface';
-import {MemberFlagDto} from "../dto/member.dto";
+import {Controller, Get, Inject, Param, Redirect, Req, Request, UnauthorizedException, UseGuards} from '@nestjs/common';
+import {MembershipEnum, RequiredRole} from 'src/decorators/roles.decorator';
+import {RoleGuard} from 'src/guards/role.guard';
+import {MemberGuard} from 'src/guards/member.guard';
+import {ApiBearerAuth, ApiOperation, ApiResponse, ApiTags} from '@nestjs/swagger';
+import {LobbiesResponseDto} from '../dto/lobbies.dto';
+import {DropDto} from '../dto/drops.dto';
+import {ApiSecurityNotes} from 'src/decorators/apiSecurityNote.decorator';
+import {StringTokenParamDto} from '../dto/params.dto';
+import {Throttle} from '@nestjs/throttler';
+import {getThrottleForDefinition} from 'src/guards/trottleConfigs';
+import {ILobbiesService} from '../../../services/interfaces/lobbies.service.interface';
+import {MemberDto, MemberFlagDto} from "../dto/member.dto";
+import {RedirectResponse} from "@nestjs/core/router/router-response-controller";
 
 @ApiSecurityNotes()
 @Controller("lobbies")
@@ -24,7 +25,9 @@ import {MemberFlagDto} from "../dto/member.dto";
 @ApiBearerAuth()
 export class LobbiesController {
 
-    constructor(@Inject(ILobbiesService) private service: ILobbiesService) { }
+    constructor(
+        @Inject(ILobbiesService) private service: ILobbiesService
+    ) { }
 
     /* @Get("reports")
     @ApiOperation({ summary: "Get all logged lobby reports" })
@@ -52,6 +55,21 @@ export class LobbiesController {
     @ApiResponse({ status: 200, type: DropDto, isArray: true, description: "An array of all drops caught in a lobby" })
     getLobbyDrops(@Param() params: StringTokenParamDto): Promise<DropDto[]> {
         return this.service.getLobbyDrops(params.token);
+    }
+
+    @Get("join/:token")
+    @RequiredRole(MembershipEnum.Member)
+    @Redirect(undefined, 302)
+    @ApiOperation({ summary: "Redirect to a lobby" })
+    @ApiResponse({ status: 302 })
+    async redirectToLobbyLink(@Req() request: Request, @Param() params: StringTokenParamDto): Promise<RedirectResponse> {
+        const member = (request as any).user as MemberDto;
+        const link = await this.service.decryptLobbyLinkToken(params.token);
+        if(!member.guilds.some(g => g.GuildID === link.guildId)) {
+            throw new UnauthorizedException("Member is not connected to origin guild");
+        }
+
+        return { url: link.link };
     }
 
 }

@@ -12,6 +12,16 @@ export interface GetGuildSupportersMessage {
   guildId: Long;
 }
 
+export interface BanGuildMemberMessage {
+  guildId: Long;
+  memberId: Long;
+  ban: boolean;
+}
+
+export interface GetGuildBansMessage {
+  guildId: Long;
+}
+
 export interface GuildWebhookMessage {
   url: string;
   name: string;
@@ -107,6 +117,132 @@ export const GetGuildSupportersMessage = {
   },
 
   toJSON(message: GetGuildSupportersMessage): unknown {
+    const obj: any = {};
+    if (!message.guildId.isZero()) {
+      obj.guildId = (message.guildId || Long.ZERO).toString();
+    }
+    return obj;
+  },
+};
+
+function createBaseBanGuildMemberMessage(): BanGuildMemberMessage {
+  return { guildId: Long.ZERO, memberId: Long.ZERO, ban: false };
+}
+
+export const BanGuildMemberMessage = {
+  encode(message: BanGuildMemberMessage, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (!message.guildId.isZero()) {
+      writer.uint32(8).int64(message.guildId);
+    }
+    if (!message.memberId.isZero()) {
+      writer.uint32(16).int64(message.memberId);
+    }
+    if (message.ban === true) {
+      writer.uint32(24).bool(message.ban);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): BanGuildMemberMessage {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseBanGuildMemberMessage();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.guildId = reader.int64() as Long;
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.memberId = reader.int64() as Long;
+          continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.ban = reader.bool();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): BanGuildMemberMessage {
+    return {
+      guildId: isSet(object.guildId) ? Long.fromValue(object.guildId) : Long.ZERO,
+      memberId: isSet(object.memberId) ? Long.fromValue(object.memberId) : Long.ZERO,
+      ban: isSet(object.ban) ? globalThis.Boolean(object.ban) : false,
+    };
+  },
+
+  toJSON(message: BanGuildMemberMessage): unknown {
+    const obj: any = {};
+    if (!message.guildId.isZero()) {
+      obj.guildId = (message.guildId || Long.ZERO).toString();
+    }
+    if (!message.memberId.isZero()) {
+      obj.memberId = (message.memberId || Long.ZERO).toString();
+    }
+    if (message.ban === true) {
+      obj.ban = message.ban;
+    }
+    return obj;
+  },
+};
+
+function createBaseGetGuildBansMessage(): GetGuildBansMessage {
+  return { guildId: Long.ZERO };
+}
+
+export const GetGuildBansMessage = {
+  encode(message: GetGuildBansMessage, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (!message.guildId.isZero()) {
+      writer.uint32(8).int64(message.guildId);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetGuildBansMessage {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetGuildBansMessage();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.guildId = reader.int64() as Long;
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetGuildBansMessage {
+    return { guildId: isSet(object.guildId) ? Long.fromValue(object.guildId) : Long.ZERO };
+  },
+
+  toJSON(message: GetGuildBansMessage): unknown {
     const obj: any = {};
     if (!message.guildId.isZero()) {
       obj.guildId = (message.guildId || Long.ZERO).toString();
@@ -839,6 +975,22 @@ export const GuildsDefinition = {
       responseStream: true,
       options: {},
     },
+    getGuildBans: {
+      name: "GetGuildBans",
+      requestType: GetGuildBansMessage,
+      requestStream: false,
+      responseType: MemberReply,
+      responseStream: true,
+      options: {},
+    },
+    banGuildMember: {
+      name: "BanGuildMember",
+      requestType: BanGuildMemberMessage,
+      requestStream: false,
+      responseType: Empty,
+      responseStream: false,
+      options: {},
+    },
   },
 } as const;
 
@@ -862,6 +1014,11 @@ export interface GuildsServiceImplementation<CallContextExt = {}> {
     request: GetGuildSupportersMessage,
     context: CallContext & CallContextExt,
   ): ServerStreamingMethodResult<MemberReply>;
+  getGuildBans(
+    request: GetGuildBansMessage,
+    context: CallContext & CallContextExt,
+  ): ServerStreamingMethodResult<MemberReply>;
+  banGuildMember(request: BanGuildMemberMessage, context: CallContext & CallContextExt): Promise<Empty>;
 }
 
 export interface GuildsClient<CallOptionsExt = {}> {
@@ -884,6 +1041,8 @@ export interface GuildsClient<CallOptionsExt = {}> {
     request: GetGuildSupportersMessage,
     options?: CallOptions & CallOptionsExt,
   ): AsyncIterable<MemberReply>;
+  getGuildBans(request: GetGuildBansMessage, options?: CallOptions & CallOptionsExt): AsyncIterable<MemberReply>;
+  banGuildMember(request: BanGuildMemberMessage, options?: CallOptions & CallOptionsExt): Promise<Empty>;
 }
 
 if (_m0.util.Long !== Long) {

@@ -200,6 +200,7 @@ export interface GetSpriteSlotCountRequest {
 
 export interface SpriteSlotCountReply {
   unlockedSlots: number;
+  dropsUntilNextSlot: number;
 }
 
 export interface GetSceneInventoryRequest {
@@ -2604,13 +2605,16 @@ export const GetSpriteSlotCountRequest = {
 };
 
 function createBaseSpriteSlotCountReply(): SpriteSlotCountReply {
-  return { unlockedSlots: 0 };
+  return { unlockedSlots: 0, dropsUntilNextSlot: 0 };
 }
 
 export const SpriteSlotCountReply = {
   encode(message: SpriteSlotCountReply, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.unlockedSlots !== 0) {
       writer.uint32(8).int32(message.unlockedSlots);
+    }
+    if (message.dropsUntilNextSlot !== 0) {
+      writer.uint32(17).double(message.dropsUntilNextSlot);
     }
     return writer;
   },
@@ -2629,6 +2633,13 @@ export const SpriteSlotCountReply = {
 
           message.unlockedSlots = reader.int32();
           continue;
+        case 2:
+          if (tag !== 17) {
+            break;
+          }
+
+          message.dropsUntilNextSlot = reader.double();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -2639,13 +2650,19 @@ export const SpriteSlotCountReply = {
   },
 
   fromJSON(object: any): SpriteSlotCountReply {
-    return { unlockedSlots: isSet(object.unlockedSlots) ? globalThis.Number(object.unlockedSlots) : 0 };
+    return {
+      unlockedSlots: isSet(object.unlockedSlots) ? globalThis.Number(object.unlockedSlots) : 0,
+      dropsUntilNextSlot: isSet(object.dropsUntilNextSlot) ? globalThis.Number(object.dropsUntilNextSlot) : 0,
+    };
   },
 
   toJSON(message: SpriteSlotCountReply): unknown {
     const obj: any = {};
     if (message.unlockedSlots !== 0) {
       obj.unlockedSlots = Math.round(message.unlockedSlots);
+    }
+    if (message.dropsUntilNextSlot !== 0) {
+      obj.dropsUntilNextSlot = message.dropsUntilNextSlot;
     }
     return obj;
   },

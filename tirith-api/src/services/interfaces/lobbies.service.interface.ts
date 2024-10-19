@@ -1,5 +1,5 @@
-import { DropDto } from "../../modules/palantir/dto/drops.dto";
-import { LobbiesResponseDto } from "../../modules/palantir/dto/lobbies.dto";
+import {DropDto} from "../../modules/palantir/dto/drops.dto";
+import {LobbiesResponseDto} from "../../modules/palantir/dto/lobbies.dto";
 
 export const ILobbiesService = Symbol("ILobbiesService");
 
@@ -14,4 +14,8 @@ export interface ILobbiesService {
      * Gets all drops caught of a lobby with given key
      */
     getLobbyDrops(key: string): Promise<DropDto[]>
+
+    decryptLobbyLinkToken(token: string): Promise<any>;
+
+    encryptLobbyLinkToken(link: string): Promise<any>;
 }

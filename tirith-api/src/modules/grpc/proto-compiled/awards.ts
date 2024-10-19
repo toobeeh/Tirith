@@ -61,6 +61,13 @@ export interface AwardReply {
   rarity: AwardRarityMessage;
 }
 
+export interface CreateAwardRequest {
+  name: string;
+  url: string;
+  description: string;
+  rarity: AwardRarityMessage;
+}
+
 /** Request containing a award id */
 export interface GetAwardRequest {
   id: number;
@@ -186,6 +193,98 @@ export const AwardReply = {
   },
 };
 
+function createBaseCreateAwardRequest(): CreateAwardRequest {
+  return { name: "", url: "", description: "", rarity: 0 };
+}
+
+export const CreateAwardRequest = {
+  encode(message: CreateAwardRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.name !== "") {
+      writer.uint32(10).string(message.name);
+    }
+    if (message.url !== "") {
+      writer.uint32(18).string(message.url);
+    }
+    if (message.description !== "") {
+      writer.uint32(26).string(message.description);
+    }
+    if (message.rarity !== 0) {
+      writer.uint32(32).int32(message.rarity);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): CreateAwardRequest {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseCreateAwardRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.name = reader.string();
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.url = reader.string();
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.description = reader.string();
+          continue;
+        case 4:
+          if (tag !== 32) {
+            break;
+          }
+
+          message.rarity = reader.int32() as any;
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): CreateAwardRequest {
+    return {
+      name: isSet(object.name) ? globalThis.String(object.name) : "",
+      url: isSet(object.url) ? globalThis.String(object.url) : "",
+      description: isSet(object.description) ? globalThis.String(object.description) : "",
+      rarity: isSet(object.rarity) ? awardRarityMessageFromJSON(object.rarity) : 0,
+    };
+  },
+
+  toJSON(message: CreateAwardRequest): unknown {
+    const obj: any = {};
+    if (message.name !== "") {
+      obj.name = message.name;
+    }
+    if (message.url !== "") {
+      obj.url = message.url;
+    }
+    if (message.description !== "") {
+      obj.description = message.description;
+    }
+    if (message.rarity !== 0) {
+      obj.rarity = awardRarityMessageToJSON(message.rarity);
+    }
+    return obj;
+  },
+};
+
 function createBaseGetAwardRequest(): GetAwardRequest {
   return { id: 0 };
 }
@@ -258,6 +357,15 @@ export const AwardsDefinition = {
       responseStream: false,
       options: {},
     },
+    /** Creates an award */
+    createAward: {
+      name: "CreateAward",
+      requestType: CreateAwardRequest,
+      requestStream: false,
+      responseType: AwardReply,
+      responseStream: false,
+      options: {},
+    },
   },
 } as const;
 
@@ -266,6 +374,8 @@ export interface AwardsServiceImplementation<CallContextExt = {}> {
   getAllAwards(request: Empty, context: CallContext & CallContextExt): ServerStreamingMethodResult<AwardReply>;
   /** Gets an award by its id */
   getAwardById(request: GetAwardRequest, context: CallContext & CallContextExt): Promise<AwardReply>;
+  /** Creates an award */
+  createAward(request: CreateAwardRequest, context: CallContext & CallContextExt): Promise<AwardReply>;
 }
 
 export interface AwardsClient<CallOptionsExt = {}> {
@@ -273,6 +383,8 @@ export interface AwardsClient<CallOptionsExt = {}> {
   getAllAwards(request: Empty, options?: CallOptions & CallOptionsExt): AsyncIterable<AwardReply>;
   /** Gets an award by its id */
   getAwardById(request: GetAwardRequest, options?: CallOptions & CallOptionsExt): Promise<AwardReply>;
+  /** Creates an award */
+  createAward(request: CreateAwardRequest, options?: CallOptions & CallOptionsExt): Promise<AwardReply>;
 }
 
 function isSet(value: any): boolean {

@@ -8,6 +8,15 @@ import { SpriteSlotConfigurationReply } from "./inventory";
 
 export const protobufPackage = "lobbies";
 
+export interface EncryptedLobbyLinkTokenMessage {
+  token: string;
+}
+
+export interface PlainLobbyLinkMessage {
+  link: string;
+  guildId: Long;
+}
+
 export interface SetGuildLobbyLinksMessage {
   guildId: Long;
   links: GuildLobbyLinkMessage[];
@@ -89,6 +98,118 @@ export interface OnlineMemberReply {
   sceneId: number | undefined;
   sceneShift: number | undefined;
 }
+
+function createBaseEncryptedLobbyLinkTokenMessage(): EncryptedLobbyLinkTokenMessage {
+  return { token: "" };
+}
+
+export const EncryptedLobbyLinkTokenMessage = {
+  encode(message: EncryptedLobbyLinkTokenMessage, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.token !== "") {
+      writer.uint32(10).string(message.token);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): EncryptedLobbyLinkTokenMessage {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseEncryptedLobbyLinkTokenMessage();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.token = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): EncryptedLobbyLinkTokenMessage {
+    return { token: isSet(object.token) ? globalThis.String(object.token) : "" };
+  },
+
+  toJSON(message: EncryptedLobbyLinkTokenMessage): unknown {
+    const obj: any = {};
+    if (message.token !== "") {
+      obj.token = message.token;
+    }
+    return obj;
+  },
+};
+
+function createBasePlainLobbyLinkMessage(): PlainLobbyLinkMessage {
+  return { link: "", guildId: Long.ZERO };
+}
+
+export const PlainLobbyLinkMessage = {
+  encode(message: PlainLobbyLinkMessage, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.link !== "") {
+      writer.uint32(10).string(message.link);
+    }
+    if (!message.guildId.isZero()) {
+      writer.uint32(16).int64(message.guildId);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): PlainLobbyLinkMessage {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBasePlainLobbyLinkMessage();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.link = reader.string();
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.guildId = reader.int64() as Long;
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): PlainLobbyLinkMessage {
+    return {
+      link: isSet(object.link) ? globalThis.String(object.link) : "",
+      guildId: isSet(object.guildId) ? Long.fromValue(object.guildId) : Long.ZERO,
+    };
+  },
+
+  toJSON(message: PlainLobbyLinkMessage): unknown {
+    const obj: any = {};
+    if (message.link !== "") {
+      obj.link = message.link;
+    }
+    if (!message.guildId.isZero()) {
+      obj.guildId = (message.guildId || Long.ZERO).toString();
+    }
+    return obj;
+  },
+};
 
 function createBaseSetGuildLobbyLinksMessage(): SetGuildLobbyLinksMessage {
   return { guildId: Long.ZERO, links: [] };
@@ -1162,6 +1283,22 @@ export const LobbiesDefinition = {
       responseStream: true,
       options: {},
     },
+    decryptLobbyLinkToken: {
+      name: "DecryptLobbyLinkToken",
+      requestType: EncryptedLobbyLinkTokenMessage,
+      requestStream: false,
+      responseType: PlainLobbyLinkMessage,
+      responseStream: false,
+      options: {},
+    },
+    encryptLobbyLinkToken: {
+      name: "EncryptLobbyLinkToken",
+      requestType: PlainLobbyLinkMessage,
+      requestStream: false,
+      responseType: EncryptedLobbyLinkTokenMessage,
+      responseStream: false,
+      options: {},
+    },
   },
 } as const;
 
@@ -1183,6 +1320,14 @@ export interface LobbiesServiceImplementation<CallContextExt = {}> {
     request: Empty,
     context: CallContext & CallContextExt,
   ): ServerStreamingMethodResult<GuildLobbyLinkMessage>;
+  decryptLobbyLinkToken(
+    request: EncryptedLobbyLinkTokenMessage,
+    context: CallContext & CallContextExt,
+  ): Promise<PlainLobbyLinkMessage>;
+  encryptLobbyLinkToken(
+    request: PlainLobbyLinkMessage,
+    context: CallContext & CallContextExt,
+  ): Promise<EncryptedLobbyLinkTokenMessage>;
 }
 
 export interface LobbiesClient<CallOptionsExt = {}> {
@@ -1197,6 +1342,14 @@ export interface LobbiesClient<CallOptionsExt = {}> {
   getOnlinePlayers(request: Empty, options?: CallOptions & CallOptionsExt): AsyncIterable<OnlineMemberReply>;
   setGuildLobbyLinks(request: SetGuildLobbyLinksMessage, options?: CallOptions & CallOptionsExt): Promise<Empty>;
   getLobbyLinks(request: Empty, options?: CallOptions & CallOptionsExt): AsyncIterable<GuildLobbyLinkMessage>;
+  decryptLobbyLinkToken(
+    request: EncryptedLobbyLinkTokenMessage,
+    options?: CallOptions & CallOptionsExt,
+  ): Promise<PlainLobbyLinkMessage>;
+  encryptLobbyLinkToken(
+    request: PlainLobbyLinkMessage,
+    options?: CallOptions & CallOptionsExt,
+  ): Promise<EncryptedLobbyLinkTokenMessage>;
 }
 
 if (_m0.util.Long !== Long) {

@@ -1,10 +1,24 @@
-import { Injectable } from "@nestjs/common";
-import { ConfigService } from "@nestjs/config";
-import { GrpcBaseService } from "./grpc-base";
-import { DropLogReply, LobbiesDefinition, LobbyReply, PalantirLobbyDetails, PalantirLobbyPlayer, SkribblLobbyDetails, SkribblLobbyPlayer } from "../proto-compiled/lobbies";
-import { ILobbiesService } from "src/services/interfaces/lobbies.service.interface";
-import { DropDto } from "src/modules/palantir/dto/drops.dto";
-import { LobbiesResponseDto, LobbyDetailsDto, LobbyPlayerDto, PalantirLobbyDto, PalantirLobbyPlayerDto } from "src/modules/palantir/dto/lobbies.dto";
+import {Injectable} from "@nestjs/common";
+import {ConfigService} from "@nestjs/config";
+import {GrpcBaseService} from "./grpc-base";
+import {
+    DropLogReply,
+    LobbiesDefinition,
+    LobbyReply,
+    PalantirLobbyDetails,
+    PalantirLobbyPlayer,
+    SkribblLobbyDetails,
+    SkribblLobbyPlayer
+} from "../proto-compiled/lobbies";
+import {ILobbiesService} from "src/services/interfaces/lobbies.service.interface";
+import {DropDto} from "src/modules/palantir/dto/drops.dto";
+import {
+    LobbiesResponseDto,
+    LobbyDetailsDto,
+    LobbyPlayerDto,
+    PalantirLobbyDto,
+    PalantirLobbyPlayerDto
+} from "src/modules/palantir/dto/lobbies.dto";
 
 @Injectable()
 export class GrpcLobbiesService extends GrpcBaseService<LobbiesDefinition> implements ILobbiesService {
@@ -75,5 +89,15 @@ export class GrpcLobbiesService extends GrpcBaseService<LobbiesDefinition> imple
     async getLobbyDrops(key: string): Promise<DropDto[]> {
         const drops = await this.collectFromMappedAsyncIterable(this.grpcClient.getLobbyDropClaims({ lobbyKey: key }), drop => this.mapDropDto(drop));
         return drops;
+    }
+
+    async decryptLobbyLinkToken(token: string) {
+        const response = await this.grpcClient.decryptLobbyLinkToken({token});
+        return response.link;
+    }
+
+    async encryptLobbyLinkToken(link: string) {
+        const response = await this.grpcClient.encryptLobbyLinkToken({link});
+        return response.token;
     }
 }

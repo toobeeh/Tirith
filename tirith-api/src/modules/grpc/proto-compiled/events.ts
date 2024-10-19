@@ -7,6 +7,21 @@ import Long = require("long");
 
 export const protobufPackage = "events";
 
+export interface CreateEventMessage {
+  name: string;
+  description: string;
+  length: number;
+  progressive: boolean;
+  startInDays: number;
+  durationDays: number;
+}
+
+export interface CreateEventDropMessage {
+  name: string;
+  url: string;
+  eventId: number;
+}
+
 /** A palantir event */
 export interface EventReply {
   name: string;
@@ -37,6 +52,204 @@ export interface GetEventRequest {
 export interface GetEventDropRequest {
   id: number;
 }
+
+function createBaseCreateEventMessage(): CreateEventMessage {
+  return { name: "", description: "", length: 0, progressive: false, startInDays: 0, durationDays: 0 };
+}
+
+export const CreateEventMessage = {
+  encode(message: CreateEventMessage, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.name !== "") {
+      writer.uint32(10).string(message.name);
+    }
+    if (message.description !== "") {
+      writer.uint32(18).string(message.description);
+    }
+    if (message.length !== 0) {
+      writer.uint32(24).int32(message.length);
+    }
+    if (message.progressive === true) {
+      writer.uint32(32).bool(message.progressive);
+    }
+    if (message.startInDays !== 0) {
+      writer.uint32(40).int32(message.startInDays);
+    }
+    if (message.durationDays !== 0) {
+      writer.uint32(48).int32(message.durationDays);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): CreateEventMessage {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseCreateEventMessage();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.name = reader.string();
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.description = reader.string();
+          continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.length = reader.int32();
+          continue;
+        case 4:
+          if (tag !== 32) {
+            break;
+          }
+
+          message.progressive = reader.bool();
+          continue;
+        case 5:
+          if (tag !== 40) {
+            break;
+          }
+
+          message.startInDays = reader.int32();
+          continue;
+        case 6:
+          if (tag !== 48) {
+            break;
+          }
+
+          message.durationDays = reader.int32();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): CreateEventMessage {
+    return {
+      name: isSet(object.name) ? globalThis.String(object.name) : "",
+      description: isSet(object.description) ? globalThis.String(object.description) : "",
+      length: isSet(object.length) ? globalThis.Number(object.length) : 0,
+      progressive: isSet(object.progressive) ? globalThis.Boolean(object.progressive) : false,
+      startInDays: isSet(object.startInDays) ? globalThis.Number(object.startInDays) : 0,
+      durationDays: isSet(object.durationDays) ? globalThis.Number(object.durationDays) : 0,
+    };
+  },
+
+  toJSON(message: CreateEventMessage): unknown {
+    const obj: any = {};
+    if (message.name !== "") {
+      obj.name = message.name;
+    }
+    if (message.description !== "") {
+      obj.description = message.description;
+    }
+    if (message.length !== 0) {
+      obj.length = Math.round(message.length);
+    }
+    if (message.progressive === true) {
+      obj.progressive = message.progressive;
+    }
+    if (message.startInDays !== 0) {
+      obj.startInDays = Math.round(message.startInDays);
+    }
+    if (message.durationDays !== 0) {
+      obj.durationDays = Math.round(message.durationDays);
+    }
+    return obj;
+  },
+};
+
+function createBaseCreateEventDropMessage(): CreateEventDropMessage {
+  return { name: "", url: "", eventId: 0 };
+}
+
+export const CreateEventDropMessage = {
+  encode(message: CreateEventDropMessage, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.name !== "") {
+      writer.uint32(10).string(message.name);
+    }
+    if (message.url !== "") {
+      writer.uint32(18).string(message.url);
+    }
+    if (message.eventId !== 0) {
+      writer.uint32(24).int32(message.eventId);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): CreateEventDropMessage {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseCreateEventDropMessage();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.name = reader.string();
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.url = reader.string();
+          continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.eventId = reader.int32();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): CreateEventDropMessage {
+    return {
+      name: isSet(object.name) ? globalThis.String(object.name) : "",
+      url: isSet(object.url) ? globalThis.String(object.url) : "",
+      eventId: isSet(object.eventId) ? globalThis.Number(object.eventId) : 0,
+    };
+  },
+
+  toJSON(message: CreateEventDropMessage): unknown {
+    const obj: any = {};
+    if (message.name !== "") {
+      obj.name = message.name;
+    }
+    if (message.url !== "") {
+      obj.url = message.url;
+    }
+    if (message.eventId !== 0) {
+      obj.eventId = Math.round(message.eventId);
+    }
+    return obj;
+  },
+};
 
 function createBaseEventReply(): EventReply {
   return { name: "", id: 0, description: "", length: 0, progressive: false, startDate: undefined, endDate: undefined };
@@ -448,13 +661,22 @@ export const EventsDefinition = {
       responseStream: true,
       options: {},
     },
-    /** gets the release slots of an progressive event */
-    getEventReleaseSlots: {
-      name: "GetEventReleaseSlots",
-      requestType: GetEventRequest,
+    /** Creates a new event */
+    createEvent: {
+      name: "CreateEvent",
+      requestType: CreateEventMessage,
       requestStream: false,
-      responseType: Timestamp,
-      responseStream: true,
+      responseType: EventReply,
+      responseStream: false,
+      options: {},
+    },
+    /** Creates a new event drop */
+    createEventDrop: {
+      name: "CreateEventDrop",
+      requestType: CreateEventDropMessage,
+      requestStream: false,
+      responseType: EventDropReply,
+      responseStream: false,
       options: {},
     },
   },
@@ -476,11 +698,10 @@ export interface EventsServiceImplementation<CallContextExt = {}> {
     request: GetEventRequest,
     context: CallContext & CallContextExt,
   ): ServerStreamingMethodResult<EventDropReply>;
-  /** gets the release slots of an progressive event */
-  getEventReleaseSlots(
-    request: GetEventRequest,
-    context: CallContext & CallContextExt,
-  ): ServerStreamingMethodResult<Timestamp>;
+  /** Creates a new event */
+  createEvent(request: CreateEventMessage, context: CallContext & CallContextExt): Promise<EventReply>;
+  /** Creates a new event drop */
+  createEventDrop(request: CreateEventDropMessage, context: CallContext & CallContextExt): Promise<EventDropReply>;
 }
 
 export interface EventsClient<CallOptionsExt = {}> {
@@ -496,8 +717,10 @@ export interface EventsClient<CallOptionsExt = {}> {
   getEventDropById(request: GetEventDropRequest, options?: CallOptions & CallOptionsExt): Promise<EventDropReply>;
   /** Gets all eventdrops of an event */
   getEventDropsOfEvent(request: GetEventRequest, options?: CallOptions & CallOptionsExt): AsyncIterable<EventDropReply>;
-  /** gets the release slots of an progressive event */
-  getEventReleaseSlots(request: GetEventRequest, options?: CallOptions & CallOptionsExt): AsyncIterable<Timestamp>;
+  /** Creates a new event */
+  createEvent(request: CreateEventMessage, options?: CallOptions & CallOptionsExt): Promise<EventReply>;
+  /** Creates a new event drop */
+  createEventDrop(request: CreateEventDropMessage, options?: CallOptions & CallOptionsExt): Promise<EventDropReply>;
 }
 
 function toTimestamp(date: Date): Timestamp {
