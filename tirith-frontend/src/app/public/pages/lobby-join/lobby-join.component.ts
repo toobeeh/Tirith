@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {LobbiesService} from "../../../../api";
 import {UserService} from "../../../shared/services/user-session.service";
@@ -9,7 +9,7 @@ import {catchError, map, Observable, of, tap} from "rxjs";
   templateUrl: './lobby-join.component.html',
   styleUrls: ['./lobby-join.component.css']
 })
-export class LobbyJoinComponent {
+export class LobbyJoinComponent implements OnInit {
 
   result$?: Observable<string>;
 
@@ -30,7 +30,7 @@ export class LobbyJoinComponent {
     else {
       this.result$ = this.lobbiesService.getDecryptedLobbyLink(token).pipe(
         map((link) => {
-          window.location.href = link.link;
+          window.location.href = decodeURIComponent(link.link);
           return "Success";
         }),
         catchError((e) => of(e.error.message as string))
