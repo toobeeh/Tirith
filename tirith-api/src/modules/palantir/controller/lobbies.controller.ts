@@ -16,6 +16,7 @@ import {getThrottleForDefinition} from 'src/guards/trottleConfigs';
 import {ILobbiesService} from '../../../services/interfaces/lobbies.service.interface';
 import {MemberDto, MemberFlagDto} from "../dto/member.dto";
 import {RedirectResponse} from "@nestjs/core/router/router-response-controller";
+import {LobbyLinkDto} from "../dto/lobbyLink.dto";
 
 @ApiSecurityNotes()
 @Controller("lobbies")
@@ -59,17 +60,16 @@ export class LobbiesController {
 
     @Get("join/:token")
     @RequiredRole(MembershipEnum.Member)
-    @Redirect(undefined, 302)
     @ApiOperation({ summary: "Redirect to a lobby" })
-    @ApiResponse({ status: 302 })
-    async redirectToLobbyLink(@Req() request: Request, @Param() params: StringTokenParamDto): Promise<RedirectResponse> {
+    @ApiResponse({ status: 200, type: LobbyLinkDto, description: "The decrypted signed token containing the link" })
+    async getDecryptedLobbyLink(@Req() request: Request, @Param() params: StringTokenParamDto): Promise<LobbyLinkDto> {
         const member = (request as any).user as MemberDto;
         const link = await this.service.decryptLobbyLinkToken(params.token);
-        if(!member.guilds.some(g => g.GuildID === link.guildId)) {
+        if(!member.guilds.some(g => g.GuildID === link.guildId.toString())) {
             throw new UnauthorizedException("Member is not connected to origin guild");
         }
 
-        return { url: link.link };
+        return { link: link.link };
     }
 
 }

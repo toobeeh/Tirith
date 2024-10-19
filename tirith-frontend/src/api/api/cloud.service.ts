@@ -26,6 +26,8 @@ import { CloudImageDto } from '../model/cloudImageDto';
 import { CloudSearchDto } from '../model/cloudSearchDto';
 // @ts-ignore
 import { CloudUploadDto } from '../model/cloudUploadDto';
+// @ts-ignore
+import { CloudUploadedDto } from '../model/cloudUploadedDto';
 
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -476,10 +478,10 @@ export class CloudService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public uploadToUserCloud(login: number, cloudUploadDto: CloudUploadDto, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext}): Observable<any>;
-    public uploadToUserCloud(login: number, cloudUploadDto: CloudUploadDto, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext}): Observable<HttpResponse<any>>;
-    public uploadToUserCloud(login: number, cloudUploadDto: CloudUploadDto, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext}): Observable<HttpEvent<any>>;
-    public uploadToUserCloud(login: number, cloudUploadDto: CloudUploadDto, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: undefined, context?: HttpContext}): Observable<any> {
+    public uploadToUserCloud(login: number, cloudUploadDto: CloudUploadDto, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<CloudUploadedDto>;
+    public uploadToUserCloud(login: number, cloudUploadDto: CloudUploadDto, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<CloudUploadedDto>>;
+    public uploadToUserCloud(login: number, cloudUploadDto: CloudUploadDto, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<CloudUploadedDto>>;
+    public uploadToUserCloud(login: number, cloudUploadDto: CloudUploadDto, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
         if (login === null || login === undefined) {
             throw new Error('Required parameter login was null or undefined when calling uploadToUserCloud.');
         }
@@ -500,6 +502,7 @@ export class CloudService {
         if (localVarHttpHeaderAcceptSelected === undefined) {
             // to determine the Accept header
             const httpHeaderAccepts: string[] = [
+                'application/json'
             ];
             localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         }
@@ -534,7 +537,7 @@ export class CloudService {
         }
 
         let localVarPath = `/cloud/${this.configuration.encodeParam({name: "login", value: login, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: undefined})}`;
-        return this.httpClient.request<any>('post', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<CloudUploadedDto>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 body: cloudUploadDto,

@@ -19,6 +19,7 @@ import {
     PalantirLobbyDto,
     PalantirLobbyPlayerDto
 } from "src/modules/palantir/dto/lobbies.dto";
+import {Long} from "@grpc/proto-loader";
 
 @Injectable()
 export class GrpcLobbiesService extends GrpcBaseService<LobbiesDefinition> implements ILobbiesService {
@@ -91,13 +92,13 @@ export class GrpcLobbiesService extends GrpcBaseService<LobbiesDefinition> imple
         return drops;
     }
 
-    async decryptLobbyLinkToken(token: string) {
+    async decryptLobbyLinkToken(token: string): Promise<{link: string, guildId: Long}> {
         const response = await this.grpcClient.decryptLobbyLinkToken({token});
-        return response.link;
+        return response;
     }
 
-    async encryptLobbyLinkToken(link: string) {
-        const response = await this.grpcClient.encryptLobbyLinkToken({link});
+    async encryptLobbyLinkToken(link: string, guildId: string): Promise<string> {
+        const response = await this.grpcClient.encryptLobbyLinkToken({link, guildId: Long.fromString(guildId)});
         return response.token;
     }
 }

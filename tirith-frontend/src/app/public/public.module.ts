@@ -26,6 +26,7 @@ import {NewPalantirComponent} from "./pages/help/new-palantir/new-palantir.compo
 import {LobbyBotComponent} from "./pages/help/lobby-bot/lobby-bot.component";
 import {PalantirTosComponent} from "./pages/help/palantir-tos/palantir-tos.component";
 import {RulesComponent} from "./pages/help/rules/rules.component";
+import { LobbyJoinComponent } from './pages/lobby-join/lobby-join.component';
 
 
 @NgModule({
@@ -47,7 +48,8 @@ import {RulesComponent} from "./pages/help/rules/rules.component";
     SettingsComponent,
     NewPalantirComponent,
     PalantirTosComponent,
-    RulesComponent
+    RulesComponent,
+    LobbyJoinComponent
   ],
   imports: [
     BrowserModule,

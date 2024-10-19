@@ -20,6 +20,7 @@ import {LobbyBotComponent} from "./pages/help/lobby-bot/lobby-bot.component";
 import {PalantirTosComponent} from "./pages/help/palantir-tos/palantir-tos.component";
 import {RulesComponent} from "./pages/help/rules/rules.component";
 import {DiscordRolesComponent} from "./pages/help/discord-roles/discord-roles.component";
+import {LobbyJoinComponent} from "./pages/lobby-join/lobby-join.component";
 
 const helpNavigationData = {
   navigation: [
@@ -51,6 +52,11 @@ const routes: Routes = [
     path: 'login',
     pathMatch: "full",
     component: LoginComponent
+  },
+  {
+    path: 'join',
+    pathMatch: "full",
+    component: LobbyJoinComponent
   },
   {
     path: 'help',

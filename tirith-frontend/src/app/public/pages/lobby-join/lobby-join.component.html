@@ -1,0 +1,6 @@
+<h2>
+  <ng-container *ngIf="result$ | async as result; else loading">{{result}}</ng-container>
+  <ng-template #loading>
+    Redirecting to lobby...
+  </ng-template>
+</h2>

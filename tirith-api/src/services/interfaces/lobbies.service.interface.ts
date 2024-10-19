@@ -1,5 +1,6 @@
 import {DropDto} from "../../modules/palantir/dto/drops.dto";
 import {LobbiesResponseDto} from "../../modules/palantir/dto/lobbies.dto";
+import {Long} from "@grpc/proto-loader";
 
 export const ILobbiesService = Symbol("ILobbiesService");
 
@@ -15,7 +16,7 @@ export interface ILobbiesService {
      */
     getLobbyDrops(key: string): Promise<DropDto[]>
 
-    decryptLobbyLinkToken(token: string): Promise<any>;
+    decryptLobbyLinkToken(token: string): Promise<{link: string, guildId: Long}>;
 
-    encryptLobbyLinkToken(link: string): Promise<any>;
+    encryptLobbyLinkToken(link: string, guildId: string): Promise<string>;
 }

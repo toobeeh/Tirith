@@ -27,6 +27,7 @@ model/cloudDeleteDto.ts
 model/cloudImageDto.ts
 model/cloudSearchDto.ts
 model/cloudUploadDto.ts
+model/cloudUploadedDto.ts
 model/dropDto.ts
 model/emojiCandidateDto.ts
 model/emojiDto.ts
@@ -43,6 +44,7 @@ model/leagueSeasonMemberEvaluationDto.ts
 model/leagueStreakRanking.ts
 model/lobbiesResponseDto.ts
 model/lobbyDetailsDto.ts
+model/lobbyLinkDto.ts
 model/lobbyPlayerDto.ts
 model/memberDto.ts
 model/memberSearchDto.ts
