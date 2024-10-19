@@ -28,9 +28,9 @@ export class LobbyJoinComponent implements OnInit {
 
     /* load invite  */
     else {
-      this.result$ = this.lobbiesService.getDecryptedLobbyLink(token).pipe(
+      this.result$ = this.lobbiesService.getDecryptedLobbyLink(decodeURIComponent(token)).pipe(
         map((link) => {
-          window.location.href = decodeURIComponent(link.link);
+          window.location.href = link.link;
           return "Success";
         }),
         catchError((e) => of(e.error.message as string))
