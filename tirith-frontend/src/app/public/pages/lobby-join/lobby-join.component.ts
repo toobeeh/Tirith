@@ -43,7 +43,7 @@ export class LobbyJoinComponent implements OnInit {
           return "Success";
         }),
         catchError((e) => {
-          if(e?.error?.status === 401){
+          if(e?.error?.statusCode === 401){
             this.toastService.show({ message: {
               title: "Unauthorized",
                 content: "You are not authorized to join this protected lobby.\nMake sure you are connected to the server!"
