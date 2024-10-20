@@ -54,6 +54,11 @@ export class GrpcGuildsService extends GrpcBaseService<GuildsDefinition> impleme
         return mappedGuild;
     }
 
+    async guildInviteEnabled(id: string): Promise<boolean> {
+        const settings = await this.grpcClient.getGuildOptionsById({guildId: Long.fromString(id)});
+        return settings.showInvite;
+    }
+
     async getGuildWebhooks(guild: GuildDto): Promise<WebhookDto[]> {
         const webhooks = await this.collectFromAsyncIterable(this.grpcClient.getGuildWebhooks({guildId: Long.fromString(guild.GuildID)}));
         return webhooks.map(hook => ({

@@ -75,6 +75,8 @@ export interface GuildOptionsMessage {
   invite: number;
   prefix: string;
   botName: string | undefined;
+  proxyLinks: boolean;
+  showInvite: boolean;
 }
 
 function createBaseGetGuildSupportersMessage(): GetGuildSupportersMessage {
@@ -784,7 +786,16 @@ export const GetGuildOptionsByIdMessage = {
 };
 
 function createBaseGuildOptionsMessage(): GuildOptionsMessage {
-  return { guildId: Long.ZERO, channelId: undefined, name: "", invite: 0, prefix: "", botName: undefined };
+  return {
+    guildId: Long.ZERO,
+    channelId: undefined,
+    name: "",
+    invite: 0,
+    prefix: "",
+    botName: undefined,
+    proxyLinks: false,
+    showInvite: false,
+  };
 }
 
 export const GuildOptionsMessage = {
@@ -806,6 +817,12 @@ export const GuildOptionsMessage = {
     }
     if (message.botName !== undefined) {
       StringValue.encode({ value: message.botName! }, writer.uint32(50).fork()).ldelim();
+    }
+    if (message.proxyLinks === true) {
+      writer.uint32(56).bool(message.proxyLinks);
+    }
+    if (message.showInvite === true) {
+      writer.uint32(64).bool(message.showInvite);
     }
     return writer;
   },
@@ -859,6 +876,20 @@ export const GuildOptionsMessage = {
 
           message.botName = StringValue.decode(reader, reader.uint32()).value;
           continue;
+        case 7:
+          if (tag !== 56) {
+            break;
+          }
+
+          message.proxyLinks = reader.bool();
+          continue;
+        case 8:
+          if (tag !== 64) {
+            break;
+          }
+
+          message.showInvite = reader.bool();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -876,6 +907,8 @@ export const GuildOptionsMessage = {
       invite: isSet(object.invite) ? globalThis.Number(object.invite) : 0,
       prefix: isSet(object.prefix) ? globalThis.String(object.prefix) : "",
       botName: isSet(object.botName) ? String(object.botName) : undefined,
+      proxyLinks: isSet(object.proxyLinks) ? globalThis.Boolean(object.proxyLinks) : false,
+      showInvite: isSet(object.showInvite) ? globalThis.Boolean(object.showInvite) : false,
     };
   },
 
@@ -898,6 +931,12 @@ export const GuildOptionsMessage = {
     }
     if (message.botName !== undefined) {
       obj.botName = message.botName;
+    }
+    if (message.proxyLinks === true) {
+      obj.proxyLinks = message.proxyLinks;
+    }
+    if (message.showInvite === true) {
+      obj.showInvite = message.showInvite;
     }
     return obj;
   },

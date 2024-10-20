@@ -2,7 +2,20 @@
 https://docs.nestjs.com/controllers#controllers
 */
 
-import {Body, Controller, Delete, Get, Inject, Param, Patch, Query, Req, Request, UseGuards} from '@nestjs/common';
+import {
+    Body,
+    Controller,
+    Delete,
+    ForbiddenException,
+    Get,
+    Inject,
+    Param,
+    Patch,
+    Query,
+    Req,
+    Request,
+    UseGuards
+} from '@nestjs/common';
 import {RoleGuard} from 'src/guards/role.guard';
 import {UpdateDiscordID} from '../dto/updateDiscord.dto';
 import {MemberGuard} from 'src/guards/member.guard';
@@ -89,6 +102,12 @@ export class MembersController {
     @ApiOperation({ summary: "Connect a user to a guild with given server token" })
     @ApiResponse({ status: 204 })
     async connectMemberToGuild(@Param() params: LoginTokenParamDto, @Param() guildTokenParam: NumberTokenParamDto): Promise<void> {
+        const guild = await this.guildService.getGuildByInvite(guildTokenParam.token);
+        const allowed = await this.guildService.guildInviteEnabled(guild.GuildID);
+        if(!allowed){
+            throw new ForbiddenException("Connecting to this guild via invite has been disabled");
+        }
+
         return this.service.connectMemberToGuild(params.login, guildTokenParam.token);
     }
 

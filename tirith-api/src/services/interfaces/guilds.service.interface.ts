@@ -17,4 +17,6 @@ export interface IGuildsService {
     getGuildByInvite(invite: number): Promise<GuildDto>;
 
     getGuildWebhooks(guild: GuildDto): Promise<WebhookDto[]>;
+
+    guildInviteEnabled(id: string): Promise<boolean>;
 }
