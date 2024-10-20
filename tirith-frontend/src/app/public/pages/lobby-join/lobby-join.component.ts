@@ -31,7 +31,7 @@ export class LobbyJoinComponent implements OnInit {
 
     /* if not logged in, redirect */
     if(!UserService.getToken()) {
-      this.toastService.show({ message: { title: "Not logged in", content: "You need to be logged in to join a protected lobby" }, durationMs: 1500 });
+      this.toastService.show({ message: { title: "Not logged in", content: "You need to be logged in to join a protected lobby" }, durationMs: 3000 });
       this.router.navigate(["/login"], { queryParams: { continue: encodeURI(this.router.routerState.snapshot.url) } });
     }
 
@@ -47,7 +47,7 @@ export class LobbyJoinComponent implements OnInit {
             this.toastService.show({ message: {
               title: "Unauthorized",
                 content: "You are not authorized to join this protected lobby.\nMake sure you are connected to the server!"
-              }, durationMs: 1500 });
+              }, durationMs: 3000 });
             return of("Unauthorized to join protected lobby");
           }
 
