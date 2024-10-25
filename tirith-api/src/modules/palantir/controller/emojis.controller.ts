@@ -12,7 +12,9 @@ import {
     Inject,
     Param,
     Post,
-    Query, Req, Request,
+    Query,
+    Req,
+    Request,
     UseGuards
 } from '@nestjs/common';
 import {ApiOperation, ApiResponse, ApiTags} from '@nestjs/swagger';
@@ -75,7 +77,7 @@ export class EmojisController {
 
     @Delete(":id")
     @UseGuards(MemberGuard, RoleGuard)
-    @RequiredRole(MemberFlagDto.Admin, MemberFlagDto.ContentModerator)
+    @RequiredRole(MemberFlagDto.Admin, MemberFlagDto.ContentModerator, MemberFlagDto.Moderator)
     @ApiOperation({ summary: "Delete a saved emoji  by name (id) and nameId" })
     @ApiResponse({ status: 204, description: "Emoji has been deleted" })
     deleteEmoji(@Param() idParam: StringIdParamDto, @Query() nameIdQuery: NameIdDto): Promise<void> {
