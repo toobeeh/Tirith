@@ -43,7 +43,7 @@ export class GrpcMembersService extends GrpcBaseService<MembersDefinition> imple
 
     private async mapMemberDto(reply: MemberReply): Promise<MemberDto> {
 
-        const guilds = await Promise.all(reply.serverConnections.map(token => this.guildsService.getGuildByInvite(token)));
+        const guilds = await Promise.all(reply.serverConnections.map(id => this.guildsService.getGuildById(id.toString())));
         const rawMember = await this.grpcClient.getRawMemberByLogin({ login: reply.login });
 
         return {

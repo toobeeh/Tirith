@@ -112,12 +112,14 @@ export interface MemberReply {
   discordId: Long;
   username: string;
   login: number;
-  serverConnections: number[];
+  /** @deprecated */
+  serverConnectionInvites: number[];
   mappedFlags: MemberFlagMessage[];
   nextAwardPackDate: Date | undefined;
   patronEmoji: string | undefined;
   nextPatronizeDate: Date | undefined;
   nextHomeChooseDate: Date | undefined;
+  serverConnections: Long[];
 }
 
 /** Reply containing the accesstoken of a member */
@@ -191,12 +193,13 @@ function createBaseMemberReply(): MemberReply {
     discordId: Long.ZERO,
     username: "",
     login: 0,
-    serverConnections: [],
+    serverConnectionInvites: [],
     mappedFlags: [],
     nextAwardPackDate: undefined,
     patronEmoji: undefined,
     nextPatronizeDate: undefined,
     nextHomeChooseDate: undefined,
+    serverConnections: [],
   };
 }
 
@@ -230,7 +233,7 @@ export const MemberReply = {
       writer.uint32(72).int32(message.login);
     }
     writer.uint32(82).fork();
-    for (const v of message.serverConnections) {
+    for (const v of message.serverConnectionInvites) {
       writer.int32(v);
     }
     writer.ldelim();
@@ -251,6 +254,11 @@ export const MemberReply = {
     if (message.nextHomeChooseDate !== undefined) {
       Timestamp.encode(toTimestamp(message.nextHomeChooseDate), writer.uint32(122).fork()).ldelim();
     }
+    writer.uint32(130).fork();
+    for (const v of message.serverConnections) {
+      writer.int64(v);
+    }
+    writer.ldelim();
     return writer;
   },
 
@@ -326,7 +334,7 @@ export const MemberReply = {
           continue;
         case 10:
           if (tag === 80) {
-            message.serverConnections.push(reader.int32());
+            message.serverConnectionInvites.push(reader.int32());
 
             continue;
           }
@@ -334,7 +342,7 @@ export const MemberReply = {
           if (tag === 82) {
             const end2 = reader.uint32() + reader.pos;
             while (reader.pos < end2) {
-              message.serverConnections.push(reader.int32());
+              message.serverConnectionInvites.push(reader.int32());
             }
 
             continue;
@@ -386,6 +394,23 @@ export const MemberReply = {
 
           message.nextHomeChooseDate = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
           continue;
+        case 16:
+          if (tag === 128) {
+            message.serverConnections.push(reader.int64() as Long);
+
+            continue;
+          }
+
+          if (tag === 130) {
+            const end2 = reader.uint32() + reader.pos;
+            while (reader.pos < end2) {
+              message.serverConnections.push(reader.int64() as Long);
+            }
+
+            continue;
+          }
+
+          break;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -406,8 +431,8 @@ export const MemberReply = {
       discordId: isSet(object.discordId) ? Long.fromValue(object.discordId) : Long.ZERO,
       username: isSet(object.username) ? globalThis.String(object.username) : "",
       login: isSet(object.login) ? globalThis.Number(object.login) : 0,
-      serverConnections: globalThis.Array.isArray(object?.serverConnections)
-        ? object.serverConnections.map((e: any) => globalThis.Number(e))
+      serverConnectionInvites: globalThis.Array.isArray(object?.serverConnectionInvites)
+        ? object.serverConnectionInvites.map((e: any) => globalThis.Number(e))
         : [],
       mappedFlags: globalThis.Array.isArray(object?.mappedFlags)
         ? object.mappedFlags.map((e: any) => memberFlagMessageFromJSON(e))
@@ -416,6 +441,9 @@ export const MemberReply = {
       patronEmoji: isSet(object.patronEmoji) ? String(object.patronEmoji) : undefined,
       nextPatronizeDate: isSet(object.nextPatronizeDate) ? fromJsonTimestamp(object.nextPatronizeDate) : undefined,
       nextHomeChooseDate: isSet(object.nextHomeChooseDate) ? fromJsonTimestamp(object.nextHomeChooseDate) : undefined,
+      serverConnections: globalThis.Array.isArray(object?.serverConnections)
+        ? object.serverConnections.map((e: any) => Long.fromValue(e))
+        : [],
     };
   },
 
@@ -448,8 +476,8 @@ export const MemberReply = {
     if (message.login !== 0) {
       obj.login = Math.round(message.login);
     }
-    if (message.serverConnections?.length) {
-      obj.serverConnections = message.serverConnections.map((e) => Math.round(e));
+    if (message.serverConnectionInvites?.length) {
+      obj.serverConnectionInvites = message.serverConnectionInvites.map((e) => Math.round(e));
     }
     if (message.mappedFlags?.length) {
       obj.mappedFlags = message.mappedFlags.map((e) => memberFlagMessageToJSON(e));
@@ -465,6 +493,9 @@ export const MemberReply = {
     }
     if (message.nextHomeChooseDate !== undefined) {
       obj.nextHomeChooseDate = message.nextHomeChooseDate.toISOString();
+    }
+    if (message.serverConnections?.length) {
+      obj.serverConnections = message.serverConnections.map((e) => (e || Long.ZERO).toString());
     }
     return obj;
   },
