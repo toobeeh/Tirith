@@ -3,13 +3,19 @@ https://docs.nestjs.com/controllers#controllers
 */
 
 import {Body, Controller, Get, Inject, Param, Patch, UseGuards} from '@nestjs/common';
-import {ApiOperation, ApiResponse, ApiTags} from '@nestjs/swagger';
+import {ApiBody, ApiOperation, ApiResponse, ApiTags} from '@nestjs/swagger';
 import {ApiSecurityNotes} from 'src/decorators/apiSecurityNote.decorator';
 import {RequiredRole, ResourceOwner} from "../../../decorators/roles.decorator";
 import {LoginTokenParamDto} from "../dto/params.dto";
 import {RoleGuard} from "../../../guards/role.guard";
 import {MemberGuard} from "../../../guards/member.guard";
-import {SpriteComboDto, SpriteInventoryDto, SpriteSlotCountDto, SpriteSlotDto} from "../dto/inventory.dto";
+import {
+    SceneInventoryDto, SceneInventoryItemDto, SetActiveSceneDto,
+    SpriteComboDto,
+    SpriteInventoryDto,
+    SpriteSlotCountDto,
+    SpriteSlotDto
+} from "../dto/inventory.dto";
 import {IInventoryService} from "../../../services/interfaces/inventory.service.interface";
 import {Throttle} from "@nestjs/throttler";
 import {getThrottleForDefinition} from "../../../guards/trottleConfigs";
@@ -62,5 +68,25 @@ export class InventoryController {
     async getMemberSpriteSlotCount(@Param() login: LoginTokenParamDto): Promise<SpriteSlotCountDto> {
         const slots = await this.inventoryService.getSpriteSlotCount(login.login);
         return { unlockedSlots: slots };
+    }
+
+    @Get(":login/inventory/scenes")
+    @Throttle(getThrottleForDefinition("throttleThirtyPerMinute"))
+    @RequiredRole(MemberFlagDto.Moderator)
+    @ResourceOwner("login")
+    @ApiOperation({ summary: "Get all scenes in the inventory of a member, and the currently activated scene" })
+    @ApiResponse({ status: 200, type: SceneInventoryDto, description: "All scenes in the inventory, and the activated id and theme" })
+    async getMemberSceneInventory(@Param() loginParam: LoginTokenParamDto): Promise<SceneInventoryDto> {
+        return this.inventoryService.getSceneInventory(loginParam.login);
+    }
+
+    @Patch(":login/inventory/scenes")
+    @Throttle(getThrottleForDefinition("throttleThirtyPerMinute"))
+    @RequiredRole(MemberFlagDto.Moderator)
+    @ResourceOwner("login")
+    @ApiOperation({ summary: "Set the activated scene for a member" })
+    @ApiResponse({ status: 200, description: "Scene has been successfully updated" })
+    async setMemberScene(@Param() login: LoginTokenParamDto, @Body() scene: SetActiveSceneDto): Promise<void> {
+        await this.inventoryService.useScene(login.login, scene.scene?.sceneId, scene.scene?.sceneShift);
     }
 }

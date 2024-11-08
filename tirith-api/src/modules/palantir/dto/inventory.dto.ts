@@ -1,4 +1,5 @@
 import {XApiProperty} from "../../../decorators/apiProperty.decorator";
+import {SceneInventoryItemReply} from "../../grpc/proto-compiled/inventory";
 
 export class SpriteSlotDto {
 
@@ -31,4 +32,31 @@ export class SpriteSlotCountDto {
 
     @XApiProperty({ description: "The amount of unlocked srite slots" })
     unlockedSlots: number;
+}
+
+export class SceneInventoryDto {
+
+    @XApiProperty({ description: "The activated scene Id", required: false })
+    activeId?: number;
+
+    @XApiProperty({ description: "The activated scene theme Id", required: false })
+    activeShift?: number;
+
+    @XApiProperty({ description: "The scenes in the inventory", type: () => SceneInventoryItemDto, isArray: true })
+    scenes: SceneInventoryItemDto[];
+}
+
+export class SceneInventoryItemDto {
+
+    @XApiProperty({ description: "A scene Id" })
+    sceneId: number;
+
+    @XApiProperty({ description: "A scene theme shift identification", required: false })
+    sceneShift?: number;
+}
+
+export class SetActiveSceneDto {
+
+    @XApiProperty({ description: "The scene to activate", required: false })
+    scene?: SceneInventoryItemDto;
 }

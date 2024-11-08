@@ -3,7 +3,7 @@ import {ConfigService} from "@nestjs/config";
 import {GrpcBaseService} from "./grpc-base";
 import {IInventoryService} from "../../../services/interfaces/inventory.service.interface";
 import {InventoryDefinition, SpriteSlotConfigurationReply} from "../proto-compiled/inventory";
-import {SpriteInventoryDto, SpriteSlotDto} from "../../palantir/dto/inventory.dto";
+import {SceneInventoryDto, SpriteInventoryDto, SpriteSlotDto} from "../../palantir/dto/inventory.dto";
 
 @Injectable()
 export class GrpcInventoryService extends GrpcBaseService<InventoryDefinition> implements IInventoryService {
@@ -35,5 +35,14 @@ export class GrpcInventoryService extends GrpcBaseService<InventoryDefinition> i
     async getSpriteSlotCount(login: number): Promise<number> {
         const count = await this.grpcClient.getSpriteSlotCount({login});
         return count.unlockedSlots;
+    }
+
+    async getSceneInventory(login: number): Promise<SceneInventoryDto> {
+        const scenes = await this.grpcClient.getSceneInventory({login});
+        return scenes;
+    }
+
+    async useScene(login: number, sceneId: number | undefined, sceneShift: number | undefined): Promise<void> {
+        await this.grpcClient.useScene({login, sceneId, sceneShift});
     }
 }
