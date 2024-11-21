@@ -533,6 +533,15 @@ export const AdminDefinition = {
       responseStream: false,
       options: {},
     },
+    /** gets all onlineitems from the database */
+    getOnlineItems: {
+      name: "GetOnlineItems",
+      requestType: Empty,
+      requestStream: false,
+      responseType: OnlineItemMessage,
+      responseStream: true,
+      options: {},
+    },
   },
 } as const;
 
@@ -554,6 +563,8 @@ export interface AdminServiceImplementation<CallContextExt = {}> {
   incrementMemberBubbles(request: IncrementMemberBubblesRequest, context: CallContext & CallContextExt): Promise<Empty>;
   /** Writes a set of new onlineitems to the database */
   setOnlineItems(request: SetOnlineItemsRequest, context: CallContext & CallContextExt): Promise<Empty>;
+  /** gets all onlineitems from the database */
+  getOnlineItems(request: Empty, context: CallContext & CallContextExt): ServerStreamingMethodResult<OnlineItemMessage>;
 }
 
 export interface AdminClient<CallOptionsExt = {}> {
@@ -574,6 +585,8 @@ export interface AdminClient<CallOptionsExt = {}> {
   ): Promise<Empty>;
   /** Writes a set of new onlineitems to the database */
   setOnlineItems(request: SetOnlineItemsRequest, options?: CallOptions & CallOptionsExt): Promise<Empty>;
+  /** gets all onlineitems from the database */
+  getOnlineItems(request: Empty, options?: CallOptions & CallOptionsExt): AsyncIterable<OnlineItemMessage>;
 }
 
 if (_m0.util.Long !== Long) {

@@ -35,6 +35,8 @@ import {IInventoryService} from "../../services/interfaces/inventory.service.int
 import {GrpcInventoryService} from "./services/grpc-inventory.service";
 import {IEmojisService} from "../../services/interfaces/emojis.service.interface";
 import {GrpcEmojisService} from "./services/grpc-emojis.service";
+import {IAnnouncementsService} from "../../services/interfaces/announcements.service.interface";
+import {GrpcAnnouncementsService} from "./services/grpc-announcements.service";
 
 const services: Provider[] = [
     { provide: IScenesService, useClass: GrpcScenesService },
@@ -50,7 +52,8 @@ const services: Provider[] = [
     { provide: ICloudService, useClass: GrpcCloudService },
     { provide: IInventoryService, useClass: GrpcInventoryService },
     { provide: IObjectStorageService, useClass: GrpcObjectStorageService },
-    { provide: IEmojisService, useClass: GrpcEmojisService }
+    { provide: IEmojisService, useClass: GrpcEmojisService },
+    { provide: IAnnouncementsService, useClass: GrpcAnnouncementsService }
 ]
 
 @Module({

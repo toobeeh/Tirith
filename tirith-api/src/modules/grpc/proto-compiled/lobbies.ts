@@ -58,6 +58,11 @@ export interface SkribblLobbyTypoMemberMessage {
   login: number;
   lobbyPlayerId: number;
   ownershipClaim: Long;
+  bubbles: number;
+  patronEmoji: string | undefined;
+  sceneId: number | undefined;
+  sceneShift: number | undefined;
+  spriteSlots: SpriteSlotConfigurationReply[];
 }
 
 export interface SkribblLobbyTypoMembersMessage {
@@ -737,7 +742,16 @@ export const SkribblLobbySkribblPlayerMessage = {
 };
 
 function createBaseSkribblLobbyTypoMemberMessage(): SkribblLobbyTypoMemberMessage {
-  return { login: 0, lobbyPlayerId: 0, ownershipClaim: Long.ZERO };
+  return {
+    login: 0,
+    lobbyPlayerId: 0,
+    ownershipClaim: Long.ZERO,
+    bubbles: 0,
+    patronEmoji: undefined,
+    sceneId: undefined,
+    sceneShift: undefined,
+    spriteSlots: [],
+  };
 }
 
 export const SkribblLobbyTypoMemberMessage = {
@@ -750,6 +764,21 @@ export const SkribblLobbyTypoMemberMessage = {
     }
     if (!message.ownershipClaim.isZero()) {
       writer.uint32(24).int64(message.ownershipClaim);
+    }
+    if (message.bubbles !== 0) {
+      writer.uint32(32).int32(message.bubbles);
+    }
+    if (message.patronEmoji !== undefined) {
+      StringValue.encode({ value: message.patronEmoji! }, writer.uint32(42).fork()).ldelim();
+    }
+    if (message.sceneId !== undefined) {
+      Int32Value.encode({ value: message.sceneId! }, writer.uint32(50).fork()).ldelim();
+    }
+    if (message.sceneShift !== undefined) {
+      Int32Value.encode({ value: message.sceneShift! }, writer.uint32(58).fork()).ldelim();
+    }
+    for (const v of message.spriteSlots) {
+      SpriteSlotConfigurationReply.encode(v!, writer.uint32(66).fork()).ldelim();
     }
     return writer;
   },
@@ -782,6 +811,41 @@ export const SkribblLobbyTypoMemberMessage = {
 
           message.ownershipClaim = reader.int64() as Long;
           continue;
+        case 4:
+          if (tag !== 32) {
+            break;
+          }
+
+          message.bubbles = reader.int32();
+          continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.patronEmoji = StringValue.decode(reader, reader.uint32()).value;
+          continue;
+        case 6:
+          if (tag !== 50) {
+            break;
+          }
+
+          message.sceneId = Int32Value.decode(reader, reader.uint32()).value;
+          continue;
+        case 7:
+          if (tag !== 58) {
+            break;
+          }
+
+          message.sceneShift = Int32Value.decode(reader, reader.uint32()).value;
+          continue;
+        case 8:
+          if (tag !== 66) {
+            break;
+          }
+
+          message.spriteSlots.push(SpriteSlotConfigurationReply.decode(reader, reader.uint32()));
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -796,6 +860,13 @@ export const SkribblLobbyTypoMemberMessage = {
       login: isSet(object.login) ? globalThis.Number(object.login) : 0,
       lobbyPlayerId: isSet(object.lobbyPlayerId) ? globalThis.Number(object.lobbyPlayerId) : 0,
       ownershipClaim: isSet(object.ownershipClaim) ? Long.fromValue(object.ownershipClaim) : Long.ZERO,
+      bubbles: isSet(object.bubbles) ? globalThis.Number(object.bubbles) : 0,
+      patronEmoji: isSet(object.patronEmoji) ? String(object.patronEmoji) : undefined,
+      sceneId: isSet(object.sceneId) ? Number(object.sceneId) : undefined,
+      sceneShift: isSet(object.sceneShift) ? Number(object.sceneShift) : undefined,
+      spriteSlots: globalThis.Array.isArray(object?.spriteSlots)
+        ? object.spriteSlots.map((e: any) => SpriteSlotConfigurationReply.fromJSON(e))
+        : [],
     };
   },
 
@@ -809,6 +880,21 @@ export const SkribblLobbyTypoMemberMessage = {
     }
     if (!message.ownershipClaim.isZero()) {
       obj.ownershipClaim = (message.ownershipClaim || Long.ZERO).toString();
+    }
+    if (message.bubbles !== 0) {
+      obj.bubbles = Math.round(message.bubbles);
+    }
+    if (message.patronEmoji !== undefined) {
+      obj.patronEmoji = message.patronEmoji;
+    }
+    if (message.sceneId !== undefined) {
+      obj.sceneId = message.sceneId;
+    }
+    if (message.sceneShift !== undefined) {
+      obj.sceneShift = message.sceneShift;
+    }
+    if (message.spriteSlots?.length) {
+      obj.spriteSlots = message.spriteSlots.map((e) => SpriteSlotConfigurationReply.toJSON(e));
     }
     return obj;
   },

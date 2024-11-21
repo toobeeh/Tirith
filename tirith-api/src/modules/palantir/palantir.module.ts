@@ -22,6 +22,7 @@ import {LeaguesController} from "./controller/leagues.controller";
 import {CloudController} from "./controller/cloud.controller";
 import {InventoryController} from "./controller/inventory.controller";
 import {EmojisController} from "./controller/emojis.controller";
+import {AnnouncementsController} from "./controller/announcements.controller";
 
 @Module({
     imports: [
@@ -41,7 +42,8 @@ import {EmojisController} from "./controller/emojis.controller";
         LeaguesController,
         CloudController,
         InventoryController,
-        EmojisController
+        EmojisController,
+        AnnouncementsController
     ],
     providers: [
         DiscordApiService,
