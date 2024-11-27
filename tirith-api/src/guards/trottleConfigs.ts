@@ -1,4 +1,4 @@
-import { Resolvable, ThrottlerOptions, minutes } from "@nestjs/throttler";
+import {Resolvable, ThrottlerOptions, minutes, days} from "@nestjs/throttler";
 
 interface throttleConfig {
     limit: Resolvable<number>;
@@ -7,12 +7,12 @@ interface throttleConfig {
 }
 
 /**
- * Rate limit config: 5 / 5 hours
+ * Rate limit config: 100 / day
  * Use for requests that alter metrics which are noremaly seldom used.
  */
-const throttleFivePerFiveHours: throttleConfig = {
-    limit: 5,
-    ttl: minutes(60) * 5,
+const throttleHundredPerDay: throttleConfig = {
+    limit: 100,
+    ttl: days(1),
     description: "Requests that alter metrics which are seldom used in normal usage"
 };
 
@@ -50,7 +50,7 @@ const throttleThirtyPerMinute: throttleConfig = {
  * collection of all throttle configs
  */
 const throttles = {
-    throttleFivePerFiveHours,
+    throttleFivePerFiveHours: throttleHundredPerDay,
     throttleTenPerMinute,
     throttleTenPerTenMinutes,
     throttleThirtyPerMinute,
