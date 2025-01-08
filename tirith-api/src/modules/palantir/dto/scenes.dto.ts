@@ -26,4 +26,16 @@ export class SceneDto {
 
     @XApiProperty({ description: "Scene artist name", required: false })
     artist?: string;
+
+    @XApiProperty({description: "Available themes for the scene", type: () => SceneThemeDto, isArray: true})
+    themes: SceneThemeDto[];
+}
+
+export class SceneThemeDto {
+
+    @XApiProperty({ description: "Scene theme name" })
+    name: string;
+
+    @XApiProperty({ description: "Scene shift identification" })
+    shift: number;
 }
