@@ -18,7 +18,7 @@ export class AwardsController {
     @Get()
     @ApiOperation({ summary: "Get all awards" })
     @ApiResponse({ status: 200, type: AwardDto, isArray: true, description: "All available awards" })
-    getNextDrop(): Promise<AwardDto[]> {
+    getAllAwards(): Promise<AwardDto[]> {
         return this.service.getAllAwards();
     }
 }
