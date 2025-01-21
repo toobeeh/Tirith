@@ -52,12 +52,14 @@ export class GrpcInventoryService extends GrpcBaseService<InventoryDefinition> i
     async getAvailableAwardInventory(login: number): Promise<AwardInventoryDto[]> {
         const awardInventory = await this.grpcClient.getAwardInventory({login});
         const awards = await this._awardsService.getAllAwards();
-        const available = [];
+        const available: AwardInventoryDto[] = [];
 
         for (const award of awards) {
-            const count = awardInventory.availableAwards.filter(a => a.awardId === award.id).length;
-            if (count > 0) {
-                available.push({award, amount: count});
+            const ids = awardInventory.availableAwards
+                .filter(a => a.awardId == award.id)
+                .map(a => a.inventoryId);
+            if (ids.length > 0) {
+                available.push({award, inventoryIds: ids});
             }
         }
 

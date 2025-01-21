@@ -23,6 +23,6 @@ export class AwardInventoryDto {
     @XApiProperty({description: "The award type", type: () => AwardDto})
     award: AwardDto;
 
-    @XApiProperty({description: "The amount of this award in the inventory"})
-    amount: number;
+    @XApiProperty({description: "The award inventory ids of this award type", type: () => Number, isArray: true})
+    inventoryIds: number[];
 }
