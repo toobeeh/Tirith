@@ -20,6 +20,7 @@ import {IInventoryService} from "../../../services/interfaces/inventory.service.
 import {Throttle} from "@nestjs/throttler";
 import {getThrottleForDefinition} from "../../../guards/trottleConfigs";
 import {MemberFlagDto} from "../dto/member.dto";
+import {AwardInventoryDto} from "../dto/awards.dto";
 
 @ApiSecurityNotes()
 @Controller("member")
@@ -88,5 +89,15 @@ export class InventoryController {
     @ApiResponse({ status: 200, description: "Scene has been successfully updated" })
     async setMemberScene(@Param() login: LoginTokenParamDto, @Body() scene: SetActiveSceneDto): Promise<void> {
         await this.inventoryService.useScene(login.login, scene.scene?.sceneId, scene.scene?.sceneShift);
+    }
+
+    @Get(":login/inventory/awards/available")
+    @Throttle(getThrottleForDefinition("throttleThirtyPerMinute"))
+    @RequiredRole(MemberFlagDto.Moderator)
+    @ResourceOwner("login")
+    @ApiOperation({ summary: "Get all awards in the inventory of a member which are available to gift" })
+    @ApiResponse({ status: 200, type: AwardInventoryDto, isArray: true, description: "All awards in the inventory, with the amount of how many are available" })
+    async getMemberAvailableAwardInventory(@Param() loginParam: LoginTokenParamDto): Promise<AwardInventoryDto[]> {
+        return this.inventoryService.getAvailableAwardInventory(loginParam.login);
     }
 }

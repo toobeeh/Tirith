@@ -1,4 +1,5 @@
 import {SceneInventoryDto, SpriteInventoryDto, SpriteSlotDto} from "../../modules/palantir/dto/inventory.dto";
+import {AwardInventoryDto} from "../../modules/palantir/dto/awards.dto";
 
 export const IInventoryService = Symbol("IInventoryService");
 
@@ -13,4 +14,6 @@ export interface IInventoryService {
     getSceneInventory(login: number): Promise<SceneInventoryDto>;
 
     useScene(login: number, sceneId: number | undefined, sceneShift: number | undefined): Promise<void>;
+
+    getAvailableAwardInventory(login: number): Promise<AwardInventoryDto[]>;
 }

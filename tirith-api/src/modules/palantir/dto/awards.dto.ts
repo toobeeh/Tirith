@@ -17,3 +17,12 @@ export class AwardDto {
     @XApiProperty({ description: "Rarity level" })
     rarity: number;
 }
+
+export class AwardInventoryDto {
+
+    @XApiProperty({description: "The award type", type: () => AwardDto})
+    award: AwardDto;
+
+    @XApiProperty({description: "The amount of this award in the inventory"})
+    amount: number;
+}

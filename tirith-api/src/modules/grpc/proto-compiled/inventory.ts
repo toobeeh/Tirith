@@ -9,6 +9,13 @@ import { Int32Value, Int64Value, StringValue } from "./google/protobuf/wrappers"
 
 export const protobufPackage = "inventory";
 
+export interface GiveAwardMessage {
+  login: number;
+  awardInventoryId: number;
+  lobbyId: string;
+  receiverLobbyPlayerId: number;
+}
+
 export interface GetEventProgressRequest {
   login: number;
   /** null if for all events */
@@ -81,6 +88,7 @@ export interface ConsumedAwardMessage {
 
 export interface AvailableAwardMessage {
   awardId: number;
+  inventoryId: number;
 }
 
 export interface AwardInventoryMessage {
@@ -238,6 +246,98 @@ export interface ScenePriceReply {
   nextPrice: number;
   totalBubblesSpent: number;
 }
+
+function createBaseGiveAwardMessage(): GiveAwardMessage {
+  return { login: 0, awardInventoryId: 0, lobbyId: "", receiverLobbyPlayerId: 0 };
+}
+
+export const GiveAwardMessage = {
+  encode(message: GiveAwardMessage, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.login !== 0) {
+      writer.uint32(8).int32(message.login);
+    }
+    if (message.awardInventoryId !== 0) {
+      writer.uint32(16).int32(message.awardInventoryId);
+    }
+    if (message.lobbyId !== "") {
+      writer.uint32(26).string(message.lobbyId);
+    }
+    if (message.receiverLobbyPlayerId !== 0) {
+      writer.uint32(32).int32(message.receiverLobbyPlayerId);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): GiveAwardMessage {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGiveAwardMessage();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.login = reader.int32();
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.awardInventoryId = reader.int32();
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.lobbyId = reader.string();
+          continue;
+        case 4:
+          if (tag !== 32) {
+            break;
+          }
+
+          message.receiverLobbyPlayerId = reader.int32();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GiveAwardMessage {
+    return {
+      login: isSet(object.login) ? globalThis.Number(object.login) : 0,
+      awardInventoryId: isSet(object.awardInventoryId) ? globalThis.Number(object.awardInventoryId) : 0,
+      lobbyId: isSet(object.lobbyId) ? globalThis.String(object.lobbyId) : "",
+      receiverLobbyPlayerId: isSet(object.receiverLobbyPlayerId) ? globalThis.Number(object.receiverLobbyPlayerId) : 0,
+    };
+  },
+
+  toJSON(message: GiveAwardMessage): unknown {
+    const obj: any = {};
+    if (message.login !== 0) {
+      obj.login = Math.round(message.login);
+    }
+    if (message.awardInventoryId !== 0) {
+      obj.awardInventoryId = Math.round(message.awardInventoryId);
+    }
+    if (message.lobbyId !== "") {
+      obj.lobbyId = message.lobbyId;
+    }
+    if (message.receiverLobbyPlayerId !== 0) {
+      obj.receiverLobbyPlayerId = Math.round(message.receiverLobbyPlayerId);
+    }
+    return obj;
+  },
+};
 
 function createBaseGetEventProgressRequest(): GetEventProgressRequest {
   return { login: 0, eventId: undefined };
@@ -1124,13 +1224,16 @@ export const ConsumedAwardMessage = {
 };
 
 function createBaseAvailableAwardMessage(): AvailableAwardMessage {
-  return { awardId: 0 };
+  return { awardId: 0, inventoryId: 0 };
 }
 
 export const AvailableAwardMessage = {
   encode(message: AvailableAwardMessage, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.awardId !== 0) {
       writer.uint32(8).int32(message.awardId);
+    }
+    if (message.inventoryId !== 0) {
+      writer.uint32(16).int32(message.inventoryId);
     }
     return writer;
   },
@@ -1149,6 +1252,13 @@ export const AvailableAwardMessage = {
 
           message.awardId = reader.int32();
           continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.inventoryId = reader.int32();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -1159,13 +1269,19 @@ export const AvailableAwardMessage = {
   },
 
   fromJSON(object: any): AvailableAwardMessage {
-    return { awardId: isSet(object.awardId) ? globalThis.Number(object.awardId) : 0 };
+    return {
+      awardId: isSet(object.awardId) ? globalThis.Number(object.awardId) : 0,
+      inventoryId: isSet(object.inventoryId) ? globalThis.Number(object.inventoryId) : 0,
+    };
   },
 
   toJSON(message: AvailableAwardMessage): unknown {
     const obj: any = {};
     if (message.awardId !== 0) {
       obj.awardId = Math.round(message.awardId);
+    }
+    if (message.inventoryId !== 0) {
+      obj.inventoryId = Math.round(message.inventoryId);
     }
     return obj;
   },
@@ -3287,6 +3403,15 @@ export const InventoryDefinition = {
       responseStream: false,
       options: {},
     },
+    /** give an award to a player */
+    giveAward: {
+      name: "GiveAward",
+      requestType: GiveAwardMessage,
+      requestStream: false,
+      responseType: AwardReply,
+      responseStream: false,
+      options: {},
+    },
     /** gets the first seen date of a member */
     getFirstSeenDate: {
       name: "GetFirstSeenDate",
@@ -3394,6 +3519,8 @@ export interface InventoryServiceImplementation<CallContextExt = {}> {
   ): ServerStreamingMethodResult<GalleryItemMessage>;
   /** open an award pack */
   openAwardPack(request: OpenAwardPackMessage, context: CallContext & CallContextExt): Promise<AwardPackResultMessage>;
+  /** give an award to a player */
+  giveAward(request: GiveAwardMessage, context: CallContext & CallContextExt): Promise<AwardReply>;
   /** gets the first seen date of a member */
   getFirstSeenDate(request: GetFirstSeenDateRequest, context: CallContext & CallContextExt): Promise<FirstSeenMessage>;
   /** gift an amount of event credit to another member */
@@ -3465,6 +3592,8 @@ export interface InventoryClient<CallOptionsExt = {}> {
   ): AsyncIterable<GalleryItemMessage>;
   /** open an award pack */
   openAwardPack(request: OpenAwardPackMessage, options?: CallOptions & CallOptionsExt): Promise<AwardPackResultMessage>;
+  /** give an award to a player */
+  giveAward(request: GiveAwardMessage, options?: CallOptions & CallOptionsExt): Promise<AwardReply>;
   /** gets the first seen date of a member */
   getFirstSeenDate(request: GetFirstSeenDateRequest, options?: CallOptions & CallOptionsExt): Promise<FirstSeenMessage>;
   /** gift an amount of event credit to another member */
