@@ -15,7 +15,7 @@ import {
     Query,
     Req,
     Request,
-    UseGuards
+    UseGuards, UseInterceptors
 } from '@nestjs/common';
 import {ApiOperation, ApiResponse, ApiTags} from '@nestjs/swagger';
 import {ApiSecurityNotes} from 'src/decorators/apiSecurityNote.decorator';
@@ -28,6 +28,7 @@ import {RequiredRole} from "../../../decorators/roles.decorator";
 import {Throttle} from "@nestjs/throttler";
 import {getThrottleForDefinition} from "../../../guards/trottleConfigs";
 import {MemberDto, MemberFlagDto} from "../dto/member.dto";
+import {OkCacheInterceptor} from "../../../interceptors/ok-cache.interceptor";
 
 @ApiSecurityNotes()
 @Controller("emojis")
@@ -39,7 +40,7 @@ export class EmojisController {
     @Get("/cache")
     @Throttle(getThrottleForDefinition("throttleThirtyPerMinute"))
     @ApiOperation({ summary: "Search all emojis with cache enabled" })
-    @Header('Cache-Control', 'max-age=3600')
+    @UseInterceptors(OkCacheInterceptor)
     @ApiResponse({ status: 200, type: EmojiDto, isArray: true, description: "All available emojis that match search criteria" })
     getAllEmojisCached(@Query() search: EmojiSearchDto): Promise<EmojiDto[]> {
         return this.service.searchSavedEmojis(search.query ?? "", search.limit, search.animated, search.statics);
