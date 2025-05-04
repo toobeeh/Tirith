@@ -18,7 +18,8 @@ export class GrpcAnnouncementsService extends GrpcBaseService<AnnouncementsDefin
             content: message.content,
             date: message.date.getTime().toString(),
             affectedTypoVersion: message.affectedTypoVersion,
-            type: message.type === AnnouncementType.Announcement ? AnnouncementTypeEnum.Announcement : AnnouncementTypeEnum.Changelog
+            type: message.type === AnnouncementType.Announcement ? AnnouncementTypeEnum.Announcement : AnnouncementTypeEnum.Changelog,
+            details: message.details
         }
     }
 

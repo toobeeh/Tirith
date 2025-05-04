@@ -46,13 +46,14 @@ export interface AnnouncementMessage {
   content: string;
   affectedTypoVersion: string | undefined;
   type: AnnouncementType;
+  details: string | undefined;
 }
 
 export interface GetAnnouncementsMessage {
 }
 
 function createBaseAnnouncementMessage(): AnnouncementMessage {
-  return { date: undefined, title: "", content: "", affectedTypoVersion: undefined, type: 0 };
+  return { date: undefined, title: "", content: "", affectedTypoVersion: undefined, type: 0, details: undefined };
 }
 
 export const AnnouncementMessage = {
@@ -71,6 +72,9 @@ export const AnnouncementMessage = {
     }
     if (message.type !== 0) {
       writer.uint32(40).int32(message.type);
+    }
+    if (message.details !== undefined) {
+      StringValue.encode({ value: message.details! }, writer.uint32(50).fork()).ldelim();
     }
     return writer;
   },
@@ -117,6 +121,13 @@ export const AnnouncementMessage = {
 
           message.type = reader.int32() as any;
           continue;
+        case 6:
+          if (tag !== 50) {
+            break;
+          }
+
+          message.details = StringValue.decode(reader, reader.uint32()).value;
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -133,6 +144,7 @@ export const AnnouncementMessage = {
       content: isSet(object.content) ? globalThis.String(object.content) : "",
       affectedTypoVersion: isSet(object.affectedTypoVersion) ? String(object.affectedTypoVersion) : undefined,
       type: isSet(object.type) ? announcementTypeFromJSON(object.type) : 0,
+      details: isSet(object.details) ? String(object.details) : undefined,
     };
   },
 
@@ -152,6 +164,9 @@ export const AnnouncementMessage = {
     }
     if (message.type !== 0) {
       obj.type = announcementTypeToJSON(message.type);
+    }
+    if (message.details !== undefined) {
+      obj.details = message.details;
     }
     return obj;
   },

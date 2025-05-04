@@ -13,7 +13,7 @@ export class AnnouncementDto {
     @XApiProperty({ description: "Announcement content" })
     content: string;
 
-    @XApiProperty({ description: "Announcement type", required: false })
+    @XApiProperty({ description: "Version of typo which this targets", required: false })
     affectedTypoVersion?: string;
 
     @XApiProperty({ description: "Announcement creation ms" })
@@ -21,4 +21,7 @@ export class AnnouncementDto {
 
     @XApiProperty({ description: "Announcement type", enum: AnnouncementTypeEnum })
     type: AnnouncementTypeEnum;
+
+    @XApiProperty({ description: "Details of the announcement in markdown", required: false })
+    details?: string;
 }

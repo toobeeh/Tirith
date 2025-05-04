@@ -2331,7 +2331,11 @@ export const LobbiesDefinition = {
       responseStream: true,
       options: {},
     },
-    /** Gets all currently playing member's details */
+    /**
+     * Gets all currently playing member's details
+     *
+     * @deprecated
+     */
     getOnlinePlayers: {
       name: "GetOnlinePlayers",
       requestType: Empty,
@@ -2461,7 +2465,11 @@ export interface LobbiesServiceImplementation<CallContextExt = {}> {
     request: GetLobbyDropClaimsRequest,
     context: CallContext & CallContextExt,
   ): ServerStreamingMethodResult<DropLogReply>;
-  /** Gets all currently playing member's details */
+  /**
+   * Gets all currently playing member's details
+   *
+   * @deprecated
+   */
   getOnlinePlayers(
     request: Empty,
     context: CallContext & CallContextExt,
@@ -2522,7 +2530,11 @@ export interface LobbiesClient<CallOptionsExt = {}> {
     request: GetLobbyDropClaimsRequest,
     options?: CallOptions & CallOptionsExt,
   ): AsyncIterable<DropLogReply>;
-  /** Gets all currently playing member's details */
+  /**
+   * Gets all currently playing member's details
+   *
+   * @deprecated
+   */
   getOnlinePlayers(request: Empty, options?: CallOptions & CallOptionsExt): AsyncIterable<OnlineMemberReply>;
   setGuildLobbyLinks(request: SetGuildLobbyLinksMessage, options?: CallOptions & CallOptionsExt): Promise<Empty>;
   getLobbyLinks(request: Empty, options?: CallOptions & CallOptionsExt): AsyncIterable<GuildLobbyLinkMessage>;
