@@ -11,22 +11,14 @@
  */
 
 
-export interface LobbyPlayerDto { 
+export interface OnlineLobbyTypoPlayerDto { 
     /**
-     * Player name
+     * Skribbl lobby player join ID
      */
-    name: string;
+    lobbyPlayerID: number;
     /**
-     * Player score
+     * Typo id
      */
-    score: number;
-    /**
-     * Whether the player is the drawer
-     */
-    drawing: boolean;
-    /**
-     * Player join ID
-     */
-    lobbyPlayerId: number;
+    login: number;
 }
 

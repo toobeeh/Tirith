@@ -444,7 +444,7 @@ export class ThemesService {
 
     /**
      * Get a theme by ID and increment use counter
-     *   Required Roles: None  Rate limit default: 5 Requests / 18000000 ms TTL
+     *   Required Roles: None  Rate limit default: 100 Requests / 86400000 ms TTL
      * @param id Id parameter
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.

@@ -1,5 +1,7 @@
 export * from './admin.service';
 import { AdminService } from './admin.service';
+export * from './announcements.service';
+import { AnnouncementsService } from './announcements.service';
 export * from './auth.service';
 import { AuthService } from './auth.service';
 export * from './awards.service';
@@ -28,4 +30,4 @@ export * from './sprites.service';
 import { SpritesService } from './sprites.service';
 export * from './themes.service';
 import { ThemesService } from './themes.service';
-export const APIS = [AdminService, AuthService, AwardsService, CloudService, DefaultService, EmojisService, EventsService, GuildsService, InventoryService, LeaguesService, LobbiesService, MembersService, ScenesService, SpritesService, ThemesService];
+export const APIS = [AdminService, AnnouncementsService, AuthService, AwardsService, CloudService, DefaultService, EmojisService, EventsService, GuildsService, InventoryService, LeaguesService, LobbiesService, MembersService, ScenesService, SpritesService, ThemesService];

@@ -52,6 +52,7 @@ export interface GuildReply {
   connectedMemberCount: number;
   supporters: number[];
   botId: Long | undefined;
+  onlineMemberCount: number;
 }
 
 /** Request containing a guild observe token */
@@ -508,7 +509,15 @@ export const RemoveGuildWebhookMessage = {
 };
 
 function createBaseGuildReply(): GuildReply {
-  return { guildId: Long.ZERO, invite: 0, name: "", connectedMemberCount: 0, supporters: [], botId: undefined };
+  return {
+    guildId: Long.ZERO,
+    invite: 0,
+    name: "",
+    connectedMemberCount: 0,
+    supporters: [],
+    botId: undefined,
+    onlineMemberCount: 0,
+  };
 }
 
 export const GuildReply = {
@@ -532,6 +541,9 @@ export const GuildReply = {
     writer.ldelim();
     if (message.botId !== undefined) {
       Int64Value.encode({ value: message.botId! }, writer.uint32(66).fork()).ldelim();
+    }
+    if (message.onlineMemberCount !== 0) {
+      writer.uint32(72).int32(message.onlineMemberCount);
     }
     return writer;
   },
@@ -595,6 +607,13 @@ export const GuildReply = {
 
           message.botId = Int64Value.decode(reader, reader.uint32()).value;
           continue;
+        case 9:
+          if (tag !== 72) {
+            break;
+          }
+
+          message.onlineMemberCount = reader.int32();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -614,6 +633,7 @@ export const GuildReply = {
         ? object.supporters.map((e: any) => globalThis.Number(e))
         : [],
       botId: isSet(object.botId) ? Long.fromValue(object.botId) : undefined,
+      onlineMemberCount: isSet(object.onlineMemberCount) ? globalThis.Number(object.onlineMemberCount) : 0,
     };
   },
 
@@ -636,6 +656,9 @@ export const GuildReply = {
     }
     if (message.botId !== undefined) {
       obj.botId = message.botId;
+    }
+    if (message.onlineMemberCount !== 0) {
+      obj.onlineMemberCount = Math.round(message.onlineMemberCount);
     }
     return obj;
   },

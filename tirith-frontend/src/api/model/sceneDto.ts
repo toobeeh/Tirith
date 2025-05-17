@@ -10,6 +10,7 @@
  * Do not edit the class manually.
  */
 import { EventDto } from './eventDto';
+import { SceneThemeDto } from './sceneThemeDto';
 
 
 export interface SceneDto { 
@@ -42,5 +43,9 @@ export interface SceneDto {
      * Scene artist name
      */
     artist?: string;
+    /**
+     * Available themes for the scene
+     */
+    themes: Array<SceneThemeDto>;
 }
 

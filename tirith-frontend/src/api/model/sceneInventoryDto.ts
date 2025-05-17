@@ -9,24 +9,21 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { SceneInventoryItemDto } from './sceneInventoryItemDto';
 
 
-export interface LobbyPlayerDto { 
+export interface SceneInventoryDto { 
     /**
-     * Player name
+     * The activated scene Id
      */
-    name: string;
+    activeId?: number;
     /**
-     * Player score
+     * The activated scene theme Id
      */
-    score: number;
+    activeShift?: number;
     /**
-     * Whether the player is the drawer
+     * The scenes in the inventory
      */
-    drawing: boolean;
-    /**
-     * Player join ID
-     */
-    lobbyPlayerId: number;
+    scenes: Array<SceneInventoryItemDto>;
 }
 

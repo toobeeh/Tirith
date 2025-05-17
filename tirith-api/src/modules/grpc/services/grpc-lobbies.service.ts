@@ -4,20 +4,16 @@ import {GrpcBaseService} from "./grpc-base";
 import {
     DropLogReply,
     LobbiesDefinition,
-    LobbyReply,
-    PalantirLobbyDetails,
-    PalantirLobbyPlayer,
-    SkribblLobbyDetails,
-    SkribblLobbyPlayer
+    SkribblLobbyMessage,
+    SkribblLobbySkribblPlayerMessage,
+    SkribblLobbyStateMessage,
+    SkribblLobbyTypoMemberMessage,
+    SkribblLobbyTypoMembersMessage
 } from "../proto-compiled/lobbies";
 import {ILobbiesService} from "src/services/interfaces/lobbies.service.interface";
 import {DropDto} from "src/modules/palantir/dto/drops.dto";
 import {
-    LobbiesResponseDto,
-    LobbyDetailsDto,
-    LobbyPlayerDto,
-    PalantirLobbyDto,
-    PalantirLobbyPlayerDto
+    LobbyPlayerDto, OnlineLobbyDto, OnlineLobbySkribblDetailsDto, OnlineLobbyTypoPlayerDto,
 } from "src/modules/palantir/dto/lobbies.dto";
 import {Long} from "@grpc/proto-loader";
 
@@ -28,46 +24,12 @@ export class GrpcLobbiesService extends GrpcBaseService<LobbiesDefinition> imple
         super(LobbiesDefinition, config);
     }
 
-    mapPalantirLobbyDto(reply: PalantirLobbyDetails): PalantirLobbyDto {
+    mapLobbyPlayerDto(reply: SkribblLobbySkribblPlayerMessage, lobby: SkribblLobbyStateMessage): LobbyPlayerDto {
         return {
-            Description: reply.description, // TODO change casing in dtos
-            Restriction: reply.restriction,
-            ID: reply.id,
-            Key: reply.key
-        };
-    }
-
-    mapSkribblLobbyDto(reply: SkribblLobbyDetails): LobbyDetailsDto {
-        return {
-            Players: reply.players.map(player => this.mapLobbyPlayerDto(player)),
-            Language: reply.language,
-            Round: reply.round.toString(),
-            Link: reply.link,
-            Private: reply.private
-        };
-    }
-
-    mapLobbyPlayerDto(reply: SkribblLobbyPlayer): LobbyPlayerDto {
-        return {
-            Score: reply.score,
-            Name: reply.name,
-            Drawing: reply.drawing,
-            LobbyPlayerID: reply.lobbyPlayerId
-        };
-    }
-
-    mapPalantirLobbyPlayerDto(reply: PalantirLobbyPlayer): PalantirLobbyPlayerDto {
-        return {
-            ...reply, // d
-            login: reply.login.toString()
-        };
-    }
-
-    mapLobbyResponseDto(reply: LobbyReply): LobbiesResponseDto {
-        return {
-            lobby: this.mapPalantirLobbyDto(reply.palantirDetails),
-            details: this.mapSkribblLobbyDto(reply.skribblDetails),
-            players: reply.players.map(player => this.mapPalantirLobbyPlayerDto(player))
+            score: reply.score,
+            name: reply.name,
+            drawing: reply.playerId == lobby.drawerId,
+            lobbyPlayerId: reply.playerId
         };
     }
 
@@ -82,8 +44,36 @@ export class GrpcLobbiesService extends GrpcBaseService<LobbiesDefinition> imple
         };
     }
 
-    async inspectLobbies(): Promise<LobbiesResponseDto[]> {
-        const lobbies = await this.collectFromMappedAsyncIterable(this.grpcClient.getCurrentLobbies({}), lobby => this.mapLobbyResponseDto(lobby));
+    mapSkribblLobbyDetailsToDto(lobby: SkribblLobbyStateMessage): OnlineLobbySkribblDetailsDto {
+        return {
+            id: lobby.lobbyId,
+            private: Number.isInteger(lobby.ownerId),
+            round: lobby.round,
+            language: lobby.settings.language,
+            players: lobby.players.map(player => this.mapLobbyPlayerDto(player, lobby)),
+        }
+    }
+
+    mapTypoPlayerToDto(member: SkribblLobbyTypoMemberMessage): OnlineLobbyTypoPlayerDto {
+        return {
+            lobbyPlayerID: member.lobbyPlayerId,
+            login: member.login
+        }
+    }
+
+    mapSkribblLobbyToDto(lobby: SkribblLobbyMessage, members: SkribblLobbyTypoMembersMessage[]): OnlineLobbyDto {
+        return {
+            description: lobby.typoSettings.description,
+            lastUpdated: lobby.typoSettings.LastUpdated.getTime().toString(),
+            ownershipClaim: lobby.typoSettings.LobbyOwnershipClaim.toString(),
+            skribblDetails: this.mapSkribblLobbyDetailsToDto(lobby.skribblState),
+            typoPlayers: members.filter(member => member.lobbyId == lobby.typoSettings.lobbyId).flatMap(lobby => lobby.members.map(member => this.mapTypoPlayerToDto(member))),
+        }
+    }
+
+    async getAllLobbies(): Promise<OnlineLobbyDto[]> {
+        const members = await this.collectFromAsyncIterable(this.grpcClient.getOnlineLobbyPlayers({guildId: undefined}));
+        const lobbies = await this.collectFromMappedAsyncIterable(this.grpcClient.getLobbiesById({lobbyIds: members.map(lobby => lobby.lobbyId)}), lobby => this.mapSkribblLobbyToDto(lobby, members));
         return lobbies;
     }
 

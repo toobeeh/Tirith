@@ -11,22 +11,14 @@
  */
 
 
-export interface LobbyPlayerDto { 
+export interface SceneInventoryItemDto { 
     /**
-     * Player name
+     * A scene Id
      */
-    name: string;
+    sceneId: number;
     /**
-     * Player score
+     * A scene theme shift identification
      */
-    score: number;
-    /**
-     * Whether the player is the drawer
-     */
-    drawing: boolean;
-    /**
-     * Player join ID
-     */
-    lobbyPlayerId: number;
+    sceneShift?: number;
 }
 

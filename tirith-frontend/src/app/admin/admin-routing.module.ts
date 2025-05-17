@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LandingComponent } from './pages/landing/landing.component';
-import { ReportsComponent } from './pages/reports/reports.component';
 import { LobbiesComponent } from './pages/lobbies/lobbies.component';
 import { MembersComponent } from './pages/members/members.component';
 import { MemberComponent } from './pages/members/member/member.component';
@@ -18,12 +17,6 @@ const routes: Routes = [
   },
   {
     path: 'landing', component: LandingComponent,
-    pathMatch: "full",
-  },
-  {
-    canActivate: [RoleGuard],
-    data: { requiredFlags: [MemberFlagsEnum.Moderator] },
-    path: 'reports', component: ReportsComponent,
     pathMatch: "full",
   },
   {

@@ -9,24 +9,14 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { AwardDto } from './awardDto';
 
 
-export interface LobbyPlayerDto { 
+export interface AwardInventoryDto { 
+    award: AwardDto;
     /**
-     * Player name
+     * The award inventory ids of this award type
      */
-    name: string;
-    /**
-     * Player score
-     */
-    score: number;
-    /**
-     * Whether the player is the drawer
-     */
-    drawing: boolean;
-    /**
-     * Player join ID
-     */
-    lobbyPlayerId: number;
+    inventoryIds: Array<number>;
 }
 

@@ -171,7 +171,7 @@ export class EmojisService {
 
     /**
      * Delete a saved emoji  by name (id) and nameId
-     *   Required Roles: Admin | ContentModerator  Rate limit default: 10 Requests / 60000 ms TTL
+     *   Required Roles: Admin | ContentModerator | Moderator  Rate limit default: 10 Requests / 60000 ms TTL
      * @param id Id parameter
      * @param nameId Emoji name id appendix
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
