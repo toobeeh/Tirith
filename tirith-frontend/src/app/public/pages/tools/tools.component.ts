@@ -15,17 +15,17 @@ export class ToolsComponent {
 
   toolsCard = {
     color: "rgb(251 207 232)",
-    image: "url(https://tobeh.host/scenes/scenePortal.gif)",
+    image: "url(https://static.typo.rip/scenes/scenePortal.gif)",
   };
 
   listCard = {
     color: "rgb(219 234 254)",
-    image: "url(https://tobeh.host/scenes/sceneSpace.gif)",
+    image: "url(https://static.typo.rip/scenes/sceneSpace.gif)",
   };
 
   tutorialCard = {
     color: "rgb(220 252 231)",
-    image: "url(https://tobeh.host/scenes/sceneEmerald_Dust.gif)",
+    image: "url(https://static.typo.rip/scenes/sceneEmerald_Dust.gif)",
   };
 
   cards = [

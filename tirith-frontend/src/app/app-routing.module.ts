@@ -19,7 +19,7 @@ const routes: Routes = [
     loadChildren: () => PublicRoutingModule,
     data: {
       navigation: [
-        ["Get Typo", "https://tobeh.host/typo/", "external"],
+        ["Get Typo", "https://get.typo.rip/", "external"],
         ["Infos & Help", "help", "route", true],
         ["Admin Panel", "admin", "route"],
         ["My Profile", "user", "route"],
