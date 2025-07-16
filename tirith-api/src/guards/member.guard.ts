@@ -9,7 +9,7 @@ import {getRequiredRoles, MembershipEnum} from "../decorators/roles.decorator";
 
 /**
  * A guard that adds an user obejct to the request.
- * Requests without valid BEARER token are rejected.
+ * Requests without valid BEARER token are rejected, unless explicitly stated otherwise by requiredroles annotation.
  * Enable this on the controller to require auth token for all endpoints,
  * or on endpoints for finer granulation.
  * When combined with RoleGuard, this guard needs to execute first!
