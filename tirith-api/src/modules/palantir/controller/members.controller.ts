@@ -29,6 +29,7 @@ import {IMembersService} from '../../../services/interfaces/members.service.inte
 import {Throttle} from "@nestjs/throttler";
 import {getThrottleForDefinition} from "../../../guards/trottleConfigs";
 import {IGuildsService} from "../../../services/interfaces/guilds.service.interface";
+import {PublicMemberDto} from "../dto/public-member.dto";
 
 @ApiSecurityNotes()
 @RequiredRole(MemberFlagDto.Moderator)
@@ -64,6 +65,14 @@ export class MembersController {
     @ApiOperation({ summary: "Get a member by their login" })
     @ApiResponse({ status: 200, type: MemberDto, description: "The member with specified login" })
     async getMemberByLogin(@Param() params: LoginTokenParamDto): Promise<MemberDto> {
+        return this.service.getByLogin(params.login);
+    }
+
+    @Get(":login/public")
+    @RequiredRole(MembershipEnum.None)
+    @ApiOperation({ summary: "Get public info of a member by their login" })
+    @ApiResponse({ status: 200, type: PublicMemberDto, description: "The member with specified login" })
+    async getPublicMemberInfoByLogin(@Param() params: LoginTokenParamDto): Promise<PublicMemberDto> {
         return this.service.getByLogin(params.login);
     }
 

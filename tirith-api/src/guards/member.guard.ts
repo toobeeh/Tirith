@@ -1,9 +1,11 @@
 /*
 https://docs.nestjs.com/guards#guards
 */
-import { Request } from 'express';
-import { Injectable, CanActivate, ExecutionContext, HttpException, HttpStatus } from '@nestjs/common';
-import { AuthenticationService } from 'src/services/authentication.service';
+import {Request} from 'express';
+import {CanActivate, ExecutionContext, HttpException, HttpStatus, Injectable} from '@nestjs/common';
+import {AuthenticationService} from 'src/services/authentication.service';
+import {Reflector} from "@nestjs/core";
+import {getRequiredRoles, MembershipEnum} from "../decorators/roles.decorator";
 
 /**
  * A guard that adds an user obejct to the request.
@@ -15,11 +17,18 @@ import { AuthenticationService } from 'src/services/authentication.service';
 @Injectable()
 export class MemberGuard implements CanActivate {
 
-  constructor(private auth: AuthenticationService) { }
+  constructor(private auth: AuthenticationService, private reflector: Reflector) { }
 
   async canActivate(
     context: ExecutionContext,
   ): Promise<boolean> {
+
+    /* get required role to access resource */
+    const requiredRoles = getRequiredRoles(context, this.reflector);
+
+    /* if no membership is required per required roles, skip */
+    if(requiredRoles.includes(MembershipEnum.None)) return true;
+
     const request = context.switchToHttp().getRequest<Request>();
 
     /* get the token and reject if not present */
