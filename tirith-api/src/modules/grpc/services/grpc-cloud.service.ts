@@ -23,7 +23,9 @@ export class GrpcCloudService extends GrpcBaseService<CloudDefinition> implement
             createdAt: reply.tags.createdAt.toString(),
             name: reply.tags.title,
             author: reply.tags.author,
-            id: reply.id.toString()
+            id: reply.id.toString(),
+            language: reply.tags.language,
+            own: reply.tags.isOwn
         };
     }
 
