@@ -61,6 +61,10 @@ export class GuildsController {
             throw new UnauthorizedException("Member is not part of the guild");
         }
 
+        if(member.bubbles < 2000){
+            throw new UnauthorizedException("Posting images will unlock at 2000 bubbles");
+        }
+
         const webhooks = await this.guildsService.getGuildWebhooks(guild);
 
         const webhook = webhooks.find(hook => hook.Name === webhookNameParams.id);
