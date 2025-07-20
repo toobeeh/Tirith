@@ -21,6 +21,14 @@ export interface CloudImageDto {
      */
     author: string;
     /**
+     * Whether the image was drawn by the owner
+     */
+    own: boolean;
+    /**
+     * Lobby language of the image
+     */
+    language: string;
+    /**
      * Image creation timestamp ms
      */
     createdAt: string;

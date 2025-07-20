@@ -55,6 +55,7 @@ model/onlineLobbyDto.ts
 model/onlineLobbySkribblDetailsDto.ts
 model/onlineLobbyTypoPlayerDto.ts
 model/postImageDto.ts
+model/publicMemberDto.ts
 model/registrationRequest.ts
 model/sceneDto.ts
 model/sceneInventoryDto.ts

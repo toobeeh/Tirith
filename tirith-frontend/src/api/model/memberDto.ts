@@ -22,6 +22,10 @@ export interface MemberDto {
      */
     drops: number;
     /**
+     * The member\'s typo unique identification
+     */
+    typoId: number;
+    /**
      * The member\'s sprite inventory
      */
     sprites: string;
@@ -46,7 +50,7 @@ export interface MemberDto {
      */
     userName: string;
     /**
-     * The member\'s palantir identification
+     * DEPRECATED. Use TypoId instead.
      */
     userLogin: string;
     /**

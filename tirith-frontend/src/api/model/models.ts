@@ -30,6 +30,7 @@ export * from './onlineLobbyDto';
 export * from './onlineLobbySkribblDetailsDto';
 export * from './onlineLobbyTypoPlayerDto';
 export * from './postImageDto';
+export * from './publicMemberDto';
 export * from './registrationRequest';
 export * from './sceneDto';
 export * from './sceneInventoryDto';
