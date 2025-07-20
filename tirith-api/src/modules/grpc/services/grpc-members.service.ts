@@ -50,6 +50,7 @@ export class GrpcMembersService extends GrpcBaseService<MembersDefinition> imple
             ...reply,
             discordID: reply.discordId.toString(),
             userLogin: reply.login.toString(),
+            typoId: reply.login,
             userName: reply.username,
             guilds,
             rawMember,
