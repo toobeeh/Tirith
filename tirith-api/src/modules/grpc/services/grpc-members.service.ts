@@ -18,6 +18,7 @@ export class GrpcMembersService extends GrpcBaseService<MembersDefinition> imple
     private mapMemberSearchDto(reply: MemberSearchReply): MemberSearchDto {
         return {
             userLogin: reply.login.toString(),
+            typoId: reply.login,
             userName: reply.username,
             rawMember: reply.raw
         };

@@ -22,8 +22,8 @@ export class MemberComponent implements OnInit {
     this.member$ = this.memberService.getMemberByLogin(login);
   }
 
-  updateDiscordID(login: string, newID: string) {
-    this.memberService.updateMemberDiscordID(Number(login), { id: newID }).subscribe({
+  updateDiscordID(typoId: number, newID: string) {
+    this.memberService.updateMemberDiscordID(typoId, { id: newID }).subscribe({
       next: data => {
         this.member$ = of(data);
         this.toast.show({ message: { title: "Successfully updated", content: "The member's discord ID has been changed to " + newID } });
@@ -35,8 +35,8 @@ export class MemberComponent implements OnInit {
     })
   }
 
-  clearDropboost(login: string) {
-    this.memberService.clearMemberDropboost(Number(login)).subscribe({
+  clearDropboost(typoId: number) {
+    this.memberService.clearMemberDropboost(typoId).subscribe({
       next: data => {
         this.toast.show({ message: { title: "Cleared Dropboost", content: "The member's dropboost has been cleared. " } });
         console.log("dropboost cleared");
@@ -48,8 +48,8 @@ export class MemberComponent implements OnInit {
     });
   }
 
-  copyToken(login: string) {
-    this.memberService.getMemberAccessToken(Number(login)).subscribe({
+  copyToken(typoId: number) {
+    this.memberService.getMemberAccessToken(typoId).subscribe({
       next: data => {
         navigator.clipboard.writeText(data.Token);
         this.toast.show({ message: { title: "Copied token to clipboard" }, durationMs: 1000 });

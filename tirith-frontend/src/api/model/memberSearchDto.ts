@@ -17,9 +17,13 @@ export interface MemberSearchDto {
      */
     userName: string;
     /**
-     * The member\'s palantir identification
+     * DEPRECATED. Use TypoId instead.
      */
     userLogin: string;
+    /**
+     * The member\'s typo unique identification
+     */
+    typoId: number;
     /**
      * The raw database member result
      */

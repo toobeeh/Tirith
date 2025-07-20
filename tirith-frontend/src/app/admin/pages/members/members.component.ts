@@ -14,14 +14,14 @@ export class MembersComponent {
 
   constructor(private memberService: MembersService, private router: Router, private route: ActivatedRoute) { }
 
-  loadByLogin(login: number | string) {
-    this.router.navigate(["./", login], { relativeTo: this.route });
+  loadByTypoId(typoId: number) {
+    this.router.navigate(["./", typoId], { relativeTo: this.route });
   }
 
-  loadByID(id: string) {
+  loadByDiscordId(id: string) {
     this.memberService.getMemberByDiscordID(id).subscribe({
       next: data => {
-        this.loadByLogin(data.userLogin);
+        this.loadByTypoId(data.typoId);
       },
       error: () => {
         throw new Error("no member found for this discord ID")

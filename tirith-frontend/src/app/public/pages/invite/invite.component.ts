@@ -64,7 +64,7 @@ export class InviteComponent implements OnInit {
 
   connect(invite: GuildInviteDto, user: MemberDto) {
     const token = this.toastService.show({ message: { title: `Connecting to ${invite.name}...` } });
-    this.memberService.connectMemberToGuild(Number(user.userLogin), invite.token).pipe(
+    this.memberService.connectMemberToGuild(user.typoId, invite.token).pipe(
       catchError(() => {
         this.toastService.cancelMessage(token);
         this.toastService.show({ message: { title: `Something went wrong :(`, content: `Could not connect to ${invite.name}` } });

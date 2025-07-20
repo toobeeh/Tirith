@@ -28,7 +28,7 @@ interface spriteInv {
 })
 export class ProfileComponent {
 
-  public user$;
+  public user$: Observable<{     sprites: {         dto: SpriteDto,         inv: {             active: number,             id: number         } | undefined     }[],     user: MemberDto,     scenes: {         dto: SceneDto,         inv: {             active: boolean,             id: number         } | undefined     }[] }>;
 
   constructor(private userService: UserService, private spritesService: SpritesService, private scenesService: ScenesService, private router: Router, private toastService: ToastService, private memberService: MembersService) {
     this.user$ = this.loadUser();
@@ -80,9 +80,9 @@ export class ProfileComponent {
     return inv.filter(s => s.inv?.active).sort((a, b) => a.inv!.active - b.inv!.active).map(s => s.dto.url);
   }
 
-  public removeGuild(login: string, guild: GuildDto) {
+  public removeGuild(typoId: number, guild: GuildDto) {
     const toastToken = this.toastService.show({ message: { title: `Disconnecting from ${guild.GuildName}..` }, durationMs: 'cancel' });
-    this.memberService.removeConnectedGuild(Number(login), guild.Invite).subscribe({
+    this.memberService.removeConnectedGuild(typoId, guild.Invite).subscribe({
       next: () => {
         this.toastService.cancelMessage(toastToken);
         this.user$ = this.loadUser(true);

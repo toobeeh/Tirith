@@ -5,11 +5,11 @@
   <div class="grid grid-cols-2 desktop:grid-cols-3 gap-8 w-fit items-center">
     <h3 class="col-span-2 desktop:col-span-1">By Discord ID: </h3>
     <input #id type="number" placeholder="1234567890123456">
-    <input type="button" value="Load Member" (click)="loadByID(id.value)">
+    <input type="button" value="Load Member" (click)="loadByDiscordId(id.value)">
 
-    <h3 class="col-span-2 desktop:col-span-1">By Palantir Login: </h3>
-    <input #login type="number" placeholder="12345678">
-    <input type="button" value="Load Member" (click)="loadByLogin(+login.value)">
+    <h3 class="col-span-2 desktop:col-span-1">By Typo ID: </h3>
+    <input #typoId type="number" placeholder="12345678">
+    <input type="button" value="Load Member" (click)="loadByTypoId(+typoId.value)">
 
     <h3 class="col-span-2 desktop:col-span-1">Wildcard Search: </h3>
     <input #text type="text" placeholder="Search Text">
@@ -28,7 +28,7 @@
           </div>
 
           <input type="button" value="Load {{member.userName}}" class="self-center justify-self-center"
-            (click)="loadByLogin(member.userLogin)">
+            (click)="loadByTypoId(member.typoId)">
         </div>
 
       </div>
