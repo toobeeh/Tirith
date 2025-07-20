@@ -75,8 +75,8 @@ export class GuildsController {
         return this.discordService.postWebhook(
             member.userName,
             webhookData.onlyImage,
-            webhookData.author,
-            webhookData.posterName,
+            webhookData.author.split("#")[0], // sanitize skribbl special code
+            webhookData.posterName.split("#")[0],
             webhookData.title,
             webhookData.imageBase64,
             webhook.URL
