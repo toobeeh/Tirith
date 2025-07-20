@@ -1,28 +1,44 @@
 <h1>Scene List</h1>
+<br>
+<p class="text-center">
+  Scenes are backgrounds for your avatar on skribbl.<br>
+  Some scenes can only be unlocked during events. Regular scenes are tagged with "#regular" and can be bought with bubbles.<br>
+  The scene price doubles with every scene you buy and starts at 10000 bubbles.<br>
+  Scenes can have color themes, these are tagged with "#themes". Click the scene image to cycle through themes!
+</p>
 <br><br>
 <div class="hidden desktop:flex flex-row gap-7 justify-center">
   <h4 class="w-auto">Filter scene tags: </h4>
   <input [formControl]="filterInput" type="text" placeholder="#regular">
 </div>
-<br><br>
-<div class="text-sm pt-24 grid grid-cols-1 justify-items-center gap-24">
+<br>
+<div class="text-sm grid grid-cols-1 justify-items-center gap-24">
 
   <ng-container *ngIf="scenes$ | async as scenes; else loading">
-    <div style="aspect-ratio: 250/60; width:80%; height: auto;" class="navcard" *ngFor="let scene of scenes">
+    <h3>{{scenes.length}} scenes found</h3>
+    <div style="
+        aspect-ratio: 250/60;
+        width: min(50em, 80%);
+        height: auto;
+        text-shadow: black 0px 0px 25px, black 0px 0px 10px, black 0px 0px 5px;
+    " class="navcard"
+         *ngFor="let scene of scenes"
+         (click)="cycleSceneTheme(scene)"
+    >
 
       <!-- background container -->
       <div class="background">
-        <div [style.backgroundImage]="'url(' + scene.url + ')'"></div>
-        <div [style.backgroundImage]="'url(' + scene.url + ')'"></div>
+        <div [style.backgroundImage]="'url(' + getSceneUrl(scene) + ')'"></div>
+        <div [style.backgroundImage]="'url(' + getSceneUrl(scene) + ')'"></div>
       </div>
 
       <!-- text -->
-      <div class="heading text-center" [style]="'color: ' + scene.primaryColor">
-        <div class="text-xxl text-inherit">
+      <div class="heading text-center text-white">
+        <div class="text-xl text-inherit">
           {{scene.name}}
         </div><br class="hidden desktop:block">
-        <div class="text-xl text-inherit">#{{scene.id}} {{scene.artist ? "by " + scene.artist : ""}}</div>
-        <div class="hidden desktop:block text-xl text-inherit">{{scene.tags.join(" ")}}</div>
+        <div class="text-lg text-inherit">#{{scene.id}} {{scene.artist ? "by " + scene.artist : ""}}</div>
+        <div class="hidden desktop:block text-lg text-inherit">{{getSceneTags(scene).join(" ")}}</div>
       </div>
     </div>
   </ng-container>
