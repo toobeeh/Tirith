@@ -22,6 +22,11 @@ export interface JwtParametersMessage {
   redirectUri: string;
 }
 
+export interface JwtVerifiedParametersMessage {
+  typoId: number;
+  applicationId: number;
+}
+
 export interface JwtMessage {
   jwt: string;
   typoId: number;
@@ -232,6 +237,70 @@ export const JwtParametersMessage = {
   },
 };
 
+function createBaseJwtVerifiedParametersMessage(): JwtVerifiedParametersMessage {
+  return { typoId: 0, applicationId: 0 };
+}
+
+export const JwtVerifiedParametersMessage = {
+  encode(message: JwtVerifiedParametersMessage, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.typoId !== 0) {
+      writer.uint32(8).int32(message.typoId);
+    }
+    if (message.applicationId !== 0) {
+      writer.uint32(16).int32(message.applicationId);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): JwtVerifiedParametersMessage {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseJwtVerifiedParametersMessage();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.typoId = reader.int32();
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.applicationId = reader.int32();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): JwtVerifiedParametersMessage {
+    return {
+      typoId: isSet(object.typoId) ? globalThis.Number(object.typoId) : 0,
+      applicationId: isSet(object.applicationId) ? globalThis.Number(object.applicationId) : 0,
+    };
+  },
+
+  toJSON(message: JwtVerifiedParametersMessage): unknown {
+    const obj: any = {};
+    if (message.typoId !== 0) {
+      obj.typoId = Math.round(message.typoId);
+    }
+    if (message.applicationId !== 0) {
+      obj.applicationId = Math.round(message.applicationId);
+    }
+    return obj;
+  },
+};
+
 function createBaseJwtMessage(): JwtMessage {
   return { jwt: "", typoId: 0 };
 }
@@ -320,6 +389,15 @@ export const AuthorizationDefinition = {
       responseStream: false,
       options: {},
     },
+    /** Create a jwt for a verified application */
+    createJwtForVerifiedApplication: {
+      name: "CreateJwtForVerifiedApplication",
+      requestType: JwtVerifiedParametersMessage,
+      requestStream: false,
+      responseType: JwtMessage,
+      responseStream: false,
+      options: {},
+    },
   },
 } as const;
 
@@ -331,6 +409,11 @@ export interface AuthorizationServiceImplementation<CallContextExt = {}> {
   ): ServerStreamingMethodResult<ScopeMessage>;
   /** Create a jwt with given parameters */
   createJwt(request: JwtParametersMessage, context: CallContext & CallContextExt): Promise<JwtMessage>;
+  /** Create a jwt for a verified application */
+  createJwtForVerifiedApplication(
+    request: JwtVerifiedParametersMessage,
+    context: CallContext & CallContextExt,
+  ): Promise<JwtMessage>;
 }
 
 export interface AuthorizationClient<CallOptionsExt = {}> {
@@ -341,6 +424,11 @@ export interface AuthorizationClient<CallOptionsExt = {}> {
   ): AsyncIterable<ScopeMessage>;
   /** Create a jwt with given parameters */
   createJwt(request: JwtParametersMessage, options?: CallOptions & CallOptionsExt): Promise<JwtMessage>;
+  /** Create a jwt for a verified application */
+  createJwtForVerifiedApplication(
+    request: JwtVerifiedParametersMessage,
+    options?: CallOptions & CallOptionsExt,
+  ): Promise<JwtMessage>;
 }
 
 function toTimestamp(date: Date): Timestamp {

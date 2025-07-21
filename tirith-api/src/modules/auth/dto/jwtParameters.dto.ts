@@ -19,6 +19,15 @@ export class JwtParametersDto {
     expiryMs: number;
 }
 
+export class JwtVerifiedParametersDto {
+
+    @XApiProperty({ description: "The discord oauth authorization code to identify the calling user" })
+    code: string;
+
+    @XApiProperty({ description: "The id of the verified application that requests the JWT" })
+    applicationId: number;
+}
+
 export class JwtResponseDto {
 
     @XApiProperty({ description: "The generated jwt" })
@@ -28,11 +37,28 @@ export class JwtResponseDto {
     member: MemberDto;
 }
 
-export class RegistrationDto {
+export class JwtRegistrationDto {
 
     @XApiProperty({ description: "Params for creating a jwt after the user has been created" })
     params: JwtParametersDto;
 
     @XApiProperty({ description: "The flag whether the user wants to connect to the typo server" })
     connectTypo: boolean;
+}
+
+export class JwtVerifiedRegistrationDto {
+
+    @XApiProperty({ description: "Params for creating a jwt after the user has been created" })
+    params: JwtVerifiedParametersDto;
+
+    @XApiProperty({ description: "The flag whether the user wants to connect to the typo server" })
+    connectTypo: boolean;
+}
+
+export class JwtScopeDto {
+    @XApiProperty({ description: "The name/id of a scope" })
+    name: string;
+
+    @XApiProperty({ description: "The description of the scope" })
+    description: string;
 }

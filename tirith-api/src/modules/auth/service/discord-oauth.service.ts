@@ -10,6 +10,7 @@ import * as DiscordOauth from "discord-oauth2";
 export class DiscordOauthService {
 
     private oauth: DiscordOauth;
+    private jwtOauth: DiscordOauth;
     private cachedTokens: Map<string, { token: DiscordOauth.TokenRequestResult, creation: number }> = new Map();
 
     constructor(private config: ConfigService) {
@@ -17,11 +18,18 @@ export class DiscordOauthService {
         const clientId = config.get("DISCORD_OAUTH_CLIENT_ID");
         const clientSecret = config.get("DISCORD_OAUTH_CLIENT_SECRET");
         const redirectUri = config.get("DISCORD_OAUTH_REDIRECT");
+        const jwtRedirectUri = config.get("DISCORD_OAUTH_JWT_REDIRECT");
 
         this.oauth = new DiscordOauth({
             clientId,
             clientSecret,
             redirectUri
+        });
+
+        this.jwtOauth = new DiscordOauth({
+            clientId,
+            clientSecret,
+            redirectUri: jwtRedirectUri
         });
     }
 
@@ -45,7 +53,7 @@ export class DiscordOauthService {
             return this.cachedTokens.get(code).token.access_token;
         }
 
-        const result = await this.oauth.tokenRequest({
+        const result = await this.jwtOauth.tokenRequest({
             code,
             grantType: 'authorization_code',
             scope: 'identify'
