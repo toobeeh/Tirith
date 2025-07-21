@@ -92,6 +92,10 @@ export interface IncrementMemberBubblesRequest {
   memberLogins: number[];
 }
 
+export interface BubbleTracesCreatedMessage {
+  dailyPlayers: number;
+}
+
 function createBaseUpdateMemberFlagsRequest(): UpdateMemberFlagsRequest {
   return { memberIds: [], invertOthers: false, state: false, flagId: 0 };
 }
@@ -464,6 +468,54 @@ export const IncrementMemberBubblesRequest = {
   },
 };
 
+function createBaseBubbleTracesCreatedMessage(): BubbleTracesCreatedMessage {
+  return { dailyPlayers: 0 };
+}
+
+export const BubbleTracesCreatedMessage = {
+  encode(message: BubbleTracesCreatedMessage, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.dailyPlayers !== 0) {
+      writer.uint32(8).int32(message.dailyPlayers);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): BubbleTracesCreatedMessage {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseBubbleTracesCreatedMessage();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.dailyPlayers = reader.int32();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): BubbleTracesCreatedMessage {
+    return { dailyPlayers: isSet(object.dailyPlayers) ? globalThis.Number(object.dailyPlayers) : 0 };
+  },
+
+  toJSON(message: BubbleTracesCreatedMessage): unknown {
+    const obj: any = {};
+    if (message.dailyPlayers !== 0) {
+      obj.dailyPlayers = Math.round(message.dailyPlayers);
+    }
+    return obj;
+  },
+};
+
 /** Service definition for administration and management actions */
 export type AdminDefinition = typeof AdminDefinition;
 export const AdminDefinition = {
@@ -502,7 +554,7 @@ export const AdminDefinition = {
       name: "CreateBubbleTraces",
       requestType: Empty,
       requestStream: false,
-      responseType: Empty,
+      responseType: BubbleTracesCreatedMessage,
       responseStream: false,
       options: {},
     },
@@ -556,7 +608,7 @@ export interface AdminServiceImplementation<CallContextExt = {}> {
     context: CallContext & CallContextExt,
   ): ServerStreamingMethodResult<TemporaryPatronMessage>;
   /** Fetch current member bubble count and save as bubble traces */
-  createBubbleTraces(request: Empty, context: CallContext & CallContextExt): Promise<Empty>;
+  createBubbleTraces(request: Empty, context: CallContext & CallContextExt): Promise<BubbleTracesCreatedMessage>;
   /** Clear volatile data from tables, like sprites, lobbies and online status */
   clearVolatileData(request: Empty, context: CallContext & CallContextExt): Promise<Empty>;
   /** Increments the bubble count of a range of members */
@@ -575,7 +627,7 @@ export interface AdminClient<CallOptionsExt = {}> {
   /** Get all temporary patrons */
   getTemporaryPatrons(request: Empty, options?: CallOptions & CallOptionsExt): AsyncIterable<TemporaryPatronMessage>;
   /** Fetch current member bubble count and save as bubble traces */
-  createBubbleTraces(request: Empty, options?: CallOptions & CallOptionsExt): Promise<Empty>;
+  createBubbleTraces(request: Empty, options?: CallOptions & CallOptionsExt): Promise<BubbleTracesCreatedMessage>;
   /** Clear volatile data from tables, like sprites, lobbies and online status */
   clearVolatileData(request: Empty, options?: CallOptions & CallOptionsExt): Promise<Empty>;
   /** Increments the bubble count of a range of members */

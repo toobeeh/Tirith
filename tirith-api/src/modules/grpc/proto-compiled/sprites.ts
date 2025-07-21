@@ -43,6 +43,11 @@ export interface AddSpriteMessage {
   artist: string | undefined;
 }
 
+export interface UpdateSpriteMessage {
+  id: number;
+  sprite: AddSpriteMessage | undefined;
+}
+
 function createBaseSpriteReply(): SpriteReply {
   return {
     name: "",
@@ -504,6 +509,70 @@ export const AddSpriteMessage = {
   },
 };
 
+function createBaseUpdateSpriteMessage(): UpdateSpriteMessage {
+  return { id: 0, sprite: undefined };
+}
+
+export const UpdateSpriteMessage = {
+  encode(message: UpdateSpriteMessage, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.id !== 0) {
+      writer.uint32(8).int32(message.id);
+    }
+    if (message.sprite !== undefined) {
+      AddSpriteMessage.encode(message.sprite, writer.uint32(18).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): UpdateSpriteMessage {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseUpdateSpriteMessage();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.id = reader.int32();
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.sprite = AddSpriteMessage.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): UpdateSpriteMessage {
+    return {
+      id: isSet(object.id) ? globalThis.Number(object.id) : 0,
+      sprite: isSet(object.sprite) ? AddSpriteMessage.fromJSON(object.sprite) : undefined,
+    };
+  },
+
+  toJSON(message: UpdateSpriteMessage): unknown {
+    const obj: any = {};
+    if (message.id !== 0) {
+      obj.id = Math.round(message.id);
+    }
+    if (message.sprite !== undefined) {
+      obj.sprite = AddSpriteMessage.toJSON(message.sprite);
+    }
+    return obj;
+  },
+};
+
 /** Service definition for sprite resource access */
 export type SpritesDefinition = typeof SpritesDefinition;
 export const SpritesDefinition = {
@@ -546,6 +615,15 @@ export const SpritesDefinition = {
       responseStream: false,
       options: {},
     },
+    /** Updates an existing sprite */
+    updateSprite: {
+      name: "UpdateSprite",
+      requestType: UpdateSpriteMessage,
+      requestStream: false,
+      responseType: SpriteReply,
+      responseStream: false,
+      options: {},
+    },
   },
 } as const;
 
@@ -561,6 +639,8 @@ export interface SpritesServiceImplementation<CallContextExt = {}> {
   ): ServerStreamingMethodResult<SpriteRankingReply>;
   /** Adds a new sprite */
   addSprite(request: AddSpriteMessage, context: CallContext & CallContextExt): Promise<SpriteReply>;
+  /** Updates an existing sprite */
+  updateSprite(request: UpdateSpriteMessage, context: CallContext & CallContextExt): Promise<SpriteReply>;
 }
 
 export interface SpritesClient<CallOptionsExt = {}> {
@@ -572,6 +652,8 @@ export interface SpritesClient<CallOptionsExt = {}> {
   getSpriteRanking(request: Empty, options?: CallOptions & CallOptionsExt): AsyncIterable<SpriteRankingReply>;
   /** Adds a new sprite */
   addSprite(request: AddSpriteMessage, options?: CallOptions & CallOptionsExt): Promise<SpriteReply>;
+  /** Updates an existing sprite */
+  updateSprite(request: UpdateSpriteMessage, options?: CallOptions & CallOptionsExt): Promise<SpriteReply>;
 }
 
 function isSet(value: any): boolean {

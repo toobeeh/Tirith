@@ -37,6 +37,8 @@ import {IEmojisService} from "../../services/interfaces/emojis.service.interface
 import {GrpcEmojisService} from "./services/grpc-emojis.service";
 import {IAnnouncementsService} from "../../services/interfaces/announcements.service.interface";
 import {GrpcAnnouncementsService} from "./services/grpc-announcements.service";
+import {IAuthorizationService} from "../../services/interfaces/authorization.service.interface";
+import {GrpcAuthorizationService} from "./services/grpc-authorization.service";
 
 const services: Provider[] = [
     { provide: IScenesService, useClass: GrpcScenesService },
@@ -53,6 +55,7 @@ const services: Provider[] = [
     { provide: IInventoryService, useClass: GrpcInventoryService },
     { provide: IObjectStorageService, useClass: GrpcObjectStorageService },
     { provide: IEmojisService, useClass: GrpcEmojisService },
+    { provide: IAuthorizationService, useClass: GrpcAuthorizationService },
     { provide: IAnnouncementsService, useClass: GrpcAnnouncementsService }
 ]
 

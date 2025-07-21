@@ -47,6 +47,19 @@ export interface GetEventSceneRequest {
   eventId: number;
 }
 
+export interface SceneSubmissionMessage {
+  name: string;
+  url: string;
+  exclusive: boolean;
+  artist: string | undefined;
+  eventId: number | undefined;
+}
+
+export interface UpdateSceneMessage {
+  id: number;
+  scene: SceneSubmissionMessage | undefined;
+}
+
 function createBaseSceneReply(): SceneReply {
   return {
     name: "",
@@ -534,6 +547,176 @@ export const GetEventSceneRequest = {
   },
 };
 
+function createBaseSceneSubmissionMessage(): SceneSubmissionMessage {
+  return { name: "", url: "", exclusive: false, artist: undefined, eventId: undefined };
+}
+
+export const SceneSubmissionMessage = {
+  encode(message: SceneSubmissionMessage, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.name !== "") {
+      writer.uint32(10).string(message.name);
+    }
+    if (message.url !== "") {
+      writer.uint32(18).string(message.url);
+    }
+    if (message.exclusive === true) {
+      writer.uint32(24).bool(message.exclusive);
+    }
+    if (message.artist !== undefined) {
+      StringValue.encode({ value: message.artist! }, writer.uint32(34).fork()).ldelim();
+    }
+    if (message.eventId !== undefined) {
+      Int32Value.encode({ value: message.eventId! }, writer.uint32(42).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): SceneSubmissionMessage {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSceneSubmissionMessage();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.name = reader.string();
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.url = reader.string();
+          continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.exclusive = reader.bool();
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.artist = StringValue.decode(reader, reader.uint32()).value;
+          continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.eventId = Int32Value.decode(reader, reader.uint32()).value;
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SceneSubmissionMessage {
+    return {
+      name: isSet(object.name) ? globalThis.String(object.name) : "",
+      url: isSet(object.url) ? globalThis.String(object.url) : "",
+      exclusive: isSet(object.exclusive) ? globalThis.Boolean(object.exclusive) : false,
+      artist: isSet(object.artist) ? String(object.artist) : undefined,
+      eventId: isSet(object.eventId) ? Number(object.eventId) : undefined,
+    };
+  },
+
+  toJSON(message: SceneSubmissionMessage): unknown {
+    const obj: any = {};
+    if (message.name !== "") {
+      obj.name = message.name;
+    }
+    if (message.url !== "") {
+      obj.url = message.url;
+    }
+    if (message.exclusive === true) {
+      obj.exclusive = message.exclusive;
+    }
+    if (message.artist !== undefined) {
+      obj.artist = message.artist;
+    }
+    if (message.eventId !== undefined) {
+      obj.eventId = message.eventId;
+    }
+    return obj;
+  },
+};
+
+function createBaseUpdateSceneMessage(): UpdateSceneMessage {
+  return { id: 0, scene: undefined };
+}
+
+export const UpdateSceneMessage = {
+  encode(message: UpdateSceneMessage, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.id !== 0) {
+      writer.uint32(8).int32(message.id);
+    }
+    if (message.scene !== undefined) {
+      SceneSubmissionMessage.encode(message.scene, writer.uint32(18).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): UpdateSceneMessage {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseUpdateSceneMessage();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.id = reader.int32();
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.scene = SceneSubmissionMessage.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): UpdateSceneMessage {
+    return {
+      id: isSet(object.id) ? globalThis.Number(object.id) : 0,
+      scene: isSet(object.scene) ? SceneSubmissionMessage.fromJSON(object.scene) : undefined,
+    };
+  },
+
+  toJSON(message: UpdateSceneMessage): unknown {
+    const obj: any = {};
+    if (message.id !== 0) {
+      obj.id = Math.round(message.id);
+    }
+    if (message.scene !== undefined) {
+      obj.scene = SceneSubmissionMessage.toJSON(message.scene);
+    }
+    return obj;
+  },
+};
+
 /** Service definition for scene resource access */
 export type ScenesDefinition = typeof ScenesDefinition;
 export const ScenesDefinition = {
@@ -594,6 +777,24 @@ export const ScenesDefinition = {
       responseStream: false,
       options: {},
     },
+    /** Adds a new scene */
+    addScene: {
+      name: "AddScene",
+      requestType: SceneSubmissionMessage,
+      requestStream: false,
+      responseType: SceneReply,
+      responseStream: false,
+      options: {},
+    },
+    /** Updates an existing scene */
+    updateScene: {
+      name: "UpdateScene",
+      requestType: UpdateSceneMessage,
+      requestStream: false,
+      responseType: SceneReply,
+      responseStream: false,
+      options: {},
+    },
   },
 } as const;
 
@@ -619,6 +820,10 @@ export interface ScenesServiceImplementation<CallContextExt = {}> {
   ): ServerStreamingMethodResult<SceneRankingReply>;
   /** Gets the price and scene of an event */
   getEventScene(request: GetEventSceneRequest, context: CallContext & CallContextExt): Promise<EventSceneReply>;
+  /** Adds a new scene */
+  addScene(request: SceneSubmissionMessage, context: CallContext & CallContextExt): Promise<SceneReply>;
+  /** Updates an existing scene */
+  updateScene(request: UpdateSceneMessage, context: CallContext & CallContextExt): Promise<SceneReply>;
 }
 
 export interface ScenesClient<CallOptionsExt = {}> {
@@ -634,6 +839,10 @@ export interface ScenesClient<CallOptionsExt = {}> {
   getSceneRanking(request: Empty, options?: CallOptions & CallOptionsExt): AsyncIterable<SceneRankingReply>;
   /** Gets the price and scene of an event */
   getEventScene(request: GetEventSceneRequest, options?: CallOptions & CallOptionsExt): Promise<EventSceneReply>;
+  /** Adds a new scene */
+  addScene(request: SceneSubmissionMessage, options?: CallOptions & CallOptionsExt): Promise<SceneReply>;
+  /** Updates an existing scene */
+  updateScene(request: UpdateSceneMessage, options?: CallOptions & CallOptionsExt): Promise<SceneReply>;
 }
 
 function isSet(value: any): boolean {
