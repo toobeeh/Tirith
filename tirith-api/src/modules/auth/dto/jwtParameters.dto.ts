@@ -12,8 +12,8 @@ export class JwtParametersDto {
     @XApiProperty({ description: "The target uri that will receive the token as 'token' query parameter after authorization completed" })
     redirectUri: string;
 
-    @XApiProperty({ description: "The scopes that the JWT will be authorized to use", isArray: true, type: () => String })
-    scopes: Array<string>;
+    @XApiProperty({ description: "The scopes that the JWT will be authorized to use" })
+    scopes: string[];
 
     @XApiProperty({ description: "The time in ms when the token will expire" })
     expiryMs: number;
@@ -33,6 +33,6 @@ export class RegistrationDto {
     @XApiProperty({ description: "Params for creating a jwt after the user has been created" })
     params: JwtParametersDto;
 
-    @XApiProperty({ description: "The flag whether the user wants to conenct to the typo server" })
+    @XApiProperty({ description: "The flag whether the user wants to connect to the typo server" })
     connectTypo: boolean;
 }
