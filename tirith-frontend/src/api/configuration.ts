@@ -87,9 +87,9 @@ export class Configuration {
             this.credentials = {};
         }
 
-        // init default bearer credential
-        if (!this.credentials['bearer']) {
-            this.credentials['bearer'] = () => {
+        // init default Typo_OAuth2_Login credential
+        if (!this.credentials['Typo_OAuth2_Login']) {
+            this.credentials['Typo_OAuth2_Login'] = () => {
                 return typeof this.accessToken === 'function'
                     ? this.accessToken()
                     : this.accessToken;

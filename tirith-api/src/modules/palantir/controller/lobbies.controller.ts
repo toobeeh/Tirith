@@ -34,6 +34,7 @@ export class LobbiesController {
 
     @Get()
     @Throttle(getThrottleForDefinition("throttleThirtyPerMinute"))
+    @RequiredScope(TypoScopes.adminWrite)
     @ApiOperation({ summary: "Get all current lobbies" })
     @ApiResponse({ status: 200, type: OnlineLobbyDto, isArray: true, description: "An array of all current lobbies" })
     getAllLobbies(): Promise<OnlineLobbyDto[]> {
@@ -41,6 +42,7 @@ export class LobbiesController {
     }
 
     @Get(":token/drops")
+    @RequiredScope(TypoScopes.adminWrite)
     @ApiOperation({ summary: "Get all drops caught in a lobby" })
     @ApiResponse({ status: 200, type: DropDto, isArray: true, description: "An array of all drops caught in a lobby" })
     getLobbyDrops(@Param() params: StringTokenParamDto): Promise<DropDto[]> {

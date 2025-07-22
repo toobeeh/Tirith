@@ -97,7 +97,7 @@ export class LobbiesService {
 
     /**
      * Get all current lobbies
-     *   Required Roles: Moderator  Rate limit default: 30 Requests / 60000 ms TTL
+     *   Required Roles: Moderator   Required Scopes: admin:write  Rate limit default: 30 Requests / 60000 ms TTL
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -109,8 +109,8 @@ export class LobbiesService {
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
-        // authentication (bearer) required
-        localVarCredential = this.configuration.lookupCredential('bearer');
+        // authentication (Typo_OAuth2_Login) required
+        localVarCredential = this.configuration.lookupCredential('Typo_OAuth2_Login');
         if (localVarCredential) {
             localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
         }
@@ -159,7 +159,7 @@ export class LobbiesService {
 
     /**
      * Redirect to a lobby
-     *   Required Roles: Member  Rate limit default: 10 Requests / 60000 ms TTL
+     *   Required Roles: Member   Required Scopes: member.guilds:read  Rate limit default: 10 Requests / 60000 ms TTL
      * @param token Token parameter
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
@@ -175,8 +175,8 @@ export class LobbiesService {
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
-        // authentication (bearer) required
-        localVarCredential = this.configuration.lookupCredential('bearer');
+        // authentication (Typo_OAuth2_Login) required
+        localVarCredential = this.configuration.lookupCredential('Typo_OAuth2_Login');
         if (localVarCredential) {
             localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
         }
@@ -225,7 +225,7 @@ export class LobbiesService {
 
     /**
      * Get all drops caught in a lobby
-     *   Required Roles: Moderator  Rate limit default: 10 Requests / 60000 ms TTL
+     *   Required Roles: Moderator   Required Scopes: admin:write  Rate limit default: 10 Requests / 60000 ms TTL
      * @param token Token parameter
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
@@ -241,8 +241,8 @@ export class LobbiesService {
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
-        // authentication (bearer) required
-        localVarCredential = this.configuration.lookupCredential('bearer');
+        // authentication (Typo_OAuth2_Login) required
+        localVarCredential = this.configuration.lookupCredential('Typo_OAuth2_Login');
         if (localVarCredential) {
             localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
         }

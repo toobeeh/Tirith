@@ -1,5 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import { ActivatedRoute, Route, Router } from '@angular/router';
+import {MembersService, Oauth2Service} from "../../../../api";
+import {UserService} from "../../../shared/services/user-session.service";
 
 @Component({
   templateUrl: './login.component.html',
@@ -7,43 +9,32 @@ import { ActivatedRoute, Route, Router } from '@angular/router';
 })
 export class LoginComponent implements OnInit {
 
-  constructor(private router: Router, private route: ActivatedRoute) { }
+  private readonly clientId = 4;
+
+  constructor(private router: Router, private route: ActivatedRoute, private oauthService: Oauth2Service) { }
 
   initLogin() {
     const continueParam = this.route.snapshot.queryParamMap.get("continue");
-
-    /* handler for window messages */
-    const listenOnce = () => {
-      window.addEventListener("message", async event => {
-
-        if (!event.data || !event.data.accessToken || event.data.accessToken == "") listenOnce();
-        else {
-          const accessToken = event.data.accessToken;
-          console.log("Logged in with token: ", accessToken);
-          localStorage.setItem("AUTH_BEARER", accessToken);
-          this.router.navigate([continueParam ? decodeURI(continueParam) : "/user"]);
-        }
-      }, { once: true });
-    }
-
-    listenOnce();
-
-    window.location.href = 'https://www.typo.rip/auth?redirect=' + encodeURI(window.location.href);
-
-    /* old login */
-    //window.open('http://localhost:4200/auth/', 'Log in to Palantir', 'height=650,width=500,right=0,top=100,resizable=yes,scrollbars=yes,toolbar=yes,menubar=no,location=no,directories=no, status=yes');
+    window.location.href = 'https://www.typo.rip/auth/authorize?client_id=' + this.clientId + '&response_type=code&state=' + continueParam;
   }
 
   ngOnInit(): void {
 
     // check if redirected back from login (new method
-    const continueParam = this.route.snapshot.queryParamMap.get("continue");
-    const accessToken = this.route.snapshot.queryParamMap.get("accessToken");
-    if(accessToken !== null){
-      console.log("Logged in with token: ", accessToken);
-      console.log("Continuing to: ", continueParam);
-      localStorage.setItem("AUTH_BEARER", accessToken);
-      this.router.navigate([continueParam ? decodeURI(continueParam) : "/user"]);
+    const continueParam = this.route.snapshot.queryParamMap.get("state");
+    const authCode = this.route.snapshot.queryParamMap.get("code");
+    if(authCode !== null){
+      this.oauthService.getAccessToken({
+        code: authCode,
+        client_id: this.clientId,
+        grant_type: "authorization_code"
+      }).subscribe(token => {
+        const accessToken = token.access_token;
+        console.log("Logged in with token: ", accessToken);
+        console.log("Continuing to: ", continueParam);
+        UserService.setToken(accessToken);
+        this.router.navigate([continueParam ? decodeURI(continueParam) : "/user"]);
+      });
     }
   }
 

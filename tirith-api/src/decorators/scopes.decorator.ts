@@ -10,15 +10,17 @@ export enum TypoScopes {
     scenesRead = "member.inventory.scenes:read",
     scenesWrite = "member.inventory.scenes:write",
     awardsRead = "member.inventory.awards:read",
+    awardsWrite = "member.awards:write",
     cloudRead = "member.cloud:read",
     cloudWrite = "member.cloud:write",
-    awardsWrite = "member.awards:write",
     imagepostWrite = "member.imagepost:write",
     imagepostRead = "member.imagepost:read",
     guildsRead = "member.guilds:read",
     guildsWrite = "member.guilds:write",
     leaguesRead = "member.leagues:read",
     memberRead = "member:read",
+    adminWrite = "admin:write",
+    emojisWrite = "emojis:write"
 }
 
 /**

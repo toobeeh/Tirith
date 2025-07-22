@@ -19,7 +19,7 @@ export const apiConfigFactory = () => {
   const params: ConfigurationParameters = {
     basePath: environment.apiUrl,
     credentials: {
-      "bearer": () => UserService.getToken() ?? undefined
+      "Typo_OAuth2_Login": () => UserService.getToken() ?? undefined
     }
   };
   return new Configuration(params);

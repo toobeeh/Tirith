@@ -107,7 +107,7 @@ export class OAuth2Controller {
 
     @Post("token")
     @ApiOperation({ summary: "Exchange a typo oauth2 authorization code for a access token (jwt)" })
-    @ApiResponse({ status: 200, type: OAuth2AuthorizationCodeDto, description: "Issued access token and details" })
+    @ApiResponse({ status: 200, type: OAuth2AccessTokenResponseDto, description: "Issued access token and details" })
     async getAccessToken(@Body() exchange: OAuth2AuthorizationCodeExchangeDto): Promise<OAuth2AccessTokenResponseDto> {
 
         if(exchange.grant_type !== "authorization_code") {

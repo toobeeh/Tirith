@@ -20,6 +20,10 @@ export class UserService {
     return localStorage.getItem(UserService.tokenKey);
   }
 
+  public static setToken(token: string) {
+    return localStorage.setItem(UserService.tokenKey, token);
+  }
+
   public logout() {
     this._user = undefined;
     localStorage.removeItem(UserService.tokenKey);

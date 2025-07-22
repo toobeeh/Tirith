@@ -33,7 +33,7 @@ async function bootstrap() {
           bearerFormat: 'JWT',
           in: 'header',
         },
-        'Typo OAuth2 Login')
+        'Typo_OAuth2_Login')
     .build();
 
   const document = SwaggerModule.createDocument(app, config);

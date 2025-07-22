@@ -23,11 +23,11 @@ import { CreateOAuth2ClientDto } from '../model/createOAuth2ClientDto';
 // @ts-ignore
 import { DiscordAuthenticationResultDto } from '../model/discordAuthenticationResultDto';
 // @ts-ignore
+import { OAuth2AccessTokenResponseDto } from '../model/oAuth2AccessTokenResponseDto';
+// @ts-ignore
 import { OAuth2AuthenticationDto } from '../model/oAuth2AuthenticationDto';
 // @ts-ignore
 import { OAuth2AuthenticationResultDto } from '../model/oAuth2AuthenticationResultDto';
-// @ts-ignore
-import { OAuth2AuthorizationCodeDto } from '../model/oAuth2AuthorizationCodeDto';
 // @ts-ignore
 import { OAuth2AuthorizationCodeExchangeDto } from '../model/oAuth2AuthorizationCodeExchangeDto';
 // @ts-ignore
@@ -183,9 +183,9 @@ export class Oauth2Service {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getAccessToken(oAuth2AuthorizationCodeExchangeDto: OAuth2AuthorizationCodeExchangeDto, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<OAuth2AuthorizationCodeDto>;
-    public getAccessToken(oAuth2AuthorizationCodeExchangeDto: OAuth2AuthorizationCodeExchangeDto, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<OAuth2AuthorizationCodeDto>>;
-    public getAccessToken(oAuth2AuthorizationCodeExchangeDto: OAuth2AuthorizationCodeExchangeDto, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<OAuth2AuthorizationCodeDto>>;
+    public getAccessToken(oAuth2AuthorizationCodeExchangeDto: OAuth2AuthorizationCodeExchangeDto, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<OAuth2AccessTokenResponseDto>;
+    public getAccessToken(oAuth2AuthorizationCodeExchangeDto: OAuth2AuthorizationCodeExchangeDto, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<OAuth2AccessTokenResponseDto>>;
+    public getAccessToken(oAuth2AuthorizationCodeExchangeDto: OAuth2AuthorizationCodeExchangeDto, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<OAuth2AccessTokenResponseDto>>;
     public getAccessToken(oAuth2AuthorizationCodeExchangeDto: OAuth2AuthorizationCodeExchangeDto, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
         if (oAuth2AuthorizationCodeExchangeDto === null || oAuth2AuthorizationCodeExchangeDto === undefined) {
             throw new Error('Required parameter oAuth2AuthorizationCodeExchangeDto was null or undefined when calling getAccessToken.');
@@ -232,7 +232,7 @@ export class Oauth2Service {
         }
 
         let localVarPath = `/oauth2/token`;
-        return this.httpClient.request<OAuth2AuthorizationCodeDto>('post', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<OAuth2AccessTokenResponseDto>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 body: oAuth2AuthorizationCodeExchangeDto,
@@ -426,7 +426,7 @@ export class Oauth2Service {
 
     /**
      * Register a new OAuth2 client
-     *   Required Roles: None - Role override if {login} matches the client login.  Rate limit default: 10 Requests / 60000 ms TTL
+     *   Required Roles: Member - Role override if {login} matches the client login.   Required Scopes: *  Rate limit default: 10 Requests / 60000 ms TTL
      * @param login Member Login parameter
      * @param createOAuth2ClientDto 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
@@ -444,6 +444,13 @@ export class Oauth2Service {
         }
 
         let localVarHeaders = this.defaultHeaders;
+
+        let localVarCredential: string | undefined;
+        // authentication (Typo_OAuth2_Login) required
+        localVarCredential = this.configuration.lookupCredential('Typo_OAuth2_Login');
+        if (localVarCredential) {
+            localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
+        }
 
         let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
         if (localVarHttpHeaderAcceptSelected === undefined) {

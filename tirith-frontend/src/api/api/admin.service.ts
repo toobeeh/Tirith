@@ -91,7 +91,7 @@ export class AdminService {
 
     /**
      * Re-evaluate the drop chunks cache; partitions the open chunk into new subchunks if big enough
-     *   Required Roles: Admin  Rate limit default: 10 Requests / 60000 ms TTL
+     *   Required Roles: Admin   Required Scopes: admin:write  Rate limit default: 10 Requests / 60000 ms TTL
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -103,8 +103,8 @@ export class AdminService {
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
-        // authentication (bearer) required
-        localVarCredential = this.configuration.lookupCredential('bearer');
+        // authentication (Typo_OAuth2_Login) required
+        localVarCredential = this.configuration.lookupCredential('Typo_OAuth2_Login');
         if (localVarCredential) {
             localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
         }

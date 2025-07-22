@@ -45,6 +45,7 @@ export class MembersController {
     ) { }
 
     @Get("search")
+    @RequiredScope(TypoScopes.adminWrite)
     @ApiOperation({ summary: "Find members that contain a string" })
     @ApiResponse({ status: 200, type: MemberSearchDto, isArray: true, description: "An array of matching members" })
     async findMembersWildcardSearch(@Query('content') content: string): Promise<MemberSearchDto[]> {
@@ -89,6 +90,7 @@ export class MembersController {
     }
 
     @Patch(":login/discord")
+    @RequiredScope(TypoScopes.adminWrite)
     @ApiOperation({ summary: "Update a member's discord ID and merge with other if present" })
     @ApiResponse({ status: 200, type: MemberDto, description: "The updated member" })
     async updateMemberDiscordID(@Param() params: LoginTokenParamDto, @Body() { id }: UpdateDiscordID): Promise<MemberDto> {
@@ -96,6 +98,7 @@ export class MembersController {
     }
 
     @Delete(":login/dropboost")
+    @RequiredScope(TypoScopes.adminWrite)
     @ApiOperation({ summary: "Delete a dropboost of a member" })
     @ApiResponse({ status: 204 })
     async clearMemberDropboost(@Param() params: LoginTokenParamDto): Promise<void> {
@@ -128,6 +131,7 @@ export class MembersController {
 
     @Get("discord/:id")
     @ApiOperation({ summary: "Get a member by their discord id" })
+    @RequiredScope(TypoScopes.adminWrite)
     @ApiResponse({ status: 200, type: MemberDto, description: "The member with specified discord id" })
     async getMemberByDiscordID(@Param() params: StringIdParamDto): Promise<MemberDto> {
         return this.service.getByDiscordID(params.id);

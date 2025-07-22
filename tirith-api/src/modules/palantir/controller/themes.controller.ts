@@ -14,6 +14,7 @@ import { StringIdParamDto } from '../dto/params.dto';
 import { getThrottleForDefinition } from 'src/guards/trottleConfigs';
 import { IThemesService } from '../../../services/interfaces/themes.service.interface';
 import {MemberFlagDto} from "../dto/member.dto";
+import {RequiredScope, TypoScopes} from "../../../decorators/scopes.decorator";
 
 @ApiSecurityNotes()
 @Controller("themes")
@@ -54,6 +55,7 @@ export class ThemesController {
     @Post(":id/public")
     @UseGuards(MemberGuard, RoleGuard)
     @RequiredRole(MemberFlagDto.Moderator)
+    @RequiredScope(TypoScopes.adminWrite)
     @ApiOperation({ summary: "Publish a theme to the public theme list" })
     @ApiResponse({ status: 201, type: ThemeShareDto, description: "The newly created theme with id" })
     async publishTheme(@Param() params: StringIdParamDto, @Body() publish: ThemePublishRequestDto): Promise<ThemeShareDto> {
@@ -63,6 +65,7 @@ export class ThemesController {
     @Patch(":id/public")
     @UseGuards(MemberGuard, RoleGuard)
     @RequiredRole(MemberFlagDto.Moderator)
+    @RequiredScope(TypoScopes.adminWrite)
     @ApiOperation({ summary: "Update the theme content from the provided new share and increment version" })
     @ApiResponse({ status: 200, type: ThemeShareDto, description: "The newly created theme with id" })
     async updateTheme(@Param() params: StringIdParamDto, @Body() update: ThemeUpdateRequestDto): Promise<ThemeShareDto> {

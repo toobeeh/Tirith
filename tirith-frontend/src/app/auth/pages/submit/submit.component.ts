@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {typoOauthState} from "../authorize/authorize.component";
 import {
+  MemberDto,
   OAuth2AuthorizationCodeDto, OAuth2ClientDto,
   Oauth2Service
 } from "src/api";
@@ -9,6 +10,7 @@ import {combineLatestWith, map, Observable, of, switchMap} from "rxjs";
 import { OAuth2AuthenticationResultDto } from 'src/api/model/oAuth2AuthenticationResultDto';
 import { DiscordAuthenticationResultDto } from 'src/api/model/discordAuthenticationResultDto';
 import { CreateTypoAccountOptionsDto } from 'src/api/model/createTypoAccountOptionsDto';
+import MemberFlagsEnum = MemberDto.MemberFlagsEnum;
 
 @Component({
   selector: 'app-submit',
@@ -74,6 +76,7 @@ export class SubmitComponent implements OnInit {
       map(([authCode, scopes]) => {
         authCode.result.client.scopes = scopes
           .filter(scope => authCode.result.client.scopes.includes(scope.name))
+          .filter(scope => !this.scopeIsIrrelevant(scope.name, authCode.member))
           .map(scope => scope.description);
         return authCode;
       })
@@ -115,6 +118,15 @@ export class SubmitComponent implements OnInit {
 
   public getAppUrl(client: OAuth2ClientDto){
     return new URL(client.redirectUri).origin;
+  }
+
+  public scopeIsIrrelevant(scope: string, member: MemberDto){
+    const isElevatedUser = member.memberFlags.includes(MemberFlagsEnum.Admin) ||
+      member.memberFlags.includes(MemberFlagsEnum.Moderator) ||
+      member.memberFlags.includes(MemberFlagsEnum.ContentModerator) ||
+      member.memberFlags.includes(MemberFlagsEnum.EmojiManagement);
+
+    return !scope.startsWith("member") && !isElevatedUser;
   }
 
 }

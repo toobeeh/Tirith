@@ -105,7 +105,7 @@ export class InventoryService {
 
     /**
      * Get all awards in the inventory of a member which are available to gift
-     *   Required Roles: Moderator - Role override if {login} matches the client login.  Rate limit default: 30 Requests / 60000 ms TTL
+     *   Required Roles: Moderator - Role override if {login} matches the client login.   Required Scopes: member.inventory.awards:read  Rate limit default: 30 Requests / 60000 ms TTL
      * @param login Member Login parameter
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
@@ -121,8 +121,8 @@ export class InventoryService {
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
-        // authentication (bearer) required
-        localVarCredential = this.configuration.lookupCredential('bearer');
+        // authentication (Typo_OAuth2_Login) required
+        localVarCredential = this.configuration.lookupCredential('Typo_OAuth2_Login');
         if (localVarCredential) {
             localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
         }
@@ -171,7 +171,7 @@ export class InventoryService {
 
     /**
      * Get all scenes in the inventory of a member, and the currently activated scene
-     *   Required Roles: Moderator - Role override if {login} matches the client login.  Rate limit default: 30 Requests / 60000 ms TTL
+     *   Required Roles: Moderator - Role override if {login} matches the client login.   Required Scopes: member.inventory.scenes:read  Rate limit default: 30 Requests / 60000 ms TTL
      * @param login Member Login parameter
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
@@ -187,8 +187,8 @@ export class InventoryService {
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
-        // authentication (bearer) required
-        localVarCredential = this.configuration.lookupCredential('bearer');
+        // authentication (Typo_OAuth2_Login) required
+        localVarCredential = this.configuration.lookupCredential('Typo_OAuth2_Login');
         if (localVarCredential) {
             localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
         }
@@ -237,7 +237,7 @@ export class InventoryService {
 
     /**
      * Get all sprites in the inventory of a member
-     *   Required Roles: Moderator - Role override if {login} matches the client login.  Rate limit default: 30 Requests / 60000 ms TTL
+     *   Required Roles: Moderator - Role override if {login} matches the client login.   Required Scopes: member.inventory.sprites:read  Rate limit default: 30 Requests / 60000 ms TTL
      * @param login Member Login parameter
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
@@ -253,8 +253,8 @@ export class InventoryService {
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
-        // authentication (bearer) required
-        localVarCredential = this.configuration.lookupCredential('bearer');
+        // authentication (Typo_OAuth2_Login) required
+        localVarCredential = this.configuration.lookupCredential('Typo_OAuth2_Login');
         if (localVarCredential) {
             localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
         }
@@ -303,7 +303,7 @@ export class InventoryService {
 
     /**
      * Get the amount of unlocked sprite slots of a member
-     *   Required Roles: Moderator - Role override if {login} matches the client login.  Rate limit default: 30 Requests / 60000 ms TTL
+     *   Required Roles: Moderator - Role override if {login} matches the client login.   Required Scopes: member.inventory.sprites:read  Rate limit default: 30 Requests / 60000 ms TTL
      * @param login Member Login parameter
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
@@ -319,8 +319,8 @@ export class InventoryService {
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
-        // authentication (bearer) required
-        localVarCredential = this.configuration.lookupCredential('bearer');
+        // authentication (Typo_OAuth2_Login) required
+        localVarCredential = this.configuration.lookupCredential('Typo_OAuth2_Login');
         if (localVarCredential) {
             localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
         }
@@ -369,7 +369,7 @@ export class InventoryService {
 
     /**
      * Set the activated scene for a member
-     *   Required Roles: Moderator - Role override if {login} matches the client login.  Rate limit default: 30 Requests / 60000 ms TTL
+     *   Required Roles: Moderator - Role override if {login} matches the client login.   Required Scopes: member.inventory.scenes:write  Rate limit default: 30 Requests / 60000 ms TTL
      * @param login Member Login parameter
      * @param setActiveSceneDto 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
@@ -389,8 +389,8 @@ export class InventoryService {
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
-        // authentication (bearer) required
-        localVarCredential = this.configuration.lookupCredential('bearer');
+        // authentication (Typo_OAuth2_Login) required
+        localVarCredential = this.configuration.lookupCredential('Typo_OAuth2_Login');
         if (localVarCredential) {
             localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
         }
@@ -448,7 +448,7 @@ export class InventoryService {
 
     /**
      * Set the sprite combo of a member
-     *   Required Roles: Moderator - Role override if {login} matches the client login.  Rate limit default: 30 Requests / 60000 ms TTL
+     *   Required Roles: Moderator - Role override if {login} matches the client login.   Required Scopes: member.inventory.sprites:write  Rate limit default: 30 Requests / 60000 ms TTL
      * @param login Member Login parameter
      * @param spriteComboDto 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
@@ -468,8 +468,8 @@ export class InventoryService {
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
-        // authentication (bearer) required
-        localVarCredential = this.configuration.lookupCredential('bearer');
+        // authentication (Typo_OAuth2_Login) required
+        localVarCredential = this.configuration.lookupCredential('Typo_OAuth2_Login');
         if (localVarCredential) {
             localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
         }
@@ -527,7 +527,7 @@ export class InventoryService {
 
     /**
      * Set a sprite slot of a member
-     *   Required Roles: Moderator - Role override if {login} matches the client login.  Rate limit default: 30 Requests / 60000 ms TTL
+     *   Required Roles: Moderator - Role override if {login} matches the client login.   Required Scopes: member.inventory.sprites:write  Rate limit default: 30 Requests / 60000 ms TTL
      * @param login Member Login parameter
      * @param spriteSlotDto 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
@@ -547,8 +547,8 @@ export class InventoryService {
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
-        // authentication (bearer) required
-        localVarCredential = this.configuration.lookupCredential('bearer');
+        // authentication (Typo_OAuth2_Login) required
+        localVarCredential = this.configuration.lookupCredential('Typo_OAuth2_Login');
         if (localVarCredential) {
             localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
         }

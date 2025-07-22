@@ -29,6 +29,7 @@ export * from './lobbyPlayerDto';
 export * from './memberDto';
 export * from './memberSearchDto';
 export * from './memberWebhookDto';
+export * from './oAuth2AccessTokenResponseDto';
 export * from './oAuth2AuthenticationDto';
 export * from './oAuth2AuthenticationResultDto';
 export * from './oAuth2AuthorizationCodeDto';

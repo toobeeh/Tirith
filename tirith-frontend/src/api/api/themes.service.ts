@@ -215,7 +215,7 @@ export class ThemesService {
 
     /**
      * Publish a theme to the public theme list
-     *   Required Roles: Moderator  Rate limit default: 10 Requests / 60000 ms TTL
+     *   Required Roles: Moderator   Required Scopes: admin:write  Rate limit default: 10 Requests / 60000 ms TTL
      * @param id Id parameter
      * @param themePublishRequestDto 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
@@ -235,8 +235,8 @@ export class ThemesService {
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
-        // authentication (bearer) required
-        localVarCredential = this.configuration.lookupCredential('bearer');
+        // authentication (Typo_OAuth2_Login) required
+        localVarCredential = this.configuration.lookupCredential('Typo_OAuth2_Login');
         if (localVarCredential) {
             localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
         }
@@ -364,7 +364,7 @@ export class ThemesService {
 
     /**
      * Update the theme content from the provided new share and increment version
-     *   Required Roles: Moderator  Rate limit default: 10 Requests / 60000 ms TTL
+     *   Required Roles: Moderator   Required Scopes: admin:write  Rate limit default: 10 Requests / 60000 ms TTL
      * @param id Id parameter
      * @param themeUpdateRequestDto 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
@@ -384,8 +384,8 @@ export class ThemesService {
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
-        // authentication (bearer) required
-        localVarCredential = this.configuration.lookupCredential('bearer');
+        // authentication (Typo_OAuth2_Login) required
+        localVarCredential = this.configuration.lookupCredential('Typo_OAuth2_Login');
         if (localVarCredential) {
             localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
         }

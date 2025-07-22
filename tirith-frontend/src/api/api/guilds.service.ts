@@ -154,7 +154,7 @@ export class GuildsService {
 
     /**
      * Post an image to a guild channel
-     *   Required Roles: Member  Rate limit default: 10 Requests / 600000 ms TTL
+     *   Required Roles: Member   Required Scopes: member.imagepost:write,member.guilds:read  Rate limit default: 10 Requests / 600000 ms TTL
      * @param token Token parameter
      * @param id Id parameter
      * @param postImageDto 
@@ -178,8 +178,8 @@ export class GuildsService {
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
-        // authentication (bearer) required
-        localVarCredential = this.configuration.lookupCredential('bearer');
+        // authentication (Typo_OAuth2_Login) required
+        localVarCredential = this.configuration.lookupCredential('Typo_OAuth2_Login');
         if (localVarCredential) {
             localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
         }

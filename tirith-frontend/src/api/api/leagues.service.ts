@@ -95,7 +95,7 @@ export class LeaguesService {
 
     /**
      * Get the total ranking of the current league season
-     *   Required Roles: Moderator  Rate limit default: 10 Requests / 60000 ms TTL
+     *   Required Roles: Moderator   Required Scopes: *  Rate limit default: 10 Requests / 60000 ms TTL
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -107,8 +107,8 @@ export class LeaguesService {
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
-        // authentication (bearer) required
-        localVarCredential = this.configuration.lookupCredential('bearer');
+        // authentication (Typo_OAuth2_Login) required
+        localVarCredential = this.configuration.lookupCredential('Typo_OAuth2_Login');
         if (localVarCredential) {
             localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
         }
@@ -157,7 +157,7 @@ export class LeaguesService {
 
     /**
      * Get the total ranking of the a league season
-     *   Required Roles: Moderator  Rate limit default: 10 Requests / 60000 ms TTL
+     *   Required Roles: Moderator   Required Scopes: *  Rate limit default: 10 Requests / 60000 ms TTL
      * @param year Season year parameter
      * @param month Season month parameter
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
@@ -177,8 +177,8 @@ export class LeaguesService {
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
-        // authentication (bearer) required
-        localVarCredential = this.configuration.lookupCredential('bearer');
+        // authentication (Typo_OAuth2_Login) required
+        localVarCredential = this.configuration.lookupCredential('Typo_OAuth2_Login');
         if (localVarCredential) {
             localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
         }
@@ -227,7 +227,7 @@ export class LeaguesService {
 
     /**
      * Get the ranking of a single member of the current league season
-     *   Required Roles: Moderator - Role override if {login} matches the client login.  Rate limit default: 10 Requests / 60000 ms TTL
+     *   Required Roles: Moderator - Role override if {login} matches the client login.   Required Scopes: member.leagues:read  Rate limit default: 10 Requests / 60000 ms TTL
      * @param login Member Login parameter
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
@@ -243,8 +243,8 @@ export class LeaguesService {
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
-        // authentication (bearer) required
-        localVarCredential = this.configuration.lookupCredential('bearer');
+        // authentication (Typo_OAuth2_Login) required
+        localVarCredential = this.configuration.lookupCredential('Typo_OAuth2_Login');
         if (localVarCredential) {
             localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
         }
@@ -293,7 +293,7 @@ export class LeaguesService {
 
     /**
      * Get the ranking of a single member of the specified league season
-     *   Required Roles: Moderator - Role override if {login} matches the client login.  Rate limit default: 10 Requests / 60000 ms TTL
+     *   Required Roles: Moderator - Role override if {login} matches the client login.   Required Scopes: member.leagues:read  Rate limit default: 10 Requests / 60000 ms TTL
      * @param login Member Login parameter
      * @param year Season year parameter
      * @param month Season month parameter
@@ -317,8 +317,8 @@ export class LeaguesService {
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
-        // authentication (bearer) required
-        localVarCredential = this.configuration.lookupCredential('bearer');
+        // authentication (Typo_OAuth2_Login) required
+        localVarCredential = this.configuration.lookupCredential('Typo_OAuth2_Login');
         if (localVarCredential) {
             localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
         }

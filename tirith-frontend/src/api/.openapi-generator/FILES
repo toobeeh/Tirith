@@ -1,5 +1,4 @@
 .gitignore
-.openapi-generator-ignore
 README.md
 api.module.ts
 api/admin.service.ts
@@ -8,7 +7,6 @@ api/api.ts
 api/auth.service.ts
 api/awards.service.ts
 api/cloud.service.ts
-api/default.service.ts
 api/emojis.service.ts
 api/events.service.ts
 api/guilds.service.ts
@@ -56,6 +54,7 @@ model/memberDto.ts
 model/memberSearchDto.ts
 model/memberWebhookDto.ts
 model/models.ts
+model/oAuth2AccessTokenResponseDto.ts
 model/oAuth2AuthenticationDto.ts
 model/oAuth2AuthenticationResultDto.ts
 model/oAuth2AuthorizationCodeDto.ts

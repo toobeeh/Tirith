@@ -15,12 +15,14 @@
           <br>
 
           <div class="bg-white bg-opacity-5 p-4 flex flex-col gap-6 rounded-xl items-center self-stretch">
-            <h3>{{authCode.result.client.name}} requests:</h3>
+            <h3>{{authCode.result.client.name}} wants to:</h3>
             <ul>
-              <li *ngFor="let scope of authCode.result.client.scopes">{{scope}}</li>
+              <ng-container *ngFor="let scope of authCode.result.client.scopes">
+                <li>{{scope}}</li>
+              </ng-container>
             </ul>
-            <span *ngIf="!authCode.result.client.verified">⚠️ This app is not verified by typo.<br>Double-check the requested permissions and app website!</span>
-            <span *ngIf="authCode.result.client.verified">✔️ This app is verified by typo.</span>
+            <span *ngIf="!authCode.result.client.verified" class="text-center">⚠️ This app is not verified by typo.<br>Double-check the requested permissions and app website!</span>
+            <span *ngIf="authCode.result.client.verified" class="text-center">✔️ This app is verified by typo.</span>
             <input
               class="w-fit self-center"
               type="button"

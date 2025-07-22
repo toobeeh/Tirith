@@ -61,7 +61,7 @@ export class AuthenticationService {
             const memberId = Number(result["sub"]);
 
             const member = await this.service.getByLogin(memberId);
-            const scopes = typeof(result["scope"]) === "string" ? result["scope"].split(" ") : [];
+            const scopes = typeof(result["scope"]) === "string" ? [result["scope"]] : Array.isArray(result["scope"]) ? result["scope"] : [];
             return {
                 member,
                 scopes

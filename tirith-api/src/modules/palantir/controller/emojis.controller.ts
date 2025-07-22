@@ -28,6 +28,7 @@ import {Throttle} from "@nestjs/throttler";
 import {getThrottleForDefinition} from "../../../guards/trottleConfigs";
 import {MemberDto, MemberFlagDto} from "../dto/member.dto";
 import {OkCacheInterceptor} from "../../../interceptors/ok-cache.interceptor";
+import {RequiredScope, TypoScopes} from "../../../decorators/scopes.decorator";
 
 @ApiSecurityNotes()
 @Controller("emojis")
@@ -57,6 +58,7 @@ export class EmojisController {
     @Throttle(getThrottleForDefinition("throttleThirtyPerMinute"))
     @UseGuards(MemberGuard, RoleGuard)
     @RequiredRole(MemberFlagDto.Admin, MemberFlagDto.EmojiManagement, MemberFlagDto.ContentModerator)
+    @RequiredScope(TypoScopes.emojisWrite)
     @ApiOperation({ summary: "Search for new emojis that are not yet in the database" })
     @ApiResponse({ status: 200, type: EmojiDto, isArray: true, description: "All available emojis from a foreign source that are not added yet and match search criteria" })
     getNewEmojis(@Query() search: EmojiSearchDto): Promise<EmojiDto[]> {
@@ -78,6 +80,7 @@ export class EmojisController {
     @Delete(":id")
     @UseGuards(MemberGuard, RoleGuard)
     @RequiredRole(MemberFlagDto.Admin, MemberFlagDto.ContentModerator, MemberFlagDto.Moderator)
+    @RequiredScope(TypoScopes.emojisWrite)
     @ApiOperation({ summary: "Delete a saved emoji  by name (id) and nameId" })
     @ApiResponse({ status: 204, description: "Emoji has been deleted" })
     deleteEmoji(@Param() idParam: StringIdParamDto, @Query() nameIdQuery: NameIdDto): Promise<void> {
@@ -88,6 +91,7 @@ export class EmojisController {
     @Throttle(getThrottleForDefinition("throttleThirtyPerMinute"))
     @UseGuards(MemberGuard, RoleGuard)
     @RequiredRole(MemberFlagDto.Admin, MemberFlagDto.EmojiManagement, MemberFlagDto.ContentModerator)
+    @RequiredScope(TypoScopes.emojisWrite)
     @ApiOperation({ summary: "Add a new emoji" })
     @ApiResponse({ status: 201, type: EmojiDto, description: "Emoji has been added" })
     addEmoji(@Body() emoji: EmojiCandidateDto, @Req() request: Request): Promise<EmojiDto> {

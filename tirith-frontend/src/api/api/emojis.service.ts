@@ -95,7 +95,7 @@ export class EmojisService {
 
     /**
      * Add a new emoji
-     *   Required Roles: Admin | EmojiManagement | ContentModerator  Rate limit default: 30 Requests / 60000 ms TTL
+     *   Required Roles: Admin | EmojiManagement | ContentModerator   Required Scopes: emojis:write  Rate limit default: 30 Requests / 60000 ms TTL
      * @param emojiCandidateDto 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
@@ -111,8 +111,8 @@ export class EmojisService {
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
-        // authentication (bearer) required
-        localVarCredential = this.configuration.lookupCredential('bearer');
+        // authentication (Typo_OAuth2_Login) required
+        localVarCredential = this.configuration.lookupCredential('Typo_OAuth2_Login');
         if (localVarCredential) {
             localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
         }
@@ -171,7 +171,7 @@ export class EmojisService {
 
     /**
      * Delete a saved emoji  by name (id) and nameId
-     *   Required Roles: Admin | ContentModerator | Moderator  Rate limit default: 10 Requests / 60000 ms TTL
+     *   Required Roles: Admin | ContentModerator | Moderator   Required Scopes: emojis:write  Rate limit default: 10 Requests / 60000 ms TTL
      * @param id Id parameter
      * @param nameId Emoji name id appendix
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
@@ -194,8 +194,8 @@ export class EmojisService {
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
-        // authentication (bearer) required
-        localVarCredential = this.configuration.lookupCredential('bearer');
+        // authentication (Typo_OAuth2_Login) required
+        localVarCredential = this.configuration.lookupCredential('Typo_OAuth2_Login');
         if (localVarCredential) {
             localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
         }
@@ -485,7 +485,7 @@ export class EmojisService {
 
     /**
      * Search for new emojis that are not yet in the database
-     *   Required Roles: Admin | EmojiManagement | ContentModerator  Rate limit default: 30 Requests / 60000 ms TTL
+     *   Required Roles: Admin | EmojiManagement | ContentModerator   Required Scopes: emojis:write  Rate limit default: 30 Requests / 60000 ms TTL
      * @param limit Limit of results
      * @param animated Whether to include animated emojis
      * @param statics Whether to include static emojis
@@ -528,8 +528,8 @@ export class EmojisService {
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
-        // authentication (bearer) required
-        localVarCredential = this.configuration.lookupCredential('bearer');
+        // authentication (Typo_OAuth2_Login) required
+        localVarCredential = this.configuration.lookupCredential('Typo_OAuth2_Login');
         if (localVarCredential) {
             localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
         }

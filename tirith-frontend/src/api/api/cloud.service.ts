@@ -101,7 +101,7 @@ export class CloudService {
 
     /**
      * Delete multiple images from the user\&#39;s cloud
-     *   Required Roles: Member - Role override if {login} matches the client login.  Rate limit default: 30 Requests / 60000 ms TTL
+     *   Required Roles: Member - Role override if {login} matches the client login.   Required Scopes: member.cloud:write  Rate limit default: 30 Requests / 60000 ms TTL
      * @param login Member Login parameter
      * @param cloudDeleteDto 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
@@ -121,8 +121,8 @@ export class CloudService {
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
-        // authentication (bearer) required
-        localVarCredential = this.configuration.lookupCredential('bearer');
+        // authentication (Typo_OAuth2_Login) required
+        localVarCredential = this.configuration.lookupCredential('Typo_OAuth2_Login');
         if (localVarCredential) {
             localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
         }
@@ -180,7 +180,7 @@ export class CloudService {
 
     /**
      * Delete a image by id from the cloud
-     *   Required Roles: Member - Role override if {login} matches the client login.  Rate limit default: 30 Requests / 60000 ms TTL
+     *   Required Roles: Member - Role override if {login} matches the client login.   Required Scopes: member.cloud:write  Rate limit default: 30 Requests / 60000 ms TTL
      * @param login Member Login parameter
      * @param id Id parameter
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
@@ -200,8 +200,8 @@ export class CloudService {
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
-        // authentication (bearer) required
-        localVarCredential = this.configuration.lookupCredential('bearer');
+        // authentication (Typo_OAuth2_Login) required
+        localVarCredential = this.configuration.lookupCredential('Typo_OAuth2_Login');
         if (localVarCredential) {
             localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
         }
@@ -249,7 +249,7 @@ export class CloudService {
 
     /**
      * Get a image by id from the cloud
-     *   Required Roles: Member - Role override if {login} matches the client login.  Rate limit default: 30 Requests / 60000 ms TTL
+     *   Required Roles: Member - Role override if {login} matches the client login.   Required Scopes: member.cloud:read  Rate limit default: 30 Requests / 60000 ms TTL
      * @param login Member Login parameter
      * @param id Id parameter
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
@@ -269,8 +269,8 @@ export class CloudService {
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
-        // authentication (bearer) required
-        localVarCredential = this.configuration.lookupCredential('bearer');
+        // authentication (Typo_OAuth2_Login) required
+        localVarCredential = this.configuration.lookupCredential('Typo_OAuth2_Login');
         if (localVarCredential) {
             localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
         }
@@ -319,7 +319,7 @@ export class CloudService {
 
     /**
      * Link an image of the user to an award in their received inventory, which has no linked image yet
-     *   Required Roles: Member - Role override if {login} matches the client login.  Rate limit default: 10 Requests / 60000 ms TTL
+     *   Required Roles: Member - Role override if {login} matches the client login.   Required Scopes: member.cloud:read,member.awards:write  Rate limit default: 10 Requests / 60000 ms TTL
      * @param login Member Login parameter
      * @param id Id parameter
      * @param token Token parameter
@@ -343,8 +343,8 @@ export class CloudService {
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
-        // authentication (bearer) required
-        localVarCredential = this.configuration.lookupCredential('bearer');
+        // authentication (Typo_OAuth2_Login) required
+        localVarCredential = this.configuration.lookupCredential('Typo_OAuth2_Login');
         if (localVarCredential) {
             localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
         }
@@ -392,7 +392,7 @@ export class CloudService {
 
     /**
      * Search for cloud images
-     *   Required Roles: Member - Role override if {login} matches the client login.  Rate limit default: 30 Requests / 60000 ms TTL
+     *   Required Roles: Member - Role override if {login} matches the client login.   Required Scopes: member.cloud:read  Rate limit default: 30 Requests / 60000 ms TTL
      * @param login Member Login parameter
      * @param cloudSearchDto 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
@@ -412,8 +412,8 @@ export class CloudService {
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
-        // authentication (bearer) required
-        localVarCredential = this.configuration.lookupCredential('bearer');
+        // authentication (Typo_OAuth2_Login) required
+        localVarCredential = this.configuration.lookupCredential('Typo_OAuth2_Login');
         if (localVarCredential) {
             localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
         }
@@ -472,7 +472,7 @@ export class CloudService {
 
     /**
      * Upload a new image to the user\&#39;s cloud
-     *   Required Roles: Member - Role override if {login} matches the client login.  Rate limit default: 10 Requests / 60000 ms TTL
+     *   Required Roles: Member - Role override if {login} matches the client login.   Required Scopes: member.cloud:write  Rate limit default: 10 Requests / 60000 ms TTL
      * @param login Member Login parameter
      * @param cloudUploadDto 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
@@ -492,8 +492,8 @@ export class CloudService {
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
-        // authentication (bearer) required
-        localVarCredential = this.configuration.lookupCredential('bearer');
+        // authentication (Typo_OAuth2_Login) required
+        localVarCredential = this.configuration.lookupCredential('Typo_OAuth2_Login');
         if (localVarCredential) {
             localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
         }

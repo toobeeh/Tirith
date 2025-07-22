@@ -48,7 +48,7 @@ export const RequiredRole = (...param: AuthRole[]): MethodDecorator & ClassDecor
             /* skip if already processsed - decorators apply first for methods */
             if (Reflect.hasMetadata("guardRequiredRole", target)) return;
 
-            if (!param.includes(MembershipEnum.None)) ApiBearerAuth("Typo OAuth2 Login")(target)
+            if (!param.includes(MembershipEnum.None)) ApiBearerAuth("Typo_OAuth2_Login")(target)
             SetMetadata('guardRequiredRole', param)(target);
         }
     }

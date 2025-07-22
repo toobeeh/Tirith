@@ -47,6 +47,7 @@ export class ProfileComponent {
   }
 
   public getScenes(user: MemberDto) {
+    if(user.scenes === "") return of([]);
 
     const inv = user.scenes
       .split(",")
@@ -60,6 +61,7 @@ export class ProfileComponent {
   }
 
   public getSprites(user: MemberDto) {
+    if(user.sprites === "") return of([]);
 
     const inv = user.sprites
       .split(",")
