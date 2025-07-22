@@ -1,0 +1,82 @@
+<div class="w-full h-full grid place-content-center">
+
+  <ng-container *ngIf="(authenticationResult$ | async) as result; else loading">
+
+    <!-- typo member exists for authenticated discord user -->
+    <ng-container *ngIf="isAuthCode(result) as authCode">
+
+      <div class="flex flex-col gap-12  items-center">
+        <h2>Welcome back, {{authCode.member.userName}}!</h2>
+
+        <div class="flex flex-col gap-1 items-center">
+          <span>You are about to log in to an application with your typo account.</span>
+          <span>After confirming, you will be redirected to <a href="{{getAppUrl(authCode.result.client)}}">{{getAppUrl(authCode.result.client)}}</a>.</span>
+
+          <br>
+
+          <div class="bg-white bg-opacity-5 p-4 flex flex-col gap-6 rounded-xl items-center self-stretch">
+            <h3>{{authCode.result.client.name}} requests:</h3>
+            <ul>
+              <li *ngFor="let scope of authCode.result.client.scopes">{{scope}}</li>
+            </ul>
+            <span *ngIf="!authCode.result.client.verified">⚠️ This app is not verified by typo.<br>Double-check the requested permissions and app website!</span>
+            <span *ngIf="authCode.result.client.verified">✅ This app is verified by typo.</span>
+            <input
+              class="w-fit self-center"
+              type="button"
+              value="Continue to {{authCode.result.client.name}}"
+              (click)="continue(authCode.result)"
+            />
+          </div>
+
+        </div>
+
+      </div>
+
+    </ng-container>
+
+    <!-- typo member does not exist for authenticated discord user -->
+    <ng-container *ngIf="isPreauthentication(result) as preauth">
+
+      <div class="flex flex-col gap-12">
+        <h2>Hello there!</h2>
+
+        <div>
+          <h3>You're about to connect your Discord account to Typo.</h3>
+          <div>With a typo account, you can connect with your friends on skribbl, upgrade your avatar, collect items while playing and much more!
+          </div>
+          When you connect and use Typo, you agree to <a class="font-bold" target="_blank"
+                                                         href="https://www.typo.rip/privacy">the Data Privacy Policy</a>,
+          <a class="font-bold" target="_blank" href="https://www.typo.rip/help/rules">the Fair Play & Rules</a>, and
+          <a class="font-bold" target="_blank" href="https://www.typo.rip/palantir-tos">the Terms Of Service</a>.
+        </div>
+
+        <div>
+          <label class="flex flex-row cursor-pointer">
+            <h3 class="w-fit"><input type="checkbox" checked #connect> Connect to the Typo Server</h3>
+          </label>
+          <p>
+            This makes it easier for you to start; join <a class="font-bold" href="https://discord.com/invite/pAapmUmWAM"
+                                                           target="_blank">the Discord
+            server</a> to see tutorials & news!
+          </p>
+          <p>
+            Connecting to a discord server that uses typo lets you easily join lobbies of friends or share images on discord!<br>
+            You can still connect to a server later.
+          </p>
+        </div>
+
+        <input type="button" value="Connect & Log In" class="w-fit self-center" (click)="createAccount(preauth, connect.checked)">
+      </div>
+
+    </ng-container>
+
+
+  </ng-container>
+
+  <ng-template #loading>
+
+    <h2>Getting things ready...</h2>
+
+  </ng-template>
+</div>

@@ -79,8 +79,12 @@ This endpoint receives following url encoded data:
 - client_id: the client id that the auth code had been issued for
 
 ### Backend implementation
-During auth code creation, the API fetches the discord user. 
-It then forwards the client id and user login to the internal domain logic API, Valmar.  
+Before auth code creation, the API fetches the discord user from the discord auth code.  
+It checks whether there is a typo user for this id, decrypts the access token and returns the state.  
+If no user exists, the frontend first creates a new user using the decrypted access token.  
+After that, the frontend calls the api to create a typo oauth2 authorization code, again using the encrypted discord access token.  
+
+The API forwards the client id and user login to the internal domain logic API, Valmar.  
 There, an auth code is stored along with an expiry, and returned to the API, which passes it to the user.  
 Auth codes are c# ULIDs.
 

@@ -11,18 +11,10 @@
  */
 
 
-export interface WebhookDto { 
+export interface CreateTypoAccountOptionsDto { 
     /**
-     * The webhook name
+     * Connect the new member to TT typo server home
      */
-    Name: string;
-    /**
-     * The webhook\'s guild name
-     */
-    Guild: string;
-    /**
-     * The webhook URL
-     */
-    URL: string;
+    connectTypoTestground: boolean;
 }
 

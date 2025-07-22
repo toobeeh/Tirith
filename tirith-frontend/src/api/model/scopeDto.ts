@@ -11,22 +11,14 @@
  */
 
 
-export interface PalantirLobbyDto { 
+export interface ScopeDto { 
     /**
-     * Lobby description
+     * The name/id of a scope
      */
-    Description: string;
+    name: string;
     /**
-     * Lobby invite encrypted
+     * The description of the scope
      */
-    Key: string;
-    /**
-     * Lobby unique id
-     */
-    ID: string;
-    /**
-     * Lobby visibility restriction
-     */
-    Restriction: string;
+    description: string;
 }
 

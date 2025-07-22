@@ -1,4 +1,5 @@
 .gitignore
+.openapi-generator-ignore
 README.md
 api.module.ts
 api/admin.service.ts
@@ -15,6 +16,7 @@ api/inventory.service.ts
 api/leagues.service.ts
 api/lobbies.service.ts
 api/members.service.ts
+api/oauth2.service.ts
 api/scenes.service.ts
 api/sprites.service.ts
 api/themes.service.ts
@@ -31,6 +33,9 @@ model/cloudImageDto.ts
 model/cloudSearchDto.ts
 model/cloudUploadDto.ts
 model/cloudUploadedDto.ts
+model/createOAuth2ClientDto.ts
+model/createTypoAccountOptionsDto.ts
+model/discordAuthenticationResultDto.ts
 model/dropDto.ts
 model/emojiCandidateDto.ts
 model/emojiDto.ts
@@ -51,16 +56,23 @@ model/memberDto.ts
 model/memberSearchDto.ts
 model/memberWebhookDto.ts
 model/models.ts
+model/oAuth2AuthenticationDto.ts
+model/oAuth2AuthenticationResultDto.ts
+model/oAuth2AuthorizationCodeDto.ts
+model/oAuth2AuthorizationCodeExchangeDto.ts
+model/oAuth2ClientDto.ts
 model/onlineLobbyDto.ts
 model/onlineLobbySkribblDetailsDto.ts
 model/onlineLobbyTypoPlayerDto.ts
 model/postImageDto.ts
+model/preauthenticateDiscordOauth2CodeDto.ts
 model/publicMemberDto.ts
 model/registrationRequest.ts
 model/sceneDto.ts
 model/sceneInventoryDto.ts
 model/sceneInventoryItemDto.ts
 model/sceneThemeDto.ts
+model/scopeDto.ts
 model/setActiveSceneDto.ts
 model/spriteComboDto.ts
 model/spriteDto.ts

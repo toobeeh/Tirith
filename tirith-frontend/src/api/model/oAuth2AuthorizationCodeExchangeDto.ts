@@ -11,18 +11,18 @@
  */
 
 
-export interface PalantirLobbyPlayerDto { 
+export interface OAuth2AuthorizationCodeExchangeDto { 
     /**
-     * Player ingame name
+     * The authorization code received from the OAuth2 client
      */
-    name: string;
+    code: string;
     /**
-     * Player login
+     * The client ID of the OAuth2 client
      */
-    login: string;
+    client_id: number;
     /**
-     * Player account username
+     * The typo ID of the user requesting the exchange
      */
-    username: string;
+    grant_type: string;
 }
 
