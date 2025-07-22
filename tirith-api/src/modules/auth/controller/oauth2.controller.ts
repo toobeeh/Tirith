@@ -25,6 +25,7 @@ import {OAuth2AuthorizationCodeDto} from "../dto/oauth2AuthorizationCode.dto";
 import {MemberDto} from "../../palantir/dto/member.dto";
 import {OAuth2AuthorizationCodeExchangeDto} from "../dto/oauth2AuthorizationCodeExchange.dto";
 import {OAuth2AccessTokenResponseDto} from "../dto/oauth2AccessTokenResponse.dto";
+import {ScopeDto} from "../dto/scope.dto";
 
 @ApiSecurityNotes()
 @Throttle(getThrottleForDefinition("throttleTenPerMinute"))
@@ -37,6 +38,12 @@ export class OAuth2Controller {
         private discordOauth: DiscordOauthService
     ) { }
 
+    @Get("scopes")
+    @ApiOperation({ summary: "Get all available scopes for OAuth2" })
+    @ApiResponse({ status: 200, type: ScopeDto, isArray: true, description: "List of available scopes" })
+    async getScopes(): Promise<ScopeDto[]> {
+        return this.authService.getScopes();
+    }
 
     @Post("authenticate")
     @ApiOperation({ summary: "Authenticate a user using Discord OAuth2 and create a OAuth2 token for typo" })
