@@ -10,7 +10,7 @@ import * as DiscordOauth from "discord-oauth2";
 export class DiscordOauthService {
 
     private oauth: DiscordOauth;
-    private jwtOauth: DiscordOauth;
+    private oauthForTypoOauth: DiscordOauth;
     private cachedTokens: Map<string, { token: DiscordOauth.TokenRequestResult, creation: number }> = new Map();
 
     constructor(private config: ConfigService) {
@@ -18,7 +18,7 @@ export class DiscordOauthService {
         const clientId = config.get("DISCORD_OAUTH_CLIENT_ID");
         const clientSecret = config.get("DISCORD_OAUTH_CLIENT_SECRET");
         const redirectUri = config.get("DISCORD_OAUTH_REDIRECT");
-        const jwtRedirectUri = config.get("DISCORD_OAUTH_JWT_REDIRECT");
+        const typoOauthRedirectUri = config.get("DISCORD_OAUTH_TYPO_OAUTH_REDIRECT");
 
         this.oauth = new DiscordOauth({
             clientId,
@@ -26,10 +26,10 @@ export class DiscordOauthService {
             redirectUri
         });
 
-        this.jwtOauth = new DiscordOauth({
+        this.oauthForTypoOauth = new DiscordOauth({
             clientId,
             clientSecret,
-            redirectUri: jwtRedirectUri
+            redirectUri: typoOauthRedirectUri
         });
     }
 
@@ -53,7 +53,28 @@ export class DiscordOauthService {
             return this.cachedTokens.get(code).token.access_token;
         }
 
-        const result = await this.jwtOauth.tokenRequest({
+        const result = await this.oauth.tokenRequest({
+            code,
+            grantType: 'authorization_code',
+            scope: 'identify'
+        });
+
+        this.cachedTokens.set(code, { token: result, creation: Date.now() });
+
+        return result.access_token;
+    }
+
+    async getAccessTokenForTypoOauth(code: string) {
+
+        /* remove expired codes from cache */
+        this.emptyCache();
+
+        /* check if token is still cached to be able to re-use authorization codes */
+        if (this.cachedTokens.has(code)) {
+            return this.cachedTokens.get(code).token.access_token;
+        }
+
+        const result = await this.oauth.tokenRequest({
             code,
             grantType: 'authorization_code',
             scope: 'identify'

@@ -58,7 +58,7 @@ export class OAuth2Controller {
     async preAuthenticateDiscordAuthorizationCode(@Body() {authorizationCode}: PreauthenticateDiscordOauth2CodeDto): Promise<DiscordAuthenticationResultDto> {
 
         // get discord access token & discord user for the requesting user
-        const discordOauthAccessToken = await this.discordOauth.getAccessToken(authorizationCode);
+        const discordOauthAccessToken = await this.discordOauth.getAccessTokenForTypoOauth(authorizationCode);
         const discordUser = await this.discordOauth.getUser(discordOauthAccessToken);
         const encryptedAccessToken = this.cryptoService.encrypt(discordOauthAccessToken);
 
