@@ -6,7 +6,7 @@ https://docs.nestjs.com/modules
 
 import { MembersController } from './controller/members.controller';
 import { Module } from '@nestjs/common';
-import { APP_INTERCEPTOR } from '@nestjs/core';
+import {APP_GUARD, APP_INTERCEPTOR} from '@nestjs/core';
 import { ResponseReshapeInterceptor } from 'src/interceptors/responsereshape.interceptor';
 import { AwardsController } from './controller/awards.controller';
 import { ScenesController } from './controller/scenes.controller';

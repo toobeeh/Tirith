@@ -16,6 +16,9 @@ import {getThrottleForDefinition} from 'src/guards/trottleConfigs';
 import {ILobbiesService} from '../../../services/interfaces/lobbies.service.interface';
 import {MemberDto, MemberFlagDto} from "../dto/member.dto";
 import {LobbyLinkDto} from "../dto/lobbyLink.dto";
+import {RequiredScope, TypoScopes} from "../../../decorators/scopes.decorator";
+
+const scopeGuildsRead = "member.guilds:read";
 
 @ApiSecurityNotes()
 @Controller("lobbies")
@@ -46,6 +49,7 @@ export class LobbiesController {
 
     @Get("join/:token")
     @RequiredRole(MembershipEnum.Member)
+    @RequiredScope(TypoScopes.guildsRead)
     @ApiOperation({ summary: "Redirect to a lobby" })
     @ApiResponse({ status: 200, type: LobbyLinkDto, description: "The decrypted signed token containing the link" })
     async getDecryptedLobbyLink(@Req() request: Request, @Param() params: StringTokenParamDto): Promise<LobbyLinkDto> {

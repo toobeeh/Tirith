@@ -8,7 +8,6 @@ import {
     Controller,
     Delete,
     Get,
-    Header,
     Inject,
     Param,
     Post,

@@ -17,6 +17,7 @@ import {LoginTokenParamDto} from "../dto/params.dto";
 import {RoleGuard} from "../../../guards/role.guard";
 import {MemberGuard} from "../../../guards/member.guard";
 import {MemberFlagDto} from "../dto/member.dto";
+import {RequiredScope, TypoScopes} from "../../../decorators/scopes.decorator";
 
 @ApiSecurityNotes()
 @Controller("leagues")
@@ -28,6 +29,7 @@ export class LeaguesController {
 
     @Get("member/:login")
     @RequiredRole(MemberFlagDto.Moderator)
+    @RequiredScope(TypoScopes.leaguesRead)
     @ResourceOwner("login")
     @ApiOperation({ summary: "Get the ranking of a single member of the current league season" })
     @ApiResponse({ status: 200, type: LeagueSeasonMemberEvaluationDto, description: "Ranking stats for a single member" })
@@ -37,6 +39,7 @@ export class LeaguesController {
 
     @Get(":year/:month/member/:login")
     @RequiredRole(MemberFlagDto.Moderator)
+    @RequiredScope(TypoScopes.leaguesRead)
     @ResourceOwner("login")
     @ApiOperation({ summary: "Get the ranking of a single member of the specified league season" })
     @ApiResponse({ status: 200, type: LeagueSeasonMemberEvaluationDto, description: "Ranking stats for a single member" })

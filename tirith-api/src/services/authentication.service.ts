@@ -7,6 +7,7 @@ import { IMembersService } from './interfaces/members.service.interface';
 import {ClientError, Status} from "nice-grpc";
 import * as jwt from "jsonwebtoken";
 import {CryptoService} from "./crypto.service";
+import {MemberDto} from "../modules/palantir/dto/member.dto";
 
 export interface userFlags {
     bubbleFarming: boolean;
@@ -21,6 +22,11 @@ export interface userFlags {
     booster: boolean;
 }
 
+export interface authenticatedUser {
+    member: MemberDto,
+    scopes: string[]
+}
+
 @Injectable()
 export class AuthenticationService {
 
@@ -29,7 +35,7 @@ export class AuthenticationService {
         @Inject(CryptoService) private cryptoService: CryptoService
     ) { }
 
-    async authenticate(token: string) {
+    async authenticate(token: string): Promise<authenticatedUser> {
 
         // try to decode jwt
         const payload = jwt.decode(token);
@@ -38,7 +44,10 @@ export class AuthenticationService {
         if(payload === null) {
             try {
                 const member = await this.service.getByAccessToken(token);
-                return member;
+                return {
+                    member,
+                    scopes: ["*"] // grant wildcard to legacy tokens
+                };
             }
             catch (e) {
                 if(e instanceof ClientError && e.code == Status.NOT_FOUND) return undefined;
@@ -51,11 +60,37 @@ export class AuthenticationService {
             const result = jwt.verify(token, this.cryptoService.publicKey, { algorithms: ['RS256'], ignoreExpiration: false });
             const memberId = Number(result["sub"]);
 
-            return this.service.getByLogin(memberId);
+            const member = await this.service.getByLogin(memberId);
+            const scopes = typeof(result["scope"]) === "string" ? result["scope"].split(" ") : [];
+            return {
+                member,
+                scopes
+            };
         }
         catch (e) {
             throw new UnauthorizedException("Invalid or expired token");
         }
+    }
+
+    attachUserToRequest(request: any, user: authenticatedUser): void {
+
+        /* define user on request for passport handling */
+        Object.defineProperty(request, "user", {
+            enumerable: true,
+            writable: false,
+            value: user.member,
+        });
+
+        /* define scopes on request for passport handling */
+        Object.defineProperty(request, "scopes", {
+            enumerable: true,
+            writable: false,
+            value: user.scopes,
+        });
+    }
+
+    getScopesFromRequest(request: any): string[] {
+        return request.scopes || [];
     }
 
     static parseFlags(flags: number): userFlags {

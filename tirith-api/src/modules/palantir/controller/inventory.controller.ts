@@ -21,6 +21,7 @@ import {Throttle} from "@nestjs/throttler";
 import {getThrottleForDefinition} from "../../../guards/trottleConfigs";
 import {MemberFlagDto} from "../dto/member.dto";
 import {AwardInventoryDto} from "../dto/awards.dto";
+import {RequiredScope, TypoScopes} from "../../../decorators/scopes.decorator";
 
 @ApiSecurityNotes()
 @Controller("member")
@@ -33,6 +34,7 @@ export class InventoryController {
     @Patch(":login/inventory/sprites/combo")
     @Throttle(getThrottleForDefinition("throttleThirtyPerMinute"))
     @RequiredRole(MemberFlagDto.Moderator)
+    @RequiredScope(TypoScopes.spritesWrite)
     @ResourceOwner("login")
     @ApiOperation({ summary: "Set the sprite combo of a member" })
     @ApiResponse({ status: 200, description: "Combo has been successfully updated" })
@@ -43,6 +45,7 @@ export class InventoryController {
     @Patch(":login/inventory/sprites/slot")
     @Throttle(getThrottleForDefinition("throttleThirtyPerMinute"))
     @RequiredRole(MemberFlagDto.Moderator)
+    @RequiredScope(TypoScopes.spritesWrite)
     @ResourceOwner("login")
     @ApiOperation({ summary: "Set a sprite slot of a member" })
     @ApiResponse({ status: 200, description: "Slot has been successfully updated" })
@@ -53,6 +56,7 @@ export class InventoryController {
     @Get(":login/inventory/sprites")
     @Throttle(getThrottleForDefinition("throttleThirtyPerMinute"))
     @RequiredRole(MemberFlagDto.Moderator)
+    @RequiredScope(TypoScopes.spritesRead)
     @ResourceOwner("login")
     @ApiOperation({ summary: "Get all sprites in the inventory of a member" })
     @ApiResponse({ status: 200, type: SpriteInventoryDto, isArray: true, description: "All sprites in the inventory, and the slot where they are activated" })
@@ -63,6 +67,7 @@ export class InventoryController {
     @Get(":login/inventory/sprites/slots")
     @Throttle(getThrottleForDefinition("throttleThirtyPerMinute"))
     @RequiredRole(MemberFlagDto.Moderator)
+    @RequiredScope(TypoScopes.spritesRead)
     @ResourceOwner("login")
     @ApiOperation({ summary: "Get the amount of unlocked sprite slots of a member" })
     @ApiResponse({ status: 200, description: "Amount of unlocked sprite slots", type: SpriteSlotCountDto })
@@ -74,6 +79,7 @@ export class InventoryController {
     @Get(":login/inventory/scenes")
     @Throttle(getThrottleForDefinition("throttleThirtyPerMinute"))
     @RequiredRole(MemberFlagDto.Moderator)
+    @RequiredScope(TypoScopes.scenesRead)
     @ResourceOwner("login")
     @ApiOperation({ summary: "Get all scenes in the inventory of a member, and the currently activated scene" })
     @ApiResponse({ status: 200, type: SceneInventoryDto, description: "All scenes in the inventory, and the activated id and theme" })
@@ -84,6 +90,7 @@ export class InventoryController {
     @Patch(":login/inventory/scenes")
     @Throttle(getThrottleForDefinition("throttleThirtyPerMinute"))
     @RequiredRole(MemberFlagDto.Moderator)
+    @RequiredScope(TypoScopes.scenesWrite)
     @ResourceOwner("login")
     @ApiOperation({ summary: "Set the activated scene for a member" })
     @ApiResponse({ status: 200, description: "Scene has been successfully updated" })
@@ -94,6 +101,7 @@ export class InventoryController {
     @Get(":login/inventory/awards/available")
     @Throttle(getThrottleForDefinition("throttleThirtyPerMinute"))
     @RequiredRole(MemberFlagDto.Moderator)
+    @RequiredScope(TypoScopes.awardsRead)
     @ResourceOwner("login")
     @ApiOperation({ summary: "Get all awards in the inventory of a member which are available to gift" })
     @ApiResponse({ status: 200, type: AwardInventoryDto, isArray: true, description: "All awards in the inventory, with the amount of how many are available" })

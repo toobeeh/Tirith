@@ -10,12 +10,12 @@ export enum MembershipEnum {
 }
 
 /**
- * Enum with possible authentification levels
+ * Enum with possible authentication levels
  */
 export type AuthRole = MemberFlagDto | MembershipEnum;
 
 /**
- * Set the required role for the authentification guard
+ * Set the required role for the authentication guard
  * If the role is not "None", the annotation for ApiBearerAuth is applied.
  * @param param the required role a member must have to access this resource
  * @returns a custom decorator
@@ -54,10 +54,10 @@ export const RequiredRole = (...param: AuthRole[]): MethodDecorator & ClassDecor
     }
 }
 
-/**asasd
- * Get the required role for the authentification guard
+/**
+ * Get the required role for the authentication guard
  * @param context the execution context of the calling guard
- * @param reflector the reflextor isntance of the calling guard
+ * @param reflector the reflector instance of the calling guard
  * @returns the required role according to the annotation of the method or class
  */
 export const getRequiredRoles = (context: ExecutionContext, reflector: Reflector): AuthRole[] => {
@@ -80,7 +80,7 @@ export const ResourceOwner = (paramName: string) => SetMetadata('guardResourceOw
 /**
  * Get the user owner identification of the requested resource
  * @param context the execution context of the calling guard
- * @param reflector the reflextor isntance of the calling guard
+ * @param reflector the reflector instance of the calling guard
  * @returns the resource owner id, or undefined if none set
  */
 export const getResourceOwner = (context: ExecutionContext, reflector: Reflector) => {

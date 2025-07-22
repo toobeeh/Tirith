@@ -25,6 +25,7 @@ export const ApiSecurityNotes = (): ClassDecorator => {
 
             /* get method specific security */
             const methodRoles = Reflect.getMetadata("guardRequiredRole", method.target) as AuthRole[] ?? role;
+            const methodScopes = Reflect.getMetadata("guardRequiredScope", method.target) as string[] ?? ["*"];
             const ownerOverride = Reflect.getMetadata("guardResourceOwner", method.target) as string ?? null;
             const existingMetadata = Reflect.getMetadata('swagger/apiOperation', method.target) || {};
 
@@ -46,6 +47,11 @@ export const ApiSecurityNotes = (): ClassDecorator => {
                 let rolesDesc = `Required Roles: ${ roleNames }`;
                 if (ownerOverride != null) rolesDesc += `\n- \Role override if {${ownerOverride}} matches the client login.`;
                 description += "\n\n" + rolesDesc;
+
+                if(!methodRoles.includes(MembershipEnum.None)) {
+                    let scopesDesc = `\nRequired Scopes: ${methodScopes.join(",")}`
+                    description += "\n\n" + scopesDesc;
+                }
             }
 
             /* build ratelimit information */

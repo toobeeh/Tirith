@@ -31,6 +31,7 @@ import {IObjectStorageService} from "../../../services/interfaces/object-storage
 import {MemberDto} from "../dto/member.dto";
 import {CloudDeleteDto} from "../dto/cloudDelete.dto";
 import {Long} from "@grpc/proto-loader";
+import {RequiredScope, TypoScopes} from "../../../decorators/scopes.decorator";
 
 @ApiSecurityNotes()
 @Controller("cloud")
@@ -44,6 +45,7 @@ export class CloudController {
     @HttpCode(200)
     @Throttle(getThrottleForDefinition("throttleThirtyPerMinute"))
     @RequiredRole(MembershipEnum.Member)
+    @RequiredScope(TypoScopes.cloudRead)
     @ResourceOwner("login")
     @ApiOperation({ summary: "Get a image by id from the cloud" })
     @ApiResponse({ status: 200, type: CloudImageDto, description: "The image with specified ID" })
@@ -55,6 +57,7 @@ export class CloudController {
     @HttpCode(204)
     @Throttle(getThrottleForDefinition("throttleThirtyPerMinute"))
     @RequiredRole(MembershipEnum.Member)
+    @RequiredScope(TypoScopes.cloudWrite)
     @ResourceOwner("login")
     @ApiOperation({ summary: "Delete a image by id from the cloud" })
     @ApiResponse({ status: 204, description: "The image with specified ID has been deleted" })
@@ -69,6 +72,7 @@ export class CloudController {
     @HttpCode(204)
     @Throttle(getThrottleForDefinition("throttleTenPerMinute"))
     @RequiredRole(MembershipEnum.Member)
+    @RequiredScope(TypoScopes.cloudRead, TypoScopes.awardsWrite)
     @ResourceOwner("login")
     @ApiOperation({ summary: "Link an image of the user to an award in their received inventory, which has no linked image yet" })
     @ApiResponse({ status: 204, description: "The image with specified ID has been linked to the award" })
@@ -80,6 +84,7 @@ export class CloudController {
     @HttpCode(200)
     @Throttle(getThrottleForDefinition("throttleThirtyPerMinute"))
     @RequiredRole(MembershipEnum.Member)
+    @RequiredScope(TypoScopes.cloudRead)
     @ResourceOwner("login")
     @ApiOperation({ summary: "Search for cloud images" })
     @ApiResponse({ status: 200, type: CloudImageDto, isArray: true, description: "All matching images of the current user's cloud" })
@@ -92,6 +97,7 @@ export class CloudController {
     @HttpCode(204)
     @Throttle(getThrottleForDefinition("throttleThirtyPerMinute"))
     @RequiredRole(MembershipEnum.Member)
+    @RequiredScope(TypoScopes.cloudWrite)
     @ResourceOwner("login")
     @ApiOperation({ summary: "Delete multiple images from the user's cloud" })
     @ApiResponse({ status: 204 })
@@ -107,6 +113,7 @@ export class CloudController {
     @Post(":login")
     @Throttle(getThrottleForDefinition("throttleTenPerMinute"))
     @RequiredRole(MembershipEnum.Member)
+    @RequiredScope(TypoScopes.cloudWrite)
     @ResourceOwner("login")
     @ApiOperation({ summary: "Upload a new image to the user's cloud" })
     @ApiResponse({ status: 201, type: CloudUploadedDto, description: "The image has been uploaded" })

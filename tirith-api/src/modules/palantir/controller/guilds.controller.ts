@@ -29,6 +29,7 @@ import {DiscordApiService} from "../../../services/discord-api.service";
 import {MemberGuard} from "../../../guards/member.guard";
 import {RoleGuard} from "../../../guards/role.guard";
 import {map} from "rxjs";
+import {RequiredScope, TypoScopes} from "../../../decorators/scopes.decorator";
 
 @ApiSecurityNotes()
 @Controller("guilds")
@@ -52,6 +53,7 @@ export class GuildsController {
     @Throttle(getThrottleForDefinition("throttleTenPerTenMinutes"))
     @UseGuards(MemberGuard, RoleGuard)
     @RequiredRole(MembershipEnum.Member)
+    @RequiredScope(TypoScopes.imagepostWrite, TypoScopes.guildsRead)
     @ApiOperation({ summary: "Post an image to a guild channel" })
     @ApiResponse({ status: 200, description: "The image has been posted to the guild"})
     async postImageToGuild(@Req() request, @Param() guildTokenParams: NumberTokenParamDto, @Param() webhookNameParams: StringIdParamDto, @Body() webhookData: PostImageDto) {

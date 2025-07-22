@@ -35,8 +35,7 @@ console.log(`Starting in environment ${ENV}`);
   providers: [{
     provide: APP_GUARD,
     useClass: ThrottlerBehindProxyGuard
-  },
-  ],
+  }],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
