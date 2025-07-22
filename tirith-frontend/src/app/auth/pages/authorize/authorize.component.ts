@@ -26,9 +26,9 @@ export class AuthorizeComponent implements OnInit {
     const redirectUri = this.activeRoute.snapshot.queryParamMap.get("redirect_uri");
 
     // validate args
-    if(redirectUri !== null) throw new Error("individual redirect uri param not supported, set per client");
+    if(redirectUri !== null) console.warn("ignoring redirect_uri, fixed redirect uri set per client");
     if(responseType !== "code") throw new Error("response_type must be code, only code flow supported");
-    if(scope !== null) throw new Error("individual scope param not supported, set per client");
+    if(scope !== null) console.warn("ignoring scope, fixed scopes per client set")
     if(clientId === null) throw new Error("client_id must be a string");
 
     // redirect to discord authentication, which will redirect back to the submit component which proceeds with typo oauth flow

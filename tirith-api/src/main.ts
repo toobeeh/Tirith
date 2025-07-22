@@ -18,19 +18,40 @@ async function bootstrap() {
     .setTitle('Skribbl Typo API')
     .setDescription('Skribbl Typo API for resources, admin tools and authentification.')
     .setVersion('1.0')
-    .addBearerAuth()
+    .addOAuth2({
+          type: 'oauth2',
+          flows: {
+            authorizationCode: {
+              authorizationUrl: 'https://www.typo.rip/auth/authorize',
+              tokenUrl: 'https://api.typo.rip/auth/token',
+              scopes: {
+                "*": "Full access"
+              }
+            }
+          },
+          scheme: 'bearer',
+          bearerFormat: 'JWT',
+          in: 'header',
+        },
+        'Typo OAuth2 Login')
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
 
   const swaggerOptions: SwaggerCustomOptions = {
+    swaggerOptions: {
+      initOAuth: {
+        clientId: "2",
+        scopes: ["*"]
+      }
+    },
     customSiteTitle: "Typo API Docs",
     customfavIcon: "https://www.typo.rip/res/128MaxFit.png",
     jsonDocumentUrl: "openapi.json",
     customCss: `
       .swagger-ui .topbar { display: none }
     `,
-    customJsStr: swaggerEnableDiscordLogin
+    /*customJsStr: swaggerEnableDiscordLogin*/
   };
 
   SwaggerModule.setup('docs', app, document, swaggerOptions);
