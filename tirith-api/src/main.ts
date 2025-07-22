@@ -20,12 +20,12 @@ async function bootstrap() {
     .setVersion('1.0')
     .addOAuth2({
           type: 'oauth2',
+          description: "Authenticate with the API by retrieving a JWT through OAuth2.\nClient ID 2 is for the API client, leave the secret empty.",
           flows: {
             authorizationCode: {
               authorizationUrl: 'https://www.typo.rip/auth/authorize',
               tokenUrl: 'https://api.typo.rip/oauth/token',
               scopes: {
-                "*": "Full access"
               }
             }
           },
@@ -42,7 +42,7 @@ async function bootstrap() {
     swaggerOptions: {
       initOAuth: {
         clientId: "2",
-        scopes: ["*"]
+        scopes: []
       }
     },
     customSiteTitle: "Typo API Docs",
