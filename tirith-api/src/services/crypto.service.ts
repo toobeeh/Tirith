@@ -31,4 +31,8 @@ export class CryptoService {
         const decryptedBuffer = crypto.privateDecrypt(this._privateKey, Buffer.from(encryptedData, 'base64'));
         return decryptedBuffer.toString('utf8');
     }
+
+    public get publicKey(): string {
+        return this._publicKey;
+    }
 }

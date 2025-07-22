@@ -23,6 +23,7 @@ import {CloudController} from "./controller/cloud.controller";
 import {InventoryController} from "./controller/inventory.controller";
 import {EmojisController} from "./controller/emojis.controller";
 import {AnnouncementsController} from "./controller/announcements.controller";
+import {CryptoService} from "../../services/crypto.service";
 
 @Module({
     imports: [
@@ -48,6 +49,7 @@ import {AnnouncementsController} from "./controller/announcements.controller";
     providers: [
         DiscordApiService,
         AuthenticationService,
+        CryptoService,
         {
             provide: APP_INTERCEPTOR,
             useClass: ResponseReshapeInterceptor,

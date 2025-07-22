@@ -2,21 +2,13 @@
 https://docs.nestjs.com/controllers#controllers
 */
 
-import {
-    BadRequestException,
-    Body,
-    Controller,
-    Get,
-    Inject,
-    Param,
-    Post, UseGuards
-} from '@nestjs/common';
-import { DiscordOauthService } from 'src/modules/auth/service/discord-oauth.service';
+import {BadRequestException, Body, Controller, Get, Inject, Param, Post, UseGuards} from '@nestjs/common';
+import {DiscordOauthService} from 'src/modules/auth/service/discord-oauth.service';
 import {ApiOperation, ApiResponse, ApiTags} from '@nestjs/swagger';
-import { ApiSecurityNotes } from 'src/decorators/apiSecurityNote.decorator';
-import { Throttle } from '@nestjs/throttler';
-import { getThrottleForDefinition } from 'src/guards/trottleConfigs';
-import { IMembersService } from 'src/services/interfaces/members.service.interface';
+import {ApiSecurityNotes} from 'src/decorators/apiSecurityNote.decorator';
+import {Throttle} from '@nestjs/throttler';
+import {getThrottleForDefinition} from 'src/guards/trottleConfigs';
+import {IMembersService} from 'src/services/interfaces/members.service.interface';
 import {IAuthorizationService} from "../../../services/interfaces/authorization.service.interface";
 import {OAuth2AuthenticationDto} from "../dto/oauth2Authentication.dto";
 import {OAuth2AuthorizationCodeDto} from "../dto/oauth2AuthorizationCode.dto";
@@ -26,12 +18,13 @@ import {OAuth2AccessTokenResponseDto} from "../dto/oauth2AccessTokenResponse.dto
 import {ScopeDto} from "../dto/scope.dto";
 import {PreauthenticateDiscordOauth2CodeDto} from "../dto/preauthenticateDiscordOauth2CodeDto";
 import {DiscordAuthenticationResultDto} from "../dto/discordAuthenticationResult.dto";
-import {CryptoService} from "../service/crypto-oauth.service";
 import {CreateOAuth2ClientDto, OAuth2ClientDto} from "../dto/oauth2Client.dto";
 import {MemberGuard} from "../../../guards/member.guard";
 import {LoginTokenParamDto} from "../../palantir/dto/params.dto";
-import {ResourceOwner} from "../../../decorators/roles.decorator";
+import {MembershipEnum, RequiredRole, ResourceOwner} from "../../../decorators/roles.decorator";
 import {OAuth2AuthenticationResultDto} from "../dto/oauth2AuthenticationResult.dto";
+import {CryptoService} from "../../../services/crypto.service";
+import {RoleGuard} from "../../../guards/role.guard";
 
 @ApiSecurityNotes()
 @Throttle(getThrottleForDefinition("throttleTenPerMinute"))
@@ -140,7 +133,8 @@ export class OAuth2Controller {
     }
 
     @Post("clients/member/:login")
-    @UseGuards(MemberGuard)
+    @UseGuards(MemberGuard, RoleGuard)
+    @RequiredRole(MembershipEnum.Member)
     @ResourceOwner("login")
     @ApiOperation({ summary: "Register a new OAuth2 client" })
     @ApiResponse({ status: 201, type: OAuth2ClientDto, description: "OAuth2 client registered successfully" })
