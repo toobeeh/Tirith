@@ -7,10 +7,8 @@ import {
     Body,
     Controller,
     Get,
-    HttpException,
-    HttpStatus,
     Inject,
-    NotFoundException, Param,
+    Param,
     Post, UseGuards
 } from '@nestjs/common';
 import { DiscordOauthService } from 'src/modules/auth/service/discord-oauth.service';
@@ -33,6 +31,7 @@ import {CreateOAuth2ClientDto, OAuth2ClientDto} from "../dto/oauth2Client.dto";
 import {MemberGuard} from "../../../guards/member.guard";
 import {LoginTokenParamDto} from "../../palantir/dto/params.dto";
 import {ResourceOwner} from "../../../decorators/roles.decorator";
+import {OAuth2AuthenticationResultDto} from "../dto/oauth2AuthenticationResult.dto";
 
 @ApiSecurityNotes()
 @Throttle(getThrottleForDefinition("throttleTenPerMinute"))
@@ -79,11 +78,11 @@ export class OAuth2Controller {
     }
 
     @Post("code")
-    @ApiOperation({ summary: "Authenticate a user using preauthenticated discord details and create a OAuth2 token for typo. Creates an account, if set and not existing." })
-    @ApiResponse({ status: 200, type: OAuth2AuthorizationCodeDto, description: "User authenticated successfully and authorization code issued" })
-    async authenticate(@Body() authentication: OAuth2AuthenticationDto): Promise<OAuth2AuthorizationCodeDto> {
+    @ApiOperation({ summary: "Authenticate a typo member using preauthenticated discord details and create a OAuth2 auth code for typo. Creates an account, if set and not existing." })
+    @ApiResponse({ status: 200, type: OAuth2AuthenticationResultDto, description: "User authenticated successfully and authorization code issued" })
+    async authenticate(@Body() authentication: OAuth2AuthenticationDto): Promise<OAuth2AuthenticationResultDto> {
 
-        // decrypt preauthorized access token and discord user
+        // decrypt preauthenticated access token and discord user
         const discordOauthAccessToken = this.cryptoService.decrypt(authentication.discordEncryptedAccessToken);
         const discordUser = await this.discordOauth.getUser(discordOauthAccessToken);
 
@@ -108,9 +107,9 @@ export class OAuth2Controller {
 
         // issue a new authorization code for the authenticated user and client
         const client = await this.authService.getOauthClientById(authentication.clientId);
-        const token = await this.authService.createAuthorizationCode(client.clientId, member.typoId);
+        const result = await this.authService.createAuthorizationCode(client.clientId, member.typoId);
 
-        return token;
+        return {result, member};
     }
 
     @Post("token")
