@@ -74,7 +74,7 @@ export class DiscordOauthService {
             return this.cachedTokens.get(code).token.access_token;
         }
 
-        const result = await this.oauth.tokenRequest({
+        const result = await this.oauthForTypoOauth.tokenRequest({
             code,
             grantType: 'authorization_code',
             scope: 'identify'

@@ -39,7 +39,7 @@ export class AuthorizeComponent implements OnInit {
     };
     const typoStateString = encodeURI(JSON.stringify(typoState));
 
-    const redirectUrl = "http://localhost:4200/auth/submit";
+    const redirectUrl = "https://www.typo.rip/auth/submit";
     const discordOauthUrl =
       `https://discord.com/api/oauth2/authorize?client_id=1071142417987813376&redirect_uri=${encodeURI(redirectUrl)}&response_type=code&scope=identify&state=${typoStateString}`;
     window.location.href = discordOauthUrl;

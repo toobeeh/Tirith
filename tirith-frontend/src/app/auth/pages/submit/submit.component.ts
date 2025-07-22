@@ -106,11 +106,11 @@ export class SubmitComponent implements OnInit {
   }
 
   public isAuthCode(authenticationResult: OAuth2AuthenticationResultDto | DiscordAuthenticationResultDto) {
-    return authenticationResult.hasOwnProperty("authorizationCode") ? authenticationResult as OAuth2AuthenticationResultDto : null;
+    return authenticationResult.hasOwnProperty("result") ? authenticationResult as OAuth2AuthenticationResultDto : null;
   }
 
   public isPreauthentication(authenticationResult: OAuth2AuthenticationResultDto | DiscordAuthenticationResultDto) {
-    return !authenticationResult.hasOwnProperty("authorizationCode") ? authenticationResult as DiscordAuthenticationResultDto : null;
+    return authenticationResult.hasOwnProperty("encryptedAccessToken") ? authenticationResult as DiscordAuthenticationResultDto : null;
   }
 
   public getAppUrl(client: OAuth2ClientDto){

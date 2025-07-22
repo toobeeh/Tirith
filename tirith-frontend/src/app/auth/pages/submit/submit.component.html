@@ -9,7 +9,7 @@
         <h2>Welcome back, {{authCode.member.userName}}!</h2>
 
         <div class="flex flex-col gap-1 items-center">
-          <span>You are about to log in to an application with your typo account.</span>
+          <span>You're about to log in to an application using your typo account.</span>
           <span>After confirming, you will be redirected to <a href="{{getAppUrl(authCode.result.client)}}">{{getAppUrl(authCode.result.client)}}</a>.</span>
 
           <br>
@@ -20,7 +20,7 @@
               <li *ngFor="let scope of authCode.result.client.scopes">{{scope}}</li>
             </ul>
             <span *ngIf="!authCode.result.client.verified">⚠️ This app is not verified by typo.<br>Double-check the requested permissions and app website!</span>
-            <span *ngIf="authCode.result.client.verified">✅ This app is verified by typo.</span>
+            <span *ngIf="authCode.result.client.verified">✔️ This app is verified by typo.</span>
             <input
               class="w-fit self-center"
               type="button"
