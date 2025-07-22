@@ -18,4 +18,19 @@ export class OAuth2ClientDto {
 
     @XApiProperty({ description: 'Token expiry time in seconds' })
     tokenExpiry: number;
+
+    @XApiProperty({ description: 'The typo id of the client owner' })
+    ownerTypoId: number;
+}
+
+export class CreateOAuth2ClientDto {
+
+    @XApiProperty({ description: 'The redirect URI for the OAuth2 client' })
+    redirectUri: string;
+
+    @XApiProperty({ description: 'The scopes requested by the OAuth2 client' })
+    scopes: string[];
+
+    @XApiProperty({ description: 'The name of the OAuth2 client ' })
+    name: string;
 }

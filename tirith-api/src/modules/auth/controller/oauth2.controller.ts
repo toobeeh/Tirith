@@ -10,8 +10,8 @@ import {
     HttpException,
     HttpStatus,
     Inject,
-    NotFoundException,
-    Post
+    NotFoundException, Param,
+    Post, UseGuards
 } from '@nestjs/common';
 import { DiscordOauthService } from 'src/modules/auth/service/discord-oauth.service';
 import {ApiOperation, ApiResponse, ApiTags} from '@nestjs/swagger';
@@ -26,6 +26,13 @@ import {MemberDto} from "../../palantir/dto/member.dto";
 import {OAuth2AuthorizationCodeExchangeDto} from "../dto/oauth2AuthorizationCodeExchange.dto";
 import {OAuth2AccessTokenResponseDto} from "../dto/oauth2AccessTokenResponse.dto";
 import {ScopeDto} from "../dto/scope.dto";
+import {PreauthenticateDiscordOauth2CodeDto} from "../dto/preauthenticateDiscordOauth2CodeDto";
+import {DiscordAuthenticationResultDto} from "../dto/discordAuthenticationResult.dto";
+import {CryptoService} from "../service/crypto-oauth.service";
+import {CreateOAuth2ClientDto, OAuth2ClientDto} from "../dto/oauth2Client.dto";
+import {MemberGuard} from "../../../guards/member.guard";
+import {LoginTokenParamDto} from "../../palantir/dto/params.dto";
+import {ResourceOwner} from "../../../decorators/roles.decorator";
 
 @ApiSecurityNotes()
 @Throttle(getThrottleForDefinition("throttleTenPerMinute"))
@@ -35,6 +42,7 @@ export class OAuth2Controller {
     constructor(
         @Inject(IMembersService) private membersService: IMembersService,
         @Inject(IAuthorizationService) private authService: IAuthorizationService,
+        @Inject(CryptoService) private cryptoService: CryptoService,
         private discordOauth: DiscordOauthService
     ) { }
 
@@ -45,22 +53,57 @@ export class OAuth2Controller {
         return this.authService.getScopes();
     }
 
-    @Post("authenticate")
-    @ApiOperation({ summary: "Authenticate a user using Discord OAuth2 and create a OAuth2 token for typo" })
+    @Post("preauthenticate")
+    @ApiOperation({ summary: "Retrieve details about a discord user using a discord auth code and an access token for later use" })
+    @ApiResponse({ status: 200, type: DiscordAuthenticationResultDto, description: "Discord user authenticated successfully" })
+    async preAuthenticateDiscordAuthorizationCode(@Body() {authorizationCode}: PreauthenticateDiscordOauth2CodeDto): Promise<DiscordAuthenticationResultDto> {
+
+        // get discord access token & discord user for the requesting user
+        const discordOauthAccessToken = await this.discordOauth.getAccessToken(authorizationCode);
+        const discordUser = await this.discordOauth.getUser(discordOauthAccessToken);
+        const encryptedAccessToken = this.cryptoService.encrypt(discordOauthAccessToken);
+
+        // check if the user has a typo account
+        let hasTypoAccount: boolean;
+        try {
+            await this.membersService.getByDiscordID(discordUser.id);
+            hasTypoAccount = true;
+        } catch (e) {
+            hasTypoAccount = false;
+        }
+
+        return {
+            encryptedAccessToken,
+            hasTypoAccount
+        }
+    }
+
+    @Post("code")
+    @ApiOperation({ summary: "Authenticate a user using preauthenticated discord details and create a OAuth2 token for typo. Creates an account, if set and not existing." })
     @ApiResponse({ status: 200, type: OAuth2AuthorizationCodeDto, description: "User authenticated successfully and authorization code issued" })
     async authenticate(@Body() authentication: OAuth2AuthenticationDto): Promise<OAuth2AuthorizationCodeDto> {
 
-        // get discord access token & discord user for the requesting user
-        const discordOauthAccessToken = await this.discordOauth.getAccessToken(authentication.discordAuthorizationCode);
+        // decrypt preauthorized access token and discord user
+        const discordOauthAccessToken = this.cryptoService.decrypt(authentication.discordEncryptedAccessToken);
         const discordUser = await this.discordOauth.getUser(discordOauthAccessToken);
 
         // get the typo member based of the discord user id
         let member: MemberDto;
         try {
             member = await this.membersService.getByDiscordID(discordUser.id);
+
+            // if user exists, but create params set, throw
+            if(authentication.createAccountOptions){
+                throw new BadRequestException("User already exists, but create account options were set. Cannot create account for existing user.");
+            }
         }
         catch (e) {
-            throw new NotFoundException("No user exists for this discord id");
+            if(authentication.createAccountOptions === undefined) {
+                throw new BadRequestException("User does not exist, but no create account options were set.");
+            }
+
+            // user does not exist, create a new one
+            member = await this.membersService.createMember(discordUser.id, discordUser.username, authentication.createAccountOptions.connectTypoTestground);
         }
 
         // issue a new authorization code for the authenticated user and client
@@ -88,6 +131,23 @@ export class OAuth2Controller {
             expires_in: client.tokenExpiry,
             scope: client.scopes.join(" ")
         };
+    }
+
+    @Get("clients")
+    @ApiOperation({ summary: "Get all registered OAuth2 clients" })
+    @ApiResponse({ status: 200, type: OAuth2ClientDto, isArray: true, description: "List of registered OAuth2 clients" })
+    async getClients(): Promise<OAuth2ClientDto[]> {
+        return await this.authService.getOauthClients();
+    }
+
+    @Post("clients/member/:login")
+    @UseGuards(MemberGuard)
+    @ResourceOwner("login")
+    @ApiOperation({ summary: "Register a new OAuth2 client" })
+    @ApiResponse({ status: 201, type: OAuth2ClientDto, description: "OAuth2 client registered successfully" })
+    async registerClient(@Param() param: LoginTokenParamDto, @Body() client: CreateOAuth2ClientDto): Promise<OAuth2ClientDto> {
+
+        return await this.authService.createOauthClient(client.redirectUri, client.scopes, client.name, param.login);
     }
 
 }
