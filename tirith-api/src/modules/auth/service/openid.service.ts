@@ -21,16 +21,16 @@ export class OpenidService {
     private parseJwks(publicKey: string): JwksDto {
         const key = forge.pki.publicKeyFromPem(publicKey);
 
-        const n = Buffer.from(key.n.toByteArray()).toString('base64');
-        const e = Buffer.from(key.e.toByteArray()).toString('base64');
+        const nB64 = forge.util.encode64(key.n.toByteArray().map(b => (b < 0 ? b + 256 : b)).map(c => String.fromCharCode(c)).join(''));
+        const eB64 = forge.util.encode64(key.e.toByteArray().map(b => (b < 0 ? b + 256 : b)).map(c => String.fromCharCode(c)).join(''));
 
         return {
             kty: 'RSA',
             use: 'sig',
             kid: "default", // only one key used
             alg: 'RS256',
-            n: n,
-            e: e
+            n: nB64,
+            e: eB64
         };
     }
 
