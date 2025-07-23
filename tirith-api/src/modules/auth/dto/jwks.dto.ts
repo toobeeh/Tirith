@@ -1,6 +1,11 @@
 import {XApiProperty} from "../../../decorators/apiProperty.decorator";
 
 export class JwksDto{
+    @XApiProperty({description: "JSON Web Key Set (JWKS) containing public keys for OAuth2", isArray: true, type: () => JwkDto})
+    keys: JwkDto[];
+}
+
+export class JwkDto {
 
     @XApiProperty({description: "Key type, typically 'RSA'"})
     kty: string;

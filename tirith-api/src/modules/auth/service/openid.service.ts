@@ -1,7 +1,7 @@
 import {Injectable} from "@nestjs/common";
 import {ConfigService} from "@nestjs/config";
 import {CryptoService} from "../../../services/crypto.service";
-import {JwksDto} from "../dto/jwks.dto";
+import {JwkDto, JwksDto} from "../dto/jwks.dto";
 import * as forge from "node-forge";
 import {OpenIdConfigurationDto} from "../dto/openIdConfiguration.dto";
 import { pem2jwk } from 'pem-jwk';
@@ -9,17 +9,17 @@ import { pem2jwk } from 'pem-jwk';
 @Injectable()
 export class OpenidService {
 
-    private readonly _jwks: JwksDto[];
+    private readonly _jwks: JwksDto;
     private readonly _baseUrl: string;
     private readonly _authUrl: string;
 
     constructor(private config: ConfigService, private cryptoService: CryptoService) {
-        this._jwks = [this.parseJwks(this.cryptoService.publicKey)];
+        this._jwks = {keys:[this.parseJwk(this.cryptoService.publicKey)]};
         this._baseUrl = this.config.get("API_BASE_URL");
         this._authUrl = this.config.get("AUTH_ENDPOINT");
     }
 
-    private parseJwks(publicKey: string): JwksDto {
+    private parseJwk(publicKey: string): JwkDto {
         const jwk = pem2jwk(publicKey);
 
         return {
