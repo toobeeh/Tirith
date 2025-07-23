@@ -19,19 +19,8 @@ async function bootstrap() {
     .setDescription('Skribbl Typo API for resources, admin tools and authentification.')
     .setVersion('1.0')
     .addOAuth2({
-          type: 'oauth2',
-          description: "Authenticate with the API by retrieving a JWT through OAuth2.\nClient ID 2 is for the API client, leave the secret empty.",
-          flows: {
-            authorizationCode: {
-              authorizationUrl: 'https://www.typo.rip/auth/authorize',
-              tokenUrl: 'https://api.typo.rip/oauth2/token',
-              scopes: {
-              }
-            }
-          },
-          scheme: 'bearer',
-          bearerFormat: 'JWT',
-          in: 'header',
+          type: "openIdConnect",
+          openIdConnectUrl: "https://api.typo.rip/openid/.well-known/openid-configuration",
         },
         'Typo_OAuth2_Login')
     .build();

@@ -45,6 +45,7 @@ export class OpenidService {
             userinfo_endpoint: `${this.config.get("API_BASE_URL")}/openid/userinfo`,
             scopes_supported: [],
             response_types_supported: ["code"],
+            grant_types_supported: ["authorization_code"],
             subject_types_supported: ["public"],
             id_token_signing_alg_values_supported: ["RS256"],
             claims_supported: ["sub", "iss", "exp", "aud", "name"],
