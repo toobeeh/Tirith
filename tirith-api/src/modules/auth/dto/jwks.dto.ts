@@ -1,7 +1,6 @@
-import {jwksKey} from "../../../services/crypto.service";
 import {XApiProperty} from "../../../decorators/apiProperty.decorator";
 
-export class JwksDto implements jwksKey{
+export class JwksDto{
 
     @XApiProperty({description: "Key type, typically 'RSA'"})
     kty: string;

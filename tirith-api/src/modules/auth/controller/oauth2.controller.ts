@@ -24,7 +24,7 @@ import {MembershipEnum, RequiredRole, ResourceOwner} from "../../../decorators/r
 import {OAuth2AuthenticationResultDto} from "../dto/oauth2AuthenticationResult.dto";
 import {CryptoService} from "../../../services/crypto.service";
 import {RoleGuard} from "../../../guards/role.guard";
-import {JwksDto} from "../dto/jwks.dto";
+import {ConfigService} from "@nestjs/config";
 
 @ApiSecurityNotes()
 @Throttle(getThrottleForDefinition("throttleTenPerMinute"))
@@ -35,15 +35,9 @@ export class OAuth2Controller {
         @Inject(IMembersService) private membersService: IMembersService,
         @Inject(IAuthorizationService) private authService: IAuthorizationService,
         @Inject(CryptoService) private cryptoService: CryptoService,
-        private discordOauth: DiscordOauthService
+        private discordOauth: DiscordOauthService,
+        private config: ConfigService
     ) { }
-
-    @Get("jwks.json")
-    @ApiOperation({ summary: "Get the JSON Web Key Set (JWKS) for OAuth2" })
-    @ApiResponse({ status: 200, type: JwksDto, isArray: true, description: "JSON Web Key Set (JWKS) containing public keys for OAuth2" })
-    async getJwks(): Promise<JwksDto[]> {
-        return this.cryptoService.jwks;
-    }
 
     @Get("scopes")
     @ApiOperation({ summary: "Get all available scopes for OAuth2" })
