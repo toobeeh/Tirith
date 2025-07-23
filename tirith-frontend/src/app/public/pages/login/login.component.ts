@@ -19,8 +19,6 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
-    // check if redirected back from login (new method
     const continueParam = this.route.snapshot.queryParamMap.get("state");
     const authCode = this.route.snapshot.queryParamMap.get("code");
     if(authCode !== null){
@@ -37,6 +35,5 @@ export class LoginComponent implements OnInit {
       });
     }
   }
-
 }
 

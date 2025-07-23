@@ -11,7 +11,6 @@ import {getThrottleForDefinition} from 'src/guards/trottleConfigs';
 import {IMembersService} from 'src/services/interfaces/members.service.interface';
 import {IAuthorizationService} from "../../../services/interfaces/authorization.service.interface";
 import {OAuth2AuthenticationDto} from "../dto/oauth2Authentication.dto";
-import {OAuth2AuthorizationCodeDto} from "../dto/oauth2AuthorizationCode.dto";
 import {MemberDto} from "../../palantir/dto/member.dto";
 import {OAuth2AuthorizationCodeExchangeDto} from "../dto/oauth2AuthorizationCodeExchange.dto";
 import {OAuth2AccessTokenResponseDto} from "../dto/oauth2AccessTokenResponse.dto";
@@ -25,6 +24,7 @@ import {MembershipEnum, RequiredRole, ResourceOwner} from "../../../decorators/r
 import {OAuth2AuthenticationResultDto} from "../dto/oauth2AuthenticationResult.dto";
 import {CryptoService} from "../../../services/crypto.service";
 import {RoleGuard} from "../../../guards/role.guard";
+import {JwksDto} from "../dto/jwks.dto";
 
 @ApiSecurityNotes()
 @Throttle(getThrottleForDefinition("throttleTenPerMinute"))
@@ -37,6 +37,13 @@ export class OAuth2Controller {
         @Inject(CryptoService) private cryptoService: CryptoService,
         private discordOauth: DiscordOauthService
     ) { }
+
+    @Get("jwks.json")
+    @ApiOperation({ summary: "Get the JSON Web Key Set (JWKS) for OAuth2" })
+    @ApiResponse({ status: 200, type: JwksDto, isArray: true, description: "JSON Web Key Set (JWKS) containing public keys for OAuth2" })
+    async getJwks(): Promise<JwksDto[]> {
+        return this.cryptoService.jwks;
+    }
 
     @Get("scopes")
     @ApiOperation({ summary: "Get all available scopes for OAuth2" })

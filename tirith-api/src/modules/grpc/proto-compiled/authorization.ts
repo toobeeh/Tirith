@@ -39,6 +39,7 @@ export interface CreateOAuth2AuthorizationCodeMessage {
 export interface OAuth2AuthorizationCodeExchangeMessage {
   oauth2AuthorizationCode: string;
   oauth2ClientId: number;
+  jwtIssuer: string;
 }
 
 export interface OAuth2AuthorizationCodeMessage {
@@ -448,7 +449,7 @@ export const CreateOAuth2AuthorizationCodeMessage = {
 };
 
 function createBaseOAuth2AuthorizationCodeExchangeMessage(): OAuth2AuthorizationCodeExchangeMessage {
-  return { oauth2AuthorizationCode: "", oauth2ClientId: 0 };
+  return { oauth2AuthorizationCode: "", oauth2ClientId: 0, jwtIssuer: "" };
 }
 
 export const OAuth2AuthorizationCodeExchangeMessage = {
@@ -458,6 +459,9 @@ export const OAuth2AuthorizationCodeExchangeMessage = {
     }
     if (message.oauth2ClientId !== 0) {
       writer.uint32(16).int32(message.oauth2ClientId);
+    }
+    if (message.jwtIssuer !== "") {
+      writer.uint32(26).string(message.jwtIssuer);
     }
     return writer;
   },
@@ -483,6 +487,13 @@ export const OAuth2AuthorizationCodeExchangeMessage = {
 
           message.oauth2ClientId = reader.int32();
           continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.jwtIssuer = reader.string();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -498,6 +509,7 @@ export const OAuth2AuthorizationCodeExchangeMessage = {
         ? globalThis.String(object.oauth2AuthorizationCode)
         : "",
       oauth2ClientId: isSet(object.oauth2ClientId) ? globalThis.Number(object.oauth2ClientId) : 0,
+      jwtIssuer: isSet(object.jwtIssuer) ? globalThis.String(object.jwtIssuer) : "",
     };
   },
 
@@ -508,6 +520,9 @@ export const OAuth2AuthorizationCodeExchangeMessage = {
     }
     if (message.oauth2ClientId !== 0) {
       obj.oauth2ClientId = Math.round(message.oauth2ClientId);
+    }
+    if (message.jwtIssuer !== "") {
+      obj.jwtIssuer = message.jwtIssuer;
     }
     return obj;
   },
