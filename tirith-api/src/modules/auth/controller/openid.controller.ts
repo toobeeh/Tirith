@@ -27,7 +27,7 @@ export class OpenIdController {
 
     @Get("jwks.json")
     @ApiOperation({ summary: "Get the JSON Web Key Set (JWKS) for OAuth2" })
-    @ApiResponse({ status: 200, type: JwksDto, isArray: true, description: "JSON Web Key Set (JWKS) containing public keys for OAuth2" })
+    @ApiResponse({ status: 200, type: JwksDto, description: "JSON Web Key Set (JWKS) containing public keys for OAuth2" })
     async getJwks(): Promise<JwksDto> {
         return this.openidService.jwks;
     }
