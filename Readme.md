@@ -28,7 +28,19 @@ Additionally, there is the API service module, which is auto-generated via opena
 
 The frontend is live on the [www subdomain](https://www.typo.rip) and probably also accessible via redirect from the typo TLD https://typo.rip
 
-## Authorization (OAuth2)
+## Authorization (OIDC / OAuth2)
+
+TLDR:
+- Typo implements minimal OIDC & OAuth2
+- Typo OAuth2 login is a wrapper around Discord OAuth
+- Typo has [openId discovery](https://api.typo.rip/openid/.well-known/openid-configuration) and a [jwks endpoint](https://api.typo.rip/openid/jwks.json)
+- Typo supports OAUth2 only via authorization_code grant type
+- The Typo OAuth2 authorization endpoint is located [at the website](https://www.typo.rip/auth/authorize)
+- redirect_uri and scope parameters are **fixed per client** and ignored
+- OAuth2 clients are public and can be created by anyone through te API
+- The Typo OAuth2 token endpoint is located [at the API oauth2 controller](https://api.typo.rip/oauth2/token)
+
+___
 
 Typo went through a lot of (bad practice) auth variants, so there might be remains of that found in the code.  
 The current auth flow is completely independent of that, but might support a few old endpoints for backwards compatibility.  

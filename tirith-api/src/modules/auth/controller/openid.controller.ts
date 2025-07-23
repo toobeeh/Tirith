@@ -5,8 +5,6 @@ https://docs.nestjs.com/controllers#controllers
 import {Controller, Get, Req, Request, UseGuards} from '@nestjs/common';
 import {ApiOperation, ApiResponse, ApiTags} from '@nestjs/swagger';
 import {ApiSecurityNotes} from 'src/decorators/apiSecurityNote.decorator';
-import {Throttle} from '@nestjs/throttler';
-import {getThrottleForDefinition} from 'src/guards/trottleConfigs';
 import {JwksDto} from "../dto/jwks.dto";
 import {OpenIdConfigurationDto} from "../dto/openIdConfiguration.dto";
 import {OpenidService} from "../service/openid.service";
@@ -17,7 +15,6 @@ import {RoleGuard} from "../../../guards/role.guard";
 import {MemberDto} from "../../palantir/dto/member.dto";
 
 @ApiSecurityNotes()
-@Throttle(getThrottleForDefinition("throttleTenPerMinute"))
 @Controller("openid")
 @ApiTags("openid")
 export class OpenIdController {

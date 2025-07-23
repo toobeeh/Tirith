@@ -16,7 +16,7 @@ async function bootstrap() {
 
   const config = new DocumentBuilder()
     .setTitle('Skribbl Typo API')
-    .setDescription('Skribbl Typo API for resources, admin tools and authentification.')
+    .setDescription('Skribbl Typo API for resources, admin tools and authentication.')
     .setVersion('1.0')
     .addOAuth2({
           type: "openIdConnect",
