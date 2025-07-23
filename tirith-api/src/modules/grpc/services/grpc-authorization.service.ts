@@ -10,11 +10,8 @@ import {ScopeDto} from "../../auth/dto/scope.dto";
 @Injectable()
 export class GrpcAuthorizationService extends GrpcBaseService<AuthorizationDefinition> implements IAuthorizationService {
 
-    private readonly _issuer: string;
-
     constructor(config: ConfigService) {
         super(AuthorizationDefinition, config);
-        this._issuer = config.get("JWT_ISSUER");
     }
 
     async getScopes(): Promise<ScopeDto[]> {
@@ -72,11 +69,11 @@ export class GrpcAuthorizationService extends GrpcBaseService<AuthorizationDefin
         };
     }
 
-    async exchangeAuthorizationCode(oauth2AuthorizationCode: string, clientId: number): Promise<string> {
+    async exchangeAuthorizationCode(oauth2AuthorizationCode: string, clientId: number, issuer: string): Promise<string> {
         const response = await this.grpcClient.exchangeOauth2AuthorizationCode({
             oauth2AuthorizationCode,
             oauth2ClientId: clientId,
-            jwtIssuer: this._issuer
+            jwtIssuer: issuer
         });
 
         return response.jwt;

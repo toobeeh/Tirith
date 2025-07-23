@@ -25,6 +25,7 @@ import {OAuth2AuthenticationResultDto} from "../dto/oauth2AuthenticationResult.d
 import {CryptoService} from "../../../services/crypto.service";
 import {RoleGuard} from "../../../guards/role.guard";
 import {ConfigService} from "@nestjs/config";
+import {OpenidService} from "../service/openid.service";
 
 @ApiSecurityNotes()
 @Throttle(getThrottleForDefinition("throttleTenPerMinute"))
@@ -36,7 +37,7 @@ export class OAuth2Controller {
         @Inject(IAuthorizationService) private authService: IAuthorizationService,
         @Inject(CryptoService) private cryptoService: CryptoService,
         private discordOauth: DiscordOauthService,
-        private config: ConfigService
+        private openidService: OpenidService
     ) { }
 
     @Get("scopes")
@@ -116,7 +117,7 @@ export class OAuth2Controller {
         }
 
         const client = await this.authService.getOauthClientById(exchange.client_id);
-        const token = await this.authService.exchangeAuthorizationCode(exchange.code, client.clientId);
+        const token = await this.authService.exchangeAuthorizationCode(exchange.code, client.clientId, this.openidService.openIdConfig.issuer);
 
         return {
             access_token: token,

@@ -13,7 +13,7 @@ export interface IAuthorizationService {
 
     createAuthorizationCode(clientId: number, typoId: number): Promise<OAuth2AuthorizationCodeDto>;
 
-    exchangeAuthorizationCode(oauth2AuthorizationCode: string, clientId: number): Promise<string>;
+    exchangeAuthorizationCode(oauth2AuthorizationCode: string, clientId: number, issuer: string): Promise<string>;
 
     createOauthClient(redirectUri: string, scopes: string[], name: string, ownerTypoId: number): Promise<OAuth2ClientDto>;
 }
