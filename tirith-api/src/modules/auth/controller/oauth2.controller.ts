@@ -155,6 +155,7 @@ export class OAuth2Controller {
             return {
                 access_token: newToken,
                 token_type: "Bearer",
+                issued_token_type: "urn:ietf:params:oauth:token-type:jwt",
                 expires_in: client.tokenExpiry,
                 scope: client.scopes.join(" ")
             };
