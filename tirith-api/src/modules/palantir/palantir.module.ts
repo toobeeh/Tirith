@@ -24,6 +24,7 @@ import {InventoryController} from "./controller/inventory.controller";
 import {EmojisController} from "./controller/emojis.controller";
 import {AnnouncementsController} from "./controller/announcements.controller";
 import {CryptoService} from "../../services/crypto.service";
+import {OpenIdService} from "../auth/service/openid.service";
 
 @Module({
     imports: [
@@ -50,6 +51,7 @@ import {CryptoService} from "../../services/crypto.service";
         DiscordApiService,
         AuthenticationService,
         CryptoService,
+        OpenIdService,
         {
             provide: APP_INTERCEPTOR,
             useClass: ResponseReshapeInterceptor,
