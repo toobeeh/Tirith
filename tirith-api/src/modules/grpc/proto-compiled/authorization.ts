@@ -19,6 +19,7 @@ export interface CreateOAuth2ClientMessage {
   scopes: string[];
   redirectUri: string;
   ownerTypoId: number;
+  audience: string;
 }
 
 export interface OAuth2ClientMessage {
@@ -29,6 +30,7 @@ export interface OAuth2ClientMessage {
   verified: boolean;
   tokenExpiry: Long;
   ownerTypoId: number;
+  audience: string;
 }
 
 export interface CreateOAuth2AuthorizationCodeMessage {
@@ -40,6 +42,13 @@ export interface OAuth2AuthorizationCodeExchangeMessage {
   oauth2AuthorizationCode: string;
   oauth2ClientId: number;
   jwtIssuer: string;
+}
+
+export interface CreateOAuth2TokenMessage {
+  typoId: number;
+  oauth2ClientId: number;
+  jwtIssuer: string;
+  requestedAudience: string;
 }
 
 export interface OAuth2AuthorizationCodeMessage {
@@ -151,7 +160,7 @@ export const ScopeMessage = {
 };
 
 function createBaseCreateOAuth2ClientMessage(): CreateOAuth2ClientMessage {
-  return { name: "", scopes: [], redirectUri: "", ownerTypoId: 0 };
+  return { name: "", scopes: [], redirectUri: "", ownerTypoId: 0, audience: "" };
 }
 
 export const CreateOAuth2ClientMessage = {
@@ -167,6 +176,9 @@ export const CreateOAuth2ClientMessage = {
     }
     if (message.ownerTypoId !== 0) {
       writer.uint32(32).int32(message.ownerTypoId);
+    }
+    if (message.audience !== "") {
+      writer.uint32(42).string(message.audience);
     }
     return writer;
   },
@@ -206,6 +218,13 @@ export const CreateOAuth2ClientMessage = {
 
           message.ownerTypoId = reader.int32();
           continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.audience = reader.string();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -221,6 +240,7 @@ export const CreateOAuth2ClientMessage = {
       scopes: globalThis.Array.isArray(object?.scopes) ? object.scopes.map((e: any) => globalThis.String(e)) : [],
       redirectUri: isSet(object.redirectUri) ? globalThis.String(object.redirectUri) : "",
       ownerTypoId: isSet(object.ownerTypoId) ? globalThis.Number(object.ownerTypoId) : 0,
+      audience: isSet(object.audience) ? globalThis.String(object.audience) : "",
     };
   },
 
@@ -238,6 +258,9 @@ export const CreateOAuth2ClientMessage = {
     if (message.ownerTypoId !== 0) {
       obj.ownerTypoId = Math.round(message.ownerTypoId);
     }
+    if (message.audience !== "") {
+      obj.audience = message.audience;
+    }
     return obj;
   },
 };
@@ -251,6 +274,7 @@ function createBaseOAuth2ClientMessage(): OAuth2ClientMessage {
     verified: false,
     tokenExpiry: Long.ZERO,
     ownerTypoId: 0,
+    audience: "",
   };
 }
 
@@ -276,6 +300,9 @@ export const OAuth2ClientMessage = {
     }
     if (message.ownerTypoId !== 0) {
       writer.uint32(56).int32(message.ownerTypoId);
+    }
+    if (message.audience !== "") {
+      writer.uint32(66).string(message.audience);
     }
     return writer;
   },
@@ -336,6 +363,13 @@ export const OAuth2ClientMessage = {
 
           message.ownerTypoId = reader.int32();
           continue;
+        case 8:
+          if (tag !== 66) {
+            break;
+          }
+
+          message.audience = reader.string();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -354,6 +388,7 @@ export const OAuth2ClientMessage = {
       verified: isSet(object.verified) ? globalThis.Boolean(object.verified) : false,
       tokenExpiry: isSet(object.tokenExpiry) ? Long.fromValue(object.tokenExpiry) : Long.ZERO,
       ownerTypoId: isSet(object.ownerTypoId) ? globalThis.Number(object.ownerTypoId) : 0,
+      audience: isSet(object.audience) ? globalThis.String(object.audience) : "",
     };
   },
 
@@ -379,6 +414,9 @@ export const OAuth2ClientMessage = {
     }
     if (message.ownerTypoId !== 0) {
       obj.ownerTypoId = Math.round(message.ownerTypoId);
+    }
+    if (message.audience !== "") {
+      obj.audience = message.audience;
     }
     return obj;
   },
@@ -523,6 +561,98 @@ export const OAuth2AuthorizationCodeExchangeMessage = {
     }
     if (message.jwtIssuer !== "") {
       obj.jwtIssuer = message.jwtIssuer;
+    }
+    return obj;
+  },
+};
+
+function createBaseCreateOAuth2TokenMessage(): CreateOAuth2TokenMessage {
+  return { typoId: 0, oauth2ClientId: 0, jwtIssuer: "", requestedAudience: "" };
+}
+
+export const CreateOAuth2TokenMessage = {
+  encode(message: CreateOAuth2TokenMessage, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.typoId !== 0) {
+      writer.uint32(8).int32(message.typoId);
+    }
+    if (message.oauth2ClientId !== 0) {
+      writer.uint32(16).int32(message.oauth2ClientId);
+    }
+    if (message.jwtIssuer !== "") {
+      writer.uint32(26).string(message.jwtIssuer);
+    }
+    if (message.requestedAudience !== "") {
+      writer.uint32(34).string(message.requestedAudience);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): CreateOAuth2TokenMessage {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseCreateOAuth2TokenMessage();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.typoId = reader.int32();
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.oauth2ClientId = reader.int32();
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.jwtIssuer = reader.string();
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.requestedAudience = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): CreateOAuth2TokenMessage {
+    return {
+      typoId: isSet(object.typoId) ? globalThis.Number(object.typoId) : 0,
+      oauth2ClientId: isSet(object.oauth2ClientId) ? globalThis.Number(object.oauth2ClientId) : 0,
+      jwtIssuer: isSet(object.jwtIssuer) ? globalThis.String(object.jwtIssuer) : "",
+      requestedAudience: isSet(object.requestedAudience) ? globalThis.String(object.requestedAudience) : "",
+    };
+  },
+
+  toJSON(message: CreateOAuth2TokenMessage): unknown {
+    const obj: any = {};
+    if (message.typoId !== 0) {
+      obj.typoId = Math.round(message.typoId);
+    }
+    if (message.oauth2ClientId !== 0) {
+      obj.oauth2ClientId = Math.round(message.oauth2ClientId);
+    }
+    if (message.jwtIssuer !== "") {
+      obj.jwtIssuer = message.jwtIssuer;
+    }
+    if (message.requestedAudience !== "") {
+      obj.requestedAudience = message.requestedAudience;
     }
     return obj;
   },
@@ -675,6 +805,15 @@ export const AuthorizationDefinition = {
       responseStream: false,
       options: {},
     },
+    /** Create a oauth2 access token. should be used only in authorized preconditions like auth code or token exchange grants */
+    createOauth2Token: {
+      name: "CreateOauth2Token",
+      requestType: CreateOAuth2TokenMessage,
+      requestStream: false,
+      responseType: OAuth2AccessTokenMessage,
+      responseStream: false,
+      options: {},
+    },
     /** Creates a new OAuth2 client */
     createOauth2Client: {
       name: "CreateOauth2Client",
@@ -712,6 +851,11 @@ export interface AuthorizationServiceImplementation<CallContextExt = {}> {
     request: OAuth2AuthorizationCodeExchangeMessage,
     context: CallContext & CallContextExt,
   ): Promise<OAuth2AccessTokenMessage>;
+  /** Create a oauth2 access token. should be used only in authorized preconditions like auth code or token exchange grants */
+  createOauth2Token(
+    request: CreateOAuth2TokenMessage,
+    context: CallContext & CallContextExt,
+  ): Promise<OAuth2AccessTokenMessage>;
   /** Creates a new OAuth2 client */
   createOauth2Client(
     request: CreateOAuth2ClientMessage,
@@ -738,6 +882,11 @@ export interface AuthorizationClient<CallOptionsExt = {}> {
   /** Exchange a oauth2 authorization code for an access token (jwt) */
   exchangeOauth2AuthorizationCode(
     request: OAuth2AuthorizationCodeExchangeMessage,
+    options?: CallOptions & CallOptionsExt,
+  ): Promise<OAuth2AccessTokenMessage>;
+  /** Create a oauth2 access token. should be used only in authorized preconditions like auth code or token exchange grants */
+  createOauth2Token(
+    request: CreateOAuth2TokenMessage,
     options?: CallOptions & CallOptionsExt,
   ): Promise<OAuth2AccessTokenMessage>;
   /** Creates a new OAuth2 client */

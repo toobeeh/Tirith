@@ -21,16 +21,22 @@ export class OAuth2ClientDto {
 
     @XApiProperty({ description: 'The typo id of the client owner' })
     ownerTypoId: number;
+
+    @XApiProperty({ description: 'The audience of the OAuth2 client, typically the base url of the API that it accesses' })
+    audience: string;
 }
 
 export class CreateOAuth2ClientDto {
 
-    @XApiProperty({ description: 'The redirect URI for the OAuth2 client' })
+    @XApiProperty({ description: 'The OAuth2 redirect URI for the OAuth2 client' })
     redirectUri: string;
 
     @XApiProperty({ description: 'The scopes requested by the OAuth2 client' })
     scopes: string[];
 
-    @XApiProperty({ description: 'The name of the OAuth2 client ' })
+    @XApiProperty({ description: 'The name of the OAuth2 client' })
     name: string;
+
+    @XApiProperty({ description: 'The audience of the OAuth2 client, typically the base url of the API that it accesses' })
+    audience: string;
 }

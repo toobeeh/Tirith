@@ -11,7 +11,7 @@ import {AuthenticationService} from "../../services/authentication.service";
 import {APP_INTERCEPTOR} from "@nestjs/core";
 import {ResponseReshapeInterceptor} from "../../interceptors/responsereshape.interceptor";
 import {CryptoService} from "../../services/crypto.service";
-import {OpenidService} from "./service/openid.service";
+import {OpenIdService} from "./service/openid.service";
 import {OpenIdController} from "./controller/openid.controller";
 
 @Module({
@@ -26,7 +26,7 @@ import {OpenIdController} from "./controller/openid.controller";
     providers: [
         DiscordOauthService,
         CryptoService,
-        OpenidService,
+        OpenIdService,
         AuthenticationService,
         {
             provide: APP_INTERCEPTOR,

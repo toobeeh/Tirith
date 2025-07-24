@@ -7,7 +7,7 @@ import {ApiOperation, ApiResponse, ApiTags} from '@nestjs/swagger';
 import {ApiSecurityNotes} from 'src/decorators/apiSecurityNote.decorator';
 import {JwksDto} from "../dto/jwks.dto";
 import {OpenIdConfigurationDto} from "../dto/openIdConfiguration.dto";
-import {OpenidService} from "../service/openid.service";
+import {OpenIdService} from "../service/openid.service";
 import {OpenIdUserinfoDto} from "../dto/openIdUserinfo.dto";
 import {MembershipEnum, RequiredRole} from "../../../decorators/roles.decorator";
 import {MemberGuard} from "../../../guards/member.guard";
@@ -19,7 +19,7 @@ import {MemberDto} from "../../palantir/dto/member.dto";
 @ApiTags("openid")
 export class OpenIdController {
     constructor(
-        private openidService: OpenidService,
+        private openidService: OpenIdService,
     ) { }
 
     @Get("jwks.json")

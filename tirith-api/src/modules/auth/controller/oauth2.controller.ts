@@ -12,7 +12,7 @@ import {IMembersService} from 'src/services/interfaces/members.service.interface
 import {IAuthorizationService} from "../../../services/interfaces/authorization.service.interface";
 import {OAuth2AuthenticationDto} from "../dto/oauth2Authentication.dto";
 import {MemberDto} from "../../palantir/dto/member.dto";
-import {OAuth2AuthorizationCodeExchangeDto} from "../dto/oauth2AuthorizationCodeExchange.dto";
+import {OAuth2TokenExchangeDto} from "../dto/oauth2TokenExchangeDto";
 import {OAuth2AccessTokenResponseDto} from "../dto/oauth2AccessTokenResponse.dto";
 import {ScopeDto} from "../dto/scope.dto";
 import {PreauthenticateDiscordOauth2CodeDto} from "../dto/preauthenticateDiscordOauth2CodeDto";
@@ -24,8 +24,7 @@ import {MembershipEnum, RequiredRole, ResourceOwner} from "../../../decorators/r
 import {OAuth2AuthenticationResultDto} from "../dto/oauth2AuthenticationResult.dto";
 import {CryptoService} from "../../../services/crypto.service";
 import {RoleGuard} from "../../../guards/role.guard";
-import {ConfigService} from "@nestjs/config";
-import {OpenidService} from "../service/openid.service";
+import {OpenIdService} from "../service/openid.service";
 
 @ApiSecurityNotes()
 @Throttle(getThrottleForDefinition("throttleTenPerMinute"))
@@ -37,7 +36,7 @@ export class OAuth2Controller {
         @Inject(IAuthorizationService) private authService: IAuthorizationService,
         @Inject(CryptoService) private cryptoService: CryptoService,
         private discordOauth: DiscordOauthService,
-        private openidService: OpenidService
+        private openidService: OpenIdService
     ) { }
 
     @Get("scopes")
@@ -110,21 +109,60 @@ export class OAuth2Controller {
     @Post("token")
     @ApiOperation({ summary: "Exchange a typo oauth2 authorization code for a access token (jwt)" })
     @ApiResponse({ status: 200, type: OAuth2AccessTokenResponseDto, description: "Issued access token and details" })
-    async getAccessToken(@Body() exchange: OAuth2AuthorizationCodeExchangeDto): Promise<OAuth2AccessTokenResponseDto> {
+    async getAccessToken(@Body() exchange: OAuth2TokenExchangeDto): Promise<OAuth2AccessTokenResponseDto> {
 
-        if(exchange.grant_type !== "authorization_code") {
-            throw new BadRequestException("Invalid grant type. Only 'authorization_code' is supported.");
+        if(exchange.grant_type === "authorization_code") {
+
+            if(exchange.code === undefined || exchange.client_id === undefined) {
+                throw new BadRequestException("Missing required parameters: code and client_id are required for authorization_code grant type.");
+            }
+
+            const client = await this.authService.getOauthClientById(exchange.client_id);
+            const token = await this.authService.exchangeAuthorizationCode(exchange.code, client.clientId, this.openidService.openIdConfig.issuer);
+
+            return {
+                access_token: token,
+                token_type: "Bearer",
+                expires_in: client.tokenExpiry,
+                scope: client.scopes.join(" ")
+            };
         }
 
-        const client = await this.authService.getOauthClientById(exchange.client_id);
-        const token = await this.authService.exchangeAuthorizationCode(exchange.code, client.clientId, this.openidService.openIdConfig.issuer);
+        else if(exchange.grant_type === "urn:ietf:params:oauth:grant-type:token-exchange "){
 
-        return {
-            access_token: token,
-            token_type: "Bearer",
-            expires_in: client.tokenExpiry,
-            scope: client.scopes.join(" ")
-        };
+            if(exchange.subject_token === undefined || exchange.subject_token_type === undefined || exchange.audience === undefined) {
+                throw new BadRequestException("Missing required parameters: subject_token and subject_token_type are required for token-exchange grant type.");
+            }
+
+            if(exchange.subject_token_type !== "urn:ietf:params:oauth:token-type:jwt") {
+                throw new BadRequestException(`Unsupported subject_token_type: ${exchange.subject_token_type}. Only 'urn:ietf:params:oauth:token-type:jwt' is supported.`);
+            }
+
+            const token = this.openidService.verifyJwt(exchange.subject_token);
+            const clientId = Number(token["azp"]);
+            if(!Number.isInteger(clientId)) {
+                throw new BadRequestException("Invalid token: 'azp' claim is missing or invalid. Need original client id for token exchange authorization");
+            }
+            const client = await this.authService.getOauthClientById(exchange.client_id);
+
+            const subject = Number(token["sub"]);
+            if(!Number.isInteger(subject)) {
+                throw new BadRequestException("Invalid token: 'sub' claim is missing or invalid. Need original subject id for token exchange authorization");
+            }
+
+            const newToken = await this.authService.createAccessToken(subject, clientId, this.openidService.openIdConfig.issuer, exchange.audience);
+
+            return {
+                access_token: newToken,
+                token_type: "Bearer",
+                expires_in: client.tokenExpiry,
+                scope: client.scopes.join(" ")
+            };
+        }
+
+        else {
+            throw new BadRequestException(`Unsupported grant type: ${exchange.grant_type}`);
+        }
     }
 
     @Get("clients")
@@ -142,7 +180,7 @@ export class OAuth2Controller {
     @ApiResponse({ status: 201, type: OAuth2ClientDto, description: "OAuth2 client registered successfully" })
     async registerClient(@Param() param: LoginTokenParamDto, @Body() client: CreateOAuth2ClientDto): Promise<OAuth2ClientDto> {
 
-        return await this.authService.createOauthClient(client.redirectUri, client.scopes, client.name, param.login);
+        return await this.authService.createOauthClient(client.redirectUri, client.scopes, client.name, param.login, client.audience);
     }
 
 }

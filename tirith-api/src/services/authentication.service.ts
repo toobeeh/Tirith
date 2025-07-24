@@ -8,6 +8,7 @@ import {ClientError, Status} from "nice-grpc";
 import * as jwt from "jsonwebtoken";
 import {CryptoService} from "./crypto.service";
 import {MemberDto} from "../modules/palantir/dto/member.dto";
+import {OpenIdService} from "../modules/auth/service/openid.service";
 
 export interface userFlags {
     bubbleFarming: boolean;
@@ -32,7 +33,8 @@ export class AuthenticationService {
 
     constructor(
         @Inject(IMembersService) private service: IMembersService,
-        @Inject(CryptoService) private cryptoService: CryptoService
+        @Inject(CryptoService) private cryptoService: CryptoService,
+        private openidService: OpenIdService
     ) { }
 
     async authenticate(token: string): Promise<authenticatedUser> {
@@ -57,7 +59,10 @@ export class AuthenticationService {
 
         // check if payload is valid and retrieve user
         try {
-            const result = jwt.verify(token, this.cryptoService.publicKey, { algorithms: ['RS256'], ignoreExpiration: false });
+
+            // verify jwt signature and require issuer and audience to be this API
+            const result = this.openidService.verifyJwt(token);
+
             const memberId = Number(result["sub"]);
 
             const member = await this.service.getByLogin(memberId);

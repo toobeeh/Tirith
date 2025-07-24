@@ -27,7 +27,7 @@ export class OpenIdConfigurationDto {
     response_types_supported: ["code"];
 
     @XApiProperty({description: "Only code flow supported"})
-    grant_types_supported: ["authorization_code"];
+    grant_types_supported: ["authorization_code", "urn:ietf:params:oauth:grant-type:token-exchange"];
 
     @XApiProperty({description: "Only public subject types"})
     subject_types_supported: ["public"];
