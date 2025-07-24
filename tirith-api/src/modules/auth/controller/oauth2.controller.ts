@@ -128,7 +128,7 @@ export class OAuth2Controller {
             };
         }
 
-        else if(exchange.grant_type === "urn:ietf:params:oauth:grant-type:token-exchange "){
+        else if(exchange.grant_type === "urn:ietf:params:oauth:grant-type:token-exchange"){
 
             if(exchange.subject_token === undefined || exchange.subject_token_type === undefined || exchange.audience === undefined) {
                 throw new BadRequestException("Missing required parameters: subject_token and subject_token_type are required for token-exchange grant type.");
