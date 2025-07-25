@@ -143,6 +143,9 @@ export class OAuth2Controller {
             if(!Number.isInteger(clientId)) {
                 throw new BadRequestException("Invalid token: 'azp' claim is missing or invalid. Need original client id for token exchange authorization");
             }
+            if( clientId !== exchange.client_id) {
+                throw new BadRequestException(`Invalid token: 'azp' claim does not match client_id. Expected ${exchange.client_id}, got ${clientId}.`);
+            }
             const client = await this.authService.getOauthClientById(exchange.client_id);
 
             const subject = Number(token["sub"]);
