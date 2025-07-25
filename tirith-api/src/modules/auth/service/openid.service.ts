@@ -69,12 +69,12 @@ export class OpenIdService {
         return this._openIdConfig;
     }
 
-    public verifyJwt(token: string) {
+    public verifyJwt(token: string, validateAudience = true) {
         return jwt.verify(token, this.cryptoService.publicKey, {
             algorithms: ['RS256'],
             ignoreExpiration: false,
             issuer: this.openIdConfig.issuer,
-            audience: this.audience
+            audience: validateAudience ? this.audience : undefined
         });
     }
 

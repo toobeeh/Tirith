@@ -138,7 +138,7 @@ export class OAuth2Controller {
                 throw new BadRequestException(`Unsupported subject_token_type: ${exchange.subject_token_type}. Only 'urn:ietf:params:oauth:token-type:jwt' is supported.`);
             }
 
-            const token = this.openidService.verifyJwt(exchange.subject_token);
+            const token = this.openidService.verifyJwt(exchange.subject_token, false); // do not validate audience; different audience is expected
             const clientId = Number(token["azp"]);
             if(!Number.isInteger(clientId)) {
                 throw new BadRequestException("Invalid token: 'azp' claim is missing or invalid. Need original client id for token exchange authorization");
