@@ -47,6 +47,16 @@ const throttleThirtyPerMinute: throttleConfig = {
 };
 
 /**
+ * Rate limit config: 100 / minute
+ * Use for public resources/config that are often fetched
+ */
+const throttleHundredPerMinute: throttleConfig = {
+    limit: 100,
+    ttl: minutes(1),
+    description: "Requests for public resources/config that are often fetched"
+};
+
+/**
  * collection of all throttle configs
  */
 const throttles = {
@@ -54,6 +64,7 @@ const throttles = {
     throttleTenPerMinute,
     throttleTenPerTenMinutes,
     throttleThirtyPerMinute,
+    throttleHundredPerMinute,
 
     /* default throttle */
     default: throttleTenPerMinute

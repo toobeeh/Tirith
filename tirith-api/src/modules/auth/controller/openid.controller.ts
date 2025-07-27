@@ -13,6 +13,8 @@ import {MembershipEnum, RequiredRole} from "../../../decorators/roles.decorator"
 import {MemberGuard} from "../../../guards/member.guard";
 import {RoleGuard} from "../../../guards/role.guard";
 import {MemberDto} from "../../palantir/dto/member.dto";
+import {Throttle} from "@nestjs/throttler";
+import {getThrottleForDefinition} from "../../../guards/trottleConfigs";
 
 @ApiSecurityNotes()
 @Controller("openid")
@@ -23,6 +25,7 @@ export class OpenIdController {
     ) { }
 
     @Get("jwks.json")
+    @Throttle(getThrottleForDefinition("throttleHundredPerMinute"))
     @ApiOperation({ summary: "Get the JSON Web Key Set (JWKS) for OAuth2" })
     @ApiResponse({ status: 200, type: JwksDto, description: "JSON Web Key Set (JWKS) containing public keys for OAuth2" })
     async getJwks(): Promise<JwksDto> {
@@ -30,6 +33,7 @@ export class OpenIdController {
     }
 
     @Get(".well-known/openid-configuration")
+    @Throttle(getThrottleForDefinition("throttleHundredPerMinute"))
     @ApiOperation({ summary: "Get the openid configuration of typo" })
     @ApiResponse({ status: 200, type: OpenIdConfigurationDto, description: "Minimal openid configuration of typo" })
     async getOpenidConfiguration(): Promise<OpenIdConfigurationDto> {
