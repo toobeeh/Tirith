@@ -1,10 +1,12 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
+import {Oauth2Service} from "../../../../api";
 
 export interface typoOauthState {
   clientId: number;
   originalState: string | null;
   nonce: string;
+  redirectUri?: string;
 }
 
 @Component({
@@ -26,7 +28,6 @@ export class AuthorizeComponent implements OnInit {
     const redirectUri = this.activeRoute.snapshot.queryParamMap.get("redirect_uri");
 
     // validate args
-    if(redirectUri !== null) console.warn("ignoring redirect_uri, fixed redirect uri set per client");
     if(responseType !== "code") throw new Error("response_type must be code, only code flow supported");
     if(scope !== null) console.warn("ignoring scope, fixed scopes per client set")
     if(clientId === null) throw new Error("client_id must be a string");
@@ -35,13 +36,15 @@ export class AuthorizeComponent implements OnInit {
     const typoState: typoOauthState = {
       clientId: Number(clientId),
       originalState: state,
-      nonce: crypto.randomUUID()
+      nonce: crypto.randomUUID(),
+      redirectUri: redirectUri ?? undefined
     };
     const typoStateString = encodeURI(JSON.stringify(typoState));
 
     const redirectUrl = "https://www.typo.rip/auth/submit";
     const discordOauthUrl =
       `https://discord.com/api/oauth2/authorize?client_id=1071142417987813376&redirect_uri=${encodeURI(redirectUrl)}&response_type=code&scope=identify&state=${typoStateString}`;
+
     window.location.href = discordOauthUrl;
   }
 

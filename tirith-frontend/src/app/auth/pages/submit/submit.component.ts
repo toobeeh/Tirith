@@ -6,7 +6,7 @@ import {
   OAuth2AuthorizationCodeDto, OAuth2ClientDto,
   Oauth2Service
 } from "src/api";
-import {combineLatestWith, map, Observable, of, switchMap} from "rxjs";
+import {combineLatestWith, filter, map, Observable, of, switchMap} from "rxjs";
 import { OAuth2AuthenticationResultDto } from 'src/api/model/oAuth2AuthenticationResultDto';
 import { DiscordAuthenticationResultDto } from 'src/api/model/discordAuthenticationResultDto';
 import { CreateTypoAccountOptionsDto } from 'src/api/model/createTypoAccountOptionsDto';
@@ -102,7 +102,8 @@ export class SubmitComponent implements OnInit {
       throw new Error("typo oauth state was lost");
     }
 
-    const url = new URL(result.client.redirectUri);
+    const redirect = this.calculateRedirectUrl(result.client, this.typoOauthState);
+    const url = new URL(redirect);
     url.searchParams.set("code", result.authorizationCode);
     url.searchParams.set("state", this.typoOauthState.originalState ?? "");
     window.location.href = url.toString();
@@ -117,7 +118,23 @@ export class SubmitComponent implements OnInit {
   }
 
   public getAppUrl(client: OAuth2ClientDto){
-    return new URL(client.redirectUri).origin;
+    if(this.typoOauthState === undefined) throw new Error("typo oauth state was lost");
+    return new URL(this.calculateRedirectUrl(client, this.typoOauthState)).origin;
+  }
+
+  public calculateRedirectUrl(client: OAuth2ClientDto, oauthState: typoOauthState){
+    let redirect = oauthState.redirectUri;
+    if(redirect === undefined) {
+      if(client.redirectUris.length !== 1) throw new Error("no redirect uri requested and client has not a single one specified as fallback");
+      redirect = client.redirectUris[0];
+    }
+    else {
+      if(!client.redirectUris.includes(redirect)) {
+        throw new Error("requested redirect uri is not allowed by client");
+      }
+    }
+
+    return redirect;
   }
 
   public scopeIsIrrelevant(scope: string, member: MemberDto){
