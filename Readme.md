@@ -36,7 +36,7 @@ TLDR:
 - Typo has [openId discovery](https://api.typo.rip/openid/.well-known/openid-configuration) and a [jwks endpoint](https://api.typo.rip/openid/jwks.json)
 - Typo supports OAUth2 only via authorization_code grant type
 - The Typo OAuth2 authorization endpoint is located [at the website](https://www.typo.rip/auth/authorize)
-- redirect_uri and scope parameters are **fixed per client** and ignored
+- Scope parameters are **fixed per client** and ignored, redirect_uri is supported but must match one of the clients known uris
 - OAuth2 clients are public and can be created by anyone through te API
 - The Typo OAuth2 token endpoint is located [at the API oauth2 controller](https://api.typo.rip/oauth2/token)
 
