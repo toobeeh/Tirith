@@ -1,4 +1,4 @@
 export const environment = {
-  production: false,
+  production: true,
   apiUrl: "https://API_DOMAIN_NAME_SED_PLACEHOLDER"
 };
