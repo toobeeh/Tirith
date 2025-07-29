@@ -31,7 +31,8 @@ async function bootstrap() {
       initOAuth: {
         clientId: "2",
         scopes: [],
-      }
+      },
+
     },
     customSiteTitle: "Typo API Docs",
     customfavIcon: "https://www.typo.rip/res/128MaxFit.png",
@@ -41,6 +42,14 @@ async function bootstrap() {
     `,
     /*customJsStr: swaggerEnableDiscordLogin*/
   };
+
+  /* redirect from /docs to /docs/ to fix incorrect oauth2 redirect url */
+  app.use('/docs', (req, res, next) => {
+    if (!req.originalUrl.endsWith('/') && !req.path.includes('.')) {
+      return res.redirect(301, req.originalUrl + '/');
+    }
+    next();
+  });
 
   SwaggerModule.setup('docs', app, document, swaggerOptions);
 
