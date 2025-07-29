@@ -1,6 +1,6 @@
 /**
  * Skribbl Typo API
- * Skribbl Typo API for resources, admin tools and authentification.
+ * Skribbl Typo API for resources, admin tools and authentication.
  *
  * The version of the OpenAPI document: 1.0
  * 
@@ -20,6 +20,10 @@ export interface OAuth2AccessTokenResponseDto {
      * The returned token type
      */
     token_type: string;
+    /**
+     * The returned token type kind for token-exchange grant
+     */
+    issued_token_type?: string;
     /**
      * The expiry time in seconds
      */

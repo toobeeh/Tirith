@@ -184,7 +184,7 @@ export class OAuth2Controller {
     @ApiResponse({ status: 201, type: OAuth2ClientDto, description: "OAuth2 client registered successfully" })
     async registerClient(@Param() param: LoginTokenParamDto, @Body() client: CreateOAuth2ClientDto): Promise<OAuth2ClientDto> {
 
-        return await this.authService.createOauthClient(client.redirectUri, client.scopes, client.name, param.login, client.audience);
+        return await this.authService.createOauthClient(client.redirectUris, client.scopes, client.name, param.login, client.audience);
     }
 
 }

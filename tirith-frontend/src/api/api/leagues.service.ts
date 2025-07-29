@@ -1,6 +1,6 @@
 /**
  * Skribbl Typo API
- * Skribbl Typo API for resources, admin tools and authentification.
+ * Skribbl Typo API for resources, admin tools and authentication.
  *
  * The version of the OpenAPI document: 1.0
  * 
@@ -110,7 +110,6 @@ export class LeaguesService {
         // authentication (Typo_OAuth2_Login) required
         localVarCredential = this.configuration.lookupCredential('Typo_OAuth2_Login');
         if (localVarCredential) {
-            localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
         }
 
         let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
@@ -180,7 +179,6 @@ export class LeaguesService {
         // authentication (Typo_OAuth2_Login) required
         localVarCredential = this.configuration.lookupCredential('Typo_OAuth2_Login');
         if (localVarCredential) {
-            localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
         }
 
         let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
@@ -246,7 +244,6 @@ export class LeaguesService {
         // authentication (Typo_OAuth2_Login) required
         localVarCredential = this.configuration.lookupCredential('Typo_OAuth2_Login');
         if (localVarCredential) {
-            localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
         }
 
         let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
@@ -320,7 +317,6 @@ export class LeaguesService {
         // authentication (Typo_OAuth2_Login) required
         localVarCredential = this.configuration.lookupCredential('Typo_OAuth2_Login');
         if (localVarCredential) {
-            localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
         }
 
         let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;

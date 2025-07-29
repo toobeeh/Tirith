@@ -17,11 +17,11 @@ async function bootstrap() {
     .setTitle('Skribbl Typo API')
     .setDescription('Skribbl Typo API for resources, admin tools and authentication.')
     .setVersion('1.0')
-    .addOAuth2({
+    .addSecurity('Typo_OAuth2_Login',{
           type: "openIdConnect",
           openIdConnectUrl: "https://api.typo.rip/openid/.well-known/openid-configuration",
         },
-        'Typo_OAuth2_Login')
+    )
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
@@ -30,7 +30,7 @@ async function bootstrap() {
     swaggerOptions: {
       initOAuth: {
         clientId: "2",
-        scopes: []
+        scopes: [],
       }
     },
     customSiteTitle: "Typo API Docs",

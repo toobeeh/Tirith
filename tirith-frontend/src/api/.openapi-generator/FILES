@@ -15,6 +15,7 @@ api/leagues.service.ts
 api/lobbies.service.ts
 api/members.service.ts
 api/oauth2.service.ts
+api/openid.service.ts
 api/scenes.service.ts
 api/sprites.service.ts
 api/themes.service.ts
@@ -41,6 +42,8 @@ model/eventDropDto.ts
 model/eventDto.ts
 model/guildDto.ts
 model/guildInviteDto.ts
+model/jwkDto.ts
+model/jwksDto.ts
 model/leagueAverageTimeRanking.ts
 model/leagueAverageWeightRanking.ts
 model/leagueCountRanking.ts
@@ -58,11 +61,13 @@ model/oAuth2AccessTokenResponseDto.ts
 model/oAuth2AuthenticationDto.ts
 model/oAuth2AuthenticationResultDto.ts
 model/oAuth2AuthorizationCodeDto.ts
-model/oAuth2AuthorizationCodeExchangeDto.ts
 model/oAuth2ClientDto.ts
+model/oAuth2TokenExchangeDto.ts
 model/onlineLobbyDto.ts
 model/onlineLobbySkribblDetailsDto.ts
 model/onlineLobbyTypoPlayerDto.ts
+model/openIdConfigurationDto.ts
+model/openIdUserinfoDto.ts
 model/postImageDto.ts
 model/preauthenticateDiscordOauth2CodeDto.ts
 model/publicMemberDto.ts

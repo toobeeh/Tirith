@@ -9,12 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { JwkDto } from './jwkDto';
 
 
-export interface CreateTypoAccountOptionsDto { 
+export interface JwksDto { 
     /**
-     * Connect the new member to TT typo server home
+     * JSON Web Key Set (JWKS) containing public keys for OAuth2
      */
-    connectTypoTestground: boolean;
+    keys: Array<JwkDto>;
 }
 

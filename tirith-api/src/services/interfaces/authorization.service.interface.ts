@@ -15,7 +15,7 @@ export interface IAuthorizationService {
 
     exchangeAuthorizationCode(oauth2AuthorizationCode: string, clientId: number, issuer: string): Promise<string>;
 
-    createOauthClient(redirectUri: string, scopes: string[], name: string, ownerTypoId: number, audience: string): Promise<OAuth2ClientDto>;
+    createOauthClient(redirectUris: string[], scopes: string[], name: string, ownerTypoId: number, audience: string): Promise<OAuth2ClientDto>;
 
     createAccessToken(typoId: number, clientId: number, issuer: string, audience: string): Promise<string>;
 }

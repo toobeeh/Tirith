@@ -40,9 +40,9 @@ export class GrpcAuthorizationService extends GrpcBaseService<AuthorizationDefin
         return client;
     }
 
-    async createOauthClient(redirectUri: string, scopes: string[], name: string, ownerTypoId: number, audience: string): Promise<OAuth2ClientDto> {
+    async createOauthClient(redirectUris: string[], scopes: string[], name: string, ownerTypoId: number, audience: string): Promise<OAuth2ClientDto> {
         const response = await this.grpcClient.createOauth2Client({
-            redirectUri,
+            redirectUris,
             scopes,
             name,
             ownerTypoId,

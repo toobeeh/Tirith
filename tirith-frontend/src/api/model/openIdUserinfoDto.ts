@@ -11,10 +11,10 @@
  */
 
 
-export interface CreateTypoAccountOptionsDto { 
+export interface OpenIdUserinfoDto { 
     /**
-     * Connect the new member to TT typo server home
+     * Unique identifier for the user
      */
-    connectTypoTestground: boolean;
+    sub: string;
 }
 

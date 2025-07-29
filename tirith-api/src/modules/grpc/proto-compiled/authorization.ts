@@ -17,7 +17,7 @@ export interface ScopeMessage {
 export interface CreateOAuth2ClientMessage {
   name: string;
   scopes: string[];
-  redirectUri: string;
+  redirectUris: string[];
   ownerTypoId: number;
   audience: string;
 }
@@ -26,7 +26,7 @@ export interface OAuth2ClientMessage {
   clientId: number;
   name: string;
   scopes: string[];
-  redirectUri: string;
+  redirectUris: string[];
   verified: boolean;
   tokenExpiry: Long;
   ownerTypoId: number;
@@ -160,7 +160,7 @@ export const ScopeMessage = {
 };
 
 function createBaseCreateOAuth2ClientMessage(): CreateOAuth2ClientMessage {
-  return { name: "", scopes: [], redirectUri: "", ownerTypoId: 0, audience: "" };
+  return { name: "", scopes: [], redirectUris: [], ownerTypoId: 0, audience: "" };
 }
 
 export const CreateOAuth2ClientMessage = {
@@ -171,8 +171,8 @@ export const CreateOAuth2ClientMessage = {
     for (const v of message.scopes) {
       writer.uint32(18).string(v!);
     }
-    if (message.redirectUri !== "") {
-      writer.uint32(26).string(message.redirectUri);
+    for (const v of message.redirectUris) {
+      writer.uint32(26).string(v!);
     }
     if (message.ownerTypoId !== 0) {
       writer.uint32(32).int32(message.ownerTypoId);
@@ -209,7 +209,7 @@ export const CreateOAuth2ClientMessage = {
             break;
           }
 
-          message.redirectUri = reader.string();
+          message.redirectUris.push(reader.string());
           continue;
         case 4:
           if (tag !== 32) {
@@ -238,7 +238,9 @@ export const CreateOAuth2ClientMessage = {
     return {
       name: isSet(object.name) ? globalThis.String(object.name) : "",
       scopes: globalThis.Array.isArray(object?.scopes) ? object.scopes.map((e: any) => globalThis.String(e)) : [],
-      redirectUri: isSet(object.redirectUri) ? globalThis.String(object.redirectUri) : "",
+      redirectUris: globalThis.Array.isArray(object?.redirectUris)
+        ? object.redirectUris.map((e: any) => globalThis.String(e))
+        : [],
       ownerTypoId: isSet(object.ownerTypoId) ? globalThis.Number(object.ownerTypoId) : 0,
       audience: isSet(object.audience) ? globalThis.String(object.audience) : "",
     };
@@ -252,8 +254,8 @@ export const CreateOAuth2ClientMessage = {
     if (message.scopes?.length) {
       obj.scopes = message.scopes;
     }
-    if (message.redirectUri !== "") {
-      obj.redirectUri = message.redirectUri;
+    if (message.redirectUris?.length) {
+      obj.redirectUris = message.redirectUris;
     }
     if (message.ownerTypoId !== 0) {
       obj.ownerTypoId = Math.round(message.ownerTypoId);
@@ -270,7 +272,7 @@ function createBaseOAuth2ClientMessage(): OAuth2ClientMessage {
     clientId: 0,
     name: "",
     scopes: [],
-    redirectUri: "",
+    redirectUris: [],
     verified: false,
     tokenExpiry: Long.ZERO,
     ownerTypoId: 0,
@@ -289,8 +291,8 @@ export const OAuth2ClientMessage = {
     for (const v of message.scopes) {
       writer.uint32(26).string(v!);
     }
-    if (message.redirectUri !== "") {
-      writer.uint32(34).string(message.redirectUri);
+    for (const v of message.redirectUris) {
+      writer.uint32(34).string(v!);
     }
     if (message.verified === true) {
       writer.uint32(40).bool(message.verified);
@@ -340,7 +342,7 @@ export const OAuth2ClientMessage = {
             break;
           }
 
-          message.redirectUri = reader.string();
+          message.redirectUris.push(reader.string());
           continue;
         case 5:
           if (tag !== 40) {
@@ -384,7 +386,9 @@ export const OAuth2ClientMessage = {
       clientId: isSet(object.clientId) ? globalThis.Number(object.clientId) : 0,
       name: isSet(object.name) ? globalThis.String(object.name) : "",
       scopes: globalThis.Array.isArray(object?.scopes) ? object.scopes.map((e: any) => globalThis.String(e)) : [],
-      redirectUri: isSet(object.redirectUri) ? globalThis.String(object.redirectUri) : "",
+      redirectUris: globalThis.Array.isArray(object?.redirectUris)
+        ? object.redirectUris.map((e: any) => globalThis.String(e))
+        : [],
       verified: isSet(object.verified) ? globalThis.Boolean(object.verified) : false,
       tokenExpiry: isSet(object.tokenExpiry) ? Long.fromValue(object.tokenExpiry) : Long.ZERO,
       ownerTypoId: isSet(object.ownerTypoId) ? globalThis.Number(object.ownerTypoId) : 0,
@@ -403,8 +407,8 @@ export const OAuth2ClientMessage = {
     if (message.scopes?.length) {
       obj.scopes = message.scopes;
     }
-    if (message.redirectUri !== "") {
-      obj.redirectUri = message.redirectUri;
+    if (message.redirectUris?.length) {
+      obj.redirectUris = message.redirectUris;
     }
     if (message.verified === true) {
       obj.verified = message.verified;

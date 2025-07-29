@@ -1,6 +1,6 @@
 /**
  * Skribbl Typo API
- * Skribbl Typo API for resources, admin tools and authentification.
+ * Skribbl Typo API for resources, admin tools and authentication.
  *
  * The version of the OpenAPI document: 1.0
  * 
@@ -13,7 +13,7 @@
 
 export interface DiscordAuthenticationResultDto { 
     /**
-     * The decrypted access token for the discord user that has authenticated using an auth code
+     * The encrypted access token for the discord user that has authenticated using an auth code
      */
     encryptedAccessToken: string;
     /**

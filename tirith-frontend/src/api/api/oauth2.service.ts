@@ -1,6 +1,6 @@
 /**
  * Skribbl Typo API
- * Skribbl Typo API for resources, admin tools and authentification.
+ * Skribbl Typo API for resources, admin tools and authentication.
  *
  * The version of the OpenAPI document: 1.0
  * 
@@ -29,9 +29,9 @@ import { OAuth2AuthenticationDto } from '../model/oAuth2AuthenticationDto';
 // @ts-ignore
 import { OAuth2AuthenticationResultDto } from '../model/oAuth2AuthenticationResultDto';
 // @ts-ignore
-import { OAuth2AuthorizationCodeExchangeDto } from '../model/oAuth2AuthorizationCodeExchangeDto';
-// @ts-ignore
 import { OAuth2ClientDto } from '../model/oAuth2ClientDto';
+// @ts-ignore
+import { OAuth2TokenExchangeDto } from '../model/oAuth2TokenExchangeDto';
 // @ts-ignore
 import { PreauthenticateDiscordOauth2CodeDto } from '../model/preauthenticateDiscordOauth2CodeDto';
 // @ts-ignore
@@ -179,16 +179,16 @@ export class Oauth2Service {
     /**
      * Exchange a typo oauth2 authorization code for a access token (jwt)
      *   Required Roles: None  Rate limit default: 10 Requests / 60000 ms TTL
-     * @param oAuth2AuthorizationCodeExchangeDto 
+     * @param oAuth2TokenExchangeDto 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getAccessToken(oAuth2AuthorizationCodeExchangeDto: OAuth2AuthorizationCodeExchangeDto, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<OAuth2AccessTokenResponseDto>;
-    public getAccessToken(oAuth2AuthorizationCodeExchangeDto: OAuth2AuthorizationCodeExchangeDto, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<OAuth2AccessTokenResponseDto>>;
-    public getAccessToken(oAuth2AuthorizationCodeExchangeDto: OAuth2AuthorizationCodeExchangeDto, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<OAuth2AccessTokenResponseDto>>;
-    public getAccessToken(oAuth2AuthorizationCodeExchangeDto: OAuth2AuthorizationCodeExchangeDto, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
-        if (oAuth2AuthorizationCodeExchangeDto === null || oAuth2AuthorizationCodeExchangeDto === undefined) {
-            throw new Error('Required parameter oAuth2AuthorizationCodeExchangeDto was null or undefined when calling getAccessToken.');
+    public getAccessToken(oAuth2TokenExchangeDto: OAuth2TokenExchangeDto, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<OAuth2AccessTokenResponseDto>;
+    public getAccessToken(oAuth2TokenExchangeDto: OAuth2TokenExchangeDto, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<OAuth2AccessTokenResponseDto>>;
+    public getAccessToken(oAuth2TokenExchangeDto: OAuth2TokenExchangeDto, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<OAuth2AccessTokenResponseDto>>;
+    public getAccessToken(oAuth2TokenExchangeDto: OAuth2TokenExchangeDto, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+        if (oAuth2TokenExchangeDto === null || oAuth2TokenExchangeDto === undefined) {
+            throw new Error('Required parameter oAuth2TokenExchangeDto was null or undefined when calling getAccessToken.');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -235,7 +235,7 @@ export class Oauth2Service {
         return this.httpClient.request<OAuth2AccessTokenResponseDto>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: oAuth2AuthorizationCodeExchangeDto,
+                body: oAuth2TokenExchangeDto,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -449,7 +449,6 @@ export class Oauth2Service {
         // authentication (Typo_OAuth2_Login) required
         localVarCredential = this.configuration.lookupCredential('Typo_OAuth2_Login');
         if (localVarCredential) {
-            localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
         }
 
         let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;

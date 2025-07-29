@@ -4,8 +4,8 @@ export class OAuth2ClientDto {
     @XApiProperty({ description: 'The client ID of the OAuth2 client' })
     clientId: number;
 
-    @XApiProperty({ description: 'The redirect URI for the OAuth2 client' })
-    redirectUri: string;
+    @XApiProperty({ description: 'The allowed redirect URIs for the OAuth2 client' })
+    redirectUris: string[];
 
     @XApiProperty({ description: 'The scopes requested by the OAuth2 client' })
     scopes: string[];
@@ -28,8 +28,8 @@ export class OAuth2ClientDto {
 
 export class CreateOAuth2ClientDto {
 
-    @XApiProperty({ description: 'The OAuth2 redirect URI for the OAuth2 client' })
-    redirectUri: string;
+    @XApiProperty({ description: 'The allowed OAuth2 redirect URIs for the OAuth2 client' })
+    redirectUris: string[];
 
     @XApiProperty({ description: 'The scopes requested by the OAuth2 client' })
     scopes: string[];

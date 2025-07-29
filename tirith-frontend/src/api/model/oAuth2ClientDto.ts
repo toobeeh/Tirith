@@ -1,6 +1,6 @@
 /**
  * Skribbl Typo API
- * Skribbl Typo API for resources, admin tools and authentification.
+ * Skribbl Typo API for resources, admin tools and authentication.
  *
  * The version of the OpenAPI document: 1.0
  * 
@@ -17,9 +17,9 @@ export interface OAuth2ClientDto {
      */
     clientId: number;
     /**
-     * The redirect URI for the OAuth2 client
+     * The allowed redirect URIs for the OAuth2 client
      */
-    redirectUri: string;
+    redirectUris: Array<string>;
     /**
      * The scopes requested by the OAuth2 client
      */
@@ -40,5 +40,9 @@ export interface OAuth2ClientDto {
      * The typo id of the client owner
      */
     ownerTypoId: number;
+    /**
+     * The audience of the OAuth2 client, typically the base url of the API that it accesses
+     */
+    audience: string;
 }
 
