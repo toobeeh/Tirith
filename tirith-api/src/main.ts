@@ -18,8 +18,15 @@ async function bootstrap() {
     .setDescription('Skribbl Typo API for resources, admin tools and authentication.')
     .setVersion('1.0')
     .addSecurity('Typo_OAuth2_Login',{
-          type: "openIdConnect",
+          type: "oauth2",
           openIdConnectUrl: "https://api.typo.rip/openid/.well-known/openid-configuration",
+          flows: {
+              authorizationCode: {
+              scopes: {},
+              authorizationUrl: "https:/www.typo.rip/auth/authorize",
+              tokenUrl: "https://api.typo.rip/oauth2/token",
+            }
+          }
         },
     )
     .build();
@@ -32,7 +39,6 @@ async function bootstrap() {
         clientId: "2",
         scopes: [],
       },
-
     },
     customSiteTitle: "Typo API Docs",
     customfavIcon: "https://www.typo.rip/res/128MaxFit.png",

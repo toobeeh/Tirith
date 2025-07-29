@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import { ActivatedRoute, Route, Router } from '@angular/router';
 import {MembersService, Oauth2Service} from "../../../../api";
 import {UserService} from "../../../shared/services/user-session.service";
+import {environment} from "../../../../environments/environment";
 
 @Component({
   templateUrl: './login.component.html',
@@ -9,7 +10,7 @@ import {UserService} from "../../../shared/services/user-session.service";
 })
 export class LoginComponent implements OnInit {
 
-  private readonly clientId = 4;
+  private readonly clientId = environment.production ? 4 : 3;
 
   constructor(private router: Router, private route: ActivatedRoute, private oauthService: Oauth2Service) { }
 
