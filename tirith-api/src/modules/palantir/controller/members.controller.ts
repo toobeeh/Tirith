@@ -137,7 +137,7 @@ export class MembersController {
         return this.service.getByDiscordID(params.id);
     }
 
-    @Get("/discord:id/public")
+    @Get("/discord/:id/public")
     @RequiredRole(MembershipEnum.None)
     @ApiOperation({ summary: "Get public info of a member by their discord id" })
     @ApiResponse({ status: 200, type: PublicMemberDto, description: "The member with specified discord id" })
