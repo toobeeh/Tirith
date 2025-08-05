@@ -6,7 +6,7 @@ export class PublicMemberDto {
     @XApiProperty({ description: "The member's connected discord account id" })
     discordID: string;
 
-    @XApiProperty({ description: "The member's palantir accunt user name" })
+    @XApiProperty({ description: "The member's palantir account user name" })
     userName: string;
 
     @XApiProperty({ description: "DEPRECATED. Use TypoId instead.", deprecated: true })
