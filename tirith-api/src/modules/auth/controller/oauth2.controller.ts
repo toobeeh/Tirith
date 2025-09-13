@@ -164,6 +164,25 @@ export class OAuth2Controller {
             };
         }
 
+        else if (exchange.grant_type === "typo-legacy-token") {
+
+            if(exchange.subject_token === undefined || exchange.client_id === undefined) {
+                throw new BadRequestException("Missing required parameters: subject_token and client_id are required for typo_legacy_token grant type.");
+            }
+
+            const member = await this.membersService.getByAccessToken(exchange.subject_token);
+            const client = await this.authService.getOauthClientById(exchange.client_id);
+            const newToken = await this.authService.createAccessToken(member.typoId, client.clientId, this.openidService.openIdConfig.issuer, client.audience);
+
+            return {
+                access_token: newToken,
+                token_type: "Bearer",
+                issued_token_type: "urn:ietf:params:oauth:token-type:jwt",
+                expires_in: client.tokenExpiry,
+                scope: client.scopes.join(" ")
+            };
+        }
+
         else {
             throw new BadRequestException(`Unsupported grant type: ${exchange.grant_type}`);
         }

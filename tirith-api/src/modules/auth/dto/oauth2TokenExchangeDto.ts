@@ -2,16 +2,16 @@ import {XApiProperty} from "../../../decorators/apiProperty.decorator";
 
 export class OAuth2TokenExchangeDto {
 
-    @XApiProperty({ description: "The oauth2 grant type" })
+    @XApiProperty({ description: "The oauth2 grant type, supported: authorization_code, token-exchange, typo-legacy-token, " })
     grant_type: string; // naming acc to oauth spec
 
     @XApiProperty({ description: "An authorization code received from the OAuth2 client, required for grant_type=code", required: false })
     code?: string; // naming acc to oauth spec
 
-    @XApiProperty({ description: "The client ID of the OAuth2 client, required for grant_type=code", required: false })
+    @XApiProperty({ description: "The client ID of the OAuth2 client, required for grant_type=code or typo-legacy-token", required: false })
     client_id?: number; // naming acc to oauth spec
 
-    @XApiProperty({ description: "An access token to be exchanged, required for grant_type=token-exchange", required: false })
+    @XApiProperty({ description: "An access token to be exchanged, required for grant_type=token-exchange or typo-legacy-token", required: false })
     subject_token?: string; // naming acc to oauth spec
 
     @XApiProperty({ description: "The type of the subject token, required for grant_type=token-exchange", required: false })
