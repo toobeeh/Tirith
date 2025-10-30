@@ -66,10 +66,16 @@ export class DiscordApiService {
         const form = new FormData();
         form.append("files[0]", Buffer.from(base64Image, "base64"), { filename: "image.png" });
 
+        // replace markdown special chars
+        const sanitizedTitle = title
+            .replace(/\*/g,"\\*")
+            .replace(/`/g,"\\`")
+            .replace(/#/g,"\\#");
+
         const webhook: DiscordPostWebhookDto = onlyImage ? { // webhook payload for only image
             username: accountName === postedBy ? `${accountName}` : `${postedBy} (${accountName})`,
             avatar_url: "https://i.imgur.com/nLyqf1G.gif",
-            content: `### ${title}`,
+            content: `### ${sanitizedTitle}`,
             attachments: [
                 {
                     id: 0,
@@ -82,7 +88,7 @@ export class DiscordApiService {
             avatar_url: "https://i.imgur.com/nLyqf1G.gif",
             embeds: [
                 {
-                    title: title,
+                    title: sanitizedTitle,
                     description: `Drawn by **${author}**`,
                     footer: {
                         icon_url: "https://i.imgur.com/c3FXGKA.png",
