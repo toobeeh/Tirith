@@ -3,17 +3,18 @@ https://docs.nestjs.com/guards#guards
 */
 import {Request} from 'express';
 import {
-  CanActivate,
-  ExecutionContext,
-  HttpException,
-  HttpStatus,
-  Injectable,
-  UnauthorizedException
+    CanActivate,
+    ExecutionContext,
+    HttpException,
+    HttpStatus,
+    Injectable,
+    UnauthorizedException
 } from '@nestjs/common';
 import {AuthenticationService} from 'src/services/authentication.service';
 import {Reflector} from "@nestjs/core";
 import {getRequiredRoles, MembershipEnum} from "../decorators/roles.decorator";
 import {getRequiredScopes} from "../decorators/scopes.decorator";
+import {MemberFlagDto} from "../modules/palantir/dto/member.dto";
 
 /**
  * A guard that adds a user object to the request.
@@ -46,6 +47,11 @@ export class MemberGuard implements CanActivate {
     /* try to get user from token and reject otherwise */
     const user = await this.auth.authenticate(token);
     if (!user) throw new HttpException("Could not authenticate user with access token", HttpStatus.UNAUTHORIZED);
+
+    /* check if user is banned */
+    if(user.member.memberFlags.includes(MemberFlagDto.PermaBan)){
+        throw new HttpException("User is banned", HttpStatus.UNAUTHORIZED);
+    }
 
     /* check if token scopes match required scopes */
     const requiredScopes = getRequiredScopes(context, this.reflector);

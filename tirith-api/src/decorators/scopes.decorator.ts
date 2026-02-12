@@ -58,7 +58,7 @@ export const RequiredScope = (...param: string[]): MethodDecorator & ClassDecora
         else if (descriptor.value) {
             target = descriptor.value;
 
-            /* skip if already processsed - decorators apply first for methods */
+            /* skip if already processed - decorators apply first for methods */
             if (Reflect.hasMetadata("guardRequiredScope", target)) return;
 
             SetMetadata("guardRequiredScope", param)(target);

@@ -23,7 +23,7 @@ async function bootstrap() {
           flows: {
               authorizationCode: {
               scopes: {},
-              authorizationUrl: "https:/www.typo.rip/auth/authorize",
+              authorizationUrl: "https://www.typo.rip/auth/authorize",
               tokenUrl: "https://api.typo.rip/oauth2/token",
             }
           }
