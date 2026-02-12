@@ -3,10 +3,10 @@ https://docs.nestjs.com/controllers#controllers
 */
 
 import {Controller, Get, Inject, Param, UseGuards} from '@nestjs/common';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { ApiSecurityNotes } from 'src/decorators/apiSecurityNote.decorator';
+import {ApiOperation, ApiResponse, ApiTags} from '@nestjs/swagger';
+import {ApiSecurityNotes} from 'src/decorators/apiSecurityNote.decorator';
 import {ILeaguesService} from "../../../services/interfaces/leagues.service.interface";
-import {RequiredRole, ResourceOwner} from "../../../decorators/roles.decorator";
+import {MembershipEnum, RequiredRole, ResourceOwner} from "../../../decorators/roles.decorator";
 import {
     LeagueSeasonEvaluationDto,
     LeagueSeasonMemberEvaluationDto,
@@ -48,7 +48,7 @@ export class LeaguesController {
     }
 
     @Get("ranking")
-    @RequiredRole(MemberFlagDto.Moderator)
+    @RequiredRole(MembershipEnum.None)
     @ApiOperation({ summary: "Get the total ranking of the current league season" })
     @ApiResponse({ status: 200, type: LeagueSeasonEvaluationDto, description: "Ranking stats for all members of a season" })
     async evaluateCurrentLeagueSeason(): Promise<LeagueSeasonEvaluationDto> {
@@ -56,7 +56,7 @@ export class LeaguesController {
     }
 
     @Get(":year/:month/ranking")
-    @RequiredRole(MemberFlagDto.Moderator)
+    @RequiredRole(MembershipEnum.None)
     @ApiOperation({ summary: "Get the total ranking of the a league season" })
     @ApiResponse({ status: 200, type: LeagueSeasonEvaluationDto, description: "Ranking stats for all members of a season" })
     async evaluateLeagueSeason(@Param() year: SeasonYearParamDto, @Param() month: SeasonMonthParamDto): Promise<LeagueSeasonEvaluationDto> {

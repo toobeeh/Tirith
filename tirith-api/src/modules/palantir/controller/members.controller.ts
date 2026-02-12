@@ -65,7 +65,6 @@ export class MembersController {
 
     @Get(":login")
     @ResourceOwner("login")
-    @RequiredRole(MembershipEnum.Member)
     @RequiredScope(TypoScopes.memberRead)
     @ApiOperation({ summary: "Get a member by their login" })
     @ApiResponse({ status: 200, type: MemberDto, description: "The member with specified login" })

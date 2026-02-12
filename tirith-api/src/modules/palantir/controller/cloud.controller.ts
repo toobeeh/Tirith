@@ -28,7 +28,7 @@ import {Throttle} from "@nestjs/throttler";
 import {getThrottleForDefinition} from "../../../guards/trottleConfigs";
 import {CloudUploadDto, CloudUploadedDto} from "../dto/cloudUpload.dto";
 import {IObjectStorageService} from "../../../services/interfaces/object-storage.service.interface";
-import {MemberDto} from "../dto/member.dto";
+import {MemberDto, MemberFlagDto} from "../dto/member.dto";
 import {CloudDeleteDto} from "../dto/cloudDelete.dto";
 import {Long} from "@grpc/proto-loader";
 import {RequiredScope, TypoScopes} from "../../../decorators/scopes.decorator";
@@ -44,7 +44,7 @@ export class CloudController {
     @Get(":login/:id")
     @HttpCode(200)
     @Throttle(getThrottleForDefinition("throttleThirtyPerMinute"))
-    @RequiredRole(MembershipEnum.Member)
+    @RequiredRole(MemberFlagDto.Moderator)
     @RequiredScope(TypoScopes.cloudRead)
     @ResourceOwner("login")
     @ApiOperation({ summary: "Get a image by id from the cloud" })
@@ -56,7 +56,7 @@ export class CloudController {
     @Delete(":login/:id")
     @HttpCode(204)
     @Throttle(getThrottleForDefinition("throttleThirtyPerMinute"))
-    @RequiredRole(MembershipEnum.Member)
+    @RequiredRole(MemberFlagDto.Moderator)
     @RequiredScope(TypoScopes.cloudWrite)
     @ResourceOwner("login")
     @ApiOperation({ summary: "Delete a image by id from the cloud" })
@@ -71,7 +71,7 @@ export class CloudController {
     @Patch(":login/:id/award/:token")
     @HttpCode(204)
     @Throttle(getThrottleForDefinition("throttleTenPerMinute"))
-    @RequiredRole(MembershipEnum.Member)
+    @RequiredRole(MemberFlagDto.Moderator)
     @RequiredScope(TypoScopes.cloudRead, TypoScopes.awardsWrite)
     @ResourceOwner("login")
     @ApiOperation({ summary: "Link an image of the user to an award in their received inventory, which has no linked image yet" })
@@ -83,7 +83,7 @@ export class CloudController {
     @Post(":login/search")
     @HttpCode(200)
     @Throttle(getThrottleForDefinition("throttleThirtyPerMinute"))
-    @RequiredRole(MembershipEnum.Member)
+    @RequiredRole(MemberFlagDto.Moderator)
     @RequiredScope(TypoScopes.cloudRead)
     @ResourceOwner("login")
     @ApiOperation({ summary: "Search for cloud images" })
@@ -96,7 +96,7 @@ export class CloudController {
     @Post(":login/delete")
     @HttpCode(204)
     @Throttle(getThrottleForDefinition("throttleThirtyPerMinute"))
-    @RequiredRole(MembershipEnum.Member)
+    @RequiredRole(MemberFlagDto.Moderator)
     @RequiredScope(TypoScopes.cloudWrite)
     @ResourceOwner("login")
     @ApiOperation({ summary: "Delete multiple images from the user's cloud" })
@@ -112,7 +112,7 @@ export class CloudController {
 
     @Post(":login")
     @Throttle(getThrottleForDefinition("throttleTenPerMinute"))
-    @RequiredRole(MembershipEnum.Member)
+    @RequiredRole(MemberFlagDto.Moderator)
     @RequiredScope(TypoScopes.cloudWrite)
     @ResourceOwner("login")
     @ApiOperation({ summary: "Upload a new image to the user's cloud" })

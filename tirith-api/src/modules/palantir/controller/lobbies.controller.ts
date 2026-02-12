@@ -18,8 +18,6 @@ import {MemberDto, MemberFlagDto} from "../dto/member.dto";
 import {LobbyLinkDto} from "../dto/lobbyLink.dto";
 import {RequiredScope, TypoScopes} from "../../../decorators/scopes.decorator";
 
-const scopeGuildsRead = "member.guilds:read";
-
 @ApiSecurityNotes()
 @Controller("lobbies")
 @ApiTags("lobbies")
