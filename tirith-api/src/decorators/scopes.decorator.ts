@@ -1,8 +1,5 @@
 import { ExecutionContext, SetMetadata } from "@nestjs/common";
 import { Reflector } from "@nestjs/core";
-import { ApiBearerAuth } from "@nestjs/swagger";
-import { Request } from 'express';
-import {MemberFlagDto} from "../modules/palantir/dto/member.dto";
 
 export enum TypoScopes {
     spritesWrite = "member.inventory.sprites:write",
@@ -10,7 +7,7 @@ export enum TypoScopes {
     scenesRead = "member.inventory.scenes:read",
     scenesWrite = "member.inventory.scenes:write",
     awardsRead = "member.inventory.awards:read",
-    awardsWrite = "member.awards:write",
+    awardsWrite = "member.inventory.awards:write",
     cloudRead = "member.cloud:read",
     cloudWrite = "member.cloud:write",
     imagepostWrite = "member.imagepost:write",
