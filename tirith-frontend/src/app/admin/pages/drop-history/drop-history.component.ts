@@ -1,20 +1,21 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {BehaviorSubject, combineLatestWith, debounceTime, map, switchMap} from 'rxjs';
 import {AdminService, MemberDto, MembersService} from 'src/api';
 import { ToastService } from 'src/app/shared/services/toast.service';
 import {ChartConfiguration, ChartData} from "chart.js";
 import 'chartjs-adapter-date-fns';
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'app-drop-history',
   templateUrl: './drop-history.component.html',
   styleUrls: ['./drop-history.component.css']
 })
-export class DropHistoryComponent {
+export class DropHistoryComponent implements OnInit {
 
   public scatterChartOptions: ChartConfiguration<'scatter'>['options'] = {
     responsive: true,
-
+    backgroundColor: 'white',
     scales: {
       x: {
         type: 'time',
@@ -57,7 +58,7 @@ export class DropHistoryComponent {
       this.rangeStart$,
       this.rangeEnd$
     ),
-    debounceTime(500),
+    debounceTime(10),
     switchMap(([members, start, end]) => this.adminService.getDropHistory({
       logins: members.map(m => m.typoId.toString()),
       historyStart: start.toString(),
@@ -90,8 +91,22 @@ export class DropHistoryComponent {
   constructor(
     private memberService: MembersService,
     private toast: ToastService,
-    private adminService: AdminService
+    private adminService: AdminService,
+    private activatedRoute: ActivatedRoute
   ) { }
+
+  async ngOnInit() {
+    if(this.activatedRoute.snapshot.queryParams['logins']) {
+      const logins = this.activatedRoute.snapshot.queryParams['logins']
+        .split(',')
+        .map((login: string) => parseInt(login)) as number[];
+      const members = await Promise.all(logins
+        .map(login => this.memberService.getMemberByLogin(login).toPromise())
+      );
+
+      this.members$.next(members.filter(m => m !== null) as MemberDto[]);
+    }
+  }
 
   protected async addMemberLogin(login: number) {
     const member = await this.memberService.getMemberByLogin(login).toPromise();
@@ -106,6 +121,19 @@ export class DropHistoryComponent {
     } else {
       this.toast.show({message: {title: `No member found with login: ${login}`}});
     }
+  }
+
+  protected setRange(start: string, end: string) {
+    const startDate = new Date(start);
+    const endDate = new Date(end);
+
+    if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
+      this.toast.show({message: {title: `Invalid date range`}});
+      return;
+    }
+
+    this.rangeStart$.next(startDate.getTime());
+    this.rangeEnd$.next(endDate.getTime());
   }
 
   protected async addMemberDiscordId(discordId: string) {

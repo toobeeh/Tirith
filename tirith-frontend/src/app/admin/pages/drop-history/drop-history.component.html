@@ -16,12 +16,14 @@
 
   <br>
 
-  <div class="grid grid-cols-4 gap-4 w-fit items-center">
+  <div class="grid grid-cols-5 gap-4 w-fit items-center">
     <span class="col-span-2 desktop:col-span-1 justify-self-end">Start date: </span>
     <input #start type="date" value="2020-01-01">
 
     <span class="col-span-2 desktop:col-span-1 justify-self-end">End date: </span>
     <input #end type="date" [valueAsDate]="now">
+
+    <input type="button" value="Set Range" (click)="setRange(start.value, end.value)">
   </div>
 </div>
 

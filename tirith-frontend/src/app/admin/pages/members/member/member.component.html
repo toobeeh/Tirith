@@ -12,6 +12,7 @@
       </div>
 
       <div class="flex flex-col gap-8">
+
         <div class="flex flex-col gap-8 p-3">
           <div>
             <h3>Switch linked Discord ID</h3>
@@ -43,7 +44,15 @@
             <input type="button" value="Copy Token" (click)="copyToken(member.typoId)">
           </div>
         </div>
+
+        <div class="flex flex-col gap-8 p-3">
+          <div>
+            <h3>Links</h3>
+            <a href="../../drop-history/?logins={{member.typoId}}">➜ View drop timeline</a>
+          </div>
+        </div>
       </div>
+
     </div>
 
   </ng-container>
