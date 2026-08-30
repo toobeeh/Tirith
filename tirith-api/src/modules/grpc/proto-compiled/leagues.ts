@@ -7,6 +7,23 @@ import { Timestamp } from "./google/protobuf/timestamp";
 
 export const protobufPackage = "leagues";
 
+/** Response containing league split rewards. */
+export interface LeagueSeasonSplitEvaluationReply {
+  year: number;
+  month: number;
+  evaluation: LeagueSeasonMemberSplitEvaluationReply[];
+  seasonStart: Date | undefined;
+  seasonEnd: Date | undefined;
+}
+
+/** Response containing own league splits evaluation. */
+export interface LeagueSeasonMemberSplitEvaluationReply {
+  name: string;
+  splits: Long;
+  userId: Long;
+  comment: string;
+}
+
 /** Response containing league evaluation. */
 export interface LeagueSeasonEvaluationReply {
   year: number;
@@ -82,6 +99,206 @@ export interface EvaluateMemberSeasonRequest {
 export interface EvaluateMemberCurrentSeasonRequest {
   login: number;
 }
+
+function createBaseLeagueSeasonSplitEvaluationReply(): LeagueSeasonSplitEvaluationReply {
+  return { year: 0, month: 0, evaluation: [], seasonStart: undefined, seasonEnd: undefined };
+}
+
+export const LeagueSeasonSplitEvaluationReply = {
+  encode(message: LeagueSeasonSplitEvaluationReply, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.year !== 0) {
+      writer.uint32(8).int32(message.year);
+    }
+    if (message.month !== 0) {
+      writer.uint32(16).int32(message.month);
+    }
+    for (const v of message.evaluation) {
+      LeagueSeasonMemberSplitEvaluationReply.encode(v!, writer.uint32(26).fork()).ldelim();
+    }
+    if (message.seasonStart !== undefined) {
+      Timestamp.encode(toTimestamp(message.seasonStart), writer.uint32(66).fork()).ldelim();
+    }
+    if (message.seasonEnd !== undefined) {
+      Timestamp.encode(toTimestamp(message.seasonEnd), writer.uint32(74).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): LeagueSeasonSplitEvaluationReply {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseLeagueSeasonSplitEvaluationReply();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.year = reader.int32();
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.month = reader.int32();
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.evaluation.push(LeagueSeasonMemberSplitEvaluationReply.decode(reader, reader.uint32()));
+          continue;
+        case 8:
+          if (tag !== 66) {
+            break;
+          }
+
+          message.seasonStart = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
+        case 9:
+          if (tag !== 74) {
+            break;
+          }
+
+          message.seasonEnd = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): LeagueSeasonSplitEvaluationReply {
+    return {
+      year: isSet(object.year) ? globalThis.Number(object.year) : 0,
+      month: isSet(object.month) ? globalThis.Number(object.month) : 0,
+      evaluation: globalThis.Array.isArray(object?.evaluation)
+        ? object.evaluation.map((e: any) => LeagueSeasonMemberSplitEvaluationReply.fromJSON(e))
+        : [],
+      seasonStart: isSet(object.seasonStart) ? fromJsonTimestamp(object.seasonStart) : undefined,
+      seasonEnd: isSet(object.seasonEnd) ? fromJsonTimestamp(object.seasonEnd) : undefined,
+    };
+  },
+
+  toJSON(message: LeagueSeasonSplitEvaluationReply): unknown {
+    const obj: any = {};
+    if (message.year !== 0) {
+      obj.year = Math.round(message.year);
+    }
+    if (message.month !== 0) {
+      obj.month = Math.round(message.month);
+    }
+    if (message.evaluation?.length) {
+      obj.evaluation = message.evaluation.map((e) => LeagueSeasonMemberSplitEvaluationReply.toJSON(e));
+    }
+    if (message.seasonStart !== undefined) {
+      obj.seasonStart = message.seasonStart.toISOString();
+    }
+    if (message.seasonEnd !== undefined) {
+      obj.seasonEnd = message.seasonEnd.toISOString();
+    }
+    return obj;
+  },
+};
+
+function createBaseLeagueSeasonMemberSplitEvaluationReply(): LeagueSeasonMemberSplitEvaluationReply {
+  return { name: "", splits: Long.ZERO, userId: Long.ZERO, comment: "" };
+}
+
+export const LeagueSeasonMemberSplitEvaluationReply = {
+  encode(message: LeagueSeasonMemberSplitEvaluationReply, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.name !== "") {
+      writer.uint32(10).string(message.name);
+    }
+    if (!message.splits.isZero()) {
+      writer.uint32(16).int64(message.splits);
+    }
+    if (!message.userId.isZero()) {
+      writer.uint32(24).int64(message.userId);
+    }
+    if (message.comment !== "") {
+      writer.uint32(34).string(message.comment);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): LeagueSeasonMemberSplitEvaluationReply {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseLeagueSeasonMemberSplitEvaluationReply();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.name = reader.string();
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.splits = reader.int64() as Long;
+          continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.userId = reader.int64() as Long;
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.comment = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): LeagueSeasonMemberSplitEvaluationReply {
+    return {
+      name: isSet(object.name) ? globalThis.String(object.name) : "",
+      splits: isSet(object.splits) ? Long.fromValue(object.splits) : Long.ZERO,
+      userId: isSet(object.userId) ? Long.fromValue(object.userId) : Long.ZERO,
+      comment: isSet(object.comment) ? globalThis.String(object.comment) : "",
+    };
+  },
+
+  toJSON(message: LeagueSeasonMemberSplitEvaluationReply): unknown {
+    const obj: any = {};
+    if (message.name !== "") {
+      obj.name = message.name;
+    }
+    if (!message.splits.isZero()) {
+      obj.splits = (message.splits || Long.ZERO).toString();
+    }
+    if (!message.userId.isZero()) {
+      obj.userId = (message.userId || Long.ZERO).toString();
+    }
+    if (message.comment !== "") {
+      obj.comment = message.comment;
+    }
+    return obj;
+  },
+};
 
 function createBaseLeagueSeasonEvaluationReply(): LeagueSeasonEvaluationReply {
   return {
@@ -1070,6 +1287,15 @@ export const LeaguesDefinition = {
       responseStream: false,
       options: {},
     },
+    /** gets the league splits evaluation for a specific month */
+    evaluateLeagueSeasonSplits: {
+      name: "EvaluateLeagueSeasonSplits",
+      requestType: EvaluateSeasonRequest,
+      requestStream: false,
+      responseType: LeagueSeasonSplitEvaluationReply,
+      responseStream: false,
+      options: {},
+    },
     /** Gets the current own league evaluation */
     evaluateMemberCurrentLeagueSeason: {
       name: "EvaluateMemberCurrentLeagueSeason",
@@ -1102,6 +1328,11 @@ export interface LeaguesServiceImplementation<CallContextExt = {}> {
     request: EvaluateSeasonRequest,
     context: CallContext & CallContextExt,
   ): Promise<LeagueSeasonEvaluationReply>;
+  /** gets the league splits evaluation for a specific month */
+  evaluateLeagueSeasonSplits(
+    request: EvaluateSeasonRequest,
+    context: CallContext & CallContextExt,
+  ): Promise<LeagueSeasonSplitEvaluationReply>;
   /** Gets the current own league evaluation */
   evaluateMemberCurrentLeagueSeason(
     request: EvaluateMemberCurrentSeasonRequest,
@@ -1125,6 +1356,11 @@ export interface LeaguesClient<CallOptionsExt = {}> {
     request: EvaluateSeasonRequest,
     options?: CallOptions & CallOptionsExt,
   ): Promise<LeagueSeasonEvaluationReply>;
+  /** gets the league splits evaluation for a specific month */
+  evaluateLeagueSeasonSplits(
+    request: EvaluateSeasonRequest,
+    options?: CallOptions & CallOptionsExt,
+  ): Promise<LeagueSeasonSplitEvaluationReply>;
   /** Gets the current own league evaluation */
   evaluateMemberCurrentLeagueSeason(
     request: EvaluateMemberCurrentSeasonRequest,

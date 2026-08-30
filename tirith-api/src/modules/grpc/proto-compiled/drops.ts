@@ -8,6 +8,22 @@ import { Int32Value } from "./google/protobuf/wrappers";
 
 export const protobufPackage = "admin";
 
+export interface GetDropHistoryMessage {
+  logins: number[];
+  historyStart: Date | undefined;
+  historyEnd: Date | undefined;
+}
+
+export interface DropHistoryEntryMessage {
+  dropDate: Date | undefined;
+  catchMs: number;
+}
+
+export interface DropHistoryMessage {
+  login: number;
+  history: DropHistoryEntryMessage[];
+}
+
 export interface ScheduledDropMessage {
   id: Long;
   timestamp: Date | undefined;
@@ -66,6 +82,226 @@ export interface DropDelayBoundsReply {
 export interface CurrentBoostFactorReply {
   boost: number;
 }
+
+function createBaseGetDropHistoryMessage(): GetDropHistoryMessage {
+  return { logins: [], historyStart: undefined, historyEnd: undefined };
+}
+
+export const GetDropHistoryMessage = {
+  encode(message: GetDropHistoryMessage, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    writer.uint32(10).fork();
+    for (const v of message.logins) {
+      writer.int32(v);
+    }
+    writer.ldelim();
+    if (message.historyStart !== undefined) {
+      Timestamp.encode(toTimestamp(message.historyStart), writer.uint32(18).fork()).ldelim();
+    }
+    if (message.historyEnd !== undefined) {
+      Timestamp.encode(toTimestamp(message.historyEnd), writer.uint32(26).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetDropHistoryMessage {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetDropHistoryMessage();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag === 8) {
+            message.logins.push(reader.int32());
+
+            continue;
+          }
+
+          if (tag === 10) {
+            const end2 = reader.uint32() + reader.pos;
+            while (reader.pos < end2) {
+              message.logins.push(reader.int32());
+            }
+
+            continue;
+          }
+
+          break;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.historyStart = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.historyEnd = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetDropHistoryMessage {
+    return {
+      logins: globalThis.Array.isArray(object?.logins) ? object.logins.map((e: any) => globalThis.Number(e)) : [],
+      historyStart: isSet(object.historyStart) ? fromJsonTimestamp(object.historyStart) : undefined,
+      historyEnd: isSet(object.historyEnd) ? fromJsonTimestamp(object.historyEnd) : undefined,
+    };
+  },
+
+  toJSON(message: GetDropHistoryMessage): unknown {
+    const obj: any = {};
+    if (message.logins?.length) {
+      obj.logins = message.logins.map((e) => Math.round(e));
+    }
+    if (message.historyStart !== undefined) {
+      obj.historyStart = message.historyStart.toISOString();
+    }
+    if (message.historyEnd !== undefined) {
+      obj.historyEnd = message.historyEnd.toISOString();
+    }
+    return obj;
+  },
+};
+
+function createBaseDropHistoryEntryMessage(): DropHistoryEntryMessage {
+  return { dropDate: undefined, catchMs: 0 };
+}
+
+export const DropHistoryEntryMessage = {
+  encode(message: DropHistoryEntryMessage, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.dropDate !== undefined) {
+      Timestamp.encode(toTimestamp(message.dropDate), writer.uint32(10).fork()).ldelim();
+    }
+    if (message.catchMs !== 0) {
+      writer.uint32(40).int32(message.catchMs);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): DropHistoryEntryMessage {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseDropHistoryEntryMessage();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.dropDate = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
+        case 5:
+          if (tag !== 40) {
+            break;
+          }
+
+          message.catchMs = reader.int32();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): DropHistoryEntryMessage {
+    return {
+      dropDate: isSet(object.dropDate) ? fromJsonTimestamp(object.dropDate) : undefined,
+      catchMs: isSet(object.catchMs) ? globalThis.Number(object.catchMs) : 0,
+    };
+  },
+
+  toJSON(message: DropHistoryEntryMessage): unknown {
+    const obj: any = {};
+    if (message.dropDate !== undefined) {
+      obj.dropDate = message.dropDate.toISOString();
+    }
+    if (message.catchMs !== 0) {
+      obj.catchMs = Math.round(message.catchMs);
+    }
+    return obj;
+  },
+};
+
+function createBaseDropHistoryMessage(): DropHistoryMessage {
+  return { login: 0, history: [] };
+}
+
+export const DropHistoryMessage = {
+  encode(message: DropHistoryMessage, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.login !== 0) {
+      writer.uint32(8).int32(message.login);
+    }
+    for (const v of message.history) {
+      DropHistoryEntryMessage.encode(v!, writer.uint32(18).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): DropHistoryMessage {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseDropHistoryMessage();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.login = reader.int32();
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.history.push(DropHistoryEntryMessage.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): DropHistoryMessage {
+    return {
+      login: isSet(object.login) ? globalThis.Number(object.login) : 0,
+      history: globalThis.Array.isArray(object?.history)
+        ? object.history.map((e: any) => DropHistoryEntryMessage.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: DropHistoryMessage): unknown {
+    const obj: any = {};
+    if (message.login !== 0) {
+      obj.login = Math.round(message.login);
+    }
+    if (message.history?.length) {
+      obj.history = message.history.map((e) => DropHistoryEntryMessage.toJSON(e));
+    }
+    return obj;
+  },
+};
 
 function createBaseScheduledDropMessage(): ScheduledDropMessage {
   return { id: Long.ZERO, timestamp: undefined, eventDropId: undefined };
@@ -865,6 +1101,15 @@ export const DropsDefinition = {
       responseStream: false,
       options: {},
     },
+    /** fetch drop history for players */
+    getDropHistory: {
+      name: "GetDropHistory",
+      requestType: GetDropHistoryMessage,
+      requestStream: false,
+      responseType: DropHistoryMessage,
+      responseStream: true,
+      options: {},
+    },
   },
 } as const;
 
@@ -886,6 +1131,11 @@ export interface DropsServiceImplementation<CallContextExt = {}> {
   logDropClaim(request: LogDropMessage, context: CallContext & CallContextExt): Promise<Empty>;
   /** reward a drop */
   rewardDrop(request: RewardDropMessage, context: CallContext & CallContextExt): Promise<Empty>;
+  /** fetch drop history for players */
+  getDropHistory(
+    request: GetDropHistoryMessage,
+    context: CallContext & CallContextExt,
+  ): ServerStreamingMethodResult<DropHistoryMessage>;
 }
 
 export interface DropsClient<CallOptionsExt = {}> {
@@ -906,6 +1156,11 @@ export interface DropsClient<CallOptionsExt = {}> {
   logDropClaim(request: LogDropMessage, options?: CallOptions & CallOptionsExt): Promise<Empty>;
   /** reward a drop */
   rewardDrop(request: RewardDropMessage, options?: CallOptions & CallOptionsExt): Promise<Empty>;
+  /** fetch drop history for players */
+  getDropHistory(
+    request: GetDropHistoryMessage,
+    options?: CallOptions & CallOptionsExt,
+  ): AsyncIterable<DropHistoryMessage>;
 }
 
 function toTimestamp(date: Date): Timestamp {
@@ -942,3 +1197,5 @@ if (_m0.util.Long !== Long) {
 function isSet(value: any): boolean {
   return value !== null && value !== undefined;
 }
+
+export type ServerStreamingMethodResult<Response> = { [Symbol.asyncIterator](): AsyncIterator<Response, void> };

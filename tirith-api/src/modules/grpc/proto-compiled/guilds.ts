@@ -78,6 +78,7 @@ export interface GuildOptionsMessage {
   botName: string | undefined;
   proxyLinks: boolean;
   showInvite: boolean;
+  announcementsWebhook: string | undefined;
 }
 
 function createBaseGetGuildSupportersMessage(): GetGuildSupportersMessage {
@@ -818,6 +819,7 @@ function createBaseGuildOptionsMessage(): GuildOptionsMessage {
     botName: undefined,
     proxyLinks: false,
     showInvite: false,
+    announcementsWebhook: undefined,
   };
 }
 
@@ -846,6 +848,9 @@ export const GuildOptionsMessage = {
     }
     if (message.showInvite === true) {
       writer.uint32(64).bool(message.showInvite);
+    }
+    if (message.announcementsWebhook !== undefined) {
+      StringValue.encode({ value: message.announcementsWebhook! }, writer.uint32(74).fork()).ldelim();
     }
     return writer;
   },
@@ -913,6 +918,13 @@ export const GuildOptionsMessage = {
 
           message.showInvite = reader.bool();
           continue;
+        case 9:
+          if (tag !== 74) {
+            break;
+          }
+
+          message.announcementsWebhook = StringValue.decode(reader, reader.uint32()).value;
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -932,6 +944,7 @@ export const GuildOptionsMessage = {
       botName: isSet(object.botName) ? String(object.botName) : undefined,
       proxyLinks: isSet(object.proxyLinks) ? globalThis.Boolean(object.proxyLinks) : false,
       showInvite: isSet(object.showInvite) ? globalThis.Boolean(object.showInvite) : false,
+      announcementsWebhook: isSet(object.announcementsWebhook) ? String(object.announcementsWebhook) : undefined,
     };
   },
 
@@ -961,6 +974,9 @@ export const GuildOptionsMessage = {
     if (message.showInvite === true) {
       obj.showInvite = message.showInvite;
     }
+    if (message.announcementsWebhook !== undefined) {
+      obj.announcementsWebhook = message.announcementsWebhook;
+    }
     return obj;
   },
 };
@@ -987,6 +1003,15 @@ export const GuildsDefinition = {
       requestStream: false,
       responseType: GuildReply,
       responseStream: false,
+      options: {},
+    },
+    /** Gets all guilds with active support state */
+    getValidGuilds: {
+      name: "GetValidGuilds",
+      requestType: Empty,
+      requestStream: false,
+      responseType: GuildReply,
+      responseStream: true,
       options: {},
     },
     getGuildOptionsById: {
@@ -1061,6 +1086,8 @@ export interface GuildsServiceImplementation<CallContextExt = {}> {
   getGuildByInvite(request: GetGuildRequest, context: CallContext & CallContextExt): Promise<GuildReply>;
   /** Gets a guild by its discord ID */
   getGuildById(request: GetGuildByIdMessage, context: CallContext & CallContextExt): Promise<GuildReply>;
+  /** Gets all guilds with active support state */
+  getValidGuilds(request: Empty, context: CallContext & CallContextExt): ServerStreamingMethodResult<GuildReply>;
   getGuildOptionsById(
     request: GetGuildOptionsByIdMessage,
     context: CallContext & CallContextExt,
@@ -1088,6 +1115,8 @@ export interface GuildsClient<CallOptionsExt = {}> {
   getGuildByInvite(request: GetGuildRequest, options?: CallOptions & CallOptionsExt): Promise<GuildReply>;
   /** Gets a guild by its discord ID */
   getGuildById(request: GetGuildByIdMessage, options?: CallOptions & CallOptionsExt): Promise<GuildReply>;
+  /** Gets all guilds with active support state */
+  getValidGuilds(request: Empty, options?: CallOptions & CallOptionsExt): AsyncIterable<GuildReply>;
   getGuildOptionsById(
     request: GetGuildOptionsByIdMessage,
     options?: CallOptions & CallOptionsExt,
