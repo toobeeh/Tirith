@@ -39,6 +39,8 @@ import {IAnnouncementsService} from "../../services/interfaces/announcements.ser
 import {GrpcAnnouncementsService} from "./services/grpc-announcements.service";
 import {IAuthorizationService} from "../../services/interfaces/authorization.service.interface";
 import {GrpcAuthorizationService} from "./services/grpc-authorization.service";
+import {IDropsService} from "../../services/interfaces/drops.service.interface";
+import {GrpcDropsService} from "./services/grpc-drops.service";
 
 const services: Provider[] = [
     { provide: IScenesService, useClass: GrpcScenesService },
@@ -56,7 +58,8 @@ const services: Provider[] = [
     { provide: IObjectStorageService, useClass: GrpcObjectStorageService },
     { provide: IEmojisService, useClass: GrpcEmojisService },
     { provide: IAuthorizationService, useClass: GrpcAuthorizationService },
-    { provide: IAnnouncementsService, useClass: GrpcAnnouncementsService }
+    { provide: IAnnouncementsService, useClass: GrpcAnnouncementsService },
+    { provide: IDropsService, useClass: GrpcDropsService}
 ]
 
 @Module({
