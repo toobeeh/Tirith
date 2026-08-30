@@ -34,10 +34,10 @@ export class HelpComponent {
       link: "lobby-bot"
     },
     {
-      name: "Extension Settings",
+      name: "Sprite Workshop",
       color: "rgb(219 234 254)",
       image: "url(https://static.typo.rip/scenes/sceneSpace.gif)",
-      link: "settings"
+      link: "workshop"
     },
     {
       name: "Rules & Fair Play",

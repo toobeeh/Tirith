@@ -40,7 +40,7 @@ export class ToolsComponent {
       ... this.listCard
     },
     {
-      name: "Rainbow Sprite Preview",
+      name: "Rainbow Sprite\nPreview",
       link: "rainbow-preview",
       ... this.toolsCard
     },
@@ -48,11 +48,6 @@ export class ToolsComponent {
       name: "Card Builder",
       link: "card-builder",
       ... this.toolsCard
-    },
-    {
-      name: "Sprite Workshop",
-      link: "workshop",
-      ... this.tutorialCard
     }
   ];
 }

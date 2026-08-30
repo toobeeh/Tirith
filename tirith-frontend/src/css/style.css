@@ -85,6 +85,26 @@ input[type="number"] {
   letter-spacing: 0.15rem;
 }
 
+input[type="date"] {
+  transition: box-shadow .2s, transform .2s;
+  border: 2px solid #aa8dd8;
+  background: none;
+  font-size: inherit;
+  color: inherit;
+  margin-left: 1rem;
+  margin-right: 1rem;
+  padding: .2rem;
+  border-radius: .25rem;
+  font-weight: 600;
+  accent-color: white;
+  cursor: pointer;
+}
+
+::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  filter: invert(1);
+}
+
 input[type="button"] {
   transition: box-shadow .2s, transform .2s;
   border: 2px solid #aa8dd8;

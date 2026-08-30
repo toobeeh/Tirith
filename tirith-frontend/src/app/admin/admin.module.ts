@@ -10,6 +10,8 @@ import { MemberComponent } from './pages/members/member/member.component';
 import { EmojisComponent } from './pages/emojis/emojis.component';
 import { AddEmojisComponent } from './pages/emojis/add-emojis/add-emojis.component';
 import {ReactiveFormsModule} from "@angular/forms";
+import {DropHistoryComponent} from "./pages/drop-history/drop-history.component";
+import {NgChartsModule} from "ng2-charts";
 
 
 @NgModule({
@@ -19,14 +21,16 @@ import {ReactiveFormsModule} from "@angular/forms";
     MembersComponent,
     MemberComponent,
     EmojisComponent,
-    AddEmojisComponent
+    AddEmojisComponent,
+    DropHistoryComponent
   ],
   imports: [
     CommonModule,
     AdminRoutingModule,
     NgxJsonViewerModule,
     ReactiveFormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgChartsModule
   ],
   providers: []
 })

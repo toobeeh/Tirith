@@ -27,8 +27,7 @@ const helpNavigationData = {
     ["Help", "help", "route"],
     ["Discord Features", "help/discord", "route"],
     ["Command Help", "help/new-palantir", "route"],
-    ["Features", "help/features", "route"],
-    ["Settings", "help/settings", "route"],
+    ["Features", "help/features", "route"]
   ]
 };
 
@@ -101,6 +100,12 @@ const routes: Routes = [
     data: helpNavigationData
   },
   {
+    path: 'help/workshop',
+    component: WorkshopComponent,
+    pathMatch: "full",
+    data: helpNavigationData
+  },
+  {
     path: 'tools',
     component: ToolsComponent,
     pathMatch: "full",
@@ -132,9 +137,7 @@ const routes: Routes = [
   },
   {
     path: 'tools/workshop',
-    component: WorkshopComponent,
-    pathMatch: "full",
-    data: toolsNavigationData
+    redirectTo: 'help/workshop',
   },
   {
     path: 'privacy',

@@ -17,7 +17,13 @@ export class LandingComponent {
       color: "rgb(219 234 254)",
       image: "url(https://static.typo.rip/scenes/sceneSpace.gif)",
       link: "members"
-    } ,
+    },
+    {
+      name: "Drop History",
+      color: "rgb(219 234 254)",
+      image: "url(https://static.typo.rip/scenes/sceneSpace.gif)",
+      link: "drop-history"
+    },
     {
       name: "Emoji Management",
       color: "rgb(220 252 231)",

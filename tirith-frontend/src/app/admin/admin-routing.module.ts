@@ -9,6 +9,7 @@ import {AddEmojisComponent} from "./pages/emojis/add-emojis/add-emojis.component
 import {RoleGuard} from "../shared/guards/role.guard";
 import {MemberDto} from "../../api";
 import MemberFlagsEnum = MemberDto.MemberFlagsEnum;
+import {DropHistoryComponent} from "./pages/drop-history/drop-history.component";
 
 const routes: Routes = [
   {
@@ -29,6 +30,12 @@ const routes: Routes = [
     canActivate: [RoleGuard],
     data: { requiredFlags: [MemberFlagsEnum.Moderator] },
     path: 'members', component: MembersComponent,
+    pathMatch: "full",
+  },
+  {
+    canActivate: [RoleGuard],
+    data: { requiredFlags: [MemberFlagsEnum.Moderator] },
+    path: 'drop-history', component: DropHistoryComponent,
     pathMatch: "full",
   },
   {

@@ -95,7 +95,7 @@ export class LeaguesService {
 
     /**
      * Get the total ranking of the current league season
-     *   Required Roles: Moderator   Required Scopes: *  Rate limit default: 10 Requests / 60000 ms TTL
+     *   Required Roles: None  Rate limit default: 10 Requests / 60000 ms TTL
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -105,13 +105,6 @@ export class LeaguesService {
     public evaluateCurrentLeagueSeason(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
-
-        let localVarCredential: string | undefined;
-        // authentication (Typo_OAuth2_Login) required
-        localVarCredential = this.configuration.lookupCredential('Typo_OAuth2_Login');
-        if (localVarCredential) {
-            localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
-        }
 
         let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
         if (localVarHttpHeaderAcceptSelected === undefined) {
@@ -157,7 +150,7 @@ export class LeaguesService {
 
     /**
      * Get the total ranking of the a league season
-     *   Required Roles: Moderator   Required Scopes: *  Rate limit default: 10 Requests / 60000 ms TTL
+     *   Required Roles: None  Rate limit default: 10 Requests / 60000 ms TTL
      * @param year Season year parameter
      * @param month Season month parameter
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
@@ -175,13 +168,6 @@ export class LeaguesService {
         }
 
         let localVarHeaders = this.defaultHeaders;
-
-        let localVarCredential: string | undefined;
-        // authentication (Typo_OAuth2_Login) required
-        localVarCredential = this.configuration.lookupCredential('Typo_OAuth2_Login');
-        if (localVarCredential) {
-            localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
-        }
 
         let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
         if (localVarHttpHeaderAcceptSelected === undefined) {

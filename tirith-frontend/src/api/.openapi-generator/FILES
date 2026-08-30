@@ -36,6 +36,9 @@ model/createOAuth2ClientDto.ts
 model/createTypoAccountOptionsDto.ts
 model/discordAuthenticationResultDto.ts
 model/dropDto.ts
+model/dropHistoryDto.ts
+model/dropHistoryEntryDto.ts
+model/dropHistoryParamsDto.ts
 model/emojiCandidateDto.ts
 model/emojiDto.ts
 model/eventDropDto.ts

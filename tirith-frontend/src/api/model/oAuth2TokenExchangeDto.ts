@@ -13,7 +13,7 @@
 
 export interface OAuth2TokenExchangeDto { 
     /**
-     * The oauth2 grant type
+     * The oauth2 grant type, supported: authorization_code, token-exchange, typo-legacy-token, 
      */
     grant_type: string;
     /**
@@ -21,11 +21,11 @@ export interface OAuth2TokenExchangeDto {
      */
     code?: string;
     /**
-     * The client ID of the OAuth2 client, required for grant_type=code
+     * The client ID of the OAuth2 client, required for grant_type=code or typo-legacy-token
      */
     client_id?: number;
     /**
-     * An access token to be exchanged, required for grant_type=token-exchange
+     * An access token to be exchanged, required for grant_type=token-exchange or typo-legacy-token
      */
     subject_token?: string;
     /**

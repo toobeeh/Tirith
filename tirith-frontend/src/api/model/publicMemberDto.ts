@@ -17,7 +17,7 @@ export interface PublicMemberDto {
      */
     discordID: string;
     /**
-     * The member\'s palantir accunt user name
+     * The member\'s palantir account user name
      */
     userName: string;
     /**
