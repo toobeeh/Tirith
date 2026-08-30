@@ -2,7 +2,7 @@
 https://docs.nestjs.com/controllers#controllers
 */
 
-import {Body, Controller, Get, Inject, Patch, Post, UseGuards} from '@nestjs/common';
+import {Body, Controller, Get, HttpCode, Inject, Patch, Post, UseGuards} from '@nestjs/common';
 import {ApiOperation, ApiResponse, ApiTags} from '@nestjs/swagger';
 import {ApiSecurityNotes} from 'src/decorators/apiSecurityNote.decorator';
 import {IAdminService} from "../../../services/interfaces/admin.service.interface";
@@ -34,6 +34,7 @@ export class AdminController {
     }
 
     @Post("drop-history")
+    @HttpCode(200)
     @RequiredRole(MemberFlagDto.Moderator)
     @RequiredScope(TypoScopes.adminWrite)
     @ApiOperation({ summary: "Fetch drop history for a given time range and members" })

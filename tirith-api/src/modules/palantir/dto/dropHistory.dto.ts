@@ -5,7 +5,7 @@ export class DropHistoryDto {
     @XApiProperty({ description: "Member typo id that this history belongs to" })
     login: number;
 
-    @XApiProperty({ description: "Caught drops of the member in the history range", isArray: true, type: () => DropHistoryDto })
+    @XApiProperty({ description: "Caught drops of the member in the history range", isArray: true, type: () => DropHistoryEntryDto })
     history: DropHistoryEntryDto[];
 }
 
